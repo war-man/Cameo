@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Cameo.Models;
+using Cameo.Data;
 
 namespace Cameo.Controllers
 {
     public class HomeController : Controller
     {
+        //ApplicationDbContext db = new ApplicationDbContext();
         public IActionResult Index()
         {
             return View();
