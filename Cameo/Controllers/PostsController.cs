@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cameo.Data;
 using Cameo.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Cameo.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,6 +25,8 @@ namespace Cameo.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             //ApplicationUser user = _context.Users.Include(m => m.PostsCreated)
             //    .First(m => m.Id == "2e6c91ff-41ed-4d7d-87df-a942293efd66");
             //var posts = user.PostsCreated.ToList();
