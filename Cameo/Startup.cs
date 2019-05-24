@@ -13,6 +13,11 @@ using Cameo.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Cameo.Models;
+using Cameo.Data.Infrastructure;
+using Cameo.Services.Interfaces;
+using Cameo.Services;
+using Cameo.Data.Repository.Interfaces;
+using Cameo.Data.Repository;
 
 namespace Cameo
 {
@@ -42,6 +47,14 @@ namespace Cameo
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //add repositories
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IDatabaseFactory, DatabaseFactory>();
+            services.AddTransient<IPostRepository, PostRepository>();
+
+            //add services
+            services.AddTransient<IPostService, PostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

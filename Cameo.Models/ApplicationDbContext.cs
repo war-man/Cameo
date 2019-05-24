@@ -14,6 +14,11 @@ namespace Cameo.Data
         {
         }
 
+        public virtual void Commit()
+        {
+            base.SaveChanges();
+        }
+
         public DbSet<Post> Posts { get; set; }
     }
 }

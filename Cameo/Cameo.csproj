@@ -15,4 +15,10 @@
     <Folder Include="Areas\Identity\Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cameo.Data\Cameo.Data.csproj" />
+    <ProjectReference Include="..\Cameo.Models\Cameo.Models.csproj" />
+    <ProjectReference Include="..\Cameo.Services\Cameo.Services.csproj" />
+  </ItemGroup>
+
 </Project>
