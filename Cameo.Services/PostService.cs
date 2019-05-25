@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Cameo.Services
 {
-    public class PostService : BaseService<Post>, IPostService
+    public class PostService : BaseCRUDService<Post>, IPostService
     {
         public PostService(IPostRepository repository,
                            IUnitOfWork unitOfWork)

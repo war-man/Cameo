@@ -26,6 +26,15 @@ namespace Cameo.Controllers
         public IActionResult Index()
         {
             var posts = PostService.GetAll();
+            var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var newPost = new Post()
+            {
+                Title = "adasdf",
+                AuthorID = id
+            };
+
+            PostService.Add(newPost);
 
             return View(posts);
             //return View(await _context.Posts.ToListAsync());

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cameo.Services.Interfaces
 {
-    public interface IPostService : IBaseService<Post>
+    public interface IPostService : IBaseCRUDService<Post>
     {
     }
 }

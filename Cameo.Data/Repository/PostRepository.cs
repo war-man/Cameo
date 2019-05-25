@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Cameo.Data.Repository
 {
-    public class PostRepository : BaseRepository<Post>, IPostRepository
+    public class PostRepository : BaseCRUDRepository<Post>, IPostRepository
     {
         public PostRepository(IDatabaseFactory databaseFactory)
             : base(databaseFactory)

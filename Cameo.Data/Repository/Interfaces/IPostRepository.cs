@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cameo.Data.Repository.Interfaces
 {
-    public interface IPostRepository : IBaseRepository<Post>
+    public interface IPostRepository : IBaseCRUDRepository<Post>
     {
     }
 }
