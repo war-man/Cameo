@@ -20,77 +20,82 @@ namespace Cameo.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public virtual void Add(T entity)
+        public virtual void Add(T entity, string creatorID)
         {
-            OnPreUpdate(entity);
+            OnPreUpdate(entity, creatorID);
             _repository.Add(entity);
             Save();
         }
 
-        void OnPreUpdate(T entity)
+        public virtual void AddCollection(ICollection<T> entities, string creatorID)
         {
-            if (entity.ID == 0)
-            {
-                entity.CreatedBy = "asdf";
-                entity.DateCreated = DateTime.Now;
-            }
-
-            entity.IsDeleted = false;
-            entity.ModifiedBy = "asdf";
-            entity.DateModified = DateTime.Now;
-        }
-
-        public virtual void AddCollection(ICollection<T> entities)
-        {
-            //first try foreach
-            //else try for
             foreach (var item in entities)
             {
-                OnPreUpdate(item);
+                OnPreUpdate(item, creatorID);
             }
 
             _repository.AddCollection(entities);
             Save();
         }
 
-        public void Update(T entity)
+        public void Update(T entity, string modifierID)
         {
+            OnPreUpdate(entity, modifierID);
             _repository.Update(entity);
             Save();
         }
 
-        public void UpdateCollection(ICollection<T> entities)
+        public void UpdateCollection(ICollection<T> entities, string modifierID)
         {
+            foreach (var item in entities)
+            {
+                OnPreUpdate(item, modifierID);
+            }
+
             _repository.UpdateCollection(entities);
             Save();
         }
 
-        public void Delete(T entity)
+        public void Delete(T entity, string modifierID)
         {
-            //entity.IsDeleted = true
-            //Update(entity);
+            entity.IsDeleted = true;
+            Update(entity, modifierID);
         }
 
-        public void DeleteCollection(ICollection<T> entities)
+        public void DeleteCollection(ICollection<T> entities, string modifierID)
         {
+            foreach (var item in entities)
+            {
+                item.IsDeleted = true;
+            }
 
+            UpdateCollection(entities, modifierID);
         }
 
-        public void DeletePermanently(T entity)
-        {
-            _repository.Delete(entity);
-            Save();
-        }
+        //public void DeletePermanently(T entity, string modifierID)
+        //{
+        //    _repository.Delete(entity);
+        //    Save();
+        //}
 
-        public void DeletePermanentlyCollection(ICollection<T> entities)
-        {
-            _repository.DeleteCollection(entities);
-            Save();
-        }
+        //public void DeletePermanentlyCollection(ICollection<T> entities, string modifierID)
+        //{
+        //    _repository.DeleteCollection(entities);
+        //    Save();
+        //}
 
         public virtual T GetByID(int id)
         {
             return _repository.GetByID(id);
+        }
+
+        public virtual T GetActiveByID(int id)
+        {
+            T entity = GetByID(id);
+            if (entity != null)
+                return entity.IsDeleted ? null : entity;
+
+            return entity;
         }
 
         public virtual IEnumerable<T> GetAll()
@@ -98,9 +103,32 @@ namespace Cameo.Services
             return _repository.GetAll();
         }
 
+        public virtual IEnumerable<T> GetAllActive()
+        {
+            return GetAsIQueryable().Where(m => !m.IsDeleted);
+        }
+
         public virtual IQueryable<T> GetAsIQueryable()
         {
             return _repository.GetAsIQueryable();
+        }
+
+        public virtual IQueryable<T> GetActiveAsIQueryable()
+        {
+            return GetAsIQueryable().Where(m => !m.IsDeleted);
+        }
+
+        void OnPreUpdate(T entity, string userID)
+        {
+            if (entity.ID == 0)
+            {
+                entity.CreatedBy = userID;
+                entity.DateCreated = DateTime.Now;
+                entity.IsDeleted = false;
+            }
+
+            entity.ModifiedBy = userID;
+            entity.DateModified = DateTime.Now;
         }
 
         void Save()

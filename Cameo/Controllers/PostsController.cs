@@ -28,13 +28,77 @@ namespace Cameo.Controllers
             var posts = PostService.GetAll();
             var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var newPost = new Post()
-            {
-                Title = "adasdf",
-                AuthorID = id
-            };
+            //create
+            //var newPost = new Post()
+            //{
+            //    Title = "adasdf",
+            //    AuthorID = id
+            //};
+            //PostService.Add(newPost, id);
 
-            PostService.Add(newPost);
+            //List<Post> newPosts = new List<Post>()
+            //{
+            //    new Post()
+            //    {
+            //        Title = "A1",
+            //        AuthorID = id
+            //    },
+            //    new Post()
+            //    {
+            //        Title = "A2",
+            //        AuthorID = id
+            //    },
+            //};
+            //PostService.AddCollection(newPosts, id);
+
+
+            //update
+            //var oldPost = PostService.GetByID(6);
+            //oldPost.Title = "B1";
+            //PostService.Update(oldPost, id);
+
+            //var oldPost7 = PostService.GetByID(7);
+            //oldPost.Title = "B2";
+            //var oldPost8 = PostService.GetByID(8);
+            //oldPost.Title = "B3";
+
+            //List<Post> oldPosts = new List<Post>()
+            //{
+            //    oldPost7,
+            //    oldPost8
+            //};
+            //PostService.UpdateCollection(oldPosts, id);
+
+
+            //delete
+            //var oldPost = PostService.GetByID(6);
+            //PostService.Delete(oldPost, id);
+
+            //var oldPost7 = PostService.GetByID(7);
+            //var oldPost8 = PostService.GetByID(8);
+
+            //List<Post> oldPosts = new List<Post>()
+            //{
+            //    oldPost7,
+            //    oldPost8
+            //};
+            //PostService.DeleteCollection(oldPosts, id);
+
+
+            //deletePermanently
+            //var oldPost = PostService.GetByID(6);
+            //PostService.DeletePermanently(oldPost, id);
+
+            //var oldPost7 = PostService.GetByID(7);
+            //var oldPost8 = PostService.GetByID(8);
+
+            //List<Post> oldPosts = new List<Post>()
+            //{
+            //    oldPost7,
+            //    oldPost8
+            //};
+            //PostService.DeletePermanentlyCollection(oldPosts, id);
+
 
             return View(posts);
             //return View(await _context.Posts.ToListAsync());
