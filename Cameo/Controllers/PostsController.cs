@@ -28,6 +28,21 @@ namespace Cameo.Controllers
             var posts = PostService.GetAll();
             var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            //return NotFound();
+
+            //return BadRequest();
+
+            try
+            {
+                int j = 0;
+                int k = 10 / j;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+            
+
             //create
             //var newPost = new Post()
             //{

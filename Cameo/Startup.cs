@@ -65,11 +65,12 @@ namespace Cameo
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithReExecute("/error/{0}");
+                //app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Cameo.Models;
 using Cameo.Data;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Cameo.Controllers
 {
@@ -39,6 +40,9 @@ namespace Cameo.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            var pathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            Exception exception = pathFeature?.Error; // Here will be the exception details
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
