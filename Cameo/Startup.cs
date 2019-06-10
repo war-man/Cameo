@@ -14,6 +14,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Cameo.Models;
 using Cameo.Data.Infrastructure;
+using Hangfire;
+using Cameo.Filters;
+using Hangfire.Dashboard;
+using Hangfire.SqlServer;
 
 namespace Cameo
 {
@@ -45,6 +49,25 @@ namespace Cameo
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            //Hangfire
+            services.AddHangfire(config => 
+                config.UseSqlServerStorage(
+                    "Data Source=.;Initial Catalog=Cameo;User Id=sa;Password=490969;", 
+                    new SqlServerStorageOptions
+                    {
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        UsePageLocksOnDequeue = true,
+                        DisableGlobalLocks = true
+                    }
+                )
+            );
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
             //add common dependencies
             services.AddCommonDependencies(); //UnitOfWork and DatabaseFactory
 
@@ -56,7 +79,7 @@ namespace Cameo
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, IBackgroundJobClient backgroundJobs*/)
         {
             if (env.IsDevelopment())
             {
@@ -65,12 +88,14 @@ namespace Cameo
             }
             else
             {
-                app.UseStatusCodePagesWithReExecute("/error/{0}");
-                //app.UseExceptionHandler("/Home/Error");
+                //app.UseStatusCodePagesWithReExecute("/error/{0}");
+                //app.UseStatusCodePagesWithRedirects("/StatusCode?code={0}");
+                //app.UseStatusCodePages();
+                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
-        app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
@@ -82,6 +107,15 @@ namespace Cameo
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseHangfireServer();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAuthorizationFilter() },
+                IsReadOnlyFunc = (DashboardContext context) => true
+            });
+
+            //backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
         }
     }
 }

@@ -7,14 +7,23 @@ using Microsoft.AspNetCore.Mvc;
 using Cameo.Models;
 using Cameo.Data;
 using Microsoft.AspNetCore.Diagnostics;
+using Hangfire;
 
 namespace Cameo.Controllers
 {
     public class HomeController : Controller
     {
+        readonly private IBackgroundJobClient _backgroundJobs;
+
+        public HomeController(IBackgroundJobClient backgroundJobs)
+        {
+            _backgroundJobs = backgroundJobs;
+        }
+
         //ApplicationDbContext db = new ApplicationDbContext();
         public IActionResult Index()
         {
+            _backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
             return View();
         }
 

@@ -10,6 +10,7 @@ using Cameo.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Cameo.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -17,10 +18,12 @@ namespace Cameo.Controllers
     public class PostsController : Controller
     {
         private readonly IPostService PostService;
+        private readonly ILogger _logger;
 
-        public PostsController(IPostService postService)
+        public PostsController(IPostService postService, ILogger<PostsController> logger)
         {
             PostService = postService;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -28,11 +31,18 @@ namespace Cameo.Controllers
             var posts = PostService.GetAll();
             var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            //return NotFound();
+            //_logger.LogTrace("log trace");
+            //_logger.LogDebug("log debug");
+            //_logger.LogInformation("log info");
+            //_logger.LogWarning("log warning");
+            //_logger.LogError("log error");
+            //_logger.LogCritical("log critical");
+
+            return NotFound();
 
             //return BadRequest();
 
-            try
+            /*try
             {
                 int j = 0;
                 int k = 10 / j;
@@ -40,8 +50,8 @@ namespace Cameo.Controllers
             catch (Exception ex)
             {
                 return BadRequest();
-            }
-            
+            }*/
+
 
             //create
             //var newPost = new Post()
