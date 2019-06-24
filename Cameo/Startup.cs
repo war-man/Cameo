@@ -83,16 +83,19 @@ namespace Cameo
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseStatusCodePagesWithRedirects("~/Error/error?code={0}");
+                //app.UseStatusCodePages("text/plain", "Status code page, status code: {0}");
+                app.UseExceptionHandler("/Home/Error");
+                //app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
             {
-                //app.UseStatusCodePagesWithReExecute("/error/{0}");
-                //app.UseStatusCodePagesWithRedirects("/StatusCode?code={0}");
+                
                 //app.UseStatusCodePages();
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                
+                //app.UseExceptionHandler("/Error");
+                //app.UseHsts();
             }
 
             app.UseHttpsRedirection();

@@ -16,7 +16,7 @@ namespace Cameo.Controllers
         }
 
         [Route("error/{code:int}")]
-        public IActionResult Error(int code)
+        public IActionResult Error(int? code)
         {
             // handle different codes or just return the default error view
             return View();

@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo", "Cameo\Cameo.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.Models", "Cameo.Models\Cameo.Models.csproj", "{2643D552-4679-4972-B2E1-DD5906237B9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cameo.Data", "Cameo.Data\Cameo.Data.csproj", "{A29BE266-6AFA-4E5E-8F90-23C41676E487}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.Data", "Cameo.Data\Cameo.Data.csproj", "{A29BE266-6AFA-4E5E-8F90-23C41676E487}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cameo.Services", "Cameo.Services\Cameo.Services.csproj", "{0AEA2E84-F3A6-4DFC-BBEF-1803862949E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.Services", "Cameo.Services\Cameo.Services.csproj", "{0AEA2E84-F3A6-4DFC-BBEF-1803862949E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cameo.Common", "Cameo.Common\Cameo.Common.csproj", "{80E632AC-7259-48DC-871A-D811298FFA91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0AEA2E84-F3A6-4DFC-BBEF-1803862949E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AEA2E84-F3A6-4DFC-BBEF-1803862949E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AEA2E84-F3A6-4DFC-BBEF-1803862949E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80E632AC-7259-48DC-871A-D811298FFA91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80E632AC-7259-48DC-871A-D811298FFA91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80E632AC-7259-48DC-871A-D811298FFA91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80E632AC-7259-48DC-871A-D811298FFA91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

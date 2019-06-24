@@ -38,6 +38,8 @@ namespace Cameo.Controllers
             //_logger.LogError("log error");
             //_logger.LogCritical("log critical");
 
+            //throw new Exception("ffdfasdf sadfasdf");
+
             return NotFound();
 
             //return BadRequest();
