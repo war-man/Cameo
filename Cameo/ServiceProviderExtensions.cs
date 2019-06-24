@@ -27,6 +27,7 @@ namespace Cameo
         public static void AddServices(this IServiceCollection services)
         {
             services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IEmailService, EmailService>();
         }
     }
 }
