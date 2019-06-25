@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190625095251_CustomerAndTalenTablesAdded")]
+    partial class CustomerAndTalenTablesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,6 +86,9 @@ namespace Cameo.Data.Migrations
 
                     b.Property<DateTime>("DateModified");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("FirstName");
 
                     b.Property<bool>("IsDeleted");
@@ -103,6 +108,8 @@ namespace Cameo.Data.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Customers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Customer");
                 });
 
             modelBuilder.Entity("Cameo.Models.Post", b =>
@@ -161,47 +168,6 @@ namespace Cameo.Data.Migrations
                     b.HasIndex("ModifiedBy");
 
                     b.ToTable("SocialAreas");
-                });
-
-            modelBuilder.Entity("Cameo.Models.Talent", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<int?>("FollowersCount");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("ModifiedBy");
-
-                    b.Property<string>("SocialAreaHandle");
-
-                    b.Property<int>("SocialAreaID");
-
-                    b.Property<string>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("ModifiedBy");
-
-                    b.HasIndex("SocialAreaID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Talents");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -318,6 +284,23 @@ namespace Cameo.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Cameo.Models.Talent", b =>
+                {
+                    b.HasBaseType("Cameo.Models.Customer");
+
+                    b.Property<int?>("FollowersCount");
+
+                    b.Property<string>("SocialAreaHandle");
+
+                    b.Property<int>("SocialAreaID");
+
+                    b.HasIndex("SocialAreaID");
+
+                    b.ToTable("Talent");
+
+                    b.HasDiscriminator().HasValue("Talent");
+                });
+
             modelBuilder.Entity("Cameo.Models.Customer", b =>
                 {
                     b.HasOne("Cameo.Models.ApplicationUser", "Creator")
@@ -357,26 +340,6 @@ namespace Cameo.Data.Migrations
                     b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
                         .WithMany()
                         .HasForeignKey("ModifiedBy");
-                });
-
-            modelBuilder.Entity("Cameo.Models.Talent", b =>
-                {
-                    b.HasOne("Cameo.Models.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
-
-                    b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
-                        .WithMany()
-                        .HasForeignKey("ModifiedBy");
-
-                    b.HasOne("Cameo.Models.SocialArea", "SocialArea")
-                        .WithMany()
-                        .HasForeignKey("SocialAreaID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Cameo.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -421,6 +384,14 @@ namespace Cameo.Data.Migrations
                     b.HasOne("Cameo.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Cameo.Models.Talent", b =>
+                {
+                    b.HasOne("Cameo.Models.SocialArea", "SocialArea")
+                        .WithMany()
+                        .HasForeignKey("SocialAreaID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

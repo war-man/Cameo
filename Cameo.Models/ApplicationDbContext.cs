@@ -20,5 +20,8 @@ namespace Cameo.Data
         }
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<SocialArea> SocialAreas { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Talent> Talents { get; set; }
     }
 }

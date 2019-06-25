@@ -9,6 +9,7 @@ namespace Cameo.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        //==========================================================
         public string CustomTag { get; set; }
 
         [InverseProperty("Author")]
