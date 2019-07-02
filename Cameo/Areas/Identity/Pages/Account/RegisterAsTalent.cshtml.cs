@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Cameo.Models;
@@ -10,31 +11,35 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 
 namespace Cameo.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class RegisterModel : PageModel
+    public class RegisterAsTalentModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
-        private readonly ICustomerService _customerService;
+        private readonly IEmailSender EmailSender;
+        private readonly ITalentService TalentService;
+        private readonly ISocialAreaService SocialAreaService;
 
-        public RegisterModel(
+        public RegisterAsTalentModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ICustomerService customerService)
+            ITalentService talentService,
+            ISocialAreaService socialAreaService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
-            _customerService = customerService;
+            EmailSender = emailSender;
+            TalentService = talentService;
+            SocialAreaService = socialAreaService;
         }
 
         [BindProperty]
@@ -53,13 +58,26 @@ namespace Cameo.Areas.Identity.Pages.Account
             public string LastName { get; set; }
 
             [Required]
+            [Display(Name = "UserName")]
+            public string UserName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
             [Required]
-            [Display(Name = "UserName")]
-            public string UserName { get; set; }
+            [Display(Name = "Phone number (never shared)")]
+            public string PhoneNumber { get; set; }
+
+            [Display(Name = "Where can we find you?")]
+            public int? SocialAreaID { get; set; }
+
+            [Display(Name = "Your handle")]
+            public string SocialAreaHandle { get; set; }
+
+            [Display(Name = "How many followers do you have?")]
+            public string FollowersCount { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -76,6 +94,7 @@ namespace Cameo.Areas.Identity.Pages.Account
         public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            ViewData["socialAreas"] = SocialAreaService.GetAsSelectList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -86,21 +105,23 @@ namespace Cameo.Areas.Identity.Pages.Account
                 var user = new ApplicationUser
                 {
                     UserName = Input.UserName,
-                    Email = Input.Email
+                    Email = Input.Email,
+                    PhoneNumber = Input.PhoneNumber
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new Customer account with password.");
+                    _logger.LogInformation("User created a new Talent account with password.");
 
-                    Customer customer = new Customer()
+                    Talent talent = new Talent()
                     {
                         FirstName = Input.FirstName,
                         LastName = Input.LastName,
+                        SocialAreaID = Input.SocialAreaID,
+                        SocialAreaHandle = Input.SocialAreaHandle,
                         UserID = user.Id
                     };
-                    _customerService.Add(customer, user.Id);
-                    
+                    TalentService.Add(talent, user.Id);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
@@ -109,7 +130,7 @@ namespace Cameo.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await EmailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);

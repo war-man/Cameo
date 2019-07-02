@@ -5,9 +5,9 @@ using Cameo.Services.Interfaces;
 
 namespace Cameo.Services
 {
-    public class PostService : BaseCRUDService<Post>, IPostService
+    public class TalentService : BaseCRUDService<Talent>, ITalentService
     {
-        public PostService(IPostRepository repository,
+        public TalentService(ITalentRepository repository,
                            IUnitOfWork unitOfWork)
             : base(repository, unitOfWork)
         {

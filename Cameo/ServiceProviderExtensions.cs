@@ -22,12 +22,19 @@ namespace Cameo
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<ITalentRepository, TalentRepository>();
+            services.AddTransient<ISocialAreaRepository, SocialAreaRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddTransient<IPostService, PostService>();
             services.AddTransient<IEmailService, EmailService>();
+
+            services.AddTransient<IPostService, PostService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ITalentService, TalentService>();
+            services.AddTransient<ISocialAreaService, SocialAreaService>();
         }
     }
 }

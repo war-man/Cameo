@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Cameo.Models
 {
-    public class SocialArea : BaseModelDropdownable
+    public class BaseModelDropdownable : BaseModel
     {
+        public string Name { get; set; }
     }
 }

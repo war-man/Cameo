@@ -4,9 +4,9 @@ using Cameo.Models;
 
 namespace Cameo.Data.Repository
 {
-    public class PostRepository : BaseCRUDRepository<Post>, IPostRepository
+    public class TalentRepository : BaseCRUDRepository<Talent>, ITalentRepository
     {
-        public PostRepository(IDatabaseFactory databaseFactory)
+        public TalentRepository(IDatabaseFactory databaseFactory)
             : base(databaseFactory)
         {
         }

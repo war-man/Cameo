@@ -2,7 +2,7 @@
 
 namespace Cameo.Services.Interfaces
 {
-    public interface IPostService : IBaseCRUDService<Post>
+    public interface ITalentService : IBaseCRUDService<Talent>
     {
     }
 }

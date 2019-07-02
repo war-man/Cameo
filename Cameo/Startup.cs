@@ -85,8 +85,8 @@ namespace Cameo
             {
                 //app.UseStatusCodePagesWithRedirects("~/Error/error?code={0}");
                 //app.UseStatusCodePages("text/plain", "Status code page, status code: {0}");
-                app.UseExceptionHandler("/Home/Error");
-                //app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/Home/Error");
+                app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else

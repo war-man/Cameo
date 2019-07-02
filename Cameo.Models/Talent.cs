@@ -13,6 +13,6 @@ namespace Cameo.Models
 
         public string SocialAreaHandle { get; set; }
 
-        public int? FollowersCount { get; set; }
+        public string FollowersCount { get; set; }
     }
 }

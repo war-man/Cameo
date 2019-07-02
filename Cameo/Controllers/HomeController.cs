@@ -20,7 +20,6 @@ namespace Cameo.Controllers
             _backgroundJobs = backgroundJobs;
         }
 
-        //ApplicationDbContext db = new ApplicationDbContext();
         public IActionResult Index()
         {
             _backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
