@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Cameo.Models;
+using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ namespace Cameo.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender EmailSender;
+        //private readonly IEmailSender EmailSender;
         private readonly ITalentService TalentService;
         private readonly ISocialAreaService SocialAreaService;
 
@@ -30,14 +31,14 @@ namespace Cameo.Areas.Identity.Pages.Account
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
+            //IEmailSender emailSender,
             ITalentService talentService,
             ISocialAreaService socialAreaService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            EmailSender = emailSender;
+            //EmailSender = emailSender;
             TalentService = talentService;
             SocialAreaService = socialAreaService;
         }
@@ -106,7 +107,8 @@ namespace Cameo.Areas.Identity.Pages.Account
                 {
                     UserName = Input.UserName,
                     Email = Input.Email,
-                    PhoneNumber = Input.PhoneNumber
+                    PhoneNumber = Input.PhoneNumber,
+                    UserType = UserTypesEnum.talent.ToString()
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -130,8 +132,8 @@ namespace Cameo.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await EmailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await EmailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
@@ -143,6 +145,8 @@ namespace Cameo.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            ViewData["socialAreas"] = SocialAreaService.GetAsSelectList();
+
             return Page();
         }
     }

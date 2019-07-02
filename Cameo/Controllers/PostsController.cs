@@ -29,7 +29,9 @@ namespace Cameo.Controllers
         public IActionResult Index()
         {
             var posts = PostService.GetAll();
-            var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string userType = User.FindFirst(ClaimTypes.UserData).Value;
+
 
             //_logger.LogTrace("log trace");
             //_logger.LogDebug("log debug");

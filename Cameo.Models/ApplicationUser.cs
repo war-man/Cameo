@@ -9,6 +9,8 @@ namespace Cameo.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public string UserType { get; set; }
+
         //==========================================================
         public string CustomTag { get; set; }
 
