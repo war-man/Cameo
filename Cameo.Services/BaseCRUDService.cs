@@ -98,6 +98,24 @@ namespace Cameo.Services
             return entity;
         }
 
+        public virtual IEnumerable<T> GetByIDs(int[] ids)
+        {
+            if (ids == null || ids.Length == 0)
+                return new List<T>();
+
+            return GetAsIQueryable()
+                .Where(m => ids.Contains(m.ID));
+        }
+
+        public virtual IEnumerable<T> GetActiveByIDs(int[] ids)
+        {
+            if (ids == null || ids.Length == 0)
+                return new List<T>();
+
+            return GetAsIQueryable()
+                .Where(m => ids.Contains(m.ID) && !m.IsDeleted);
+        }
+
         public virtual IEnumerable<T> GetAll()
         {
             return _repository.GetAll();
