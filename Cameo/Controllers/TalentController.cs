@@ -4,45 +4,42 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
-using Cameo.Utils;
 using Cameo.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
-    [Authorize]
-    public class CustomerController : BaseController
+    public class TalentController : BaseController
     {
-        private readonly ICustomerService CustomerService;
+        private readonly ITalentService TalentService;
         private readonly ISocialAreaService SocialAreaService;
 
-        public CustomerController(
-            ICustomerService customerService,
+        public TalentController(
+            ITalentService talentService,
             ISocialAreaService socialAreaService)
         {
-            CustomerService = customerService;
+            TalentService = talentService;
             SocialAreaService = socialAreaService;
         }
 
         public IActionResult PersonalData()
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetByUserID(curUser.ID);
+            Talent model = TalentService.GetByUserID(curUser.ID);
             if (model == null)
                 return NotFound();
 
-            CustomerEditVM modelVM = new CustomerEditVM(model);
+            TalentEditVM modelVM = new TalentEditVM(model);
             ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
 
             return View(modelVM);
         }
 
         [HttpPost]
-        public IActionResult PersonalData(CustomerEditVM modelVM)
+        public IActionResult PersonalData(TalentEditVM modelVM)
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetByID(modelVM.ID);
+            Talent model = TalentService.GetByID(modelVM.ID);
             if (model == null || !model.UserID.Equals(curUser.ID))
                 return NotFound();
 
@@ -55,8 +52,9 @@ namespace Cameo.Controllers
                     model.Bio = modelVM.Bio;
                     model.SocialAreaID = modelVM.SocialAreaID;
                     model.SocialAreaHandle = modelVM.SocialAreaHandle;
+                    model.FollowersCount = modelVM.FollowersCount;
 
-                    CustomerService.Update(model, curUser.ID);
+                    TalentService.Update(model, curUser.ID);
 
                     ViewData["successfullySaved"] = true;
                 }

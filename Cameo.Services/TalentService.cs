@@ -2,6 +2,7 @@
 using Cameo.Data.Repository.Interfaces;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
+using System.Linq;
 
 namespace Cameo.Services
 {
@@ -11,6 +12,11 @@ namespace Cameo.Services
                            IUnitOfWork unitOfWork)
             : base(repository, unitOfWork)
         {
+        }
+
+        public Talent GetByUserID(string userID)
+        {
+            return GetAsIQueryable().FirstOrDefault(m => m.UserID == userID);
         }
     }
 }

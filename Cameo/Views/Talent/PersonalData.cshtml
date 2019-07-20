@@ -1,0 +1,73 @@
+﻿@model Cameo.ViewModels.TalentEditVM
+
+@{
+    ViewData["Title"] = "Личные данные";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+@if (ViewData["successfullySaved"] != null)
+{
+    <div class="alert alert-success">
+        Данные успешно сохранены
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">            
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input asp-for="ID" type="hidden" />
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>*@
+            @*<div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>*@
+            @*<div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="SocialAreaID"></label>
+                <select asp-for="SocialAreaID"
+                        asp-items="@ViewData["socialAreas"] as IEnumerable<SelectListItem>"
+                        class="form-control">
+                    <option> </option>
+                </select>
+                <span asp-validation-for="SocialAreaID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SocialAreaHandle"></label>
+                <input asp-for="SocialAreaHandle" class="form-control" />
+                <span asp-validation-for="SocialAreaHandle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FollowersCount"></label>
+                <input asp-for="FollowersCount" class="form-control" />
+                <span asp-validation-for="FollowersCount" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

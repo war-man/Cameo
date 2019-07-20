@@ -6,17 +6,13 @@ using System.Linq;
 
 namespace Cameo.Services
 {
-    public class CustomerService : BaseCRUDService<Customer>, ICustomerService
+    public class AttachmentService : BaseCRUDService<Attachment>, IAttachmentService
     {
-        public CustomerService(ICustomerRepository repository,
+        public AttachmentService(IAttachmentRepository repository,
                            IUnitOfWork unitOfWork)
             : base(repository, unitOfWork)
         {
-        }
-
-        public Customer GetByUserID(string userID)
-        {
-            return GetAsIQueryable().FirstOrDefault(m => m.UserID == userID);
+            
         }
     }
 }

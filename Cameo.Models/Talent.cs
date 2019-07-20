@@ -7,8 +7,6 @@ namespace Cameo.Models
 {
     public class Talent : Person
     {
-        
-
         public string FollowersCount { get; set; }
     }
 }
