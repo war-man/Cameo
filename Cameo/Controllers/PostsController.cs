@@ -30,7 +30,8 @@ namespace Cameo.Controllers
         {
             var posts = PostService.GetAll();
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            string userType = User.FindFirst(ClaimTypes.UserData).Value;
+            Claim claim = User.FindFirst(ClaimTypes.UserData);
+            string userType = claim?.Value;
 
 
             //_logger.LogTrace("log trace");

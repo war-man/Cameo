@@ -21,9 +21,13 @@ namespace Cameo.Models
         {
             var principal = await base.CreateAsync(user);
 
-            ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
-                new Claim(ClaimTypes.UserData, user.UserType)
-            });
+            if (!string.IsNullOrWhiteSpace(user.UserType))
+            {
+                ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
+                    new Claim(ClaimTypes.UserData, user.UserType)
+                });
+            }
+            
 
             return principal;
         }

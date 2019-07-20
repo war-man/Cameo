@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Cameo.Models;
+using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,20 +21,20 @@ namespace Cameo.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        //private readonly IEmailSender _emailSender;
         private readonly ICustomerService _customerService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
+            //IEmailSender emailSender,
             ICustomerService customerService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            //_emailSender = emailSender;
             _customerService = customerService;
         }
 
@@ -86,7 +87,8 @@ namespace Cameo.Areas.Identity.Pages.Account
                 var user = new ApplicationUser
                 {
                     UserName = Input.UserName,
-                    Email = Input.Email
+                    Email = Input.Email,
+                    UserType = UserTypesEnum.customer.ToString()
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -109,8 +111,8 @@ namespace Cameo.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
