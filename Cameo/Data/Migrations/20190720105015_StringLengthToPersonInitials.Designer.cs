@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190720105015_StringLengthToPersonInitials")]
+    partial class StringLengthToPersonInitials
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,10 +100,6 @@ namespace Cameo.Data.Migrations
 
                     b.Property<string>("ModifiedBy");
 
-                    b.Property<string>("SocialAreaHandle");
-
-                    b.Property<int?>("SocialAreaID");
-
                     b.Property<string>("UserID");
 
                     b.HasKey("ID");
@@ -109,8 +107,6 @@ namespace Cameo.Data.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("ModifiedBy");
-
-                    b.HasIndex("SocialAreaID");
 
                     b.HasIndex("UserID");
 
@@ -339,10 +335,6 @@ namespace Cameo.Data.Migrations
                     b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
                         .WithMany()
                         .HasForeignKey("ModifiedBy");
-
-                    b.HasOne("Cameo.Models.SocialArea", "SocialArea")
-                        .WithMany()
-                        .HasForeignKey("SocialAreaID");
 
                     b.HasOne("Cameo.Models.ApplicationUser", "User")
                         .WithMany()
