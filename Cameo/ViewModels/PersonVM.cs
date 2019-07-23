@@ -30,6 +30,8 @@ namespace Cameo.ViewModels
         [Display(Name = "Моё имя пользователя в соц. сети")]
         public string SocialAreaHandle { get; set; }
 
+        public AttachmentDetailsVM Avatar { get; set; }
+
         public PersonEditVM() { }
 
         public PersonEditVM(Person model)
@@ -43,6 +45,7 @@ namespace Cameo.ViewModels
             this.Bio = model.Bio;
             this.SocialAreaID = model.SocialAreaID;
             this.SocialAreaHandle = model.SocialAreaHandle;
+            this.Avatar = new AttachmentDetailsVM(model.Avatar);
         }
     }
 }

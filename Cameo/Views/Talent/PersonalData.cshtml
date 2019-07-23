@@ -1,4 +1,10 @@
 ﻿@model Cameo.ViewModels.TalentEditVM
+@using Cameo.Utils
+@using Cameo.Common
+
+@using Microsoft.Extensions.Options;
+
+@inject IOptions<AppConfiguration> AppSettings
 
 @{
     ViewData["Title"] = "Личные данные";
@@ -16,9 +22,22 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form method="post">            
+        <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input asp-for="ID" type="hidden" />
+            <div class="form-group">
+                <input type="hidden" id="fileID" name="fileID" />
+                @{
+                    string photoUrl = AppSettings.Value.NophotoUrl;
+                    if (Model.Avatar != null && Model.Avatar.ID > 0)
+                    {
+                        photoUrl = Model.Avatar.Url;
+                    }
+                }
+                <img id="imgContainer" src="@photoUrl" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
+                <img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />
+                <input type='file' id="imgInp" />
+            </div>
             <div class="form-group">
                 <label asp-for="FirstName"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -30,20 +49,20 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>*@
             @*<div class="form-group">
-                <label asp-for="UserName"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>*@
             @*<div class="form-group">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="SocialAreaID"></label>
                 <select asp-for="SocialAreaID"
@@ -70,4 +89,52 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $("#imgInp").change(function () {
+
+                readURL(this);
+            });
+        });
+
+        function readURL(input)
+        {
+            if (input.files && input.files[0])
+            {
+                var files = input.files;
+                var formData = new FormData();
+
+                for (var i = 0; i != files.length; i++) {
+                    formData.append("files", files[i]);
+                }
+                formData.append("id", "@Model.ID");
+                formData.append("fileType", "@Constants.FileTypes.TALENT_AVATAR");
+
+                $.ajax({
+                    url: "/Attachment/Upload",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    beforeSend: function () {
+                        //alert("beforeSend");
+                        $("img#spinner").show();
+                        $("#imgInp").attr("disabled", "disabled");
+                    },
+                    success: function (data) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#imgContainer').attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    },
+                    complete: function () {
+                        //alert("completed");
+                        $("img#spinner").hide();
+                        $("#imgInp").removeAttr("disabled");
+                    }
+                });
+            }
+        }
+    </script>
 }

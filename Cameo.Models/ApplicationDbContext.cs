@@ -14,6 +14,11 @@ namespace Cameo.Data
         {
         }
 
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<School>().HasMany(s => s.Students).WithOne(s => s.School);
+        }*/
+
         public virtual void Commit()
         {
             base.SaveChanges();

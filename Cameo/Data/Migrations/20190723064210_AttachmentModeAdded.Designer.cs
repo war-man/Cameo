@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190723064210_AttachmentModeAdded")]
+    partial class AttachmentModeAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace Cameo.Data.Migrations
 
                     b.Property<string>("GUID")
                         .IsRequired()
-                        .HasMaxLength(36);
+                        .HasMaxLength(32);
 
                     b.Property<bool>("IsDeleted");
 
@@ -126,8 +128,6 @@ namespace Cameo.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AvatarID");
-
                     b.Property<string>("Bio");
 
                     b.Property<string>("CreatedBy");
@@ -153,8 +153,6 @@ namespace Cameo.Data.Migrations
                     b.Property<string>("UserID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("AvatarID");
 
                     b.HasIndex("CreatedBy");
 
@@ -231,8 +229,6 @@ namespace Cameo.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AvatarID");
-
                     b.Property<string>("Bio");
 
                     b.Property<string>("CreatedBy");
@@ -260,8 +256,6 @@ namespace Cameo.Data.Migrations
                     b.Property<string>("UserID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("AvatarID");
 
                     b.HasIndex("CreatedBy");
 
@@ -397,10 +391,6 @@ namespace Cameo.Data.Migrations
 
             modelBuilder.Entity("Cameo.Models.Customer", b =>
                 {
-                    b.HasOne("Cameo.Models.Attachment", "Avatar")
-                        .WithMany()
-                        .HasForeignKey("AvatarID");
-
                     b.HasOne("Cameo.Models.ApplicationUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatedBy");
@@ -446,10 +436,6 @@ namespace Cameo.Data.Migrations
 
             modelBuilder.Entity("Cameo.Models.Talent", b =>
                 {
-                    b.HasOne("Cameo.Models.Attachment", "Avatar")
-                        .WithMany()
-                        .HasForeignKey("AvatarID");
-
                     b.HasOne("Cameo.Models.ApplicationUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatedBy");

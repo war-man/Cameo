@@ -18,6 +18,9 @@ using Hangfire;
 using Cameo.Filters;
 using Hangfire.Dashboard;
 using Hangfire.SqlServer;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
+using Cameo.Common;
 
 namespace Cameo
 {
@@ -54,6 +57,8 @@ namespace Cameo
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.Configure<AppConfiguration>(Configuration.GetSection("MySettings"));
 
             //Hangfire
             services.AddHangfire(config => 
@@ -105,7 +110,21 @@ namespace Cameo
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Content")),
+                RequestPath = "/Content"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+                RequestPath = "/Uploads"
+            });
+
             app.UseCookiePolicy();
 
             app.UseAuthentication();

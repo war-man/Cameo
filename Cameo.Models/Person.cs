@@ -25,5 +25,9 @@ namespace Cameo.Models
         public virtual SocialArea SocialArea { get; set; }
 
         public string SocialAreaHandle { get; set; }
+
+        [ForeignKey("Avatar")]
+        public int? AvatarID { get; set; }
+        public virtual Attachment Avatar { get; set; }
     }
 }

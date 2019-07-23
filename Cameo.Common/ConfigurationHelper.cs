@@ -18,7 +18,7 @@ namespace Cameo.Common
 
             string result = null;
 
-            // Chech in configuration file
+            // Check in configuration file
             result = ConfigurationManager.AppSettings[name];
             if (result != null)
                 return result;

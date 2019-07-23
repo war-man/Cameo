@@ -25,6 +25,7 @@ namespace Cameo
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<ITalentRepository, TalentRepository>();
             services.AddTransient<ISocialAreaRepository, SocialAreaRepository>();
+            services.AddTransient<IAttachmentRepository, AttachmentRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -35,6 +36,8 @@ namespace Cameo
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<ITalentService, TalentService>();
             services.AddTransient<ISocialAreaService, SocialAreaService>();
+            services.AddTransient<IAttachmentService, AttachmentService>();
+            services.AddTransient<IFileManagement, FileManagement>();
         }
     }
 }

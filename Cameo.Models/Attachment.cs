@@ -8,7 +8,7 @@ namespace Cameo.Models
     public class Attachment : BaseModel
     {
         [Required]
-        [StringLength(32)]
+        [StringLength(36)]
         public string GUID { get; set; }
 
         [Required]

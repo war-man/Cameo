@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Content\Images\nophoto.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
 	<PackageReference Include="Hangfire.Core" Version="1.7.3" />
 	<PackageReference Include="Hangfire.SqlServer" Version="1.7.3" />
@@ -19,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cameo.Common\Cameo.Common.csproj" />
     <ProjectReference Include="..\Cameo.Data\Cameo.Data.csproj" />
     <ProjectReference Include="..\Cameo.Models\Cameo.Models.csproj" />
     <ProjectReference Include="..\Cameo.Services\Cameo.Services.csproj" />

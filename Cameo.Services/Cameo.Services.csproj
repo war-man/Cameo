@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cameo.Common\Cameo.Common.csproj" />
     <ProjectReference Include="..\Cameo.Data\Cameo.Data.csproj" />
   </ItemGroup>
 

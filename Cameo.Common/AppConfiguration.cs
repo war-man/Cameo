@@ -6,15 +6,23 @@ using System.Threading.Tasks;
 
 namespace Cameo.Common
 {
-    public static class AppConfiguration
+    /*public static class AppConfiguration
     {
-        public static string AmazonESDomenEndpoint
+        public static string UploadsPath
         {
             get
             {
-                return ConfigurationHelper.GetSetting("AmazonESDomenEndpoint");
+                return ConfigurationHelper.GetSetting("UploadsPath");
             }
         }
         
+    }*/
+
+    public class AppConfiguration
+    {
+        public string UploadsPath { get; set; }
+        public string ApplicationRootPath { get; set; }
+        public string NophotoUrl { get; set; }
+        public string SpinnerUrl { get; set; }
     }
 }

@@ -1,25 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
+    [Authorize]
     public class TalentController : BaseController
     {
         private readonly ITalentService TalentService;
         private readonly ISocialAreaService SocialAreaService;
+        private IAttachmentService AttachmentService;
 
         public TalentController(
             ITalentService talentService,
-            ISocialAreaService socialAreaService)
+            ISocialAreaService socialAreaService,
+            IAttachmentService attachmentService)
         {
             TalentService = talentService;
             SocialAreaService = socialAreaService;
+            AttachmentService = attachmentService;
         }
 
         public IActionResult PersonalData()
@@ -28,6 +30,8 @@ namespace Cameo.Controllers
             Talent model = TalentService.GetByUserID(curUser.ID);
             if (model == null)
                 return NotFound();
+            if (model.AvatarID.HasValue)
+                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
             TalentEditVM modelVM = new TalentEditVM(model);
             ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
@@ -65,6 +69,11 @@ namespace Cameo.Controllers
             }
             else
                 ModelState.AddModelError("", "Неверные данные");
+
+            if (model.AvatarID.HasValue)
+                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+
+            modelVM.Avatar = new AttachmentDetailsVM(model.Avatar);
 
             ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
 

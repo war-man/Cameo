@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
-using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +12,16 @@ namespace Cameo.Controllers
     {
         private readonly ICustomerService CustomerService;
         private readonly ISocialAreaService SocialAreaService;
+        private IAttachmentService AttachmentService;
 
         public CustomerController(
             ICustomerService customerService,
-            ISocialAreaService socialAreaService)
+            ISocialAreaService socialAreaService,
+            IAttachmentService attachmentService)
         {
             CustomerService = customerService;
             SocialAreaService = socialAreaService;
+            AttachmentService = attachmentService;
         }
 
         public IActionResult PersonalData()
@@ -31,6 +30,8 @@ namespace Cameo.Controllers
             Customer model = CustomerService.GetByUserID(curUser.ID);
             if (model == null)
                 return NotFound();
+            if (model.AvatarID.HasValue)
+                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
             CustomerEditVM modelVM = new CustomerEditVM(model);
             ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
@@ -67,6 +68,11 @@ namespace Cameo.Controllers
             }
             else
                 ModelState.AddModelError("", "Неверные данные");
+
+            if (model.AvatarID.HasValue)
+                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+
+            modelVM.Avatar = new AttachmentDetailsVM(model.Avatar);
 
             ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
 
