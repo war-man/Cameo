@@ -17,7 +17,7 @@ namespace Cameo.Controllers
             if (curUser.Type == UserTypesEnum.customer.ToString())
                 return RedirectToAction("PersonalData", "Customer");
             else
-                return RedirectToAction("PersonalData", "Talent");
+                return RedirectToAction("Index", "Talent");
         }
     }
 }

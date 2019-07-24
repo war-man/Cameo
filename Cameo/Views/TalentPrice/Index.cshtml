@@ -1,0 +1,45 @@
+﻿@model Cameo.ViewModels.TalentPriceEditVM
+@using Cameo.Utils
+@using Cameo.Common
+
+@using Microsoft.Extensions.Options;
+
+@inject IOptions<AppConfiguration> AppSettings
+
+@{
+    ViewData["Title"] = "Изменение цены";
+}
+<br />
+<div class="row">
+    <div class="col-sm-3">
+        <partial name="_TalentSidebar" />
+    </div>
+    <div class="col-md-4">
+        <h2>@ViewData["Title"]</h2>
+        <hr />
+
+        @if (ViewData["successfullySaved"] != null)
+        {
+            <div class="alert alert-success">
+                Данные успешно сохранены
+            </div>
+        }
+
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input asp-for="ID" type="hidden" />
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            
+            <button type="submit" class="btn btn-default">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+}

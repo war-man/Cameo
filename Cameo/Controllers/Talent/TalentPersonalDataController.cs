@@ -7,14 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
-    [Authorize]
-    public class TalentController : BaseController
+    public class TalentPersonalDataController : BaseController
     {
         private readonly ITalentService TalentService;
         private readonly ISocialAreaService SocialAreaService;
         private IAttachmentService AttachmentService;
 
-        public TalentController(
+        public TalentPersonalDataController(
             ITalentService talentService,
             ISocialAreaService socialAreaService,
             IAttachmentService attachmentService)
@@ -24,7 +23,7 @@ namespace Cameo.Controllers
             AttachmentService = attachmentService;
         }
 
-        public IActionResult PersonalData()
+        public IActionResult Index()
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetByUserID(curUser.ID);
@@ -40,7 +39,7 @@ namespace Cameo.Controllers
         }
 
         [HttpPost]
-        public IActionResult PersonalData(TalentEditVM modelVM)
+        public IActionResult Index(TalentEditVM modelVM)
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetByID(modelVM.ID);
