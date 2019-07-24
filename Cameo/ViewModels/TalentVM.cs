@@ -7,6 +7,35 @@ using System.Threading.Tasks;
 
 namespace Cameo.ViewModels
 {
+    public class TalentShortInfoVM
+    {
+        public int ID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+            set { }
+        }
+        public AttachmentDetailsVM Avatar { get; set; }
+
+        public TalentShortInfoVM() { }
+
+        public TalentShortInfoVM(Talent model)
+        {
+            if (model == null)
+                return;
+
+            this.ID = model.ID;
+            this.FirstName = model.FirstName;
+            this.LastName = model.LastName;
+            this.Avatar = new AttachmentDetailsVM(model.Avatar);
+        }
+    }
+
     public class TalentEditVM : PersonEditVM
     {
         [Display(Name = "Количество подписчиков")]

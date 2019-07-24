@@ -1,12 +1,15 @@
 ﻿using System;
+using Cameo.Common;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Cameo.Controllers
 {
+    [Authorize]
     public class TalentPersonalDataController : BaseController
     {
         private readonly ITalentService TalentService;

@@ -21,6 +21,7 @@ using Hangfire.SqlServer;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using Cameo.Common;
+using Microsoft.Extensions.Options;
 
 namespace Cameo
 {
@@ -90,8 +91,14 @@ namespace Cameo
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, IBackgroundJobClient backgroundJobs*/)
+        public void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env,
+            IOptions<AppConfiguration> appSettings
+            /*, IBackgroundJobClient backgroundJobs*/)
         {
+            AppData.Configuration = appSettings.Value;
+
             if (env.IsDevelopment())
             {
                 //app.UseStatusCodePagesWithRedirects("~/Error/error?code={0}");

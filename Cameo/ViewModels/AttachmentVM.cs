@@ -1,4 +1,6 @@
-﻿using Cameo.Models;
+﻿using Cameo.Common;
+using Cameo.Models;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,16 @@ namespace Cameo.ViewModels
         public AttachmentDetailsVM(Attachment model)
         {
             if (model == null)
+            {
+                this.Url = AppData.Configuration.NophotoUrl;
                 return;
+            }
 
             this.ID = model.ID;
-            this.Url = model.Path + "/" + model.GUID + "." + model.Extension;
+            if (this.ID > 0)
+                this.Url = model.Path + "/" + model.GUID + "." + model.Extension;
+            else
+                this.Url = AppData.Configuration.NophotoUrl;
         }
     }
 }

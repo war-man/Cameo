@@ -30,14 +30,14 @@
             <input asp-for="ID" type="hidden" />
             <div class="form-group">
                 <input type="hidden" id="fileID" name="fileID" />
-                @{
+                @*@{
                     string photoUrl = AppSettings.Value.NophotoUrl;
                     if (Model.Avatar != null && Model.Avatar.ID > 0)
                     {
                         photoUrl = Model.Avatar.Url;
                     }
-                }
-                <img id="imgContainer" src="@photoUrl" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
+                }*@
+                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
                 <img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />
                 <input type='file' id="imgInp" />
             </div>

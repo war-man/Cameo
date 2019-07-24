@@ -18,6 +18,11 @@ namespace Cameo.Common
         
     }*/
 
+    public static class AppData
+    {
+        public static AppConfiguration Configuration;
+    }
+
     public class AppConfiguration
     {
         public string UploadsPath { get; set; }

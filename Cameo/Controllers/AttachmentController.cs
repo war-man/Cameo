@@ -21,18 +21,15 @@ namespace Cameo.Controllers
 
         private readonly ICustomerService CustomerService;
         private readonly ITalentService TalentService;
-        private AppConfiguration AppSettings;
 
         public AttachmentController(
             IAttachmentService attachmentService,
-            IOptions<AppConfiguration> appSettings,
             ICustomerService customerService,
             ITalentService talentService)
         {
             AttachmentService = attachmentService;
             CustomerService = customerService;
             TalentService = talentService;
-            AppSettings = appSettings.Value;
         }
 
         [HttpPost]
@@ -47,14 +44,14 @@ namespace Cameo.Controllers
                 {
                     GUID = Guid.NewGuid().ToString(),
                     Filename = file.FileName,
-                    Path = AppSettings.UploadsPath,
+                    Path = AppData.Configuration.UploadsPath,
                     Extension = file.FileName.Split('.')[1],
                     Size = file.Length,
                     MimeType = file.ContentType
                 };
 
-                string rootPath = AppSettings.ApplicationRootPath;
-                string path = AppSettings.UploadsPath + "/" + attachment.GUID + "." + file.FileName.Split('.')[1];
+                string rootPath = AppData.Configuration.ApplicationRootPath;
+                string path = AppData.Configuration.UploadsPath + "/" + attachment.GUID + "." + file.FileName.Split('.')[1];
                 path = path.Replace('/', '\\');
 
                 string target = rootPath + path;
