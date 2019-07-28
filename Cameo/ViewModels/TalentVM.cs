@@ -36,6 +36,21 @@ namespace Cameo.ViewModels
         }
     }
 
+    public class TalentDetailsVM : TalentShortInfoVM
+    {
+        public TalentDetailsVM() { }
+
+
+
+        public TalentDetailsVM(Talent model) : base(model)
+        {
+            if (model == null)
+                return;
+            
+
+        }
+    }
+
     public class TalentEditVM : PersonEditVM
     {
         [Display(Name = "Количество подписчиков")]

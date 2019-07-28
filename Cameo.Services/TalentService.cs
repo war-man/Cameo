@@ -18,5 +18,11 @@ namespace Cameo.Services
         {
             return GetAsIQueryable().FirstOrDefault(m => m.UserID == userID);
         }
+
+        public Talent GetAvailableByID(int id)
+        {
+            var model = GetActiveByID(id);
+            return model.IsAvailable ? model : null;
+        }
     }
 }

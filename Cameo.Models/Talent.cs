@@ -16,5 +16,7 @@ namespace Cameo.Models
         public string CreditCardNumber { get; set; }
         [StringLength(5)]
         public string CreditCardExpire { get; set; }
+
+        public bool IsAvailable { get; set; }
     }
 }

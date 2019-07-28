@@ -11,7 +11,7 @@ namespace Cameo.Controllers
     public class TalentController : BaseController
     {
         private readonly ITalentService TalentService;
-        private IAttachmentService AttachmentService;
+        private readonly IAttachmentService AttachmentService;
 
         public TalentController(
             ITalentService talentService,

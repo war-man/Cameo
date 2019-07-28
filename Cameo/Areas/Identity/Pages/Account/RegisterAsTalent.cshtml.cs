@@ -121,7 +121,8 @@ namespace Cameo.Areas.Identity.Pages.Account
                         LastName = Input.LastName,
                         SocialAreaID = Input.SocialAreaID,
                         SocialAreaHandle = Input.SocialAreaHandle,
-                        UserID = user.Id
+                        UserID = user.Id,
+                        IsAvailable = true
                     };
                     TalentService.Add(talent, user.Id);
 
