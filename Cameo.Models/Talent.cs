@@ -18,5 +18,11 @@ namespace Cameo.Models
         public string CreditCardExpire { get; set; }
 
         public bool IsAvailable { get; set; }
+
+        [InverseProperty("Talent")]
+        public virtual ICollection<TalentProject> Projects { get; set; }
+
+        //public virtual ICollection<TalentCategory> Categories { get; set; }
+        public ICollection<TalentCategory> TalentCategories { get; set; }
     }
 }

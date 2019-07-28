@@ -14,10 +14,21 @@ namespace Cameo.Data
         {
         }
 
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<School>().HasMany(s => s.Students).WithOne(s => s.School);
-        }*/
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<TalentCategory>()
+                .HasKey(bc => new { bc.TalentId, bc.CategoryId });
+            modelBuilder.Entity<TalentCategory>()
+                .HasOne(bc => bc.Talent)
+                .WithMany(b => b.TalentCategories)
+                .HasForeignKey(bc => bc.TalentId);
+            modelBuilder.Entity<TalentCategory>()
+                .HasOne(bc => bc.Category)
+                .WithMany(c => c.TalentCategories)
+                .HasForeignKey(bc => bc.CategoryId);
+        }
 
         public virtual void Commit()
         {
@@ -29,5 +40,7 @@ namespace Cameo.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Talent> Talents { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<TalentProject> TalentProjects { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

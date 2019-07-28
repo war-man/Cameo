@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190728094106_TalentCategoryModelAdded2")]
+    partial class TalentCategoryModelAdded2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,33 +120,6 @@ namespace Cameo.Data.Migrations
                     b.HasIndex("ModifiedBy");
 
                     b.ToTable("Attachments");
-                });
-
-            modelBuilder.Entity("Cameo.Models.Category", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("ModifiedBy");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("ModifiedBy");
-
-                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Cameo.Models.Customer", b =>
@@ -313,15 +288,33 @@ namespace Cameo.Data.Migrations
 
             modelBuilder.Entity("Cameo.Models.TalentCategory", b =>
                 {
-                    b.Property<int>("TalentId");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoryId");
+                    b.Property<string>("CreatedBy");
 
-                    b.HasKey("TalentId", "CategoryId");
+                    b.Property<DateTime>("DateCreated");
 
-                    b.HasIndex("CategoryId");
+                    b.Property<DateTime>("DateModified");
 
-                    b.ToTable("TalentCategory");
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("TalentID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ModifiedBy");
+
+                    b.HasIndex("TalentID");
+
+                    b.ToTable("TalentCategories");
                 });
 
             modelBuilder.Entity("Cameo.Models.TalentProject", b =>
@@ -477,17 +470,6 @@ namespace Cameo.Data.Migrations
                         .HasForeignKey("ModifiedBy");
                 });
 
-            modelBuilder.Entity("Cameo.Models.Category", b =>
-                {
-                    b.HasOne("Cameo.Models.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
-
-                    b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
-                        .WithMany()
-                        .HasForeignKey("ModifiedBy");
-                });
-
             modelBuilder.Entity("Cameo.Models.Customer", b =>
                 {
                     b.HasOne("Cameo.Models.Attachment", "Avatar")
@@ -562,15 +544,17 @@ namespace Cameo.Data.Migrations
 
             modelBuilder.Entity("Cameo.Models.TalentCategory", b =>
                 {
-                    b.HasOne("Cameo.Models.Category", "Category")
-                        .WithMany("TalentCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Cameo.Models.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy");
 
-                    b.HasOne("Cameo.Models.Talent", "Talent")
-                        .WithMany("TalentCategories")
-                        .HasForeignKey("TalentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
+                        .WithMany()
+                        .HasForeignKey("ModifiedBy");
+
+                    b.HasOne("Cameo.Models.Talent")
+                        .WithMany("Categories")
+                        .HasForeignKey("TalentID");
                 });
 
             modelBuilder.Entity("Cameo.Models.TalentProject", b =>

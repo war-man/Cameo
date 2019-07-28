@@ -6,11 +6,13 @@ using System.Text;
 
 namespace Cameo.Models
 {
-    public class BaseModelDropdownable : BaseModel
+    public class TalentProject : BaseModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        new public int ID { get; set; }
+        [ForeignKey("Talent")]
+        public int TalentID { get; set; }
+        public virtual Talent Talent { get; set; }
+
+        [StringLength(256)]
         public string Name { get; set; }
     }
 }
