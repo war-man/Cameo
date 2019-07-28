@@ -51,14 +51,14 @@ namespace Cameo.ViewModels
         }
     }
 
-    public class TalentEditVM : PersonEditVM
+    public class TalentPersonalDataEditVM : PersonEditVM
     {
         [Display(Name = "Количество подписчиков")]
         public string FollowersCount { get; set; }
 
-        public TalentEditVM() { }
+        public TalentPersonalDataEditVM() { }
 
-        public TalentEditVM(Talent model) : base(model)
+        public TalentPersonalDataEditVM(Talent model) : base(model)
         {
             if (model == null)
                 return;
@@ -108,6 +108,29 @@ namespace Cameo.ViewModels
             this.ID = model.ID;
             this.CreditCardNumber = model.CreditCardNumber;
             this.CreditCardExpire = model.CreditCardExpire;
+        }
+    }
+
+    public class TalentProjectsAndCategoriesEditVM
+    {
+        public int TalentID { get; set; }
+
+        public List<int> Categories { get; set; }
+
+        //TO-DO: add list of projects property
+
+        public TalentProjectsAndCategoriesEditVM() { }
+
+        public TalentProjectsAndCategoriesEditVM(Talent model)
+        {
+            if (model == null)
+                return;
+
+            this.TalentID = model.ID;
+            this.Categories = model.TalentCategories?
+                .Select(m => m.CategoryId)
+                .ToList()
+                ?? new List<int>();
         }
     }
 }

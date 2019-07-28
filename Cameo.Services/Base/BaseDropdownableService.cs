@@ -19,13 +19,13 @@ namespace Cameo.Services
             this._unitOfWork = unitOfWork;
         }
 
-        public List<SelectListItem> GetAsSelectList(int selected = 0)
+        public List<SelectListItem> GetAsSelectList(int[] selected = null)
         {
             return GetAllActive().Select(item => new SelectListItem()
             {
                 Value = item.ID.ToString(),
                 Text = item.Name.ToString(),
-                Selected = (item.ID == selected) ? true : false
+                Selected = (selected != null && selected.Contains(item.ID)) ? true : false
             }).ToList();
         }
     }

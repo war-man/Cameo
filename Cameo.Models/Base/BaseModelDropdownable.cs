@@ -11,6 +11,8 @@ namespace Cameo.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         new public int ID { get; set; }
+
+        [Required]
         public string Name { get; set; }
     }
 }

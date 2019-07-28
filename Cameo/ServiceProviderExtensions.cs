@@ -26,6 +26,7 @@ namespace Cameo
             services.AddTransient<ITalentRepository, TalentRepository>();
             services.AddTransient<ISocialAreaRepository, SocialAreaRepository>();
             services.AddTransient<IAttachmentRepository, AttachmentRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -38,6 +39,7 @@ namespace Cameo
             services.AddTransient<ISocialAreaService, SocialAreaService>();
             services.AddTransient<IAttachmentService, AttachmentService>();
             services.AddTransient<IFileManagement, FileManagement>();
+            services.AddTransient<ICategoryService, CategoryService>();
         }
     }
 }

@@ -35,14 +35,14 @@ namespace Cameo.Controllers
             if (model.AvatarID.HasValue)
                 model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
-            TalentEditVM modelVM = new TalentEditVM(model);
+            TalentPersonalDataEditVM modelVM = new TalentPersonalDataEditVM(model);
             ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
 
             return View(modelVM);
         }
 
         [HttpPost]
-        public IActionResult Index(TalentEditVM modelVM)
+        public IActionResult Index(TalentPersonalDataEditVM modelVM)
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetByID(modelVM.ID);

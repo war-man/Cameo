@@ -18,6 +18,12 @@
     <a href="~/TalentPersonalData" class="list-group-item @active">Персональные данные</a>
     @{
         active = "";
+        if (controller.Equals("TalentProjectsAndCategories"))
+        { active = "active"; }
+    }
+    <a href="~/TalentProjectsAndCategories" class="list-group-item @active">Мои проекты. Категории</a>
+    @{
+        active = "";
         if (controller.Equals("TalentPrice"))
         { active = "active"; }
     }

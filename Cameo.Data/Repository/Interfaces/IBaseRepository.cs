@@ -24,6 +24,8 @@ namespace Cameo.Data.Repository.Interfaces
         IEnumerable<T> GetAll();
         IQueryable<T> GetAsIQueryable();
 
+        IQueryable<T> GetWithRelatedDataAsIQueryable();
+
         #region potentially unused methods
         //IEnumerable<T> GetMany(Expression<Func<T, bool>> where);
         //void Delete(Expression<Func<T, bool>> where);

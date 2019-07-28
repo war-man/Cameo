@@ -29,6 +29,7 @@ namespace Cameo.Services.Interfaces
         IEnumerable<T> GetAllActive();
         IQueryable<T> GetAsIQueryable();
         IQueryable<T> GetActiveAsIQueryable();
+        IQueryable<T> GetWithRelatedDataAsIQueryable();
     }
 
     //public interface IBaseService<T> where T : class

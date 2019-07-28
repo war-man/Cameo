@@ -9,6 +9,6 @@ namespace Cameo.Services.Interfaces
     public interface IBaseDropdownableService<T> : IBaseCRUDService<T> 
         where T : BaseModelDropdownable
     {
-        List<SelectListItem> GetAsSelectList(int selected = 0);
+        List<SelectListItem> GetAsSelectList(int[] selected = null);
     }
 }

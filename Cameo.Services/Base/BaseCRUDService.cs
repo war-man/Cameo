@@ -131,6 +131,11 @@ namespace Cameo.Services
             return _repository.GetAsIQueryable();
         }
 
+        public virtual IQueryable<T> GetWithRelatedDataAsIQueryable()
+        {
+            return _repository.GetWithRelatedDataAsIQueryable();
+        }
+
         public virtual IQueryable<T> GetActiveAsIQueryable()
         {
             return GetAsIQueryable().Where(m => !m.IsDeleted);

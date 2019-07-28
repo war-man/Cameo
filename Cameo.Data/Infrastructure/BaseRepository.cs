@@ -30,6 +30,10 @@ namespace Cameo.Data.Infrastructure
             get { return _dataContext ?? (_dataContext = DatabaseFactory.Get()); }
         }
 
+        public DbSet<T> DbSet
+        {
+            get { return _dbset; }
+        }
 
         public virtual void Add(T entity)
         {
@@ -90,6 +94,11 @@ namespace Cameo.Data.Infrastructure
         }
 
         public virtual IQueryable<T> GetAsIQueryable()
+        {
+            return _dataContext.Set<T>();
+        }
+
+        public virtual IQueryable<T> GetWithRelatedDataAsIQueryable()
         {
             return _dataContext.Set<T>();
         }

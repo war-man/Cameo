@@ -14,9 +14,14 @@ namespace Cameo.Services
         {
         }
 
+        override public Talent GetByID(int id)
+        {
+            return GetWithRelatedDataAsIQueryable().FirstOrDefault(m => m.ID == id);
+        }
+
         public Talent GetByUserID(string userID)
         {
-            return GetAsIQueryable().FirstOrDefault(m => m.UserID == userID);
+            return GetWithRelatedDataAsIQueryable().FirstOrDefault(m => m.UserID == userID);
         }
 
         public Talent GetAvailableByID(int id)
