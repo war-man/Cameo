@@ -37,7 +37,7 @@ namespace Cameo.Controllers
 
             ViewData["categories"] = CategoryService.GetAsSelectList(modelVM.Categories.ToArray());
 
-            return View();
+            return View(modelVM);
         }
 
         [HttpPost]
@@ -53,6 +53,7 @@ namespace Cameo.Controllers
                 try
                 {
                     UpdateTalentCategories(model, modelVM.Categories);
+                    UpdateTalentProjects(model, modelVM.Projects);
 
                     TalentService.Update(model, curUser.ID);
 
@@ -78,16 +79,20 @@ namespace Cameo.Controllers
 
         private void UpdateTalentCategories(Talent model, List<int> selectedCategories)
         {
-            model.TalentCategories = new List<TalentCategory>();
+            if (selectedCategories == null || selectedCategories.Count == 0)
+            {
+                model.TalentCategories = new List<TalentCategory>();
+                return;
+            }
 
-            List<int> talentCategories = model.TalentCategories
-                .Select(m => m.CategoryId)
-                .ToList();
+            HashSet<int> selectedCategoriesHS = new HashSet<int>(selectedCategories);
+            HashSet<int> talentCategories = new HashSet<int>(model.TalentCategories
+                .Select(m => m.CategoryId));
 
             List<Category> allCategories = CategoryService.GetAllActive().ToList();
             foreach (var category in allCategories)
             {
-                if (selectedCategories.Contains(category.ID))
+                if (selectedCategoriesHS.Contains(category.ID))
                 {
                     if (!talentCategories.Contains(category.ID))
                     {
@@ -106,6 +111,28 @@ namespace Cameo.Controllers
                         if  (cat != null)
                             model.TalentCategories.Remove(cat);
                     }
+                }
+            }
+        }
+
+        private void UpdateTalentProjects(Talent model, List<string> projectNames)
+        {
+            if (projectNames == null || projectNames.Count == 0)
+            {
+                model.Projects = new List<TalentProject>();
+                return;
+            }
+
+            model.Projects.Clear();
+
+            foreach (var name in projectNames)
+            {
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    model.Projects.Add(new TalentProject()
+                    {
+                        Name = name
+                    });
                 }
             }
         }

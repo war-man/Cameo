@@ -115,9 +115,11 @@ namespace Cameo.ViewModels
     {
         public int TalentID { get; set; }
 
-        public List<int> Categories { get; set; }
+        [Display(Name = "Мои проекты")]
+        public List<string> Projects { get; set; }
 
-        //TO-DO: add list of projects property
+        [Display(Name = "Категории")]
+        public List<int> Categories { get; set; }
 
         public TalentProjectsAndCategoriesEditVM() { }
 
@@ -127,10 +129,18 @@ namespace Cameo.ViewModels
                 return;
 
             this.TalentID = model.ID;
+
+            this.Projects = model.Projects?
+                .Select(m => m.Name)
+                .ToList()
+                ?? new List<string>();
+
             this.Categories = model.TalentCategories?
                 .Select(m => m.CategoryId)
                 .ToList()
                 ?? new List<int>();
+
+            
         }
     }
 }
