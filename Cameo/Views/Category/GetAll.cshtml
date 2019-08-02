@@ -1,0 +1,16 @@
+﻿@model List<Cameo.ViewModels.CategoryVM>
+
+<ul class="list-group">
+    @foreach (var item in Model)
+    {
+        string active = "";
+        if (item.Selected)
+        {
+            active = "active";
+        }
+
+        <li data-category="@item.ID" class="list-group-item @active" onclick="ReloadTalents(@item.ID);" style="cursor: pointer;">
+            @item.Name <span class="badge">@item.NumberOfItems</span>
+        </li>
+    }
+</ul>

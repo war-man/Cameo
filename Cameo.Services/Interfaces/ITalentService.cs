@@ -1,4 +1,6 @@
 ﻿using Cameo.Models;
+using Cameo.Models.Enums;
+using System.Collections.Generic;
 
 namespace Cameo.Services.Interfaces
 {
@@ -6,5 +8,7 @@ namespace Cameo.Services.Interfaces
     {
         Talent GetByUserID(string userID);
         Talent GetAvailableByID(int id);
+
+        IEnumerable<Talent> Search(int categoryID, SortTypeEnum sort);
     }
 }

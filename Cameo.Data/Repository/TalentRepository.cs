@@ -16,7 +16,7 @@ namespace Cameo.Data.Repository
         override public IQueryable<Talent> GetWithRelatedDataAsIQueryable()
         {
             return DbSet
-                .Include(m => m.TalentCategories)
+                .Include(m => m.TalentCategories).ThenInclude(m => m.Category)
                 .Include(m => m.Projects);
         }
     }

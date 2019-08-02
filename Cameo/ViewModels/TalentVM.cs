@@ -36,11 +36,35 @@ namespace Cameo.ViewModels
         }
     }
 
+    public class TalentGridViewItem : TalentShortInfoVM
+    {
+        public int Price { get; set; }
+        public List<CategoryShortInfoVM> Categories { get; set; }
+        public List<TalentProjectShortInfoVM> Projects { get; set; }
+
+        public TalentGridViewItem() { }
+
+        public TalentGridViewItem(Talent model) : base(model)
+        {
+            if (model == null)
+                return;
+
+            this.Price = model.Price;
+            this.Categories = model.TalentCategories
+                .Select(m => new CategoryShortInfoVM(m.Category))
+                .ToList();
+
+            this.Projects = model.Projects
+                .Select(m => new TalentProjectShortInfoVM(m))
+                .ToList();
+        }
+    }
+
     public class TalentDetailsVM : TalentShortInfoVM
     {
+        public bool IsAvailable { get; set; }
+
         public TalentDetailsVM() { }
-
-
 
         public TalentDetailsVM(Talent model) : base(model)
         {

@@ -19,6 +19,8 @@ namespace Cameo.Models
 
         public bool IsAvailable { get; set; }
 
+        public int ResponseTime { get; set; }
+
         [InverseProperty("Talent")]
         public virtual ICollection<TalentProject> Projects { get; set; }
 
