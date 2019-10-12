@@ -103,6 +103,11 @@ namespace Cameo.Data.Infrastructure
             return _dataContext.Set<T>();
         }
 
+        public virtual T GetActiveSingleDetailsWithRelatedDataByID(int id)
+        {
+            return _dataContext.Set<T>().FirstOrDefault();
+        }
+
         #region potentially unused methods
         //public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where)
         //{

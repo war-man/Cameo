@@ -8,7 +8,9 @@ namespace Cameo.Services.Interfaces
     {
         Talent GetByUserID(string userID);
         Talent GetAvailableByID(int id);
+        Talent GetActiveSingleDetailsWithRelatedDataByID(int id);
 
         IEnumerable<Talent> Search(int categoryID, SortTypeEnum sort);
+        IEnumerable<Talent> GetRelated(Talent model);
     }
 }

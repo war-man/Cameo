@@ -26,6 +26,49 @@ namespace Cameo.Controllers
 
         public IActionResult Index()
         {
+            PrepareViewDataItems();
+            return View(new FilterVM());
+        }
+
+        public IActionResult Details(int id)
+        {
+            Talent model = TalentService.GetActiveByID(id);
+            if (model == null)
+                return NotFound();
+
+            TalentDetailsVM modelVM = new TalentDetailsVM(model);
+
+            return View(modelVM);
+        }
+
+        public IActionResult GetRelated(int id)
+        {
+            Talent model = TalentService.GetActiveByID(id);
+            if (model == null)
+                return NotFound();
+
+            List<TalentGridViewItem> relatedTalents = TalentService.GetRelated(model)
+                .Select(m => new TalentGridViewItem(m))
+                .ToList();
+
+            return PartialView(relatedTalents);
+        }
+
+        //[HttpPost]
+        public IActionResult Get(int categoryID, SortTypeEnum sort)
+        {
+            var talents = TalentService.Search(categoryID, sort)
+                .Select(m => new TalentGridViewItem(m))
+                .ToList();
+
+            ViewData["categories"] = CategoryService.GetAllActive()
+                .ToDictionary(m => m.ID, m => m.Name);
+
+            return PartialView(talents);
+        }
+
+        private void PrepareViewDataItems()
+        {
             List<SelectListItem> sortingItems = new List<SelectListItem>()
             {
                 new SelectListItem()
@@ -57,21 +100,6 @@ namespace Cameo.Controllers
             };
 
             ViewData["sortingItems"] = sortingItems;
-
-            return View(new FilterVM());
-        }
-
-        //[HttpPost]
-        public IActionResult Get(int categoryID, SortTypeEnum sort)
-        {
-            var talents = TalentService.Search(categoryID, sort)
-                .Select(m => new TalentGridViewItem(m))
-                .ToList();
-
-            ViewData["categories"] = CategoryService.GetAllActive()
-                .ToDictionary(m => m.ID, m => m.Name);
-
-            return PartialView(talents);
         }
     }
 }

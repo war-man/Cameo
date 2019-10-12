@@ -60,9 +60,10 @@ namespace Cameo.ViewModels
         }
     }
 
-    public class TalentDetailsVM : TalentShortInfoVM
+    public class TalentDetailsVM : TalentGridViewItem
     {
         public bool IsAvailable { get; set; }
+        public string Bio { get; set; }
 
         public TalentDetailsVM() { }
 
@@ -70,8 +71,9 @@ namespace Cameo.ViewModels
         {
             if (model == null)
                 return;
-            
 
+            this.IsAvailable = model.IsAvailable;
+            this.Bio = model.Bio;
         }
     }
 
@@ -163,8 +165,6 @@ namespace Cameo.ViewModels
                 .Select(m => m.CategoryId)
                 .ToList()
                 ?? new List<int>();
-
-            
         }
     }
 }

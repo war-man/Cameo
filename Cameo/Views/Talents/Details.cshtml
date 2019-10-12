@@ -1,0 +1,64 @@
+﻿@model Cameo.ViewModels.TalentDetailsVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row" id="profileBox">
+    <div class="col-lg-offset-1 col-lg-3 col-sm-4" id="photoBox">
+        <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
+    </div>
+    <div class="col-lg-7 col-sm-8" id="infoBox">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>@Model.FullName</h1>
+                <br />
+                <div class="projectsBox">
+                    @{
+                        string projects = "";
+                        foreach (var item in Model.Projects)
+                        {
+                            projects += item.Name + ", ";
+                        }
+                        if (projects.Length > 0)
+                        {
+                            projects = projects.Substring(0, projects.Length - 2);
+                        }
+
+                        @projects
+                    }
+                </div>
+                <br />
+                <div class="bioBox">
+                    <span>@Model.Bio</span>
+                </div>
+                <br />
+                <div class="bookBox">
+                    <button type="button" class="btn btn-lg btn-primary">Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )</button>
+                </div>
+                <br />
+                <div class="bookBox">
+                    <span>Обычно отвечает в течение 2х дней</span>
+                </div>
+                <br />
+                <div class="reviewsBox">
+                    <span><strong>292 Отзывов</strong></span>
+                </div>
+                <br />
+                <div class="categoriesBox">
+                    @{
+                        foreach (var item in Model.Categories)
+                        {
+                            <span><a class="btn btn-default" href="/Talents?cat=@item.ID">@item.Name</a></span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" id="latestBox">
+
+</div>

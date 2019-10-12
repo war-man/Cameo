@@ -25,6 +25,7 @@ namespace Cameo.Data.Repository.Interfaces
         IQueryable<T> GetAsIQueryable();
 
         IQueryable<T> GetWithRelatedDataAsIQueryable();
+        T GetActiveSingleDetailsWithRelatedDataByID(int id);
 
         #region potentially unused methods
         //IEnumerable<T> GetMany(Expression<Func<T, bool>> where);
