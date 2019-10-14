@@ -18,17 +18,20 @@ namespace Cameo.Controllers
         private readonly IVideoRequestTypeService VideoRequestTypeService;
         private readonly ITalentService TalentService;
         private readonly ICustomerService CustomerService;
+        private readonly IHangfireService HangfireService;
 
         public VideoRequestController(
             IVideoRequestService videoRequestService,
             IVideoRequestTypeService videoRequestTypeService,
             ITalentService talentService,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            IHangfireService hangfireService)
         {
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
             TalentService = talentService;
             CustomerService = customerService;
+            HangfireService = hangfireService;
         }
 
         public IActionResult Index()
@@ -45,7 +48,6 @@ namespace Cameo.Controllers
             {
                 if (ValidateFromProperty(modelVM.From, modelVM.TypeID))
                 {
-                    
                     if (talent != null)
                     {
                         if (talent.Price == modelVM.Price)
@@ -56,7 +58,13 @@ namespace Cameo.Controllers
                                 var curCustomer = CustomerService.GetByUserID(curUser.ID);
 
                                 VideoRequest model = modelVM.ToModel(curCustomer);
+
+                                //1. create model and send email
                                 VideoRequestService.Add(model, curUser.ID);
+
+                                //2. create hangfire job
+                                model.AnswerJobID = HangfireService.CreateJobForVideoRequestAnswer(model);
+                                VideoRequestService.Update(model, curUser.ID);
 
                                 ViewBag.success = true;
                             }

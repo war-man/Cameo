@@ -9,18 +9,29 @@ namespace Cameo.Services
 {
     public class HangfireService : IHangfireService
     {
-        //private readonly IBackgroundJobClient BackgroundJobs;
+        private readonly IVideoRequestService VideoRequestService;
 
-        public HangfireService()
+        public HangfireService(IVideoRequestService videoRequestService)
         {
-
+            VideoRequestService = videoRequestService;
         }
 
         public string CreateJobForVideoRequestAnswer(VideoRequest request)
         {
-            string jobID = BackgroundJob.Schedule(() => FinishAuction(auction.ID), new DateTimeOffset(auction.Deadline));
+            string jobID = BackgroundJob.Schedule(() => AnswerDeadlineReaches(request.ID), new DateTimeOffset(request.AnswerDeadline));
 
             throw new NotImplementedException();
+        }
+
+        public void AnswerDeadlineReaches(int videoRequestID)
+        {
+            try
+            {
+                VideoRequest request = VideoRequestService.GetByID(videoRequestID);
+                VideoRequestService.AnswerDeadlineReaches(request);
+            }
+            catch (Exception ex)
+            { }
         }
 
         public void CancelJob(string jobID)

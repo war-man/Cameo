@@ -34,8 +34,9 @@ namespace Cameo.Models
         public int TalentID { get; set; }
         public Talent Talent { get; set; }
 
-        //[Required]
-        //public DateTime AnswerDeadline { get; set; }
-        public DateTime? AnswerDeadline { get; set; }
+        [Required]
+        public DateTime AnswerDeadline { get; set; }
+        
+        public string AnswerJobID { get; set; }
     }
 }

@@ -20,8 +20,8 @@ namespace Cameo.Services
 
         new public void Add(VideoRequest entity, string creatorID)
         {
-            //entity.AnswerDeadline = DateTime.Now.AddDays(2);
-
+            //entity.AnswerDeadline = DateTime.Now.AddMinutes(2880); //2 days
+            entity.AnswerDeadline = DateTime.Now.AddMinutes(60);
             base.Add(entity, creatorID);
 
             //send email to Customer and Talent
@@ -36,9 +36,11 @@ namespace Cameo.Services
             string bodyTalent = "This is email for Talent";
 
             EmailService.Send(toTalent, subjectTalent, bodyTalent);
+        }
 
-            //deadline for request is set using hangfire (2 days)
-
+        public void AnswerDeadlineReaches(VideoRequest model)
+        {
+            //succeeded
         }
     }
 }
