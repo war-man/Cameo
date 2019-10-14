@@ -16,7 +16,7 @@ namespace Cameo.Services
 
         public Customer GetByUserID(string userID)
         {
-            return GetAsIQueryable().FirstOrDefault(m => m.UserID == userID);
+            return GetAsIQueryable().FirstOrDefault(m => m.UserID == userID && !m.IsDeleted);
         }
     }
 }

@@ -15,13 +15,16 @@ namespace Cameo.Controllers
     {
         private readonly ITalentService TalentService;
         private readonly ICategoryService CategoryService;
+        private readonly IVideoRequestTypeService VideoRequestTypeService;
 
         public TalentsController(
             ITalentService talentService,
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            IVideoRequestTypeService videoRequestTypeService)
         {
             TalentService = talentService;
             CategoryService = categoryService;
+            VideoRequestTypeService = videoRequestTypeService;
         }
 
         public IActionResult Index()
@@ -37,6 +40,8 @@ namespace Cameo.Controllers
                 return NotFound();
 
             TalentDetailsVM modelVM = new TalentDetailsVM(model);
+
+            ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
             return View(modelVM);
         }

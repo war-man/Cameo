@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191013063752_IsPublicRanamedToIsNotPublic")]
+    partial class IsPublicRanamedToIsNotPublic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -368,7 +370,7 @@ namespace Cameo.Data.Migrations
 
                     b.Property<string>("CreatedBy");
 
-                    b.Property<int>("CustomerID");
+                    b.Property<int>("CustomertID");
 
                     b.Property<DateTime>("DateCreated");
 
@@ -401,7 +403,7 @@ namespace Cameo.Data.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("CustomertID");
 
                     b.HasIndex("ModifiedBy");
 
@@ -681,7 +683,7 @@ namespace Cameo.Data.Migrations
 
                     b.HasOne("Cameo.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerID")
+                        .HasForeignKey("CustomertID")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Cameo.Models.ApplicationUser", "Modifier")

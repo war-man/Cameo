@@ -23,7 +23,7 @@ namespace Cameo.Services
 
         public Talent GetByUserID(string userID)
         {
-            return GetWithRelatedDataAsIQueryable().FirstOrDefault(m => m.UserID == userID);
+            return GetWithRelatedDataAsIQueryable().FirstOrDefault(m => m.UserID == userID && !m.IsDeleted);
         }
 
         public Talent GetAvailableByID(int id)

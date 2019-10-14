@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191013043226_VideoRequestPartialCreateAdded")]
+    partial class VideoRequestPartialCreateAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -368,23 +370,21 @@ namespace Cameo.Data.Migrations
 
                     b.Property<string>("CreatedBy");
 
-                    b.Property<int>("CustomerID");
+                    b.Property<int>("CustomertID");
 
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<DateTime>("DateModified");
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
                     b.Property<string>("From");
 
-                    b.Property<string>("Instructions")
-                        .IsRequired();
+                    b.Property<string>("Instructions");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<bool>("IsNotPublic");
+                    b.Property<bool>("IsPublic");
 
                     b.Property<string>("ModifiedBy");
 
@@ -392,52 +392,19 @@ namespace Cameo.Data.Migrations
 
                     b.Property<int>("TalentID");
 
-                    b.Property<string>("To")
-                        .IsRequired();
-
-                    b.Property<int>("TypeID");
+                    b.Property<string>("To");
 
                     b.HasKey("ID");
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("CustomertID");
 
                     b.HasIndex("ModifiedBy");
 
                     b.HasIndex("TalentID");
 
-                    b.HasIndex("TypeID");
-
                     b.ToTable("VideoRequests");
-                });
-
-            modelBuilder.Entity("Cameo.Models.VideoRequestType", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("DateCreated");
-
-                    b.Property<DateTime>("DateModified");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("ModifiedBy");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("ModifiedBy");
-
-                    b.ToTable("VideoRequestTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -681,7 +648,7 @@ namespace Cameo.Data.Migrations
 
                     b.HasOne("Cameo.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerID")
+                        .HasForeignKey("CustomertID")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
@@ -692,22 +659,6 @@ namespace Cameo.Data.Migrations
                         .WithMany()
                         .HasForeignKey("TalentID")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Cameo.Models.VideoRequestType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Cameo.Models.VideoRequestType", b =>
-                {
-                    b.HasOne("Cameo.Models.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy");
-
-                    b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
-                        .WithMany()
-                        .HasForeignKey("ModifiedBy");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

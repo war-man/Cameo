@@ -22,7 +22,7 @@ namespace Cameo.Controllers
 
         public IActionResult Index()
         {
-            _backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
+            //_backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
             return View();
         }
 

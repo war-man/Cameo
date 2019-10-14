@@ -1,7 +1,9 @@
 ﻿@model Cameo.ViewModels.TalentDetailsVM
+@using Cameo.Models.Enums
 
 @{
     ViewData["Title"] = "Details";
+    ViewData["talent"] = Model;
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -36,7 +38,16 @@
                 </div>
                 <br />
                 <div class="bookBox">
-                    <button type="button" class="btn btn-lg btn-primary">Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )</button>
+                    @if (Model.IsAvailable)
+                    {
+                        <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#bookModal">
+                            Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" disabled="disabled">Временно недоступен</button>
+                    }
                 </div>
                 <br />
                 <div class="bookBox">
@@ -51,7 +62,9 @@
                     @{
                         foreach (var item in Model.Categories)
                         {
-                            <span><a class="btn btn-default" href="/Talents?cat=@item.ID">@item.Name</a></span>
+                            <span>
+                                <a class="btn btn-default" href="/Talents?cat=@item.ID">@item.Name</a>
+                            </span>
                         }
                     }
                 </div>
@@ -62,3 +75,38 @@
 <div class="row" id="latestBox">
 
 </div>
+
+<!-- Modal -->
+<div id="bookModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Заказать видео от @Model.FullName</h4>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" asp-controller="VideoRequest"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-mode="replace"
+                      data-ajax-update="#ajaxresult">
+                    <div id="ajaxresult">
+                        @await Html.PartialAsync(
+                            "/Views/VideoRequest/_Create.cshtml",
+                            new Cameo.ViewModels.VideoRequestCreateVM() { TypeID = (int)VideoRequestTypeEnum.someone })
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,90 @@
+﻿@model Cameo.ViewModels.VideoRequestCreateVM
+@using Cameo.Models.Enums
+@{
+    var videoRequestTypes = ViewData["videoRequestTypes"] as List<SelectListItem>;
+    var talent = ViewData["talent"] as Cameo.ViewModels.TalentDetailsVM;
+    int myselfID = (int)VideoRequestTypeEnum.myself;
+}
+
+@if (ViewBag.success != null)
+{
+    <div class="alert alert-success">
+        Ваш запрос успешно отправлен!
+    </div>
+}
+else
+{
+    @*<div asp-validation-summary="All" class="text-danger"></div>*@
+    <input asp-for="TalentID" type="hidden" value="@talent.ID" />
+    <input asp-for="Price" type="hidden" value="@talent.Price" />
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label asp-for="TypeID"></label>
+                @foreach (var item in videoRequestTypes)
+                {
+                    <div class="radio">
+                        <label>@Html.RadioButtonFor(model => model.TypeID, item.Value, new { onclick = "OnTypeChanges(this.value)" }) @item.Text</label>
+                    </div>
+                }
+                <span asp-validation-for="TypeID" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label asp-for="To"></label>
+                <input type="text" class="form-control" asp-for="To" placeholder="Carissa">
+                <span asp-validation-for="To" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6" id="fromBox">
+            <div class="form-group">
+                <label asp-for="From"></label>
+                <input type="text" class="form-control" asp-for="From" placeholder="Shia">
+                <span asp-validation-for="From" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label asp-for="Instructions"></label>
+                <textarea asp-for="Instructions" class="form-control"></textarea>
+                <span asp-validation-for="Instructions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input type="text" class="form-control" asp-for="Email" placeholder="Email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsNotPublic"><input type="checkbox" asp-for="IsNotPublic"> Не делать это видео публичным на Cameo </label>
+                <span asp-validation-for="IsNotPublic" class="text-danger"></span>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-lg btn-block btn-primary"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Оплату Вы произведете, как только видео будет готово">
+                Заказать прямо сейчас за @talent.Price.ToString("### ### ###") сум
+            </button>
+        </div>
+    </div>
+
+    <script>
+        var myselfID = Number("@myselfID");
+
+        function OnTypeChanges(typeID) {
+            if (typeID == myselfID)
+                $("#fromBox").hide();
+            else
+                $("#fromBox").show();
+        }
+    </script>
+}

@@ -43,5 +43,6 @@ namespace Cameo.Data
         public DbSet<TalentProject> TalentProjects { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<VideoRequest> VideoRequests { get; set; }
+        public DbSet<VideoRequestType> VideoRequestTypes { get; set; }
     }
 }

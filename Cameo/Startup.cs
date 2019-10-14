@@ -150,6 +150,8 @@ namespace Cameo
                 IsReadOnlyFunc = (DashboardContext context) => true
             });
 
+            //both variants work
+            //BackgroundJob.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
             //backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
         }
     }

@@ -27,6 +27,8 @@ namespace Cameo
             services.AddTransient<ISocialAreaRepository, SocialAreaRepository>();
             services.AddTransient<IAttachmentRepository, AttachmentRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IVideoRequestRepository, VideoRequestRepository>();
+            services.AddTransient<IVideoRequestTypeRepository, VideoRequestTypeRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -40,6 +42,8 @@ namespace Cameo
             services.AddTransient<IAttachmentService, AttachmentService>();
             services.AddTransient<IFileManagement, FileManagement>();
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IVideoRequestService, VideoRequestService>();
+            services.AddTransient<IVideoRequestTypeService, VideoRequestTypeService>();
         }
     }
 }

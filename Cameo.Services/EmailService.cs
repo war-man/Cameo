@@ -10,7 +10,7 @@ namespace Cameo.Services
     {
         public bool Send(string to, string subject, string body, List<Tuple<Stream, string>> attachments = null, string cc = null)
         {
-            bool result = false;
+            bool result = true;
 
             //to = "rmasimov@wiut.uz";
 
