@@ -16,19 +16,19 @@ namespace Cameo.Services
             VideoRequestService = videoRequestService;
         }
 
-        public string CreateJobForVideoRequestAnswer(VideoRequest request)
+        public string CreateJobForVideoRequestAnswer(VideoRequest request, string userID)
         {
-            string jobID = BackgroundJob.Schedule(() => AnswerDeadlineReaches(request.ID), new DateTimeOffset(request.AnswerDeadline));
+            string jobID = BackgroundJob.Schedule(() => AnswerDeadlineReaches(request.ID, userID), new DateTimeOffset(request.AnswerDeadline));
 
-            throw new NotImplementedException();
+            return jobID;
         }
 
-        public void AnswerDeadlineReaches(int videoRequestID)
+        public void AnswerDeadlineReaches(int videoRequestID, string userID)
         {
             try
             {
                 VideoRequest request = VideoRequestService.GetByID(videoRequestID);
-                VideoRequestService.AnswerDeadlineReaches(request);
+                VideoRequestService.AnswerDeadlineReaches(request, userID);
             }
             catch (Exception ex)
             { }

@@ -7,32 +7,33 @@ using System.Threading.Tasks;
 
 namespace Cameo.ViewModels
 {
-    public class TalentShortInfoVM
+    public class TalentShortInfoVM : PersonShortInfoVM
     {
-        public int ID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-            set { }
-        }
-        public AttachmentDetailsVM Avatar { get; set; }
+        //public int ID { get; set; }
+        //public string FirstName { get; set; }
+        //public string LastName { get; set; }
+        //public string FullName
+        //{
+        //    get
+        //    {
+        //        return FirstName + " " + LastName;
+        //    }
+        //    set { }
+        //}
+        //public AttachmentDetailsVM Avatar { get; set; }
 
         public TalentShortInfoVM() { }
 
         public TalentShortInfoVM(Talent model)
+            : base (model)
         {
             if (model == null)
                 return;
 
-            this.ID = model.ID;
-            this.FirstName = model.FirstName;
-            this.LastName = model.LastName;
-            this.Avatar = new AttachmentDetailsVM(model.Avatar);
+            //this.ID = model.ID;
+            //this.FirstName = model.FirstName;
+            //this.LastName = model.LastName;
+            //this.Avatar = new AttachmentDetailsVM(model.Avatar);
         }
     }
 

@@ -28,7 +28,7 @@ namespace Cameo.Controllers
         {
             var curUser = accountUtil.GetCurrentUser(User);
             if (curUser.Type == UserTypesEnum.customer.ToString())
-                return RedirectToAction("PersonalData", "Customer");
+                return RedirectToAction("Index", "Customer");
             else
                 return RedirectToAction("Index", "Talent");
         }

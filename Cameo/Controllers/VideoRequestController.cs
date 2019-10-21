@@ -63,7 +63,7 @@ namespace Cameo.Controllers
                                 VideoRequestService.Add(model, curUser.ID);
 
                                 //2. create hangfire job
-                                model.AnswerJobID = HangfireService.CreateJobForVideoRequestAnswer(model);
+                                model.AnswerJobID = HangfireService.CreateJobForVideoRequestAnswer(model, curUser.ID);
                                 VideoRequestService.Update(model, curUser.ID);
 
                                 ViewBag.success = true;

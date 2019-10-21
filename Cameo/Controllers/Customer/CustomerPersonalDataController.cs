@@ -2,19 +2,17 @@
 using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
-    [Authorize]
-    public class CustomerController : BaseController
+    public class CustomerPersonalDataController : BaseController
     {
         private readonly ICustomerService CustomerService;
         private readonly ISocialAreaService SocialAreaService;
-        private IAttachmentService AttachmentService;
+        private readonly IAttachmentService AttachmentService;
 
-        public CustomerController(
+        public CustomerPersonalDataController(
             ICustomerService customerService,
             ISocialAreaService socialAreaService,
             IAttachmentService attachmentService)
@@ -24,7 +22,7 @@ namespace Cameo.Controllers
             AttachmentService = attachmentService;
         }
 
-        public IActionResult PersonalData()
+        public IActionResult Index()
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Customer model = CustomerService.GetByUserID(curUser.ID);
@@ -40,7 +38,7 @@ namespace Cameo.Controllers
         }
 
         [HttpPost]
-        public IActionResult PersonalData(CustomerEditVM modelVM)
+        public IActionResult Index(CustomerEditVM modelVM)
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Customer model = CustomerService.GetByID(modelVM.ID);

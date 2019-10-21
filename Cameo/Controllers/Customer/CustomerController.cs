@@ -8,42 +8,32 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cameo.Controllers
 {
     [Authorize]
-    public class TalentController : BaseController
+    public class CustomerController : BaseController
     {
-        private readonly ITalentService TalentService;
+        private readonly ICustomerService CustomerService;
         private readonly IAttachmentService AttachmentService;
 
-        public TalentController(
-            ITalentService talentService,
+        public CustomerController(
+            ICustomerService customerService,
             IAttachmentService attachmentService)
         {
-            TalentService = talentService;
+            CustomerService = customerService;
             AttachmentService = attachmentService;
         }
 
         public IActionResult Index()
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
+            Customer model = CustomerService.GetByUserID(curUser.ID);
             if (model == null)
                 return NotFound();
 
             if (model.AvatarID.HasValue)
                 model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
-            TalentShortInfoVM modelVM = new TalentShortInfoVM(model);
+            CustomerShortInfoVM modelVM = new CustomerShortInfoVM(model);
 
             return View(modelVM);
-        }
-
-        public string GetPrice()
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
-            if (model == null)
-                return "0";
-            else
-                return model.Price.ToString();
         }
     }
 }

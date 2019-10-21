@@ -48,4 +48,33 @@ namespace Cameo.ViewModels
             this.Avatar = new AttachmentDetailsVM(model.Avatar);
         }
     }
+
+    public class PersonShortInfoVM
+    {
+        public int ID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+            set { }
+        }
+        public AttachmentDetailsVM Avatar { get; set; }
+
+        public PersonShortInfoVM() { }
+
+        public PersonShortInfoVM(Person model)
+        {
+            if (model == null)
+                return;
+
+            this.ID = model.ID;
+            this.FirstName = model.FirstName;
+            this.LastName = model.LastName;
+            this.Avatar = new AttachmentDetailsVM(model.Avatar);
+        }
+    }
 }

@@ -17,4 +17,16 @@ namespace Cameo.ViewModels
                 return;
         }
     }
+
+    public class CustomerShortInfoVM : PersonShortInfoVM
+    {
+        public CustomerShortInfoVM() { }
+
+        public CustomerShortInfoVM(Customer model)
+            : base(model)
+        {
+            if (model == null)
+                return;
+        }
+    }
 }

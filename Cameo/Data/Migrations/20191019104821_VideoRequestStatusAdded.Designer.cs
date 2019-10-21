@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191019104821_VideoRequestStatusAdded")]
+    partial class VideoRequestStatusAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -378,22 +380,6 @@ namespace Cameo.Data.Migrations
 
                     b.Property<DateTime>("DateModified");
 
-                    b.Property<DateTime?>("DateRequestAccepted");
-
-                    b.Property<DateTime?>("DateRequestCanceledByCustomer");
-
-                    b.Property<DateTime?>("DateRequestCanceledByTalent");
-
-                    b.Property<DateTime?>("DateRequestExpired");
-
-                    b.Property<DateTime?>("DateVideoCanceledByCustomer");
-
-                    b.Property<DateTime?>("DateVideoCanceledByTalent");
-
-                    b.Property<DateTime?>("DateVideoCompleted");
-
-                    b.Property<DateTime?>("DateVideoExpired");
-
                     b.Property<string>("Email")
                         .IsRequired();
 
@@ -410,7 +396,7 @@ namespace Cameo.Data.Migrations
 
                     b.Property<int>("Price");
 
-                    b.Property<int>("RequestStatusID");
+                    b.Property<int?>("RequestStatusID");
 
                     b.Property<int>("TalentID");
 
@@ -742,8 +728,7 @@ namespace Cameo.Data.Migrations
 
                     b.HasOne("Cameo.Models.VideoRequestStatus", "RequestStatus")
                         .WithMany()
-                        .HasForeignKey("RequestStatusID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RequestStatusID");
 
                     b.HasOne("Cameo.Models.Talent", "Talent")
                         .WithMany()

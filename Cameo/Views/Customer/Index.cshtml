@@ -1,0 +1,32 @@
+﻿@model Cameo.ViewModels.CustomerShortInfoVM
+
+@{
+    ViewData["Title"] = "Моя страница";
+}
+
+<br />
+<div class="row">
+    <div class="col-sm-3">
+        <partial name="_CustomerSidebar" />
+    </div>
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-sm-4">
+                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
+            </div>
+            <div class="col-sm-8">
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>5</p>
+                        <p>Запросов</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

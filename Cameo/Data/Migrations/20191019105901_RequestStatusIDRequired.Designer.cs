@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191019105901_RequestStatusIDRequired")]
+    partial class RequestStatusIDRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -368,7 +370,8 @@ namespace Cameo.Data.Migrations
 
                     b.Property<DateTime>("AnswerDeadline");
 
-                    b.Property<string>("AnswerJobID");
+                    b.Property<string>("AnswerJobID")
+                        .IsRequired();
 
                     b.Property<string>("CreatedBy");
 
@@ -377,22 +380,6 @@ namespace Cameo.Data.Migrations
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<DateTime>("DateModified");
-
-                    b.Property<DateTime?>("DateRequestAccepted");
-
-                    b.Property<DateTime?>("DateRequestCanceledByCustomer");
-
-                    b.Property<DateTime?>("DateRequestCanceledByTalent");
-
-                    b.Property<DateTime?>("DateRequestExpired");
-
-                    b.Property<DateTime?>("DateVideoCanceledByCustomer");
-
-                    b.Property<DateTime?>("DateVideoCanceledByTalent");
-
-                    b.Property<DateTime?>("DateVideoCompleted");
-
-                    b.Property<DateTime?>("DateVideoExpired");
 
                     b.Property<string>("Email")
                         .IsRequired();

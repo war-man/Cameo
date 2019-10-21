@@ -1,0 +1,25 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["Controller"];
+    string active = "";
+}
+
+<div class="list-group">
+    @{
+        active = "";
+        if (controller.Equals("Customer"))
+        { active = "active"; }
+    }
+    <a href="~/Customer" class="list-group-item @active">Моя страница</a>
+    @{
+        active = "";
+        if (controller.Equals("CustomerPersonalData"))
+        { active = "active"; }
+    }
+    <a href="~/CustomerPersonalData" class="list-group-item @active">Персональные данные</a>
+    @{
+        active = "";
+        if (controller.Equals("CustomerVideoRequest"))
+        { active = "active"; }
+    }
+    <a href="~/CustomerVideoRequest" class="list-group-item @active">Запросы на видео <span class="badge">2</span></a>
+</div>
