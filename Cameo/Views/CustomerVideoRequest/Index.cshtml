@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<table id="videoRequests" class="table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>toFrom</th>
+            <th>talent</th>
+            <th>dateCreated</th>
+            <th>status</th>
+        </tr>
+    </thead>
+</table>
+
+<link href="~/lib/DataTables/datatables.css" rel="stylesheet" />
+
+@section Scripts {
+    <script src="~/lib/DataTables/datatables.js"></script>
+    <script>
+        $(document).ready(function () {
+            //alert("asdf");
+            $("#videoRequests").DataTable({
+                searching: false,
+                ordering: false,
+                processing: true,
+                serverSide: true,
+                //lengthChange: false,
+                //language: {
+                //    infoFiltered: " ",
+                //    info: " ",
+                //    processing: Resource.Loading + "...",
+                //    zeroRecords: Resource.ZeroRecords,
+                //    infoEmpty: "empty",
+                //    paginate: {
+                //        previous: " ",
+                //        next: " ",
+                //    }
+                //},
+                ajax:
+                {
+                    url: "/VideoRequestSearch/",
+                    type: "POST",
+                    //contentType: "application/json",
+                    //datatype: "json",
+                    //data: function (d) {
+                    //    d.modelVM = searchVM;
+                    //    return JSON.stringify(d);
+                    //},
+                    //complete: function () {
+                    //    StartLoadingImagesAsync();
+                    //}
+                },
+                columns: [
+                    { "data": "id", "name": "id", "autoWidth": true },
+                    { "data": "toFrom", "name": "toFrom", "autoWidth": true },
+                    { "data": "talent", "title": "Talent", "name": "talent", "autoWidth": true },
+                    { "data": "dateCreated", "name": "dateCreated", "autoWidth": true },
+                    { "data": "status", "name": "status", "autoWidth": true }
+                    //{ "data": "PostalCode", "name": "PostalCode", "autoWidth": true },
+                    //{ "data": "Country", "name": "Country", "autoWidth": true },
+                    //{ "data": "Phone", "name": "Phone", "title": "Status", "autoWidth": true },
+                    //{
+                    //    "render": function (data, type, full, meta) { return '<a class="btn btn-info" href="/Demo/Edit/' + full.CustomerID + '">Edit</a>'; }
+                    //},
+                    //{
+                    //    data: null, render: function (data, type, row) {
+                    //        return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.CustomerID + "'); >Delete</a>";
+                    //    }
+                    //},
+
+                ]  
+            });
+        });
+    </script>
+}

@@ -57,4 +57,29 @@ namespace Cameo.ViewModels
             return model;
         }
     }
+
+    public class VideoRequestListItemVM
+    {
+        public int ID { get; set; }
+        public string ToFrom { get; set; }
+        public string Talent { get; set; }
+        public string DateCreated { get; set; }
+        public string Status { get; set; }
+
+        public VideoRequestListItemVM() { }
+
+        public VideoRequestListItemVM(VideoRequest model)
+        {
+            if (model == null)
+                return;
+
+            ID = model.ID;
+            ToFrom = "Для " + model.To + " От " + model.From;
+            //Talent = model.Talent.FirstName + " " + model.Talent.LastName;
+            Talent = "Del Piero";
+            DateCreated = model.DateCreated.ToShortDateString() + " " + model.DateCreated.ToShortTimeString();
+            //Status = model.RequestStatus.Name;
+            Status = "Завершено";
+        }
+    }
 }
