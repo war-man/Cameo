@@ -1,4 +1,5 @@
 ﻿using Cameo.Models;
+using Cameo.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -61,25 +62,64 @@ namespace Cameo.ViewModels
     public class VideoRequestListItemVM
     {
         public int ID { get; set; }
-        public string ToFrom { get; set; }
-        public string Talent { get; set; }
+        public string To { get; set; }
+        public string From { get; set; }
+        public string Instructions { get; set; } //show this in tooltip
+        public int Price { get; set; }
+        public CustomerShortInfoVM Customer { get; set; }
+        public TalentShortInfoVM Talent { get; set; }
+
+        //if curUser.type == customer then person = talent
+        //else person = customer
+        public PersonShortInfoVM Person { get; set; }
+
+        public BaseDropdownableDetailsVM Type { get; set; }
         public string DateCreated { get; set; }
-        public string Status { get; set; }
+        public string Deadline { get; set; }
+        public string DeadlineText { get; set; }
+        public BaseDropdownableDetailsVM Status { get; set; }
 
         public VideoRequestListItemVM() { }
 
-        public VideoRequestListItemVM(VideoRequest model)
+        public VideoRequestListItemVM(VideoRequest model, string curUserType)
         {
             if (model == null)
                 return;
 
             ID = model.ID;
-            ToFrom = "Для " + model.To + " От " + model.From;
-            //Talent = model.Talent.FirstName + " " + model.Talent.LastName;
-            Talent = "Del Piero";
+            To = model.To;
+            From = model.From;
+            Instructions = model.Instructions;
+            Customer = new CustomerShortInfoVM(model.Customer);
+            Talent = new TalentShortInfoVM(model.Talent);
+
+            if (curUserType == UserTypesEnum.customer.ToString())
+                Person = Talent;
+            else
+                Person = Customer;
+            
+            Type = new BaseDropdownableDetailsVM(model.Type);
             DateCreated = model.DateCreated.ToShortDateString() + " " + model.DateCreated.ToShortTimeString();
-            //Status = model.RequestStatus.Name;
-            Status = "Завершено";
+
+            DateTime now = DateTime.Now;
+            DateTime deadlineTmp = DateTime.MinValue;
+            if (model.RequestAnswerDeadline >= now)
+            {
+                deadlineTmp = model.RequestAnswerDeadline;
+                DeadlineText = "Ожидает ответа";
+            }
+            else if (model.VideoDeadline.HasValue && model.VideoDeadline.Value >= now)
+            {
+                deadlineTmp = model.VideoDeadline.Value;
+                DeadlineText = "Ожидает видео";
+            }
+            else
+                DeadlineText = "Завершено";
+
+            if (deadlineTmp != DateTime.MinValue)
+                Deadline = deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString();
+            
+            Status = new BaseDropdownableDetailsVM(model.RequestStatus);
         }
     }
 }

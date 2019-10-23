@@ -47,7 +47,7 @@ namespace Cameo.Controllers
             );
 
             data = dataIQueryable
-                .Select(m => new VideoRequestListItemVM(m))
+                .Select(m => new VideoRequestListItemVM(m, curUser.Type))
                 .ToList();
 
             return Json(new

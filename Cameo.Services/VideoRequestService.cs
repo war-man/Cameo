@@ -24,7 +24,7 @@ namespace Cameo.Services
             entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
 
             //entity.AnswerDeadline = DateTime.Now.AddMinutes(2880); //2 days
-            entity.AnswerDeadline = DateTime.Now.AddMinutes(2);
+            entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2);
             base.Add(entity, creatorID);
 
             //send email to Customer and Talent

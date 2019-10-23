@@ -18,7 +18,7 @@ namespace Cameo.Services
 
         public string CreateJobForVideoRequestAnswer(VideoRequest request, string userID)
         {
-            string jobID = BackgroundJob.Schedule(() => AnswerDeadlineReaches(request.ID, userID), new DateTimeOffset(request.AnswerDeadline));
+            string jobID = BackgroundJob.Schedule(() => AnswerDeadlineReaches(request.ID, userID), new DateTimeOffset(request.RequestAnswerDeadline));
 
             return jobID;
         }

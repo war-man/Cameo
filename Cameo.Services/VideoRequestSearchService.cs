@@ -42,7 +42,7 @@ namespace Cameo.Services
             
             try
             {
-                IQueryable<VideoRequest> videoRequests = GetActiveAsIQueryable();
+                IQueryable<VideoRequest> videoRequests = GetWithRelatedDataAsIQueryable();
 
                 recordsTotal = videoRequests.Count();
                 recordsFiltered = videoRequests.Count();

@@ -1,6 +1,8 @@
 ﻿using Cameo.Data.Infrastructure;
 using Cameo.Data.Repository.Interfaces;
 using Cameo.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Cameo.Data.Repository
 {
@@ -9,6 +11,15 @@ namespace Cameo.Data.Repository
         public VideoRequestRepository(IDatabaseFactory databaseFactory)
             : base(databaseFactory)
         {
+        }
+
+        override public IQueryable<VideoRequest> GetWithRelatedDataAsIQueryable()
+        {
+            return DbSet
+                .Include(m => m.Customer)
+                .Include(m => m.Talent)
+                .Include(m => m.Type)
+                .Include(m => m.RequestStatus);
         }
     }
 }

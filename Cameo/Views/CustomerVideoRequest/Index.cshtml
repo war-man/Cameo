@@ -1,21 +1,31 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Мои запросы на видео";
 }
 
-<h2>Index</h2>
-
-<table id="videoRequests" class="table">
-    <thead>
-        <tr>
-            <th>id</th>
-            <th>toFrom</th>
-            <th>talent</th>
-            <th>dateCreated</th>
-            <th>status</th>
-        </tr>
-    </thead>
-</table>
+<br />
+<div class="row">
+    <div class="col-sm-3">
+        <partial name="_CustomerSidebar" />
+    </div>
+    <div class="col-sm-9">
+        <h2>@ViewData["Title"]</h2>
+        <hr />
+        <table id="videoRequests" class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>toFrom</th>
+                    <th>person</th>
+                    <th>statusId</th>
+                    <th>statusName</th>
+                    <th>dateCreated</th>
+                    <th>deadline</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 
 <link href="~/lib/DataTables/datatables.css" rel="stylesheet" />
 
@@ -55,15 +65,54 @@
                     //    StartLoadingImagesAsync();
                     //}
                 },
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                    },
+                    {
+                        "targets": [3],
+                        "visible": false
+                    }
+                ],
                 columns: [
                     { "data": "id", "name": "id", "autoWidth": true },
-                    { "data": "toFrom", "name": "toFrom", "autoWidth": true },
-                    { "data": "talent", "title": "Talent", "name": "talent", "autoWidth": true },
-                    { "data": "dateCreated", "name": "dateCreated", "autoWidth": true },
-                    { "data": "status", "name": "status", "autoWidth": true }
-                    //{ "data": "PostalCode", "name": "PostalCode", "autoWidth": true },
-                    //{ "data": "Country", "name": "Country", "autoWidth": true },
-                    //{ "data": "Phone", "name": "Phone", "title": "Status", "autoWidth": true },
+                    {
+                        "data": null, "name": "toFrom", "title": "Для кого", "autoWidth": true,
+                        "render": function (data, type, full, meta) {
+                            var html = "";
+                            html += "<p>Для " + full.to;
+                            if (full.from != null)
+                                html += " от " + full.from;
+                            html += ' <i class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="' + full.instructions + '"></i>';
+                            html += "</p>";
+
+                            return html;
+                        }
+                    },
+                    {
+                        "data": "person", /*"name": "person",*/ "title": "Пользователь", "autoWidth": true,
+                        "render": function (data, type, full, meta) {
+                            var html ='<img src="' + full.person.avatar.url + '" alt="Avatar" class="img-circle img-thumbnail" height="50" width="50" />'
+                            html += "<br /><a href='/Customer/Details/" + full.person.id + "'>";
+                            html += full.person.fullName;
+                            html += "</a>";
+                            return html;
+                        }
+                    },
+                    {
+                        //"data": "statusId", "name": "statusId", "autoWidth": true,
+                        "render": function (data, type, full, meta) { return '' + full.status.id + ''; }
+                    },
+                    {
+                        "data": null, "name": "statusName", "title": "Статус", "autoWidth": true,
+                        "render": function (data, type, full, meta) { return '' + full.status.name + ''; }
+                    },
+                    { "data": "dateCreated", "name": "dateCreated", "title": "Дата создания", "autoWidth": true },
+                    {
+                        "data": null, /*"name": "deadline", */"title": "Дедлайн", "autoWidth": true,
+                        "render": function (data, type, full, meta) { return '' + full.deadlineText + ''; }
+                    }
                     //{
                     //    "render": function (data, type, full, meta) { return '<a class="btn btn-info" href="/Demo/Edit/' + full.CustomerID + '">Edit</a>'; }
                     //},
@@ -73,7 +122,14 @@
                     //    }
                     //},
 
-                ]  
+                ],
+                fnDrawCallback: function (oSettings) {
+                    //alert("fff");
+                    //console.log(oSettings.json.recordsFiltered);//do whatever with your custom response
+                    //$("#recordsFiltered").text(oSettings.json.recordsFiltered);
+
+                    $('[data-toggle="tooltip"]').tooltip(); 
+                }
             });
         });
     </script>
