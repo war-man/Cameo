@@ -89,17 +89,15 @@
                 "render": function (data, type, full, meta) {
                     var html = "";
 
-                    if (full.status.id == VideoRequestStatusEnum.waitingForResponse)
+                    if (full.status.id == VideoRequestStatusEnum.waitingForResponse
+                        || full.status.id == VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo)
+                    {
                         html += "<a href='#' class='btn btn-danger btn-sm' onclick='CancelRequest(" + full.id + ");' >Отменить</a>";
+                    }
 
                     return html;
                 }
-            },
-            //{
-            //    "render": function (data, type, full, meta) { return '<a class="btn btn-info" href="/Demo/Edit/' + full.CustomerID + '">Edit</a>'; }
-            //},
-            
-
+            }
         ],
         fnDrawCallback: function (oSettings) {
             //alert("fff");
@@ -117,7 +115,7 @@ function CancelRequest(requestID)
 
     $.ajax({
         type: "POST",
-        url: "/VideoRequest/CancelRequest?id=" + requestID,
+        url: "/VideoRequest/Cancel?id=" + requestID,
         //data: {
         //    id: requestID
         //},

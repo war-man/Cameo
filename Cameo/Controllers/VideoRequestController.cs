@@ -108,10 +108,29 @@ namespace Cameo.Controllers
         #endregion
 
         [HttpPost]
-        public IActionResult CancelRequest(int id)
+        public IActionResult Cancel(int id)
         {
+            try
+            {
+                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+                if (model == null)
+                    return NotFound();
 
-            return Ok(id);
+                var curUser = accountUtil.GetCurrentUser(User);
+
+                //cancel request/video
+                VideoRequestService.Cancel(model, curUser.ID, curUser.Type);
+
+                //cancel hangfire jobs
+                HangfireService.CancelJob(model.RequestAnswerJobID);
+                HangfireService.CancelJob(model.VideoJobID);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

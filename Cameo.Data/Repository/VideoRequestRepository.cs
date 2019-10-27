@@ -21,5 +21,13 @@ namespace Cameo.Data.Repository
                 .Include(m => m.Type)
                 .Include(m => m.RequestStatus);
         }
+
+        override public VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id)
+        {
+            return DbSet
+                .Include(m => m.Customer)
+                .Include(m => m.Talent)
+                .FirstOrDefault(m => m.ID == id && !m.IsDeleted);
+        }
     }
 }
