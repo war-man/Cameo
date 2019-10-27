@@ -91,6 +91,7 @@ namespace Cameo.Controllers
             return PartialView("_Create", modelVM);
         }
 
+        #region Remote validation while creating
         public IActionResult ValidateFrom(string from, int typeID)
         {
             return Json(ValidateFromProperty(from, typeID));
@@ -103,6 +104,14 @@ namespace Cameo.Controllers
                 result = false;
 
             return result;
+        }
+        #endregion
+
+        [HttpPost]
+        public IActionResult CancelRequest(int id)
+        {
+
+            return Ok(id);
         }
     }
 }

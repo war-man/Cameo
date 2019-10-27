@@ -22,7 +22,7 @@ namespace Cameo.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         //private readonly IEmailSender _emailSender;
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerService CustomerService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -35,7 +35,7 @@ namespace Cameo.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             //_emailSender = emailSender;
-            _customerService = customerService;
+            CustomerService = customerService;
         }
 
         [BindProperty]
@@ -101,8 +101,7 @@ namespace Cameo.Areas.Identity.Pages.Account
                         LastName = Input.LastName,
                         UserID = user.Id
                     };
-                    _customerService.Add(customer, user.Id);
-                    
+                    CustomerService.Add(customer, user.Id);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(

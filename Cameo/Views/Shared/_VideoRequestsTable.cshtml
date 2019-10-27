@@ -1,0 +1,28 @@
+﻿@using Cameo.Models.Enums
+
+<table id="videoRequests" class="table table-condensed">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>toFrom</th>
+            <th>person</th>
+            <th>statusId</th>
+            <th>statusName</th>
+            <th>dateCreated</th>
+            <th>deadline</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    var userType = "@ViewData["userType"]";
+    var talentType = "@UserTypesEnum.talent.ToString()";
+    var customerType = "@UserTypesEnum.customer.ToString()";
+
+    var VideoRequestStatusEnum = {
+        waitingForResponse: "@((int)VideoRequestStatusEnum.waitingForResponse)",
+        requestCanceledByCustomer: "@((int)VideoRequestStatusEnum.requestCanceledByCustomer)",
+    };
+</script>
+<script src="~/js/VideoRequestDatatable.js"></script>

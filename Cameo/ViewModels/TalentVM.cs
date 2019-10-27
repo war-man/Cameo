@@ -99,6 +99,7 @@ namespace Cameo.ViewModels
         public int ID { get; set; }
 
         [Display(Name = "Цена Вашего видео")]
+        [Range(1000, int.MaxValue)]
         public int Price { get; set; }
 
         public TalentPriceEditVM() { }

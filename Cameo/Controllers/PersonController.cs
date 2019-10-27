@@ -27,10 +27,10 @@ namespace Cameo.Controllers
         public IActionResult Index()
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            if (curUser.Type == UserTypesEnum.customer.ToString())
-                return RedirectToAction("Index", "Customer");
-            else
+            if (curUser.Type == UserTypesEnum.talent.ToString())
                 return RedirectToAction("Index", "Talent");
+            else
+                return RedirectToAction("Index", "Customer");
         }
 
         public IActionResult Book(int id)

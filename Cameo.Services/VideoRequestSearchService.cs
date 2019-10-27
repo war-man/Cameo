@@ -42,7 +42,19 @@ namespace Cameo.Services
             
             try
             {
+                int personID = 0;
                 IQueryable<VideoRequest> videoRequests = GetWithRelatedDataAsIQueryable();
+                if (userType == UserTypesEnum.talent.ToString())
+                {
+                    personID = TalentService.GetByUserID(userID)?.ID ?? 0;
+                    videoRequests = videoRequests.Where(m => m.TalentID == personID);
+                }
+                else
+                {
+                    personID = CustomerService.GetByUserID(userID)?.ID ?? 0;
+                    videoRequests = videoRequests.Where(m => m.CustomerID == personID);
+                }
+                    
 
                 recordsTotal = videoRequests.Count();
                 recordsFiltered = videoRequests.Count();

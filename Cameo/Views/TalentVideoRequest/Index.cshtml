@@ -1,0 +1,28 @@
+﻿@using Cameo.Models.Enums
+
+@{
+    ViewData["Title"] = "Запросы на видео";
+}
+
+<br />
+<div class="row">
+    <div class="col-sm-3">
+        <partial name="_TalentSidebar" />
+    </div>
+    <div class="col-sm-9">
+        <h2>@ViewData["Title"]</h2>
+        <hr />
+        <partial name="_VideoRequestsTable" />
+    </div>
+</div>
+
+<link href="~/lib/DataTables/datatables.css" rel="stylesheet" />
+
+@section Scripts {
+    <script src="~/lib/DataTables/datatables.js"></script>
+    <script>
+        $(document).ready(function () {
+            initVideoRequestsDatatable();
+        });
+    </script>
+}
