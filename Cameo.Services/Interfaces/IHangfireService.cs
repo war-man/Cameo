@@ -7,7 +7,8 @@ namespace Cameo.Services.Interfaces
 {
     public interface IHangfireService
     {
-        string CreateJobForVideoRequestAnswer(VideoRequest request, string userID);
+        string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID);
+        string CreateJobForVideoRequestVideoDeadline(VideoRequest request, string userID);
         void CancelJob(string jobID);
     }
 }

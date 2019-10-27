@@ -27,8 +27,11 @@ namespace Cameo.Services
         new public void Add(VideoRequest entity, string creatorID)
         {
             entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
+#if DEBUG
+            entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2);
+#else
             entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2880); //2 days
-            //entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2);
+#endif
             base.Add(entity, creatorID);
 
             //send email to Customer and Talent
@@ -110,11 +113,34 @@ namespace Cameo.Services
 
         public void Accept(VideoRequest model, string userID)
         {
-            
+            if (!RequestBelongsToUser(model, userID))
+                throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
+
+            if (!TalentsCardPeriodIsValid(model.Talent))
+                throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
+
+            if (RequestIsWaitingForResponse(model))
+            {
+                model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
+                model.DateRequestAccepted = DateTime.Now;
+
+#if DEBUG
+                model.VideoDeadline = DateTime.Now.AddMinutes(2);
+#else
+                model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
+#endif
+            }
+            else
+                throw new Exception("Текущий статус запроса не позволяет отменить его");
+
+            Update(model, userID);
         }
 
         public void VideoDeadlineReaches(VideoRequest model, string userID)
         {
+            //0. TO-DO: apply some disciplinary penalty that negatively affects talent's reputation
+            //for example, вычесть с его счета долю компании.
+
             //1. set status = expired
             model.DateVideoExpired = DateTime.Now;
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoExpired;

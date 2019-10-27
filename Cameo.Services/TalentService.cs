@@ -74,9 +74,10 @@ namespace Cameo.Services
         private IQueryable<Talent> GetWithRelatedDataForSearchAsIQueryable()
         {
             return GetWithRelatedDataAsIQueryable()
-                .Where(m => m.IsAvailable 
-                /*&& m.IsConfirmed*/ 
-                && !m.IsDeleted);
+                .Where(m => m.IsAvailable
+                    /*&& m.IsConfirmed*/
+                    && !m.IsDeleted);
+                    //&& m.CreditCardExpire);
         }
 
         public IEnumerable<Talent> GetRelated(Talent model)

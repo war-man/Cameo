@@ -89,10 +89,13 @@
                 "render": function (data, type, full, meta) {
                     var html = "";
 
-                    if (full.status.id == VideoRequestStatusEnum.waitingForResponse
-                        || full.status.id == VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo)
+                    if (full.cancelBtnIsAvailable == true)
                     {
                         html += "<a href='#' class='btn btn-danger btn-sm' onclick='CancelRequest(" + full.id + ");' >Отменить</a>";
+                    }
+
+                    if (full.acceptBtnIsAvailable == true) {
+                        html += "<a href='#' class='btn btn-success btn-sm' onclick='AcceptRequest(" + full.id + ");' >Принять</a>";
                     }
 
                     return html;
@@ -116,6 +119,35 @@ function CancelRequest(requestID)
     $.ajax({
         type: "POST",
         url: "/VideoRequest/Cancel?id=" + requestID,
+        //data: {
+        //    id: requestID
+        //},
+        //data: JSON.stringify({
+        //    id: requestID
+        //}),
+        contentType: "application/json; charset=utf-8",
+        //dataType: "json",
+        success: function (data) {
+            //alert("success");
+            //alert(data);
+        },
+        error: function (data) {
+            //alert("error");
+            console.log(data);
+        },
+        complete: function (data) {
+            //alert("completed");
+            $(".btn").removeAttr("disabled");
+        }
+    });
+}
+
+function AcceptRequest(requestID) {
+    $(".btn").attr("disabled", "disabled");
+
+    $.ajax({
+        type: "POST",
+        url: "/VideoRequest/Accept?id=" + requestID,
         //data: {
         //    id: requestID
         //},

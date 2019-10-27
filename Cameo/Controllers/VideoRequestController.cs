@@ -62,8 +62,8 @@ namespace Cameo.Controllers
                                 //1. create model and send email
                                 VideoRequestService.Add(model, curUser.ID);
 
-                                //2. create hangfire job
-                                model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswer(model, curUser.ID);
+                                //2. create hangfire RequestAnswerJobID
+                                model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
                                 VideoRequestService.Update(model, curUser.ID);
 
                                 ViewBag.success = true;
@@ -124,6 +124,37 @@ namespace Cameo.Controllers
                 //cancel hangfire jobs
                 HangfireService.CancelJob(model.RequestAnswerJobID);
                 HangfireService.CancelJob(model.VideoJobID);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Accept(int id)
+        {
+            try
+            {
+                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+                if (model == null)
+                    return NotFound();
+
+                var curUser = accountUtil.GetCurrentUser(User);
+                if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
+                    throw new Exception("Вы не являетесь талантом");
+
+                //cancel request/video
+                VideoRequestService.Accept(model, curUser.ID);
+
+                //cancel hangfire RequestAnswerJobID
+                HangfireService.CancelJob(model.RequestAnswerJobID);
+
+                //create hangfire RequestAnswerJobID
+                model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
+                VideoRequestService.Update(model, curUser.ID);
 
                 return Ok();
             }

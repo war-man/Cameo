@@ -79,6 +79,11 @@ namespace Cameo.ViewModels
         public string DeadlineText { get; set; }
         public BaseDropdownableDetailsVM Status { get; set; }
 
+        public bool CancelBtnIsAvailable { get; set; } = false;
+        public bool AcceptBtnIsAvailable { get; set; } = false;
+        public bool UploadVideoBtnIsAvailable { get; set; } = false;
+        public bool ViewVideoBtnIsAvailable { get; set; } = false; //if true, then customer goes to view page and makes payment there is required
+
         public VideoRequestListItemVM() { }
 
         public VideoRequestListItemVM(VideoRequest model, string curUserType)
@@ -120,6 +125,18 @@ namespace Cameo.ViewModels
                 Deadline = deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString();
             
             Status = new BaseDropdownableDetailsVM(model.RequestStatus);
+
+            CancelBtnIsAvailable = (model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse
+                || model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo);
+
+            AcceptBtnIsAvailable = (model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse
+                && curUserType == UserTypesEnum.talent.ToString());
+
+            UploadVideoBtnIsAvailable = (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo
+                && curUserType == UserTypesEnum.talent.ToString());
+
+            ViewVideoBtnIsAvailable = (model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
+                || model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid);
         }
     }
 }
