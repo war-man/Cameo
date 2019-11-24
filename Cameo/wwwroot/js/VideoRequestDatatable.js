@@ -1,6 +1,5 @@
-﻿function initVideoRequestsDatatable() {
-    //console.log(VideoRequestStatusEnum);
-
+﻿function initVideoRequestsDatatable()
+{
     $("#videoRequests").DataTable({
         searching: false,
         ordering: false,
@@ -85,17 +84,73 @@
                 "render": function (data, type, full, meta) { return '' + full.deadlineText + ''; }
             },
             {
+                "data": null, /*"name": "deadline", */"title": "Видео", "autoWidth": true,
+                "render": function (data, type, full, meta) {
+                    var html = "";
+                    
+                    if (userType == talentType)
+                    {
+                        //in future this will be a video player but not an image
+                        html += '<img id="imgContainer_' + full.id + '" src="' + full.video.url + '" alt="Video" class="img-thumbnail" height="150" width="50" />';
+                        html += "<br />";
+
+                        if (full.videoConfirmed == true)
+                            html += "<small><div class='alert alert-success'>Видео подтверждено</div></small>";
+                        else
+                        {
+                            if (full.uploadVideoBtnIsAvailable == true)
+                            {
+                                if (full.video.id > 0)
+                                {
+                                    html += "<button class='btn btn-danger btn-sm' id='deleteBtn_" + full.id + "' onclick='DeleteVideo(" + full.video.id + ", " + full.id + ");' title='Удалить Видео' ><i class='glyphicon glyphicon-remove-sign'></i></button>";;
+                                    html += "<small><div class='alert alert-warning'>Видео еще не подтверждено. Для завершения запроса, пожалуйста, подтвердите</div></small>";
+                                    //html += "<br />";
+                                    //if (full.videoConfirmed == false)
+                                    //{
+                                        html += "<button class='btn btn-success btn-sm' onclick='ConfirmVideo(" + full.id + ");' >Подтвердить</button>";
+                                    //}    
+                                }
+
+                                //in future jquery-file-upload.js will be used
+                                //html += "<div id='fileuploader_" + full.id + "' class='fileuploader'>Upload</div>";
+                                html += '<img id="spinner_' + full.id + '" src="/Content/Images/spinner.gif" style="display: none; height:20px;" />';
+                                html += "<input type='file' id='imgInp_" + full.id + "' onchange = 'FileAjaxUpload(this, " + full.id + ", \"" + videoRequestVideoFileType + "\", \"spinner_" + full.id + "\", \"imgContainer_" + full.id + "\");' />";
+                            }
+                            else
+                                html += "<small><i>Текущий статус запроса не позволяет загрузить видео</i></small>";
+                        }
+                    }
+                    else
+                    {
+                        if (full.videoPaid == true) {
+                            html += "<a href='/Video/Details/" + full.id + "'>Перейти к видео</a>";
+                            html += "<button class='btn btn-success'>Перейти к оплате</button>";
+                        }
+                        else if (full.videoConfirmed == true)
+                        {
+                            html += "<div class='alert alert-success'>Видео готово!</div>";
+                            html += "<button class='btn btn-success'>Перейти к оплате</button>";
+                        }
+                        else {
+                            html += "<small><i>Видео не готово</i></small>";
+                        }
+                    }
+
+                    return html;
+                }
+            },
+            {
                 "data": null, "title": "Действия", "autoWidth": true,
                 "render": function (data, type, full, meta) {
                     var html = "";
 
                     if (full.cancelBtnIsAvailable == true)
                     {
-                        html += "<a href='#' class='btn btn-danger btn-sm' onclick='CancelRequest(" + full.id + ");' >Отменить</a>";
+                        html += "<button class='btn btn-danger btn-sm' onclick='CancelRequest(" + full.id + ");' >Отменить</button>";
                     }
 
                     if (full.acceptBtnIsAvailable == true) {
-                        html += "<a href='#' class='btn btn-success btn-sm' onclick='AcceptRequest(" + full.id + ");' >Принять</a>";
+                        html += "<button class='btn btn-success btn-sm' onclick='AcceptRequest(" + full.id + ");' >Принять</button>";
                     }
 
                     return html;
@@ -108,6 +163,7 @@
             //$("#recordsFiltered").text(oSettings.json.recordsFiltered);
 
             $('[data-toggle="tooltip"]').tooltip();
+
         }
     });
 }
@@ -148,6 +204,39 @@ function AcceptRequest(requestID) {
     $.ajax({
         type: "POST",
         url: "/VideoRequest/Accept?id=" + requestID,
+        //data: {
+        //    id: requestID
+        //},
+        //data: JSON.stringify({
+        //    id: requestID
+        //}),
+        contentType: "application/json; charset=utf-8",
+        //dataType: "json",
+        success: function (data) {
+            //alert("success");
+            //alert(data);
+        },
+        error: function (data) {
+            //alert("error");
+            console.log(data);
+        },
+        complete: function (data) {
+            //alert("completed");
+            $(".btn").removeAttr("disabled");
+        }
+    });
+}
+
+function DeleteVideo(videoID, requestID) {
+    FileAjaxDelete(videoID, requestID, videoRequestVideoFileType, "spinner_" + requestID, "imgContainer_" + requestID, "deleteBtn_" + requestID);
+}
+
+function ConfirmVideo(requestID) {
+    $(".btn").attr("disabled", "disabled");
+
+    $.ajax({
+        type: "POST",
+        url: "/VideoRequest/ConfirmVideo?id=" + requestID,
         //data: {
         //    id: requestID
         //},

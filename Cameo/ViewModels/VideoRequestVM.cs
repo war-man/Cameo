@@ -79,6 +79,10 @@ namespace Cameo.ViewModels
         public string DeadlineText { get; set; }
         public BaseDropdownableDetailsVM Status { get; set; }
 
+        public AttachmentDetailsVM Video { get; set; }
+        public bool VideoConfirmed { get; set; }
+        public bool VideoPaid { get; set; }
+
         public bool CancelBtnIsAvailable { get; set; } = false;
         public bool AcceptBtnIsAvailable { get; set; } = false;
         public bool UploadVideoBtnIsAvailable { get; set; } = false;
@@ -111,9 +115,12 @@ namespace Cameo.ViewModels
             if (model.RequestAnswerDeadline >= now)
             {
                 deadlineTmp = model.RequestAnswerDeadline;
-                DeadlineText = "Ожидает ответа";
+                DeadlineText = "Ожидает ответа (до " + deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString() + ")";
             }
-            else if (model.VideoDeadline.HasValue && model.VideoDeadline.Value >= now)
+            else
+                DeadlineText = "Завершено";
+
+            if (model.VideoDeadline.HasValue && model.VideoDeadline.Value >= now)
             {
                 deadlineTmp = model.VideoDeadline.Value;
                 DeadlineText = "Ожидает видео";
@@ -125,6 +132,10 @@ namespace Cameo.ViewModels
                 Deadline = deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString();
             
             Status = new BaseDropdownableDetailsVM(model.RequestStatus);
+
+            Video = new AttachmentDetailsVM(model.Video);
+            VideoConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
+            VideoPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid;
 
             CancelBtnIsAvailable = (model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse
                 || model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo);

@@ -25,8 +25,8 @@ namespace Cameo.Controllers
         [HttpPost]
         public IActionResult Index(int draw, int start, int length)
         {
-            int recordsTotal = 2;
-            int recordsFiltered = 2;
+            int recordsTotal = 0;
+            int recordsFiltered = 0;
             List<VideoRequestListItemVM> data = new List<VideoRequestListItemVM>();
             string error = "";
 

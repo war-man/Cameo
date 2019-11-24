@@ -15,7 +15,7 @@
     <div class="col-sm-3">
         <partial name="_CustomerSidebar" />
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-4">
         <h2>@ViewData["Title"]</h2>
         <hr />
 
@@ -32,12 +32,12 @@
             <div class="form-group">
                 <input type="hidden" id="fileID" name="fileID" />
                 @*@{
-                    string photoUrl = AppSettings.Value.NophotoUrl;
-                    if (Model.Avatar != null && Model.Avatar.ID > 0)
-                    {
-                        photoUrl = Model.Avatar.Url;
-                    }
-                }*@
+                        string photoUrl = AppSettings.Value.NophotoUrl;
+                        if (Model.Avatar != null && Model.Avatar.ID > 0)
+                        {
+                            photoUrl = Model.Avatar.Url;
+                        }
+                    }*@
                 <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
                 <img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />
                 <input type='file' id="imgInp" />
@@ -53,20 +53,20 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>*@
             @*<div class="form-group">
-                <label asp-for="UserName"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>*@
             @*<div class="form-group">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="SocialAreaID"></label>
                 <select asp-for="SocialAreaID"
@@ -82,66 +82,24 @@
                 <span asp-validation-for="SocialAreaHandle" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="FollowersCount"></label>
-                <input asp-for="FollowersCount" class="form-control" />
-                <span asp-validation-for="FollowersCount" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="FollowersCount"></label>
+                    <input asp-for="FollowersCount" class="form-control" />
+                    <span asp-validation-for="FollowersCount" class="text-danger"></span>
+                </div>*@
             <button type="submit" class="btn btn-default">Сохранить</button>
         </form>
     </div>
 </div>
 
-
-
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/FileAjaxUpload.js"></script>
+
     <script>
         $(document).ready(function () {
             $("#imgInp").change(function () {
-
-                readURL(this);
+                FileAjaxUpload(this, @Model.ID, "@Constants.FileTypes.CUSTOMER_AVATAR", "spinner", "imgContainer");
             });
         });
-
-        function readURL(input)
-        {
-            if (input.files && input.files[0])
-            {
-                var files = input.files;
-                var formData = new FormData();
-
-                for (var i = 0; i != files.length; i++) {
-                    formData.append("files", files[i]);
-                }
-                formData.append("id", "@Model.ID");
-                formData.append("fileType", "@Constants.FileTypes.CUSTOMER_AVATAR");
-
-                $.ajax({
-                    url: "/Attachment/Upload",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: "POST",
-                    beforeSend: function () {
-                        //alert("beforeSend");
-                        $("img#spinner").show();
-                        $("#imgInp").attr("disabled", "disabled");
-                    },
-                    success: function (data) {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            $('#imgContainer').attr('src', e.target.result);
-                        }
-                        reader.readAsDataURL(input.files[0]);
-                    },
-                    complete: function () {
-                        //alert("completed");
-                        $("img#spinner").hide();
-                        $("#imgInp").removeAttr("disabled");
-                    }
-                });
-            }
-        }
     </script>
 }

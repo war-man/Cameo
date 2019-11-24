@@ -9,12 +9,13 @@
 @{
     ViewData["Title"] = "Личные данные";
 }
+
 <br />
 <div class="row">
     <div class="col-sm-3">
         <partial name="_TalentSidebar" />
     </div>
-    <div class="col-md-4">
+    <div class="col-sm-4">
         <h2>@ViewData["Title"]</h2>
         <hr />
 
@@ -92,52 +93,13 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/FileAjaxUpload.js"></script>
+
     <script>
         $(document).ready(function () {
             $("#imgInp").change(function () {
-
-                readURL(this);
+                FileAjaxUpload(this, @Model.ID, "@Constants.FileTypes.TALENT_AVATAR", "spinner", "imgContainer");
             });
         });
-
-        function readURL(input)
-        {
-            if (input.files && input.files[0])
-            {
-                var files = input.files;
-                var formData = new FormData();
-
-                for (var i = 0; i != files.length; i++) {
-                    formData.append("files", files[i]);
-                }
-                formData.append("id", "@Model.ID");
-                formData.append("fileType", "@Constants.FileTypes.TALENT_AVATAR");
-
-                $.ajax({
-                    url: "/Attachment/Upload",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: "POST",
-                    beforeSend: function () {
-                        //alert("beforeSend");
-                        $("img#spinner").show();
-                        $("#imgInp").attr("disabled", "disabled");
-                    },
-                    success: function (data) {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            $('#imgContainer').attr('src', e.target.result);
-                        }
-                        reader.readAsDataURL(input.files[0]);
-                    },
-                    complete: function () {
-                        //alert("completed");
-                        $("img#spinner").hide();
-                        $("#imgInp").removeAttr("disabled");
-                    }
-                });
-            }
-        }
     </script>
 }

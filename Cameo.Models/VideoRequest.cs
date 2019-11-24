@@ -47,6 +47,10 @@ namespace Cameo.Models
         public int RequestStatusID { get; set; }
         public VideoRequestStatus RequestStatus { get; set; }
 
+        [ForeignKey("Video")]
+        public int? VideoID { get; set; }
+        public virtual Attachment Video { get; set; }
+
         #region RequestStatus change dates
         public DateTime? DateRequestCanceledByCustomer { get; set; }
         public DateTime? DateRequestExpired { get; set; }
@@ -55,6 +59,7 @@ namespace Cameo.Models
         public DateTime? DateVideoCanceledByCustomer { get; set; }
         public DateTime? DateVideoCanceledByTalent { get; set; }
         public DateTime? DateVideoExpired { get; set; }
+        public DateTime? DateVideoUploaded { get; set; }
         public DateTime? DateVideoCompleted { get; set; }
         public DateTime? DatePaid { get; set; }
         #endregion

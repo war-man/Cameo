@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Запросы на видео";
+    ViewData["userType"] = ViewBag.userType;
 }
 
 <br />
@@ -17,11 +18,16 @@
 </div>
 
 <link href="~/lib/DataTables/datatables.css" rel="stylesheet" />
+@*<link href="~/lib/jquery-file-upload/jquery-file-upload.min.css" rel="stylesheet" />*@
 
 @section Scripts {
     <script src="~/lib/DataTables/datatables.js"></script>
+    @*<script src="~/lib/jquery-file-upload/jquery-file-upload.min.js"></script>*@
+    <script src="~/js/FileAjaxUpload.js"></script>
+
     <script>
         $(document).ready(function () {
+            //this function is in "~/js/VideoRequestDatatable.js" included in _VideoRequestsTable.cshtml
             initVideoRequestsDatatable();
         });
     </script>

@@ -62,7 +62,7 @@ namespace Cameo.Controllers
                                 //1. create model and send email
                                 VideoRequestService.Add(model, curUser.ID);
 
-                                //2. create hangfire RequestAnswerJobID
+                                //2. create hangfire RequestAnswerJobID and save it
                                 model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
                                 VideoRequestService.Update(model, curUser.ID);
 
@@ -118,12 +118,12 @@ namespace Cameo.Controllers
 
                 var curUser = accountUtil.GetCurrentUser(User);
 
-                //cancel request/video
-                VideoRequestService.Cancel(model, curUser.ID, curUser.Type);
-
                 //cancel hangfire jobs
                 HangfireService.CancelJob(model.RequestAnswerJobID);
                 HangfireService.CancelJob(model.VideoJobID);
+
+                //cancel request/video
+                VideoRequestService.Cancel(model, curUser.ID, curUser.Type);
 
                 return Ok();
             }
@@ -146,7 +146,7 @@ namespace Cameo.Controllers
                 if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
                     throw new Exception("Вы не являетесь талантом");
 
-                //cancel request/video
+                //accept request/video
                 VideoRequestService.Accept(model, curUser.ID);
 
                 //cancel hangfire RequestAnswerJobID
@@ -163,5 +163,38 @@ namespace Cameo.Controllers
                 return BadRequest(ex);
             }
         }
+
+        #region Video actions
+        //talent can upload and delete video any times before confirming (actions are in AttachmentController)
+        //however once confirmed, DateVideoConfirmed is set to DateTime.Now
+        //and the request is considered as finished by talent when he/she confirms
+
+        public IActionResult ConfirmVideo(int id)
+        {
+            try
+            {
+                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+                if (model == null)
+                    return NotFound();
+
+                var curUser = accountUtil.GetCurrentUser(User);
+                if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
+                    throw new Exception("Вы не являетесь талантом");
+
+                //cancel hangfire RequestAnswerJobID
+                HangfireService.CancelJob(model.RequestAnswerJobID);
+                HangfireService.CancelJob(model.VideoJobID);
+
+                //cancel request/video
+                VideoRequestService.ConfirmVideo(model, curUser.ID);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        #endregion
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
+    //[TalentAuthorization] - must be implemented
     public class TalentVideoRequestController : BaseController
     {
         private readonly ICustomerService CustomerService;

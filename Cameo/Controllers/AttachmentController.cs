@@ -18,15 +18,18 @@ namespace Cameo.Controllers
 
         private readonly ICustomerService CustomerService;
         private readonly ITalentService TalentService;
+        private readonly IVideoRequestService VideoRequestService;
 
         public AttachmentController(
             IAttachmentService attachmentService,
             ICustomerService customerService,
-            ITalentService talentService)
+            ITalentService talentService,
+            IVideoRequestService videoRequestService)
         {
             AttachmentService = attachmentService;
             CustomerService = customerService;
             TalentService = talentService;
+            VideoRequestService = videoRequestService;
         }
 
         [HttpPost]
@@ -88,7 +91,65 @@ namespace Cameo.Controllers
                     TalentService.Update(model, curUserID);
                 }
             }
+            else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
+            {
+                var model = VideoRequestService.GetByID(id);
+                if (model != null)
+                {
+                    if (VideoRequestService.VideoIsUploadable(model))
+                    {
+                        model.Video = attachment;
+                        VideoRequestService.SaveUploadedVideo(model, curUserID);
+                    }
+                }
+            }
             //else if () ...
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int fileID, int? objID, string fileType)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+
+            var model = AttachmentService.GetActiveByID(fileID);
+            if (model == null)
+                return NotFound();
+
+            string error = "";
+
+            if (objID.HasValue && objID > 0
+                && !string.IsNullOrWhiteSpace(fileType))
+            {
+                error = DetachFromObj(model, objID.Value, fileType, curUser.ID);
+                if (string.IsNullOrWhiteSpace(error))
+                    AttachmentService.Delete(model, curUser.ID);
+            }
+            else
+                error = "Некоторые входящие данные неверные";
+
+            if (!string.IsNullOrWhiteSpace(error))
+                return BadRequest(error);
+
+            return Ok();
+        }
+
+        private string DetachFromObj(Attachment attachment, int objID, string fileType, string curUserID)
+        {
+            if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
+            {
+                var obj = VideoRequestService.GetActiveByID(objID);
+                if (obj == null)
+                    return "Объект не найден";
+
+                if (!VideoRequestService.VideoIsAllowedToBeDeleted(obj))
+                    return "Video is not allowed to be deleted";
+
+                obj.Video = null;
+                VideoRequestService.SaveDetachedVideo(obj, curUserID);
+            }
+            //else if () ...
+
+            return null;
         }
 
         //uncomment when needed

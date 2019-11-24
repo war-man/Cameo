@@ -1,4 +1,5 @@
 ﻿@using Cameo.Models.Enums
+@using Cameo.Utils
 
 <table id="videoRequests" class="table table-condensed">
     <thead>
@@ -10,6 +11,7 @@
             <th>statusName</th>
             <th>dateCreated</th>
             <th>deadline</th>
+            <th>video</th>
             <th>actions</th>
         </tr>
     </thead>
@@ -19,8 +21,9 @@
     var userType = "@ViewData["userType"]";
     var talentType = "@UserTypesEnum.talent.ToString()";
     var customerType = "@UserTypesEnum.customer.ToString()";
+    var videoRequestVideoFileType = "@Constants.FileTypes.VIDEO_REQUEST_VIDEO";
 
-    var VideoRequestStatusEnum = {
+    @*var VideoRequestStatusEnum = {
         waitingForResponse: "@((int)VideoRequestStatusEnum.waitingForResponse)",
         requestCanceledByCustomer: "@((int)VideoRequestStatusEnum.requestCanceledByCustomer)",
         requestExpired: "@((int)VideoRequestStatusEnum.requestExpired)",
@@ -31,6 +34,6 @@
         videoExpired: "@((int)VideoRequestStatusEnum.videoExpired)",
         videoCompleted: "@((int)VideoRequestStatusEnum.videoCompleted)",
         videoPaid: "@((int)VideoRequestStatusEnum.videoPaid)"
-    };
+    };*@
 </script>
 <script src="~/js/VideoRequestDatatable.js"></script>

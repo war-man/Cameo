@@ -16,17 +16,19 @@ namespace Cameo.Data.Repository
         override public IQueryable<VideoRequest> GetWithRelatedDataAsIQueryable()
         {
             return DbSet
-                .Include(m => m.Customer)
-                .Include(m => m.Talent)
+                .Include(m => m.Customer).ThenInclude(m => m.Avatar)
+                .Include(m => m.Talent).ThenInclude(m => m.Avatar)
                 .Include(m => m.Type)
+                .Include(m => m.Video)
                 .Include(m => m.RequestStatus);
         }
 
         override public VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id)
         {
             return DbSet
-                .Include(m => m.Customer)
-                .Include(m => m.Talent)
+                .Include(m => m.Customer).ThenInclude(m => m.Avatar)
+                .Include(m => m.Talent).ThenInclude(m => m.Avatar)
+                .Include(m => m.Video)
                 .FirstOrDefault(m => m.ID == id && !m.IsDeleted);
         }
     }

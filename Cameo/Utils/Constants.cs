@@ -11,6 +11,7 @@ namespace Cameo.Utils
         {
             public static string CUSTOMER_AVATAR = "customer_avatar";
             public static string TALENT_AVATAR = "talent_avatar";
+            public static string VIDEO_REQUEST_VIDEO = "video_request_video";
         }
     }
 }

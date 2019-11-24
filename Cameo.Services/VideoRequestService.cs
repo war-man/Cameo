@@ -11,6 +11,8 @@ namespace Cameo.Services
     {
         private readonly IEmailService EmailService;
 
+        private int tmpPeriodMinutes = 1440;
+
         public VideoRequestService(IVideoRequestRepository repository,
                            IUnitOfWork unitOfWork,
                            IEmailService emailService)
@@ -28,7 +30,7 @@ namespace Cameo.Services
         {
             entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
 #if DEBUG
-            entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2);
+            entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
 #else
             entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2880); //2 days
 #endif
@@ -116,8 +118,8 @@ namespace Cameo.Services
             if (!RequestBelongsToUser(model, userID))
                 throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
 
-            if (!TalentsCardPeriodIsValid(model.Talent))
-                throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
+            //if (!TalentsCardPeriodIsValid(model.Talent))
+            //    throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
 
             if (RequestIsWaitingForResponse(model))
             {
@@ -125,7 +127,7 @@ namespace Cameo.Services
                 model.DateRequestAccepted = DateTime.Now;
 
 #if DEBUG
-                model.VideoDeadline = DateTime.Now.AddMinutes(2);
+                model.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
 #else
                 model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
 #endif
@@ -178,6 +180,49 @@ namespace Cameo.Services
         private bool RequestIsWaitingForResponse(VideoRequest model)
         {
             return model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse;
+        }
+
+        public bool VideoIsUploadable(VideoRequest model)
+        {
+            return (/*!model.DateVideoCompleted.HasValue &&*/ RequestIsAcceptedAndWaitingForVideo(model));
+        }
+
+        public void SaveUploadedVideo(VideoRequest model, string userID)
+        {
+            model.DateVideoUploaded = DateTime.Now;
+            Update(model, userID);
+        }
+
+        public bool VideoIsAllowedToBeDeleted(VideoRequest model)
+        {
+            return RequestIsAcceptedAndWaitingForVideo(model);
+        }
+
+        public void SaveDetachedVideo(VideoRequest model, string userID)
+        {
+            model.DateVideoUploaded = null;
+            Update(model, userID);
+        }
+
+        public void ConfirmVideo(VideoRequest model, string userID)
+        {
+            model.RequestStatusID = (int)VideoRequestStatusEnum.videoCompleted;
+            model.DateVideoCompleted = DateTime.Now;
+
+            Update(model, userID);
+
+            //send email to Customer and Talent
+            string toCustomer = "cortex91@inbox.ru";
+            string subjectCustomer = "Subject - Customer";
+            string bodyCustomer = "This is email for Customer";
+
+            EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+
+            string toTalent = "xenon1991@inbox.ru";
+            string subjectTalent = "Subject - Talent";
+            string bodyTalent = "This is email for Talent";
+
+            EmailService.Send(toTalent, subjectTalent, bodyTalent);
         }
     }
 }
