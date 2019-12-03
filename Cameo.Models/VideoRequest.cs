@@ -36,12 +36,13 @@ namespace Cameo.Models
 
         [Required]
         public DateTime RequestAnswerDeadline { get; set; }
-
         public string RequestAnswerJobID { get; set; }
 
         public DateTime? VideoDeadline { get; set; }
-
         public string VideoJobID { get; set; }
+
+        public string PaymentJobID { get; set; }
+        public DateTime? PaymentDeadline { get; set; }
 
         [ForeignKey("RequestStatus")]
         public int RequestStatusID { get; set; }
@@ -62,6 +63,7 @@ namespace Cameo.Models
         public DateTime? DateVideoUploaded { get; set; }
         public DateTime? DateVideoCompleted { get; set; }
         public DateTime? DatePaid { get; set; }
+        public DateTime? DatePaymentExpired { get; set; }
         #endregion
     }
 }

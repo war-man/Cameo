@@ -15,6 +15,7 @@ namespace Cameo.Models.Enums
         videoCanceledByTalent = 7,
         videoExpired = 8,
         videoCompleted = 9,
-        videoPaid = 10
+        videoPaid = 10,
+        videoPaymentExpired = 11,
     }
 }

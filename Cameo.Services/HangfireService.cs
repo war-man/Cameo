@@ -56,6 +56,26 @@ namespace Cameo.Services
             { }
         }
 
+        public string CreateJobForVideoRequestPaymentDeadline(VideoRequest request, string userID)
+        {
+            string jobID = BackgroundJob.Schedule(() =>
+                PaymentDeadlineReaches(request.ID, userID),
+                new DateTimeOffset(request.PaymentDeadline.Value));
+
+            return jobID;
+        }
+
+        public void PaymentDeadlineReaches(int videoRequestID, string userID)
+        {
+            try
+            {
+                VideoRequest request = VideoRequestService.GetByID(videoRequestID);
+                VideoRequestService.PaymentDeadlineReaches(request, userID);
+            }
+            catch (Exception ex)
+            { }
+        }
+
         public void CancelJob(string jobID)
         {
             if (!string.IsNullOrWhiteSpace(jobID))

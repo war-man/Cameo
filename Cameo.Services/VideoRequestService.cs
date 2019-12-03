@@ -10,15 +10,18 @@ namespace Cameo.Services
     public class VideoRequestService : BaseCRUDService<VideoRequest>, IVideoRequestService
     {
         private readonly IEmailService EmailService;
+        private readonly ITalentBalanceService TalentBalanceService;
 
         private int tmpPeriodMinutes = 1440;
 
         public VideoRequestService(IVideoRequestRepository repository,
                            IUnitOfWork unitOfWork,
-                           IEmailService emailService)
+                           IEmailService emailService,
+                           ITalentBalanceService talentBalanceService)
             : base(repository, unitOfWork)
         {
             EmailService = emailService;
+            TalentBalanceService = talentBalanceService;
         }
 
         public VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id)
@@ -115,27 +118,32 @@ namespace Cameo.Services
 
         public void Accept(VideoRequest model, string userID)
         {
+            CheckIfRequestIsAcceptable(model, userID);
+
+            model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
+            model.DateRequestAccepted = DateTime.Now;
+#if DEBUG
+            model.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+#else
+            model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
+#endif
+
+            Update(model, userID);
+        }
+
+        private void CheckIfRequestIsAcceptable(VideoRequest model, string userID)
+        {
             if (!RequestBelongsToUser(model, userID))
                 throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
 
             //if (!TalentsCardPeriodIsValid(model.Talent))
             //    throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
 
-            if (RequestIsWaitingForResponse(model))
-            {
-                model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
-                model.DateRequestAccepted = DateTime.Now;
+            if (!TalentBalanceService.BalanceAllowsToAcceptRequest(model.Talent.Balance, model.Price))
+                throw new Exception("Текущий баланс не позволяет принять запрос");
 
-#if DEBUG
-                model.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
-#else
-                model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
-#endif
-            }
-            else
+            if (!RequestIsWaitingForResponse(model))
                 throw new Exception("Текущий статус запроса не позволяет отменить его");
-
-            Update(model, userID);
         }
 
         public void VideoDeadlineReaches(VideoRequest model, string userID)
@@ -164,7 +172,47 @@ namespace Cameo.Services
 
         public void MakePayment(VideoRequest model, string userID)
         {
+            if (!RequestBelongsToUser(model, userID))
+                throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
 
+            model.DatePaid = DateTime.Now;
+            model.RequestStatusID = (int)VideoRequestStatusEnum.videoPaid;
+            Update(model, userID);
+
+            //2. send emails to customer and talent
+            string toCustomer = "cortex91@inbox.ru";
+            string subjectCustomer = "Subject - Customer";
+            string bodyCustomer = "This is email for Customer";
+
+            EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+
+            string toTalent = "xenon1991@inbox.ru";
+            string subjectTalent = "Subject - Talent";
+            string bodyTalent = "This is email for Talent";
+
+            EmailService.Send(toTalent, subjectTalent, bodyTalent);
+        }
+
+        public void PaymentDeadlineReaches(VideoRequest model, string userID)
+        {
+            //1. set status = expired
+            model.RequestStatusID = (int)VideoRequestStatusEnum.videoPaymentExpired;
+            model.DatePaymentExpired = DateTime.Now;
+
+            Update(model, userID);
+
+            //2. send emails to customer and talent
+            string toCustomer = "cortex91@inbox.ru";
+            string subjectCustomer = "Subject - Customer";
+            string bodyCustomer = "This is email for Customer";
+
+            EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+
+            string toTalent = "xenon1991@inbox.ru";
+            string subjectTalent = "Subject - Talent";
+            string bodyTalent = "This is email for Talent";
+
+            EmailService.Send(toTalent, subjectTalent, bodyTalent);
         }
 
         private bool RequestBelongsToUser(VideoRequest model, string userID)
@@ -208,6 +256,12 @@ namespace Cameo.Services
         {
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoCompleted;
             model.DateVideoCompleted = DateTime.Now;
+
+#if DEBUG
+            model.PaymentDeadline = DateTime.Now.AddMinutes(2);
+#else
+            model.PaymentDeadline = DateTime.Now.AddMinutes(10080); //7 days
+#endif
 
             Update(model, userID);
 

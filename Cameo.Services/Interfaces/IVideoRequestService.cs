@@ -20,6 +20,8 @@ namespace Cameo.Services.Interfaces
 
         void MakePayment(VideoRequest model, string userID);
 
+        void PaymentDeadlineReaches(VideoRequest model, string userID);
+
         bool VideoIsUploadable(VideoRequest model);
 
         void SaveUploadedVideo(VideoRequest model, string userID);
@@ -27,6 +29,7 @@ namespace Cameo.Services.Interfaces
         bool VideoIsAllowedToBeDeleted(VideoRequest model);
 
         void SaveDetachedVideo(VideoRequest model, string userID);
+
         void ConfirmVideo(VideoRequest model, string userID);
     }
 }

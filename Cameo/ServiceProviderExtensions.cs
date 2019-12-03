@@ -46,6 +46,7 @@ namespace Cameo
             services.AddTransient<IVideoRequestService, VideoRequestService>();
             services.AddTransient<IVideoRequestTypeService, VideoRequestTypeService>();
             services.AddTransient<IVideoRequestSearchService, VideoRequestSearchService>();
+            services.AddTransient<ITalentBalanceService, TalentBalanceService>();
         }
     }
 }

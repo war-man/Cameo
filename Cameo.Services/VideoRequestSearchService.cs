@@ -72,5 +72,12 @@ namespace Cameo.Services
                 return Enumerable.Empty<VideoRequest>().AsQueryable();
             }
         }
+
+        public IEnumerable<VideoRequest> GetTalentVideoRequestsReservingBalance(Talent talent)
+        {
+            return talent.VideoRequests
+                .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo
+                    || m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted);
+        }
     }
 }

@@ -169,6 +169,7 @@ namespace Cameo.Controllers
         //however once confirmed, DateVideoConfirmed is set to DateTime.Now
         //and the request is considered as finished by talent when he/she confirms
 
+        [HttpPost]
         public IActionResult ConfirmVideo(int id)
         {
             try
@@ -185,8 +186,41 @@ namespace Cameo.Controllers
                 HangfireService.CancelJob(model.RequestAnswerJobID);
                 HangfireService.CancelJob(model.VideoJobID);
 
-                //cancel request/video
+                //confirm request/video
                 VideoRequestService.ConfirmVideo(model, curUser.ID);
+
+                //create hangfire PaymentJobID
+                model.PaymentJobID = HangfireService.CreateJobForVideoRequestPaymentDeadline(model, curUser.ID);
+                VideoRequestService.Update(model, curUser.ID);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult MakePayment(int id)
+        {
+            try
+            {
+                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+                if (model == null)
+                    return NotFound();
+
+                var curUser = accountUtil.GetCurrentUser(User);
+                if (!curUser.Type.Equals(UserTypesEnum.customer.ToString()))
+                    throw new Exception("Вы не являетесь клиентом");
+
+                //cancel hangfire RequestAnswerJobID, VideoJobID, PaymentJobID
+                HangfireService.CancelJob(model.RequestAnswerJobID);
+                HangfireService.CancelJob(model.VideoJobID);
+                HangfireService.CancelJob(model.PaymentJobID);
+
+                //confirm request/video
+                VideoRequestService.MakePayment(model, curUser.ID);
 
                 return Ok();
             }

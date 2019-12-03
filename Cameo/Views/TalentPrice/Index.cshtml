@@ -33,7 +33,23 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-success">
+                        С учетом указанной цены Ваш баланс позволяет получить до <b id="maxAvailableRequests"></b> запросов
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-info">
+                        Максимальная цена, которую Вы можете установить за видео: <b>@ViewData["maxAvailablePrice"] сум</b>
+                    </div>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-default">Сохранить</button>
         </form>
     </div>
@@ -41,5 +57,47 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    
+    <script>
+        var balance = parseInt("@ViewData["balance"]".replace(/ /g, ''));
+        var maxAvailablePrice = 0;
+
+        $(document).ready(function () {
+            maxAvailablePrice = parseInt("@ViewData["maxAvailablePrice"]".replace(/ /g, ''));
+
+            $("input#Price").keyup(function (event)
+            {
+                var maxAvailableRequests = 0;
+                var price = $(this).val();
+
+                if (price != undefined && !isNaN(price))
+                {
+                    $.ajax({
+                        type: "GET",
+                        url: "/TalentPrice/CalculateMaxNumberOfPossibleRequests",
+                        data: {
+                            balance: balance,
+                            price: price
+                        },
+                        //data: JSON.stringify({
+                        //    balance: balance,
+                        //    price: price
+                        //}),
+                        contentType: "application/json; charset=utf-8",
+                        //dataType: "json",
+                        success: function (data) {
+                            maxAvailableRequests = Number(data);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        },
+                        complete: function (data) {
+                            $("#maxAvailableRequests").text(maxAvailableRequests);
+                        }
+                    });
+                }
+            });
+
+			$("input#Price").keyup();
+        });
+    </script>
 }

@@ -21,10 +21,15 @@ namespace Cameo.Models
 
         public int ResponseTime { get; set; }
 
+        public int Balance { get; set; }
+
         [InverseProperty("Talent")]
         public virtual ICollection<TalentProject> Projects { get; set; }
 
         //public virtual ICollection<TalentCategory> Categories { get; set; }
         public ICollection<TalentCategory> TalentCategories { get; set; }
+
+        [InverseProperty("Talent")]
+        public virtual ICollection<VideoRequest> VideoRequests { get; set; }
     }
 }

@@ -1,10 +1,5 @@
 ﻿using Cameo.Common;
 using Cameo.Models;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cameo.ViewModels
 {
@@ -20,7 +15,7 @@ namespace Cameo.ViewModels
         {
             if (model == null)
             {
-                this.Url = AppData.Configuration.NophotoUrl;
+                this.Url = AppData.Configuration.NoPhotoUrl;
                 return;
             }
 
@@ -28,7 +23,7 @@ namespace Cameo.ViewModels
             if (this.ID > 0)
                 this.Url = model.Path + "/" + model.GUID + "." + model.Extension;
             else
-                this.Url = AppData.Configuration.NophotoUrl;
+                this.Url = AppData.Configuration.NoPhotoUrl;
         }
     }
 }

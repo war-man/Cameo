@@ -16,5 +16,7 @@ namespace Cameo.Services.Interfaces
             out int recordsTotal,
             out int recordsFiltered,
             out string error);
+
+        IEnumerable<VideoRequest> GetTalentVideoRequestsReservingBalance(Talent talent);
     }
 }

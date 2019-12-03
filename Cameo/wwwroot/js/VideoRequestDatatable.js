@@ -102,12 +102,12 @@
                             {
                                 if (full.video.id > 0)
                                 {
-                                    html += "<button class='btn btn-danger btn-sm' id='deleteBtn_" + full.id + "' onclick='DeleteVideo(" + full.video.id + ", " + full.id + ");' title='Удалить Видео' ><i class='glyphicon glyphicon-remove-sign'></i></button>";;
+                                    html += "<button type='button' class='btn btn-danger btn-sm' id='deleteBtn_" + full.id + "' onclick='DeleteVideo(" + full.video.id + ", " + full.id + ");' title='Удалить Видео' ><i class='glyphicon glyphicon-remove-sign'></i></button>";;
                                     html += "<small><div class='alert alert-warning'>Видео еще не подтверждено. Для завершения запроса, пожалуйста, подтвердите</div></small>";
                                     //html += "<br />";
                                     //if (full.videoConfirmed == false)
                                     //{
-                                        html += "<button class='btn btn-success btn-sm' onclick='ConfirmVideo(" + full.id + ");' >Подтвердить</button>";
+                                        html += "<button type='button' class='btn btn-success btn-sm' onclick='ConfirmVideo(" + full.id + ");' >Подтвердить</button>";
                                     //}    
                                 }
 
@@ -122,18 +122,15 @@
                     }
                     else
                     {
-                        if (full.videoPaid == true) {
+                        if (full.videoPaid == true)
                             html += "<a href='/Video/Details/" + full.id + "'>Перейти к видео</a>";
-                            html += "<button class='btn btn-success'>Перейти к оплате</button>";
-                        }
                         else if (full.videoConfirmed == true)
                         {
                             html += "<div class='alert alert-success'>Видео готово!</div>";
-                            html += "<button class='btn btn-success'>Перейти к оплате</button>";
+                            html += "<button type='button' class='btn btn-success' onclick='MakePayment(" + full.id + ");'>Оплатить!</button>";
                         }
-                        else {
+                        else
                             html += "<small><i>Видео не готово</i></small>";
-                        }
                     }
 
                     return html;
@@ -237,6 +234,35 @@ function ConfirmVideo(requestID) {
     $.ajax({
         type: "POST",
         url: "/VideoRequest/ConfirmVideo?id=" + requestID,
+        //data: {
+        //    id: requestID
+        //},
+        //data: JSON.stringify({
+        //    id: requestID
+        //}),
+        contentType: "application/json; charset=utf-8",
+        //dataType: "json",
+        success: function (data) {
+            //alert("success");
+            //alert(data);
+        },
+        error: function (data) {
+            //alert("error");
+            console.log(data);
+        },
+        complete: function (data) {
+            //alert("completed");
+            $(".btn").removeAttr("disabled");
+        }
+    });
+}
+
+function MakePayment(requestID) {
+    $(".btn").attr("disabled", "disabled");
+
+    $.ajax({
+        type: "POST",
+        url: "/VideoRequest/MakePayment?id=" + requestID,
         //data: {
         //    id: requestID
         //},
