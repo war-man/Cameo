@@ -9,19 +9,6 @@ namespace Cameo.ViewModels
 {
     public class TalentShortInfoVM : PersonShortInfoVM
     {
-        //public int ID { get; set; }
-        //public string FirstName { get; set; }
-        //public string LastName { get; set; }
-        //public string FullName
-        //{
-        //    get
-        //    {
-        //        return FirstName + " " + LastName;
-        //    }
-        //    set { }
-        //}
-        //public AttachmentDetailsVM Avatar { get; set; }
-
         public TalentShortInfoVM() { }
 
         public TalentShortInfoVM(Talent model)
@@ -29,11 +16,22 @@ namespace Cameo.ViewModels
         {
             if (model == null)
                 return;
+        }
+    }
 
-            //this.ID = model.ID;
-            //this.FirstName = model.FirstName;
-            //this.LastName = model.LastName;
-            //this.Avatar = new AttachmentDetailsVM(model.Avatar);
+    public class TalentShortInfoForVideoPageVM : TalentShortInfoVM
+    {
+        public string ProjectName { get; set; }
+        public TalentShortInfoForVideoPageVM() { }
+
+        public TalentShortInfoForVideoPageVM(Talent model)
+            : base(model)
+        {
+            if (model == null)
+                return;
+
+            if (model.Projects != null && model.Projects.Count > 0)
+                this.ProjectName = model.Projects.FirstOrDefault()?.Name;
         }
     }
 

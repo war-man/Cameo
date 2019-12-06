@@ -230,6 +230,11 @@ namespace Cameo.Services
             return model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse;
         }
 
+        private bool RequestIsPaid(VideoRequest model)
+        {
+            return model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid;
+        }
+
         public bool VideoIsUploadable(VideoRequest model)
         {
             return (/*!model.DateVideoCompleted.HasValue &&*/ RequestIsAcceptedAndWaitingForVideo(model));
@@ -277,6 +282,34 @@ namespace Cameo.Services
             string bodyTalent = "This is email for Talent";
 
             EmailService.Send(toTalent, subjectTalent, bodyTalent);
+        }
+
+        public VideoRequest GetSinglePublished(int id, string userID)
+        {
+            var model = GetActiveSingleDetailsWithRelatedDataByID(id);
+            if (model == null)
+                return null;
+
+            if (RequestIsPaid(model))
+            {
+                //if request belongs to current Talent
+                if (model.Talent.UserID == userID)
+                    return model;
+                else
+                {
+                    //if unauthorized
+                    if (string.IsNullOrWhiteSpace(userID))
+                    {
+                        if (!model.IsNotPublic)
+                            return model;
+                    }
+                    //if request belongs to current Customer
+                    else if (model.Customer.UserID == userID)
+                        return model;
+                }
+            }
+            
+            return null;
         }
     }
 }

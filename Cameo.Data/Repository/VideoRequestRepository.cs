@@ -28,6 +28,7 @@ namespace Cameo.Data.Repository
             return DbSet
                 .Include(m => m.Customer).ThenInclude(m => m.Avatar)
                 .Include(m => m.Talent).ThenInclude(m => m.Avatar)
+                .Include(m => m.Talent).ThenInclude(m => m.Projects)
                 .Include(m => m.Video)
                 .FirstOrDefault(m => m.ID == id && !m.IsDeleted);
         }

@@ -31,5 +31,7 @@ namespace Cameo.Services.Interfaces
         void SaveDetachedVideo(VideoRequest model, string userID);
 
         void ConfirmVideo(VideoRequest model, string userID);
+
+        VideoRequest GetSinglePublished(int id, string userID);
     }
 }
