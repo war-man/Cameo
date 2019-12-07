@@ -29,6 +29,7 @@ namespace Cameo
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IVideoRequestRepository, VideoRequestRepository>();
             services.AddTransient<IVideoRequestTypeRepository, VideoRequestTypeRepository>();
+            services.AddTransient<ILogTalentPriceRepository, LogTalentPriceRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -47,6 +48,7 @@ namespace Cameo
             services.AddTransient<IVideoRequestTypeService, VideoRequestTypeService>();
             services.AddTransient<IVideoRequestSearchService, VideoRequestSearchService>();
             services.AddTransient<ITalentBalanceService, TalentBalanceService>();
+            services.AddTransient<ILogTalentPriceService, LogTalentPriceService>();
         }
     }
 }

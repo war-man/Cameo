@@ -45,5 +45,6 @@ namespace Cameo.Data
         public DbSet<VideoRequest> VideoRequests { get; set; }
         public DbSet<VideoRequestType> VideoRequestTypes { get; set; }
         public DbSet<VideoRequestStatus> VideoRequestStatuses { get; set; }
+        public DbSet<LogTalentPrice> LogTalentPrice { get; set; }
     }
 }

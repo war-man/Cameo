@@ -10,10 +10,29 @@ namespace Cameo.Services
 {
     public class TalentService : BaseCRUDService<Talent>, ITalentService
     {
+        private readonly ILogTalentPriceService LogTalentPriceService;
+
         public TalentService(ITalentRepository repository,
-                           IUnitOfWork unitOfWork)
+                           IUnitOfWork unitOfWork,
+                           ILogTalentPriceService logTalentPriceService)
             : base(repository, unitOfWork)
         {
+            LogTalentPriceService = logTalentPriceService;
+        }
+
+        public override void Update(Talent entity, string userID)
+        {
+            base.Update(entity, userID);
+
+            LogPrice(entity, userID);
+        }
+
+        private void LogPrice(Talent model, string userID)
+        {
+            LogTalentPrice log = new LogTalentPrice();
+            log.TalentID = model.ID;
+            log.Price = model.Price;
+            LogTalentPriceService.Add(log, userID);
         }
 
         override public Talent GetByID(int id)

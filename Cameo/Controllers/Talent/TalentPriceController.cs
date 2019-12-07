@@ -65,7 +65,7 @@ namespace Cameo.Controllers
                     }
                     catch (Exception ex)
                     {
-                        throw new SystemException("Something went wrong while saving data.", ex);
+                        ModelState.AddModelError("", "Something went wrong while saving data: " + ex.Message);
                     }
                 }
                 else

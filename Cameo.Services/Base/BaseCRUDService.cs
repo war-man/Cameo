@@ -38,7 +38,7 @@ namespace Cameo.Services
             Save();
         }
 
-        public void Update(T entity, string modifierID)
+        public virtual void Update(T entity, string modifierID)
         {
             OnPreUpdate(entity, modifierID);
             _repository.Update(entity);

@@ -13,16 +13,20 @@ namespace Cameo.Services
     {
         private readonly ICustomerService CustomerService;
         private readonly ITalentService TalentService;
+        private readonly IVideoRequestRepository VideoRequestRepository;
 
         public VideoRequestSearchService(
             IVideoRequestRepository repository,
             IUnitOfWork unitOfWork,
             ICustomerService customerService,
-            ITalentService talentService)
+            ITalentService talentService,
+            IVideoRequestRepository videoRequestRepository
+            )
             : base(repository, unitOfWork)
         {
             CustomerService = customerService;
             TalentService = talentService;
+            VideoRequestRepository = videoRequestRepository;
         }
 
         public IQueryable<VideoRequest> Search(
@@ -75,7 +79,7 @@ namespace Cameo.Services
 
         public IEnumerable<VideoRequest> GetTalentVideoRequestsReservingBalance(Talent talent)
         {
-            return talent.VideoRequests
+            return VideoRequestRepository.GetRequestsByTalent(talent)
                 .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo
                     || m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted);
         }

@@ -25,8 +25,14 @@ namespace Cameo.Services
         public int GetBalanceIncludingReservations(Talent talent)
         {
             int clearBalance = GetBalance(talent);
-            int reservedAmount = VideoRequestSearchService.GetTalentVideoRequestsReservingBalance(talent)
-                .Sum(m => m.Price);
+            IEnumerable<VideoRequest> videoRequestsReservingBalance =
+                VideoRequestSearchService.GetTalentVideoRequestsReservingBalance(talent);
+
+            int reservedAmount = 0;
+            foreach (var item in videoRequestsReservingBalance)
+            {
+                reservedAmount += CalculateMoneyThatTalentPaysToSystemForCameo(item.Price);
+            }
 
             return clearBalance - reservedAmount;
         }

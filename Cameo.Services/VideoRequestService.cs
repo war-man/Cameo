@@ -4,6 +4,7 @@ using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
 using System;
+using System.Linq;
 
 namespace Cameo.Services
 {

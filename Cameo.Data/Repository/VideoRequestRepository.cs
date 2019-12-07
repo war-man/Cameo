@@ -2,6 +2,7 @@
 using Cameo.Data.Repository.Interfaces;
 using Cameo.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cameo.Data.Repository
@@ -11,6 +12,11 @@ namespace Cameo.Data.Repository
         public VideoRequestRepository(IDatabaseFactory databaseFactory)
             : base(databaseFactory)
         {
+        }
+
+        public IQueryable<VideoRequest> GetRequestsByTalent(Talent talent)
+        {
+            return GetAsIQueryable().Where(m => m.TalentID == talent.ID);
         }
 
         override public IQueryable<VideoRequest> GetWithRelatedDataAsIQueryable()
