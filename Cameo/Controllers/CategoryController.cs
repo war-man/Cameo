@@ -30,7 +30,8 @@ namespace Cameo.Controllers
                 {
                     ID = m.ID,
                     Name = m.Name,
-                    NumberOfItems = m.TalentCategories.Count
+                    NumberOfItems = m.TalentCategories.Count,
+                    Selected = m.ID == selected
                 })
                 .ToList();
 

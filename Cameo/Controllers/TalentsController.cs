@@ -27,9 +27,9 @@ namespace Cameo.Controllers
             VideoRequestTypeService = videoRequestTypeService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? cat)
         {
-            PrepareViewDataItems();
+            PrepareViewDataItems(cat);
             return View(new FilterVM());
         }
 
@@ -72,7 +72,7 @@ namespace Cameo.Controllers
             return PartialView(talents);
         }
 
-        private void PrepareViewDataItems()
+        private void PrepareViewDataItems(int? cat)
         {
             List<SelectListItem> sortingItems = new List<SelectListItem>()
             {
@@ -105,6 +105,7 @@ namespace Cameo.Controllers
             };
 
             ViewData["sortingItems"] = sortingItems;
+            ViewData["cat"] = cat;
         }
     }
 }

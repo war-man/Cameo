@@ -15,7 +15,6 @@ namespace Cameo.Controllers
     public class AttachmentController : BaseController
     {
         private readonly IAttachmentService AttachmentService;
-
         private readonly ICustomerService CustomerService;
         private readonly ITalentService TalentService;
         private readonly IVideoRequestService VideoRequestService;

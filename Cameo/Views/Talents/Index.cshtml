@@ -40,8 +40,10 @@
     <script>
         @*var filterVM = @Html.Raw(Json.Serialize(Model));
         console.log(filterVM);*@
-
-        var categoryID = 1;
+        var categoryID = Number("@ViewData["cat"]");
+        if (categoryID == 0)
+            categoryID = 1;
+        
         var sort = "def";
 
         $(document).ready(function () {
@@ -53,14 +55,17 @@
             $.ajax({
                 type: "GET",
                 url: "/Category/GetAll",
-                data: JSON.stringify({
+                //data: JSON.stringify({
+                //    selected: categoryID
+                //}),
+                data:{
                     selected: categoryID
-                }),
+                },
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function (data) {
                     $("#categoriesContainer").html(data);
-                    categoryID = $("#categoriesContainer ul li:first").data("category");
+                    categoryID = $("#categoriesContainer ul li.active:first").data("category");
 
                     ReloadTalents();
                 },
@@ -68,6 +73,24 @@
                     console.log(data);
                 }
             });
+        }
+
+        function ReloadTalents(category, sorting)
+        {
+            if (category != undefined)
+                categoryID = category;
+
+            MarkSelectedCategoryAsActive(categoryID);
+
+            //$("#categoriesContainer > ul > li").removeClass("active");
+            //$("#categoriesContainer > ul > li[data-customerID='" + categoryID + "']").addClass("active");
+
+            if (sorting != undefined)
+                sort = sorting;
+
+            window.history.pushState("object or string", "Title", "?cat=" + categoryID);
+
+            LoadTalents();
         }
 
         function LoadTalents()
@@ -98,17 +121,10 @@
             });
         }
 
-        function ReloadTalents(category, sorting) {
-            if (category != undefined)
-                categoryID = category;
-
-            //$("#categoriesContainer > ul > li").removeClass("active");
-            //$("#categoriesContainer > ul > li[data-customerID='" + categoryID + "']").addClass("active");
-
-            if (sorting != undefined)
-                sort = sorting;
-
-            LoadTalents();
+        function MarkSelectedCategoryAsActive(catID)
+        {
+            $("#categoriesContainer ul > li").removeClass("active");
+            $("#categoriesContainer ul > li[data-category='" + catID + "']").addClass("active");
         }
     </script>
 }
