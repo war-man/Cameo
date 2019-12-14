@@ -36,7 +36,7 @@ namespace Cameo.Controllers
 
             ViewData["balance"] = TalentBalanceService.GetBalanceIncludingReservations(model);
             ViewData["maxAvailablePrice"] = TalentBalanceService.CalculateMaxAvailablePriceForCameo(model)
-                .ToString(AppData.Configuration.NumberStringFormat);
+                .ToString(AppData.Configuration.NumberViewStringFormat);
 
             return View(modelVM);
         }
@@ -75,7 +75,7 @@ namespace Cameo.Controllers
                 ModelState.AddModelError("", "Неверные данные");
 
             ViewData["balance"] = TalentBalanceService.GetBalanceIncludingReservations(model);
-            ViewData["maxAvailablePrice"] = maxAvailablePrice.ToString(AppData.Configuration.NumberStringFormat);
+            ViewData["maxAvailablePrice"] = maxAvailablePrice.ToString(AppData.Configuration.NumberViewStringFormat);
 
             return View(modelVM);
         }

@@ -18,6 +18,10 @@ namespace Cameo.Common
         public string NoPhotoUrl { get; set; }
         public string SpinnerUrl { get; set; }
         public int PaymentSystemCommission { get; set; }
-        public string NumberStringFormat { get; set; }
+        public string NumberViewStringFormat { get; set; }
+        public string DateViewStringFormat { get; set; }
+        public string DateTextViewStringFormat { get; set; }
+        public string DateDbViewStringFormat { get; set; }
+        public string TimeViewStringFormat { get; set; }
     }
 }
