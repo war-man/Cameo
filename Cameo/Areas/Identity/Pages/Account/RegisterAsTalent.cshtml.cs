@@ -54,17 +54,20 @@ namespace Cameo.Areas.Identity.Pages.Account
             [Display(Name = "FirstName")]
             public string FirstName { get; set; }
 
-            [Required]
+            //[Required]
             [Display(Name = "LastName")]
             public string LastName { get; set; }
 
             [Required]
             [Display(Name = "UserName")]
+            [RegularExpression("^[a-z0-9]*$", ErrorMessage = "Only lowercase Alphabets and Numbers allowed.")]
+            [Remote("ValidateIfUserWithUsernameExists", "User", ErrorMessage = "ѕользователь с таким именем уже существует")]
             public string UserName { get; set; }
 
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
+            [Remote("ValidateIfUserWithEmailExists", "User", ErrorMessage = "ѕользователь с такой почтой уже существует")]
             public string Email { get; set; }
 
             [Required]
@@ -103,46 +106,58 @@ namespace Cameo.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var existingUser = await _userManager.FindByNameAsync(Input.UserName);
+                if (existingUser == null)
                 {
-                    UserName = Input.UserName,
-                    Email = Input.Email,
-                    PhoneNumber = Input.PhoneNumber,
-                    UserType = UserTypesEnum.talent.ToString()
-                };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new Talent account with password.");
-
-                    Talent talent = new Talent()
+                    existingUser = await _userManager.FindByEmailAsync(Input.UserName);
+                    if (existingUser == null)
                     {
-                        FirstName = Input.FirstName,
-                        LastName = Input.LastName,
-                        SocialAreaID = Input.SocialAreaID,
-                        SocialAreaHandle = Input.SocialAreaHandle,
-                        UserID = user.Id,
-                        IsAvailable = true
-                    };
-                    TalentService.Add(talent, user.Id);
+                        var user = new ApplicationUser
+                        {
+                            UserName = Input.UserName,
+                            Email = Input.Email,
+                            PhoneNumber = Input.PhoneNumber,
+                            UserType = UserTypesEnum.talent.ToString()
+                        };
+                        var result = await _userManager.CreateAsync(user, Input.Password);
+                        if (result.Succeeded)
+                        {
+                            _logger.LogInformation("User created a new Talent account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
+                            Talent talent = new Talent()
+                            {
+                                FirstName = Input.FirstName,
+                                LastName = Input.LastName,
+                                SocialAreaID = Input.SocialAreaID,
+                                SocialAreaHandle = Input.SocialAreaHandle,
+                                UserID = user.Id,
+                                IsAvailable = true
+                            };
+                            TalentService.Add(talent, user.Id);
 
-                    //await EmailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { userId = user.Id, code = code },
+                                protocol: Request.Scheme);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                            //await EmailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                    else
+                        ModelState.AddModelError(string.Empty, "ѕользователь с такой почтой уже существует");
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                else
+                    ModelState.AddModelError(string.Empty, "ѕользователь с таким именем уже существует");
             }
 
             // If we got this far, something failed, redisplay form

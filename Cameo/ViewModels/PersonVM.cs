@@ -16,7 +16,7 @@ namespace Cameo.ViewModels
         [StringLength(256)]
         public string FirstName { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Фамилия")]
         [StringLength(256)]
         public string LastName { get; set; }
