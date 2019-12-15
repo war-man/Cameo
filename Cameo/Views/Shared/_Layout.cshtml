@@ -75,10 +75,14 @@
 </body>
 </html>
 
-<script src="~/js/ImageAsyncLoader.js"></script>
+@*<script src="~/js/ImageAsyncLoader.js"></script>*@
+<script src="~/js/lozad.min.js"></script>
+
 <script type="text/javascript">
+    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+
     $(document).ready(function () {
-        StartLoadingImagesAsync();
+        //StartLoadingImagesAsync();
         $('[data-toggle="tooltip"]').tooltip(); 
     });
 </script>

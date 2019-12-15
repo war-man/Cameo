@@ -110,6 +110,9 @@
                 },
                 success: function (data) {
                     $("#talentsContainer .innerContainer").html(data);
+                    //document.addEventListener("DOMContentLoaded", yall);
+
+                    observer.observe();
                 },
                 error: function (data) {
                     console.log(data);
