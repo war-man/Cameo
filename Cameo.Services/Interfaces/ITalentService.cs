@@ -11,6 +11,7 @@ namespace Cameo.Services.Interfaces
         Talent GetActiveSingleDetailsWithRelatedDataByID(int id);
 
         IEnumerable<Talent> Search(int categoryID, SortTypeEnum sort);
+        IEnumerable<Talent> SearchBySearchText(string searchText);
         IEnumerable<Talent> GetRelated(Talent model);
     }
 }

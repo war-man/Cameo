@@ -1,0 +1,115 @@
+﻿<div class="frmSearch">
+    <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+        <input type="text" id="search-box" class="form-control" onkeyup="Search(this.value)" placeholder="Попробуйте 'Abduvali' или 'Абдували'" />
+    </div>
+    <div id="suggesstion-box"></div>
+</div>
+
+<script>
+    var currentRequest = null;
+
+    function Search(searchText)
+    {
+        $("#suggesstion-box").html("");
+
+        currentRequest = $.ajax({
+            type: "GET",
+            url: "/Talents/GetBySearchText",
+            //data: JSON.stringify({
+            //    selected: categoryID
+            //}),
+            data: {
+                searchText: searchText
+            },
+            contentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            beforeSend: function () {
+                $("#search-box").css("background", "#FFF url(/Content/Images/spinner.gif) no-repeat right");
+                $("#search-box").css("background-size", "contain");
+
+                if (currentRequest != null) {
+                    currentRequest.abort();
+                }
+            },
+            success: function (data) {
+                $("#suggesstion-box").show();
+                $("#suggesstion-box").html(data);
+                $("#search-box").css("background", "#FFF");
+            },
+            error: function (data) {
+                console.log(data);
+            },
+            complete: function (data) {
+
+            }
+        });
+    }
+
+    function SelectTalent(id) {
+        
+    }
+</script>
+
+<style>
+    #talentsSearchList {
+        float: left;
+        list-style: none;
+        padding: 0;
+        width: 300px;
+        position: absolute;
+        z-index: 20;
+    }
+
+    #talentsSearchList li {
+        padding: 10px;
+        background: #f0f0f0;
+        border-bottom: #bbb9b9 1px solid;
+    }
+    #talentsSearchList li:hover {
+        background: #ece3d2;
+        cursor: pointer;
+    }
+
+    #talentsSearchList > li > a {
+        display: block;
+        padding: 3px 20px;
+        clear: both;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #4d4d4d;
+        white-space: nowrap;
+    }
+
+    #talentsSearchList > li > a > div > .searchImage {
+        height: 64px;
+        width: 64px;
+        min-width: 64px;
+        border-radius: 8px;
+        margin-right: 16px;
+        background: linear-gradient(-35deg,#ffc796,#ff6b95);
+        overflow: hidden;
+        justify-content: center;
+        align-items: flex-end;
+        display: flex;
+    }
+
+    #talentsSearchList > li > a > div > .talentInfo {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.3;
+        overflow: hidden;
+    }
+
+    #talentsSearchList > li > a > div > .talentInfo > .fullName {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+    }
+    #talentsSearchList > li > a > div > .talentInfo > .fullName > .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+</style>

@@ -59,7 +59,6 @@ namespace Cameo.Controllers
             return PartialView(relatedTalents);
         }
 
-        //[HttpPost]
         public IActionResult Get(int categoryID, SortTypeEnum sort)
         {
             var talents = TalentService.Search(categoryID, sort)
@@ -75,6 +74,20 @@ namespace Cameo.Controllers
                 .ToDictionary(m => m.ID, m => m.Name);
 
             return PartialView(talents);
+        }
+
+        public IActionResult GetBySearchText(string searchText)
+        {
+            var talents = TalentService.SearchBySearchText(searchText)
+                .Select(m => new TalentShortInfoVM(m))
+                .ToList();
+
+            foreach (var item in talents)
+            {
+                item.Avatar.Url = GetRandomPhotoUrl();
+            }
+
+            return PartialView("_SearchBoxResult", talents);
         }
 
         private void PrepareViewDataItems(int? cat)

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Cameo.ViewModels.TalentShortInfoVM>
+
+<ul id="talentsSearchList">
+    @foreach (var item in Model)
+    {
+        @*<li onClick="SelectTalent(@item.ID);">@item.FullName</li>*@
+        <li>
+            <a href="/Talents/Details/@item.ID">
+                <div>
+                    <div class="searchImage">
+                        <img height="100%" src="@item.Avatar.Url" alt="@item.FullName"/>
+                    </div>
+                    <div class="talentInfo">
+                        @*<div class="projectName"></div>*@
+                        <div class="fullName">
+                            <span class="name">@item.FullName</span>
+                            <span class="badge">
+                                <span>200 000 сум</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+    }
+</ul>

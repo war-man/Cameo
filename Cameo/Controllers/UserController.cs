@@ -17,6 +17,18 @@ namespace Cameo.Controllers
             _userManager = userManager;
         }
 
+        //For Customer
+        public IActionResult ThanksForRegistration()
+        {
+            return View();
+        }
+
+        //For Talent
+        public IActionResult ThanksForRegistering()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> ValidateIfUserWithUsernameExists(UserInput Input)
         {
             var existingUser = await _userManager.FindByNameAsync(Input.UserName);

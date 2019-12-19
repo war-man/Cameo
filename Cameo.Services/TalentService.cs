@@ -90,6 +90,21 @@ namespace Cameo.Services
             return result;
         }
 
+        public IEnumerable<Talent> SearchBySearchText(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+                return Enumerable.Empty<Talent>();
+
+            searchText = searchText.ToLower();
+
+            IQueryable<Talent> result = GetWithRelatedDataForSearchAsIQueryable();
+            result = result.Where(m => 
+                !string.IsNullOrWhiteSpace(m.FirstName) && m.FirstName.ToLower().Contains(searchText) 
+                || !string.IsNullOrWhiteSpace(m.LastName) && m.LastName.ToLower().Contains(searchText));
+
+            return result;
+        }
+
         private IQueryable<Talent> GetWithRelatedDataForSearchAsIQueryable()
         {
             return GetWithRelatedDataAsIQueryable()
