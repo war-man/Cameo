@@ -75,7 +75,8 @@ namespace Cameo.ViewModels
             this.ID = model.ID;
             this.FirstName = model.FirstName;
             this.LastName = model.LastName;
-            //this.Username = model.User.UserName;
+            this.Username = model.User?.UserName;
+            //this.Username = "xenon1991";
             this.Avatar = new AttachmentDetailsVM(model.Avatar);
         }
     }

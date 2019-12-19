@@ -20,6 +20,19 @@ namespace Cameo.Services
             LogTalentPriceService = logTalentPriceService;
         }
 
+        public Talent GetActiveByUsername(string username)
+        {
+            if (!string.IsNullOrWhiteSpace(username))
+                username = username.ToLower();
+
+            Talent model = _repository.GetWithRelatedDataAsIQueryable()
+                .FirstOrDefault(m => m.User.UserName.ToLower() == username);
+            if (model != null)
+                return model.IsDeleted ? null : model;
+
+            return model;
+        }
+
         public override void Update(Talent entity, string userID)
         {
             base.Update(entity, userID);

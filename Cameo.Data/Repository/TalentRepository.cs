@@ -17,7 +17,8 @@ namespace Cameo.Data.Repository
         {
             return DbSet
                 .Include(m => m.TalentCategories).ThenInclude(m => m.Category)
-                .Include(m => m.Projects);
+                .Include(m => m.Projects)
+                .Include(m => m.User);
         }
 
         override public Talent GetActiveSingleDetailsWithRelatedDataByID(int id)

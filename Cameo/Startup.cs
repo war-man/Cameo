@@ -139,6 +139,11 @@ namespace Cameo
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "blog", 
+                    template: "Talents/Details/{username}",
+                    defaults: new { controller = "Talents", action = "Details" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });

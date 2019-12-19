@@ -33,9 +33,22 @@ namespace Cameo.Controllers
             return View(new FilterVM());
         }
 
-        public IActionResult Details(int id)
+        //public IActionResult Details(int id)
+        //{
+        //    Talent model = TalentService.GetActiveByID(id);
+        //    if (model == null)
+        //        return NotFound();
+
+        //    TalentDetailsVM modelVM = new TalentDetailsVM(model);
+
+        //    ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+
+        //    return View(modelVM);
+        //}
+
+        public IActionResult Details(string username)
         {
-            Talent model = TalentService.GetActiveByID(id);
+            Talent model = TalentService.GetActiveByUsername(username);
             if (model == null)
                 return NotFound();
 
