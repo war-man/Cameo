@@ -5,9 +5,12 @@ using Cameo.Common;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Cameo.Utils;
+using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NReco;
+using NReco.VideoConverter;
 
 namespace Cameo.Controllers
 {
@@ -18,20 +21,24 @@ namespace Cameo.Controllers
         private readonly ICustomerService CustomerService;
         private readonly ITalentService TalentService;
         private readonly IVideoRequestService VideoRequestService;
+        private readonly IHangfireService HangfireService;
 
         public AttachmentController(
             IAttachmentService attachmentService,
             ICustomerService customerService,
             ITalentService talentService,
-            IVideoRequestService videoRequestService)
+            IVideoRequestService videoRequestService,
+            IHangfireService hangfireService)
         {
             AttachmentService = attachmentService;
             CustomerService = customerService;
             TalentService = talentService;
             VideoRequestService = videoRequestService;
+            HangfireService = hangfireService;
         }
 
         [HttpPost]
+        [RequestSizeLimit(200000000)]
         public IActionResult Upload(List<IFormFile> files, int? id, string fileType)
         {
             var curUser = accountUtil.GetCurrentUser(User);
@@ -50,7 +57,16 @@ namespace Cameo.Controllers
                 };
 
                 string rootPath = AppData.Configuration.ApplicationRootPath;
-                string path = AppData.Configuration.UploadsPath + "/" + attachment.GUID + "." + file.FileName.Split('.')[1];
+
+                string path = AppData.Configuration.UploadsPath;
+                if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
+                {
+                    string videosRelativePath = "/Videos";
+                    path += videosRelativePath;
+                    attachment.Path += videosRelativePath;
+                }
+                    
+                path += "/" + attachment.GUID + "." + file.FileName.Split('.')[1];
                 path = path.Replace('/', '\\');
 
                 string target = rootPath + path;
@@ -58,13 +74,14 @@ namespace Cameo.Controllers
                 using (var stream = new FileStream(target, FileMode.Create))
                 {
                     file.CopyTo(stream);
+
                     AttachmentService.Add(attachment, curUser.ID);
 
                     if (id.HasValue && id.Value > 0)
                         AttachFile(attachment, id.Value, fileType, curUser.ID);
                 }
 
-                return Ok(attachment.ID);
+                return Ok(new AttachmentDetailsVM(attachment));
             }
 
             return BadRequest();
@@ -99,6 +116,8 @@ namespace Cameo.Controllers
                     {
                         model.Video = attachment;
                         VideoRequestService.SaveUploadedVideo(model, curUserID);
+
+                        HangfireService.CreateTaskForConvertingVideo(attachment.ID, curUserID);
                     }
                 }
             }
@@ -157,5 +176,20 @@ namespace Cameo.Controllers
         //{
         //    return Json(new { });
         //}
+
+        private void ProcessVideo(IFormFile file, Attachment attachment)
+        {
+            var ffMpeg = new FFMpegConverter();
+            ffMpeg.ConvertMedia("/Uploaefefds/c815db17-dc19-4c6e-8718-d60e8ad990df.mp4", "/Uploads/c815db17-dc19-4c6e-8718-d60e8ad990df1.mp4", Format.mp4);
+
+            //ffMpeg.ConvertMedia("asdf.mov", null, "output.mp4", Format.mp4,new ConvertSettings()
+            //{
+            //    VideoFrameRate = 25,
+            //    //VideoFrameSize = FrameSize.
+            //    AudioSampleRate = 44100,
+            //});
+
+            //ffMpeg.GetVideoThumbnail();
+        }
     }
 }

@@ -4,6 +4,8 @@
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
+<input type="file" onchange="FileAjaxUpload(this)" />
+
 <address>
     One Microsoft Way<br />
     Redmond, WA 98052-6399<br />
@@ -15,3 +17,43 @@
     <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
     <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
 </address>
+
+@section Scripts{
+    <script>
+        function FileAjaxUpload(input) {
+            alert("1");
+            if (input.files && input.files[0]) {
+                alert("2");
+                var files = input.files;
+                var formData = new FormData();
+
+                for (var i = 0; i != files.length; i++) {
+                    formData.append("files", files[i]);
+                }
+                alert("3");
+
+                $.ajax({
+                    url: "/Attachment/Upload",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    beforeSend: function () {
+                        alert("beforeSend");
+                        $(input).attr("disabled", "disabled");
+                    },
+                    success: function (data) {
+                        alert("success");
+                    },
+                    error: function (data) {
+                        alert("error");
+                    },
+                    complete: function () {
+                        alert("complete");
+                        $(input).removeAttr("disabled");
+                    }
+                });
+            }
+        }
+    </script>
+}

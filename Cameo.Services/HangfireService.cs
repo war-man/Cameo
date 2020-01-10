@@ -10,10 +10,17 @@ namespace Cameo.Services
     public class HangfireService : IHangfireService
     {
         private readonly IVideoRequestService VideoRequestService;
+        private readonly IFileManagement FileManagement;
+        private readonly IAttachmentService AttachmentService;
 
-        public HangfireService(IVideoRequestService videoRequestService)
+        public HangfireService(
+            IVideoRequestService videoRequestService,
+            IFileManagement fileManagement,
+            IAttachmentService attachmentService)
         {
             VideoRequestService = videoRequestService;
+            FileManagement = fileManagement;
+            AttachmentService = attachmentService;
         }
 
         public string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID)
@@ -87,6 +94,34 @@ namespace Cameo.Services
                 catch
                 { }
             }
+        }
+
+        public void CreateTaskForConvertingVideo(int attachmentID, string userID)
+        {
+            try
+            {
+                BackgroundJob.Enqueue(() => StartConvertingVideo(attachmentID, userID));
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        public void StartConvertingVideo(int attachmentID, string userID)
+        {
+            try
+            {
+                Attachment attachment = AttachmentService.GetByID(attachmentID);
+                string newVideoName = FileManagement.ConvertVideoToMp4(attachment.Path, attachment.GUID + "." + attachment.Extension);
+                FileManagement.DeleteFile(attachment.Path + "/" + attachment.GUID + "." + attachment.Extension);
+
+                string[] tmp = newVideoName.Split('.');
+                attachment.GUID = tmp[0];
+                attachment.Extension = tmp[1];
+
+                AttachmentService.Update(attachment, userID);
+            }
+            catch (Exception ex)
+            { }
         }
     }
 }

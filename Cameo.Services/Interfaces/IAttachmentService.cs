@@ -6,6 +6,5 @@ namespace Cameo.Services.Interfaces
 {
     public interface IAttachmentService : IBaseCRUDService<Attachment>
     {
-        //void AddAndSaveFile(Attachment model, FileStream stream, string creatorID);
     }
 }

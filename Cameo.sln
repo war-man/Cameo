@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.Data", "Cameo.Data\Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.Services", "Cameo.Services\Cameo.Services.csproj", "{0AEA2E84-F3A6-4DFC-BBEF-1803862949E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cameo.Common", "Cameo.Common\Cameo.Common.csproj", "{80E632AC-7259-48DC-871A-D811298FFA91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.Common", "Cameo.Common\Cameo.Common.csproj", "{80E632AC-7259-48DC-871A-D811298FFA91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

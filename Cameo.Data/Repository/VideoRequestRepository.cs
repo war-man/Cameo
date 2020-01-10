@@ -35,6 +35,7 @@ namespace Cameo.Data.Repository
                 .Include(m => m.Customer).ThenInclude(m => m.Avatar)
                 .Include(m => m.Talent).ThenInclude(m => m.Avatar)
                 .Include(m => m.Talent).ThenInclude(m => m.Projects)
+                .Include(m => m.Talent).ThenInclude(m => m.User)
                 .Include(m => m.Video)
                 .FirstOrDefault(m => m.ID == id && !m.IsDeleted);
         }

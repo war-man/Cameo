@@ -91,7 +91,11 @@
                     if (userType == talentType)
                     {
                         //in future this will be a video player but not an image
-                        html += '<img id="imgContainer_' + full.id + '" src="' + full.video.url + '" alt="Video" class="img-thumbnail" height="150" width="50" />';
+                        if (full.video.id > 0)
+                        {
+                            html += "<video id='imgContainer_" + full.id + "' width='240' height='320' controls><source src='" + full.video.url + "' type='video/mp4'></video>"
+                        }
+                        //html += '<img id="imgContainer_' + full.id + '" src="' + full.video.url + '" alt="Video" class="img-thumbnail" height="150" width="50" />';
                         html += "<br />";
 
                         if (full.videoConfirmed == true)
@@ -114,7 +118,7 @@
                                 //in future jquery-file-upload.js will be used
                                 //html += "<div id='fileuploader_" + full.id + "' class='fileuploader'>Upload</div>";
                                 html += '<img id="spinner_' + full.id + '" src="/Content/Images/spinner.gif" style="display: none; height:20px;" />';
-                                html += "<input type='file' id='imgInp_" + full.id + "' onchange = 'FileAjaxUpload(this, " + full.id + ", \"" + videoRequestVideoFileType + "\", \"spinner_" + full.id + "\", \"imgContainer_" + full.id + "\");' />";
+                                html += "<input type='file' id='imgInp_" + full.id + "' onchange = 'VideoAjaxUpload(this, " + full.id + ", \"" + videoRequestVideoFileType + "\", \"spinner_" + full.id + "\", \"imgContainer_" + full.id + "\");' />";
                             }
                             else
                                 html += "<small><i>Текущий статус запроса не позволяет загрузить видео</i></small>";
@@ -163,6 +167,53 @@
 
         }
     });
+}
+
+function VideoAjaxUpload(input, modelID, fileType, spinnerTagID, videoPreviewContainerTagID) {
+    if (input.files && input.files[0]) {
+        var files = input.files;
+        var formData = new FormData();
+
+        for (var i = 0; i != files.length; i++) {
+            formData.append("files", files[i]);
+        }
+        formData.append("id", "" + modelID);
+        formData.append("fileType", fileType);
+
+        $.ajax({
+            url: "/Attachment/Upload",
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            beforeSend: function () {
+                alert("beforeSend");
+                $("#" + spinnerTagID).show();
+                $(input).attr("disabled", "disabled");
+            },
+            success: function (data) {
+                alert("success");
+                if (videoPreviewContainerTagID != undefined
+                    || videoPreviewContainerTagID != null
+                    || videoPreviewContainerTagID != "")
+                {
+
+                    $("#" + videoPreviewContainerTagID).attr('src', data.url);
+                }
+                else {
+                    alert("File uploaded!");
+                }
+            },
+            error: function (data) {
+                alert("error");
+            },
+            complete: function () {
+                alert("complete");
+                $("#" + spinnerTagID).hide();
+                $(input).removeAttr("disabled");
+            }
+        });
+    }
 }
 
 function CancelRequest(requestID)

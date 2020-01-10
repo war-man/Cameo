@@ -12,5 +12,8 @@ namespace Cameo.Services.Interfaces
         string CreateJobForVideoRequestPaymentDeadline(VideoRequest request, string userID);
 
         void CancelJob(string jobID);
+        
+        void CreateTaskForConvertingVideo(int attachmentID, string userID);
+        void StartConvertingVideo(int attachmentID, string userID );
     }
 }
