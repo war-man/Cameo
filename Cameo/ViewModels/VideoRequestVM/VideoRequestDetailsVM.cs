@@ -1,4 +1,5 @@
-﻿using Cameo.Models;
+﻿using Cameo.Common;
+using Cameo.Models;
 using Cameo.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,6 +10,58 @@ using System.Threading.Tasks;
 
 namespace Cameo.ViewModels
 {
+    public class VideoRequestDetailsVM
+    {
+        public int ID { get; set; }
+
+        public string To { get; set; }
+
+        public string From { get; set; }
+
+        public string Instructions { get; set; }
+
+        public string Email { get; set; }
+        public bool IsNotPublic { get; set; }
+        public int Price { get; set; }
+
+        public string VideoDeadline { get; set; }
+
+        public bool Cancelable { get; set; }
+        public bool Payable { get; set; }
+        public bool VideoIsPaid { get; set; }
+
+        public VideoRequestStatusDetailsVM Status { get; set; }
+
+        public VideoRequestDetailsVM() { }
+
+        public VideoRequestDetailsVM(VideoRequest model)
+        {
+            if (model == null)
+                return;
+
+            ID = model.ID;
+            To = model.To;
+            From = model.From;
+            Instructions = model.Instructions;
+            Email = model.Email;
+            IsNotPublic = model.IsNotPublic;
+            Price = model.Price;
+
+            if (model.VideoDeadline.HasValue)
+                VideoDeadline = model.VideoDeadline.Value.ToString(AppData.Configuration.DateTextViewStringFormat);
+
+            Status = new VideoRequestStatusDetailsVM(model.RequestStatus);
+
+            Cancelable = model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse
+                || model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
+
+            Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
+
+            VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid
+                && model.VideoID.HasValue;
+        }
+    }
+
     public class VideoDetailsVM
     {
         public int RequestID { get; set; }
@@ -32,6 +85,18 @@ namespace Cameo.ViewModels
             To = model.To;
             From = model.From;
             Talent = new TalentShortInfoForVideoPageVM(model.Talent);            
+        }
+    }
+
+    public class VideoRequestStatusDetailsVM : BaseDropdownableDetailsVM
+    {
+        public VideoRequestStatusDetailsVM() { }
+
+        public VideoRequestStatusDetailsVM(VideoRequestStatus model)
+            : base(model)
+        {
+            if (model == null)
+                return;
         }
     }
 }

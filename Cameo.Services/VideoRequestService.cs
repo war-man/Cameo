@@ -312,5 +312,10 @@ namespace Cameo.Services
             
             return null;
         }
+
+        public bool BelongsToCustomer(VideoRequest model, string userID)
+        {
+            return model?.Customer?.UserID?.Equals(userID) ?? false;
+        }
     }
 }

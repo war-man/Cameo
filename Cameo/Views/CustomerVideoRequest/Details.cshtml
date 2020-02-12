@@ -1,0 +1,175 @@
+﻿@model Cameo.ViewModels.VideoRequestDetailsVM
+
+@{
+    ViewData["Title"] = "Детали Запроса";
+}
+
+<br />
+<div class="row">
+    <div class="col-sm-6">
+        <h2>@ViewData["Title"]</h2>
+        <hr />
+
+        @if (Model.VideoIsPaid)
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>Запрос завершен - <a href="/Video/Details/@Model.ID">Перейти к видео</a></p>
+                </div>
+            </div>
+            <br />
+        }
+
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ID)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ID)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.To)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.To)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.From)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.From)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Instructions)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Instructions)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsNotPublic)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsNotPublic)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.VideoDeadline)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.VideoDeadline)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Status.ID)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Status.ID)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Status.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Status.Name)
+                </dd>
+            </dl>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                @if (Model.Cancelable)
+                {
+                    <button type="button" class="btn btn-danger btn-sm" onclick="CancelRequest(@Model.ID);">Отменить</button>
+                }
+
+                @if (Model.Payable)
+                {
+                    <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        Here will be some instructions like on cameo
+    </div>
+</div>
+
+<div>
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        function CancelRequest(requestID)
+        {
+            $(".btn").attr("disabled", "disabled");
+
+            $.ajax({
+                type: "POST",
+                url: "/VideoRequest/Cancel?id=" + requestID,
+                //data: {
+                //    id: requestID
+                //},
+                //data: JSON.stringify({
+                //    id: requestID
+                //}),
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data) {
+                    //alert("success");
+                    //alert(data);
+                },
+                error: function (data) {
+                    //alert("error");
+                    console.log(data);
+                },
+                complete: function (data) {
+                    //alert("completed");
+                    $(".btn").removeAttr("disabled");
+                }
+            });
+        }
+
+        function MakePayment(requestID)
+        {
+            $(".btn").attr("disabled", "disabled");
+
+            $.ajax({
+                type: "POST",
+                url: "/VideoRequest/MakePayment?id=" + requestID,
+                //data: {
+                //    id: requestID
+                //},
+                //data: JSON.stringify({
+                //    id: requestID
+                //}),
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data) {
+                    //alert("success");
+                    //alert(data);
+                },
+                error: function (data) {
+                    //alert("error");
+                    console.log(data);
+                },
+                complete: function (data) {
+                    //alert("completed");
+                    $(".btn").removeAttr("disabled");
+                }
+            });
+        }
+    </script>
+}

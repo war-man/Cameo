@@ -37,8 +37,12 @@ namespace Cameo.Controllers
         public IActionResult Details(int id)
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
-            VideoDetailsVM modelVM = new VideoDetailsVM(model);
+            VideoRequest model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+
+            if (model == null || !VideoRequestService.BelongsToCustomer(model, curUser.ID))
+                return NotFound();
+
+            VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(model);
 
             return View(modelVM);
         }
