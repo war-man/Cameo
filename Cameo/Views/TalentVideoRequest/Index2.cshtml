@@ -1,14 +1,14 @@
 ﻿@using Cameo.Models.Enums
 
 @{
-    ViewData["Title"] = "Мои запросы на видео";
+    ViewData["Title"] = "Запросы на видео";
     ViewData["userType"] = ViewBag.userType;
 }
 
 <br />
 <div class="row">
     <div class="col-sm-3">
-        <partial name="_CustomerSidebar" />
+        <partial name="_TalentSidebar" />
     </div>
     <div class="col-sm-9">
         <h2>@ViewData["Title"]</h2>
@@ -108,7 +108,7 @@
                     {
                         "data": "person", /*"name": "person",*/ /*"title": "Талант",*/ "autoWidth": true,
                         "render": function (data, type, full, meta) {
-                            var html = '<a href="/CustomerVideoRequest/Details/' + full.id + '">';
+                            var html = '<a href="/TalentVideoRequest/Details/' + full.id + '">';
                             html += '       <div class="">';
                             html += '           <span class="talentPhoto">';
                             //html += '               <a href="/Talents/Details/' + full.person.username + '">';
@@ -187,10 +187,3 @@
         }
     </script>
 }
-@*<style>
-    thead {
-        position: absolute !important;
-        top: -9999px !important;
-        left: -9999px !important;
-    }
-</style>*@
