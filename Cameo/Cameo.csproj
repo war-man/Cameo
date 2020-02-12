@@ -39,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\CustomerVideoRequest\Index2.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_CustomerSidebar.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

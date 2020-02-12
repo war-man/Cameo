@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,16 @@ namespace Cameo.Controllers
     {
         private readonly ICustomerService CustomerService;
         private readonly IVideoRequestSearchService SearchService;
+        private readonly IVideoRequestService VideoRequestService;
 
         public CustomerVideoRequestController(
             ICustomerService customerService,
-            IVideoRequestSearchService searchService)
+            IVideoRequestSearchService searchService,
+            IVideoRequestService videoRequestService)
         {
             CustomerService = customerService;
             SearchService = searchService;
+            VideoRequestService = videoRequestService;
         }
 
         public IActionResult Index()
@@ -27,7 +31,16 @@ namespace Cameo.Controllers
             AppUserVM curUser = accountUtil.GetCurrentUser(User);
             ViewBag.userType = curUser.Type;
 
-            return View();
+            return View("Index2");
+        }
+
+        public IActionResult Details(int id)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
+            VideoDetailsVM modelVM = new VideoDetailsVM(model);
+
+            return View(modelVM);
         }
     }
 }
