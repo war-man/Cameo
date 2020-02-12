@@ -1,4 +1,50 @@
-﻿function FileAjaxUpload(input, modelID, fileType, spinnerTagID, imgPreviewContainerTagID) {
+﻿function VideoAjaxUpload(input, modelID, fileType, spinnerTagID, videoPreviewContainerTagID) {
+    if (input.files && input.files[0]) {
+        var files = input.files;
+        var formData = new FormData();
+
+        for (var i = 0; i != files.length; i++) {
+            formData.append("files", files[i]);
+        }
+        formData.append("id", "" + modelID);
+        formData.append("fileType", fileType);
+
+        $.ajax({
+            url: "/Attachment/Upload",
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            beforeSend: function () {
+                alert("beforeSend");
+                $("#" + spinnerTagID).show();
+                $(input).attr("disabled", "disabled");
+            },
+            success: function (data) {
+                alert("success");
+                if (videoPreviewContainerTagID != undefined
+                    || videoPreviewContainerTagID != null
+                    || videoPreviewContainerTagID != "") {
+
+                    $("#" + videoPreviewContainerTagID).attr('src', data.url);
+                }
+                else {
+                    alert("File uploaded!");
+                }
+            },
+            error: function (data) {
+                alert("error");
+            },
+            complete: function () {
+                alert("complete");
+                $("#" + spinnerTagID).hide();
+                $(input).removeAttr("disabled");
+            }
+        });
+    }
+}
+
+function FileAjaxUpload(input, modelID, fileType, spinnerTagID, imgPreviewContainerTagID) {
     if (input.files && input.files[0]) {
         var files = input.files;
         var formData = new FormData();

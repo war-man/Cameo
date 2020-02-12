@@ -36,5 +36,6 @@ namespace Cameo.Services.Interfaces
         VideoRequest GetSinglePublished(int id, string userID);
 
         bool BelongsToCustomer(VideoRequest model, string userID);
+        bool BelongsToTalent(VideoRequest model, string userID);
     }
 }

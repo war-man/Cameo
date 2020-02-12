@@ -1,4 +1,6 @@
 ﻿@model Cameo.ViewModels.VideoRequestDetailsVM
+@using Cameo.Common
+@using Cameo.Utils
 
 @{
     ViewData["Title"] = "Детали Запроса";
@@ -92,16 +94,38 @@
                 {
                     <button type="button" class="btn btn-danger btn-sm" onclick="CancelRequest(@Model.ID);">Отменить</button>
                 }
-
-                @if (Model.Payable)
-                {
-                    <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
-                }
             </div>
         </div>
     </div>
     <div class="col-sm-6">
-        Here will be some instructions like on cameo
+        @if (Model.Video.ID > 0)
+        {
+            <video id="imgContainer_@Model.ID" width="240" height="320" controls><source src="/Video/GetVideo/@Model.ID" type="video/mp4"></video>
+        }
+
+        @if (Model.VideoConfirmed)
+        {
+            <div class="alert alert-success"><small>Видео подтверждено</small></div>
+        }
+        else
+        {
+            if (Model.UploadVideoBtnIsAvailable)
+            {
+                if (Model.Video.ID > 0)
+                {
+                    <button type="button" class="btn btn-danger btn-sm" id="deleteBtn_@Model.ID" onclick="DeleteVideo(@Model.Video.ID, @Model.ID);" title="Удалить Видео"><i class="glyphicon glyphicon-remove-sign"></i></button>
+                    <div class="alert alert-warning"><small>Видео еще не подтверждено. Для завершения запроса, пожалуйста, подтвердите</small></div>
+                    <button type="button" class="btn btn-success btn-sm" onclick="ConfirmVideo(@Model.ID);">Подтвердить</button>
+                }
+
+                <img id="spinner_@Model.ID" src="@AppData.Configuration.SpinnerUrl" style="display: none; height:20px;" />
+                <input type="file" id="imgInp_@Model.ID" onchange="VideoAjaxUpload(this, @Model.ID, '@Constants.FileTypes.VIDEO_REQUEST_VIDEO', 'spinner_@Model.ID', 'imgContainer_@Model.ID');" />
+            }
+            else
+            {
+                <small><i>Текущий статус запроса не позволяет загрузить видео</i></small>
+            }
+        }
     </div>
 </div>
 
@@ -111,6 +135,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/FileAjaxUpload.js"></script>
     <script>
         function CancelRequest(requestID)
         {
@@ -142,13 +167,18 @@
             });
         }
 
-        function MakePayment(requestID)
+        function DeleteVideo(videoID, requestID)
+        {
+            FileAjaxDelete(videoID, requestID, "@Constants.FileTypes.VIDEO_REQUEST_VIDEO", "spinner_" + requestID, "imgContainer_" + requestID, "deleteBtn_" + requestID);
+        }
+
+        function ConfirmVideo(requestID)
         {
             $(".btn").attr("disabled", "disabled");
 
             $.ajax({
                 type: "POST",
-                url: "/VideoRequest/MakePayment?id=" + requestID,
+                url: "/VideoRequest/ConfirmVideo?id=" + requestID,
                 //data: {
                 //    id: requestID
                 //},

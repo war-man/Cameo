@@ -26,11 +26,15 @@ namespace Cameo.ViewModels
 
         public string VideoDeadline { get; set; }
 
-        public bool Cancelable { get; set; }
-        public bool Payable { get; set; }
-        public bool VideoIsPaid { get; set; }
+        public bool CancelBtnIsAvailable { get; set; } = false;
+        public bool Payable { get; set; } = false;
+        public bool VideoIsPaid { get; set; } = false;
+        public bool UploadVideoBtnIsAvailable { get; set; } = false;
 
         public VideoRequestStatusDetailsVM Status { get; set; }
+
+        public AttachmentDetailsVM Video { get; set; }
+        public bool VideoConfirmed { get; set; }
 
         public VideoRequestDetailsVM() { }
 
@@ -52,13 +56,19 @@ namespace Cameo.ViewModels
 
             Status = new VideoRequestStatusDetailsVM(model.RequestStatus);
 
-            Cancelable = model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse
-                || model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
+            if (model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse
+                || model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo)
+            {
+                CancelBtnIsAvailable = UploadVideoBtnIsAvailable = true;
+            }
 
             Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
 
             VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid
                 && model.VideoID.HasValue;
+
+            Video = new AttachmentDetailsVM(model.Video);
+            VideoConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
         }
     }
 

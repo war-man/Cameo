@@ -238,7 +238,8 @@ namespace Cameo.Services
 
         public bool VideoIsUploadable(VideoRequest model)
         {
-            return (/*!model.DateVideoCompleted.HasValue &&*/ RequestIsAcceptedAndWaitingForVideo(model));
+            return (/*!model.DateVideoCompleted.HasValue &&*/RequestIsWaitingForResponse(model) 
+                || RequestIsAcceptedAndWaitingForVideo(model));
         }
 
         public void SaveUploadedVideo(VideoRequest model, string userID)
@@ -249,7 +250,8 @@ namespace Cameo.Services
 
         public bool VideoIsAllowedToBeDeleted(VideoRequest model)
         {
-            return RequestIsAcceptedAndWaitingForVideo(model);
+            //return RequestIsAcceptedAndWaitingForVideo(model);
+            return VideoIsUploadable(model);
         }
 
         public void SaveDetachedVideo(VideoRequest model, string userID)
@@ -316,6 +318,11 @@ namespace Cameo.Services
         public bool BelongsToCustomer(VideoRequest model, string userID)
         {
             return model?.Customer?.UserID?.Equals(userID) ?? false;
+        }
+
+        public bool BelongsToTalent(VideoRequest model, string userID)
+        {
+            return model?.Talent?.UserID?.Equals(userID) ?? false;
         }
     }
 }
