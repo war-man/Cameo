@@ -56,8 +56,7 @@ namespace Cameo.ViewModels
 
             Status = new VideoRequestStatusDetailsVM(model.RequestStatus);
 
-            if (model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse
-                || model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo)
+            if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo)
             {
                 CancelBtnIsAvailable = UploadVideoBtnIsAvailable = true;
             }
