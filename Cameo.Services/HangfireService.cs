@@ -23,25 +23,25 @@ namespace Cameo.Services
             AttachmentService = attachmentService;
         }
 
-        public string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID)
-        {
-            string jobID = BackgroundJob.Schedule(() => 
-                AnswerDeadlineReaches(request.ID, userID), 
-                new DateTimeOffset(request.RequestAnswerDeadline));
+        //public string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID)
+        //{
+        //    string jobID = BackgroundJob.Schedule(() => 
+        //        AnswerDeadlineReaches(request.ID, userID), 
+        //        new DateTimeOffset(request.RequestAnswerDeadline));
 
-            return jobID;
-        }
+        //    return jobID;
+        //}
 
-        public void AnswerDeadlineReaches(int videoRequestID, string userID)
-        {
-            try
-            {
-                VideoRequest request = VideoRequestService.GetByID(videoRequestID);
-                VideoRequestService.AnswerDeadlineReaches(request, userID);
-            }
-            catch (Exception ex)
-            { }
-        }
+        //public void AnswerDeadlineReaches(int videoRequestID, string userID)
+        //{
+        //    try
+        //    {
+        //        VideoRequest request = VideoRequestService.GetByID(videoRequestID);
+        //        VideoRequestService.AnswerDeadlineReaches(request, userID);
+        //    }
+        //    catch (Exception ex)
+        //    { }
+        //}
 
         public string CreateJobForVideoRequestVideoDeadline(VideoRequest request, string userID)
         {
@@ -63,25 +63,25 @@ namespace Cameo.Services
             { }
         }
 
-        public string CreateJobForVideoRequestPaymentDeadline(VideoRequest request, string userID)
-        {
-            string jobID = BackgroundJob.Schedule(() =>
-                PaymentDeadlineReaches(request.ID, userID),
-                new DateTimeOffset(request.PaymentDeadline.Value));
+        //public string CreateJobForVideoRequestPaymentDeadline(VideoRequest request, string userID)
+        //{
+        //    string jobID = BackgroundJob.Schedule(() =>
+        //        PaymentDeadlineReaches(request.ID, userID),
+        //        new DateTimeOffset(request.PaymentDeadline.Value));
 
-            return jobID;
-        }
+        //    return jobID;
+        //}
 
-        public void PaymentDeadlineReaches(int videoRequestID, string userID)
-        {
-            try
-            {
-                VideoRequest request = VideoRequestService.GetByID(videoRequestID);
-                VideoRequestService.PaymentDeadlineReaches(request, userID);
-            }
-            catch (Exception ex)
-            { }
-        }
+        //public void PaymentDeadlineReaches(int videoRequestID, string userID)
+        //{
+        //    try
+        //    {
+        //        VideoRequest request = VideoRequestService.GetByID(videoRequestID);
+        //        VideoRequestService.PaymentDeadlineReaches(request, userID);
+        //    }
+        //    catch (Exception ex)
+        //    { }
+        //}
 
         public void CancelJob(string jobID)
         {

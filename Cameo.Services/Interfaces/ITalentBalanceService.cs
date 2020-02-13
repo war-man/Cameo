@@ -11,5 +11,6 @@ namespace Cameo.Services.Interfaces
         int CalculateMaxAvailablePriceForCameo(Talent talent);
         int CalculateMaxNumberOfPossibleRequests(int balance, int price);
         bool BalanceAllowsToAcceptRequest(int balance, int price);
+        bool BalanceAllowsToUploadVideo(int balance, int price);
     }
 }

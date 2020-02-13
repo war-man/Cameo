@@ -100,7 +100,7 @@
     <div class="col-sm-6">
         @if (Model.Video.ID > 0)
         {
-            <video id="imgContainer_@Model.ID" width="240" height="320" controls><source src="/Video/GetVideo/@Model.ID" type="video/mp4"></video>
+            <video id="imgContainer_@Model.ID" width="240" height="320" controls><source src="/Video/GetIncompletedVideo/@Model.ID" type="video/mp4"></video>
         }
 
         @if (Model.VideoConfirmed)

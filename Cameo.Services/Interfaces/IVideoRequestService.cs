@@ -7,7 +7,7 @@ namespace Cameo.Services.Interfaces
     {
         VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id);
 
-        void AnswerDeadlineReaches(VideoRequest model, string userID);
+        //void AnswerDeadlineReaches(VideoRequest model, string userID);
 
         /// <summary>
         /// this method is used for cancelling both the REQUEST and VIDEO 
@@ -15,13 +15,13 @@ namespace Cameo.Services.Interfaces
         /// </summary>
         void Cancel(VideoRequest model, string userID, string userType);
 
-        void Accept(VideoRequest model, string userID);
+        //void Accept(VideoRequest model, string userID);
 
         void VideoDeadlineReaches(VideoRequest model, string userID);
 
         void MakePayment(VideoRequest model, string userID);
 
-        void PaymentDeadlineReaches(VideoRequest model, string userID);
+        //void PaymentDeadlineReaches(VideoRequest model, string userID);
 
         bool VideoIsUploadable(VideoRequest model);
 
@@ -34,6 +34,7 @@ namespace Cameo.Services.Interfaces
         void ConfirmVideo(VideoRequest model, string userID);
 
         VideoRequest GetSinglePublished(int id, string userID);
+        VideoRequest GetIncompletedVideo(int id, string userID);
 
         bool BelongsToCustomer(VideoRequest model, string userID);
         bool BelongsToTalent(VideoRequest model, string userID);

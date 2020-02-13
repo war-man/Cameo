@@ -1,5 +1,7 @@
 ﻿@model Cameo.ViewModels.VideoRequestCreateVM
 @using Cameo.Models.Enums
+@using Cameo.Common
+
 @{
     var videoRequestTypes = ViewData["videoRequestTypes"] as List<SelectListItem>;
     var talent = ViewData["talent"] as Cameo.ViewModels.TalentDetailsVM;
@@ -72,7 +74,7 @@ else
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Оплату Вы произведете, как только видео будет готово">
-                Заказать прямо сейчас за @talent.Price.ToString("### ### ###") сум
+                Заказать прямо сейчас за @talent.Price.ToString(AppData.Configuration.NumberViewStringFormat) сум
             </button>
         </div>
     </div>

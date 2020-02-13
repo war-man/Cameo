@@ -93,5 +93,10 @@ namespace Cameo.Services
         {
             return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
         }
+
+        public bool BalanceAllowsToUploadVideo(int balance, int price)
+        {
+            return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
+        }
     }
 }

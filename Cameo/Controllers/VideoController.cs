@@ -38,8 +38,26 @@ namespace Cameo.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
             VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
 
+            if (model == null)
+                return null;
+
             string fileAbsolutePath = FileManagement.GetFileAbsolutePath(
                 model.Video.Path, 
+                model.Video.GUID + "." + model.Video.Extension);
+
+            return PhysicalFile(fileAbsolutePath, "video/mp4");
+        }
+
+        public IActionResult GetIncompletedVideo(int id)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            VideoRequest model = VideoRequestService.GetIncompletedVideo(id, curUser.ID);
+
+            if (model == null)
+                return null;
+
+            string fileAbsolutePath = FileManagement.GetFileAbsolutePath(
+                model.Video.Path,
                 model.Video.GUID + "." + model.Video.Extension);
 
             return PhysicalFile(fileAbsolutePath, "video/mp4");
