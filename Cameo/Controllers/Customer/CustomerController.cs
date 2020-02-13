@@ -23,17 +23,18 @@ namespace Cameo.Controllers
 
         public IActionResult Index()
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetByUserID(curUser.ID);
-            if (model == null)
-                return NotFound();
+            //var curUser = accountUtil.GetCurrentUser(User);
+            //Customer model = CustomerService.GetByUserID(curUser.ID);
+            //if (model == null)
+            //    return NotFound();
 
-            if (model.AvatarID.HasValue)
-                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+            //if (model.AvatarID.HasValue)
+            //    model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
-            CustomerShortInfoVM modelVM = new CustomerShortInfoVM(model);
+            //CustomerShortInfoVM modelVM = new CustomerShortInfoVM(model);
 
-            return View(modelVM);
+            //return View(modelVM);
+            return RedirectToAction("Index", "CustomerPersonalData");
         }
     }
 }
