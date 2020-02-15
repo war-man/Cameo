@@ -23,6 +23,9 @@ namespace Cameo.Controllers
         public IActionResult Index()
         {
             //_backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
+            //int k = 6;
+            //int l = k / 0;
+
             return View();
         }
 
