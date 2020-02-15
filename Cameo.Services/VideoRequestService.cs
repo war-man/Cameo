@@ -276,6 +276,11 @@ namespace Cameo.Services
 
             Update(model, userID);
 
+            SendEmailOnceVideoConfirmed(model);
+        }
+
+        public void SendEmailOnceVideoConfirmed(VideoRequest model)
+        {
             //send email to Customer and Talent
             string toCustomer = "cortex91@inbox.ru";
             string subjectCustomer = "Subject - Customer";

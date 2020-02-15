@@ -241,9 +241,8 @@ namespace Cameo.Controllers
                 //confirm request/video
                 VideoRequestService.ConfirmVideo(model, curUser.ID);
 
-                ////create hangfire PaymentJobID
-                //model.PaymentJobID = HangfireService.CreateJobForVideoRequestPaymentDeadline(model, curUser.ID);
-                //VideoRequestService.Update(model, curUser.ID);
+                //create hangfire PaymentReminderJobID
+                HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
 
                 return Ok();
             }
@@ -270,6 +269,7 @@ namespace Cameo.Controllers
                 //HangfireService.CancelJob(model.RequestAnswerJobID);
                 //HangfireService.CancelJob(model.VideoJobID);
                 //HangfireService.CancelJob(model.PaymentJobID);
+                HangfireService.CancelJob(model.PaymentReminderJobID);
 
                 //confirm request/video
                 VideoRequestService.MakePayment(model, curUser.ID);

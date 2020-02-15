@@ -10,6 +10,7 @@ namespace Cameo.Services.Interfaces
         //string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID);
         string CreateJobForVideoRequestVideoDeadline(VideoRequest request, string userID);
         //string CreateJobForVideoRequestPaymentDeadline(VideoRequest request, string userID);
+        void CreateJobForPaymentReminder(VideoRequest request, string userID);
 
         void CancelJob(string jobID);
         

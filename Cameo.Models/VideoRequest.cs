@@ -44,6 +44,8 @@ namespace Cameo.Models
         public string PaymentJobID { get; set; }
         public DateTime? PaymentDeadline { get; set; }
 
+        public string PaymentReminderJobID { get; set; }
+
         [ForeignKey("RequestStatus")]
         public int RequestStatusID { get; set; }
         public VideoRequestStatus RequestStatus { get; set; }
