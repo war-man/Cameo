@@ -340,5 +340,10 @@ namespace Cameo.Services
         {
             return model?.Talent?.UserID?.Equals(userID) ?? false;
         }
+
+        public bool RequestIsAllowedToBeEdited(VideoRequest model)
+        {
+            return RequestIsAcceptedAndWaitingForVideo(model);
+        }
     }
 }

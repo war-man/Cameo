@@ -30,6 +30,7 @@ namespace Cameo.ViewModels
         public bool Payable { get; set; } = false;
         public bool VideoIsPaid { get; set; } = false;
         public bool UploadVideoBtnIsAvailable { get; set; } = false;
+        public bool EditBtnIsAvailable { get; set; } = false;
 
         public VideoRequestStatusDetailsVM Status { get; set; }
 
@@ -58,7 +59,7 @@ namespace Cameo.ViewModels
 
             if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo)
             {
-                CancelBtnIsAvailable = UploadVideoBtnIsAvailable = true;
+                CancelBtnIsAvailable = UploadVideoBtnIsAvailable = EditBtnIsAvailable = true;
             }
 
             Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;

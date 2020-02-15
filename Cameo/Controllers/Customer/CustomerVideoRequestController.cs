@@ -15,15 +15,18 @@ namespace Cameo.Controllers
         private readonly ICustomerService CustomerService;
         private readonly IVideoRequestSearchService SearchService;
         private readonly IVideoRequestService VideoRequestService;
+        private readonly IVideoRequestTypeService VideoRequestTypeService;
 
         public CustomerVideoRequestController(
             ICustomerService customerService,
             IVideoRequestSearchService searchService,
-            IVideoRequestService videoRequestService)
+            IVideoRequestService videoRequestService,
+            IVideoRequestTypeService videoRequestTypeService)
         {
             CustomerService = customerService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
+            VideoRequestTypeService = videoRequestTypeService;
         }
 
         public IActionResult Index()
@@ -43,6 +46,10 @@ namespace Cameo.Controllers
                 return NotFound();
 
             VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(model);
+
+            VideoRequestEditVM editModelVM = new VideoRequestEditVM(model);
+            ViewBag.editModelVM = editModelVM;
+            ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
             return View(modelVM);
         }

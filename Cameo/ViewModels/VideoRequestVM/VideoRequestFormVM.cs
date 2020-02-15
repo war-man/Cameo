@@ -53,4 +53,37 @@ namespace Cameo.ViewModels
             return model;
         }
     }
+
+    public class VideoRequestEditVM : VideoRequestCreateVM
+    {
+        public int ID { get; set; }
+
+        public VideoRequestEditVM() { }
+
+        public VideoRequestEditVM(VideoRequest model)
+        {
+            if (model == null)
+                return;
+
+            ID = model.ID;
+            TypeID = model.TypeID;
+            To = model.To;
+            From = model.From;
+            Instructions = model.Instructions;
+            Email = model.Email;
+            IsNotPublic = model.IsNotPublic;
+            Price = model.Price;
+            TalentID = model.TalentID;
+        }
+
+        public void UpdateModel(VideoRequest model)
+        {
+            model.TypeID = TypeID;
+            model.To = To;
+            model.From = From;
+            model.Instructions = Instructions;
+            model.Email = Email;
+            model.IsNotPublic = IsNotPublic;
+        }
+    }
 }

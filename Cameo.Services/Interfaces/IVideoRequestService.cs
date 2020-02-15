@@ -38,5 +38,7 @@ namespace Cameo.Services.Interfaces
 
         bool BelongsToCustomer(VideoRequest model, string userID);
         bool BelongsToTalent(VideoRequest model, string userID);
+
+        bool RequestIsAllowedToBeEdited(VideoRequest model);
     }
 }

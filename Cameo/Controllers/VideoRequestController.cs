@@ -94,6 +94,55 @@ namespace Cameo.Controllers
             return PartialView("_Create", modelVM);
         }
 
+        [HttpPost]
+        public IActionResult Edit(VideoRequestEditVM modelVM)
+        {
+            VideoRequest model = VideoRequestService.GetActiveByID(modelVM.ID);
+            if (model == null)
+                return NotFound();
+
+            if (!VideoRequestService.RequestIsAllowedToBeEdited(model))
+                return BadRequest("Данный запрос нельзя редактировать");
+
+            if (ModelState.IsValid)
+            {
+                if (ValidateFromProperty(modelVM.From, modelVM.TypeID))
+                {
+                    try
+                    {
+                        var curUser = accountUtil.GetCurrentUser(User);
+                        //var curCustomer = CustomerService.GetByUserID(curUser.ID);
+                        modelVM.UpdateModel(model);
+
+                        VideoRequestService.Update(model, curUser.ID);
+
+                        return Ok();
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", ex.Message);
+                    }
+                }
+                else
+                    ModelState.AddModelError("From", "Укажите от кого");
+            }
+            else
+                ModelState.AddModelError("", "Указаны некорректные данные");
+
+            ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+
+            return PartialView("_Create", modelVM);
+
+
+            ////---------
+            //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+            //return Ok();
+
+            //return BadRequest();
+            ////return PartialView("_Edit", modelVM);
+
+        }
+
         #region Remote validation while creating
         public IActionResult ValidateFrom(string from, int typeID)
         {
