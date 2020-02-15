@@ -30,6 +30,12 @@
     <a href="~/TalentPrice" class="list-group-item @active">Изменить цену (<span id="talentPrice">...</span> сум)</a>
     @{
         active = "";
+        if (controller.Equals("TalentBalanceReplenish"))
+        { active = "active"; }
+    }
+    <a href="~/TalentBalanceReplenish" class="list-group-item @active">Пополнить баланс</a>
+    @{
+        active = "";
         if (controller.Equals("TalentCreditCard"))
         { active = "active"; }
     }

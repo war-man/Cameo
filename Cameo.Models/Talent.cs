@@ -22,6 +22,7 @@ namespace Cameo.Models
         public int ResponseTime { get; set; }
 
         public int Balance { get; set; }
+        public string AccountNumber { get; set; } //лицевой счет
 
         [InverseProperty("Talent")]
         public virtual ICollection<TalentProject> Projects { get; set; }

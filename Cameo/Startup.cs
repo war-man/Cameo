@@ -22,6 +22,7 @@ using System.IO;
 using Microsoft.Extensions.FileProviders;
 using Cameo.Common;
 using Microsoft.Extensions.Options;
+using Cameo.Utils;
 
 namespace Cameo
 {

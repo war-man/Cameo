@@ -14,5 +14,6 @@ namespace Cameo.Services.Interfaces
         IEnumerable<Talent> Search(int categoryID, SortTypeEnum sort);
         IEnumerable<Talent> SearchBySearchText(string searchText);
         IEnumerable<Talent> GetRelated(Talent model);
+        void AssignAccountNumber(Talent model);
     }
 }

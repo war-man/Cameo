@@ -176,20 +176,5 @@ namespace Cameo.Controllers
         //{
         //    return Json(new { });
         //}
-
-        private void ProcessVideo(IFormFile file, Attachment attachment)
-        {
-            var ffMpeg = new FFMpegConverter();
-            ffMpeg.ConvertMedia("/Uploaefefds/c815db17-dc19-4c6e-8718-d60e8ad990df.mp4", "/Uploads/c815db17-dc19-4c6e-8718-d60e8ad990df1.mp4", Format.mp4);
-
-            //ffMpeg.ConvertMedia("asdf.mov", null, "output.mp4", Format.mp4,new ConvertSettings()
-            //{
-            //    VideoFrameRate = 25,
-            //    //VideoFrameSize = FrameSize.
-            //    AudioSampleRate = 44100,
-            //});
-
-            //ffMpeg.GetVideoThumbnail();
-        }
     }
 }

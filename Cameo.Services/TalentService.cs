@@ -33,6 +33,14 @@ namespace Cameo.Services
             return model;
         }
 
+        public override void Add(Talent entity, string userID)
+        {
+            base.Add(entity, userID);
+
+            AssignAccountNumber(entity);
+            base.Update(entity, userID);
+        }
+
         public override void Update(Talent entity, string userID)
         {
             base.Update(entity, userID);
@@ -67,6 +75,12 @@ namespace Cameo.Services
         public Talent GetActiveSingleDetailsWithRelatedDataByID(int id)
         {
             return _repository.GetActiveSingleDetailsWithRelatedDataByID(id);
+        }
+
+        public void AssignAccountNumber(Talent model)
+        {
+            if (string.IsNullOrWhiteSpace(model.AccountNumber))
+                model.AccountNumber = model.ID.ToString().PadLeft(8, '0');
         }
 
         public IEnumerable<Talent> Search(int categoryID, SortTypeEnum sort)
