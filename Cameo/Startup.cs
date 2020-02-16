@@ -23,6 +23,7 @@ using Microsoft.Extensions.FileProviders;
 using Cameo.Common;
 using Microsoft.Extensions.Options;
 using Cameo.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo
 {
@@ -95,7 +96,8 @@ namespace Cameo
         public void Configure(
             IApplicationBuilder app, 
             IHostingEnvironment env,
-            IOptions<AppConfiguration> appSettings
+            IOptions<AppConfiguration> appSettings,
+            ILoggerFactory loggerFactory
             /*, IBackgroundJobClient backgroundJobs*/)
         {
             AppData.Configuration = appSettings.Value;
@@ -154,6 +156,9 @@ namespace Cameo
                 Authorization = new[] { new HangfireAuthorizationFilter() },
                 IsReadOnlyFunc = (DashboardContext context) => true
             });
+
+            loggerFactory.AddConsole(Configuration.GetSection("Logging")); //"Logging" from appsettings.json
+            loggerFactory.AddDebug();
 
             //both variants work
             //BackgroundJob.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));

@@ -8,23 +8,30 @@ using Cameo.Models;
 using Cameo.Data;
 using Microsoft.AspNetCore.Diagnostics;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         readonly private IBackgroundJobClient _backgroundJobs;
+        readonly private ILogger _logger;
 
-        public HomeController(IBackgroundJobClient backgroundJobs)
+        public HomeController(IBackgroundJobClient backgroundJobs, ILogger<HomeController> logger)
         {
             _backgroundJobs = backgroundJobs;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
             //_backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
-            //int k = 6;
-            //int l = k / 0;
+
+            _logger.LogInformation("Home Index page opened");
+            int k = 6;
+            int l = k / 0;
+
+
 
             return View();
         }
@@ -53,6 +60,9 @@ namespace Cameo.Controllers
         {
             var pathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             Exception exception = pathFeature?.Error; // Here will be the exception details
+
+            var curUser = accountUtil.GetCurrentUser(User);
+            _logger.LogError(exception, "UserID = " + curUser?.ID ?? "unauthorized");
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
