@@ -41,5 +41,12 @@ namespace Cameo.Services.Interfaces
         bool BelongsToTalent(VideoRequest model, string userID);
 
         bool RequestIsAllowedToBeEdited(VideoRequest model);
+        int GetAllCountByTalent(Talent talent);
+        int GetCompletedCountByTalent(Talent talent);
+        int GetCompletenessPercentageByTalent(Talent talent);
+        int GetPaidCountByTalent(Talent talent);
+        IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent);
+        int GetEarnedByTalent(Talent talent);
+        int GetWaitingCountByTalent(Talent talent);
     }
 }

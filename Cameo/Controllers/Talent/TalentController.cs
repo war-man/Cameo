@@ -4,6 +4,7 @@ using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Cameo.Common;
 
 namespace Cameo.Controllers
 {
@@ -12,13 +13,16 @@ namespace Cameo.Controllers
     {
         private readonly ITalentService TalentService;
         private readonly IAttachmentService AttachmentService;
+        private readonly IVideoRequestService VideoRequestService;
 
         public TalentController(
             ITalentService talentService,
-            IAttachmentService attachmentService)
+            IAttachmentService attachmentService,
+            IVideoRequestService videoRequestService)
         {
             TalentService = talentService;
             AttachmentService = attachmentService;
+            VideoRequestService = videoRequestService;
         }
 
         public IActionResult Index()
@@ -44,6 +48,37 @@ namespace Cameo.Controllers
                 return "0";
             else
                 return model.Price.ToString();
+        }
+
+        public IActionResult GetDashboardInfo()
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            Talent talent = TalentService.GetByUserID(curUser.ID);
+            if (talent == null)
+                return NotFound("Talent not found");
+
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+
+            string requestsTotal = VideoRequestService.GetAllCountByTalent(talent)
+                .ToString(numberFormat);
+            string requestsWaiting = VideoRequestService.GetWaitingCountByTalent(talent)
+                .ToString(numberFormat);
+            string requestsCompleted = VideoRequestService.GetCompletedCountByTalent(talent)
+                .ToString(numberFormat);
+            string requestsPaid = VideoRequestService.GetPaidCountByTalent(talent)
+                .ToString(numberFormat);
+            //string completenessPercentage = VideoRequestService.GetCompletenessPercentageByTalent(talent) + "%";
+            string earned = VideoRequestService.GetEarnedByTalent(talent)
+                .ToString(numberFormat) + " сум";
+
+            return Ok(new {
+                requestsTotal,
+                requestsWaiting,
+                requestsCompleted,
+                requestsPaid,
+                //completenessPercentage,
+                earned
+            });
         }
     }
 }

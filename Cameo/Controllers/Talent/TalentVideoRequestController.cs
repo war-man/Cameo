@@ -26,10 +26,11 @@ namespace Cameo.Controllers
             VideoRequestService = videoRequestService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? status)
         {
             AppUserVM curUser = accountUtil.GetCurrentUser(User);
             ViewBag.userType = curUser.Type;
+            ViewBag.status = status;
 
             return View("Index2");
         }

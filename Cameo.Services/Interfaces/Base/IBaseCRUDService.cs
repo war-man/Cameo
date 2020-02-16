@@ -28,6 +28,7 @@ namespace Cameo.Services.Interfaces
         IEnumerable<T> GetAll();
         IEnumerable<T> GetAllActive();
         IQueryable<T> GetAsIQueryable();
+        IQueryable<T> GetAllActiveAsIQueryable();
         IQueryable<T> GetActiveAsIQueryable();
         IQueryable<T> GetWithRelatedDataAsIQueryable();
     }

@@ -27,9 +27,9 @@ namespace Cameo.Controllers
         {
             //_backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
 
-            _logger.LogInformation("Home Index page opened");
-            int k = 6;
-            int l = k / 0;
+            //_logger.LogInformation("Home Index page opened");
+            //int k = 6;
+            //int l = k / 0;
 
 
 

@@ -350,5 +350,55 @@ namespace Cameo.Services
         {
             return RequestIsAcceptedAndWaitingForVideo(model);
         }
+
+        public int GetAllCountByTalent(Talent talent)
+        {
+            return GetAllActiveAsIQueryable().Count(m => m.TalentID == talent.ID);
+        }
+
+        public int GetCompletedCountByTalent(Talent talent)
+        {
+            return GetAllActiveAsIQueryable()
+                .Count(m => m.TalentID == talent.ID
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
+                        || m.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid));
+        }
+
+        public int GetCompletenessPercentageByTalent(Talent talent)
+        {
+            int requestsTotal = GetAllCountByTalent(talent);
+            int requestsCompleted = GetCompletedCountByTalent(talent);
+
+            return (requestsCompleted * 100) / requestsTotal;
+        }
+
+        public int GetPaidCountByTalent(Talent talent)
+        {
+            return GetAllActiveAsIQueryable()
+                .Count(m => m.TalentID == talent.ID
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid));
+        }
+
+        public IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
+        {
+            return GetAllActiveAsIQueryable()
+                .Where(m => m.TalentID == talent.ID
+                    && m.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid);
+        }
+
+        //later siteStavka and amount, that talent earns will be saved for each request
+        public int GetEarnedByTalent(Talent talent)
+        {
+            int totalPaid = GetAllPaidByTalent(talent).Sum(m => m.Price);
+            int siteStavka = 25; //25%
+            return totalPaid * (100 - siteStavka) / 100;
+        }
+
+        public int GetWaitingCountByTalent(Talent talent)
+        {
+            return GetAllActiveAsIQueryable()
+                .Count(m => m.TalentID == talent.ID
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo));
+        }
     }
 }

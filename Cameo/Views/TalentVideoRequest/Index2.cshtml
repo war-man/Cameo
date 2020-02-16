@@ -44,10 +44,12 @@
 
     <script>
         $(document).ready(function () {
-            initVideoRequestsDatatable();
+            initVideoRequestsDatatable(@ViewBag.status);
         });
 
-        function initVideoRequestsDatatable() {
+        function initVideoRequestsDatatable(status)
+        {
+            console.log(status);
             $("#videoRequests").DataTable({
                 searching: false,
                 ordering: false,

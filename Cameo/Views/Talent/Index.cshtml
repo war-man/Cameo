@@ -12,7 +12,7 @@
     <div class="col-sm-9">
         <div class="row">
             <div class="col-sm-4">
-                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
+                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-thumbnail img-responsive" height="150" width="150" />
             </div>
             <div class="col-sm-8">
                 <div>
@@ -25,26 +25,50 @@
         </div>
         <br />
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-xs-6 col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <p>375</p>
-                        <p>Видео</p>
+                        <a href="/TalentVideoRequest">
+                            <p id="requestsTotal"></p>
+                            <p>Всего запросов</p>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-6 col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <p>100%</p>
-                        <p>Завершено</p>
+                        <a href="/TalentVideoRequest?status=5">
+                            <p id="requestsWaiting"></p>
+                            <p>Ожидающие</p>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-6 col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <p>1 200 000 сум</p>
+                        <a href="/TalentVideoRequest?status=6">
+                            <p id="requestsCompleted"></p>
+                            <p>Завершено</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a href="/TalentVideoRequest?status=6">
+                            <p id="requestsPaid"></p>
+                            <p>Оплачено</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p id="earned"></p>
                         <p>Заработано</p>
                     </div>
                 </div>
@@ -52,3 +76,35 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function ()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Talent/GetDashboardInfo",
+                //data: JSON.stringify({
+                //    selected: categoryID
+                //}),
+                //data: {
+                //    selected: categoryID
+                //},
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    $("#requestsTotal").html(data.requestsTotal);
+                    $("#requestsWaiting").html(data.requestsWaiting);
+                    $("#requestsCompleted").html(data.requestsCompleted);
+                    $("#requestsPaid").html(data.requestsPaid);
+                    $("#earned").html(data.earned);
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
+}
