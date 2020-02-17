@@ -13,22 +13,30 @@
     <div class="col-sm-9">
         <h2>@ViewData["Title"]</h2>
         <hr />
-
-        <table id="videoRequests" class="table table-condensed table-hover" width="100%">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    @*<th>toFrom</th>*@
-                    <th></th>@*person*@
-                    <th>statusId</th>
-                    @*<th>statusName</th>*@
-                    @*<th>dateCreated</th>*@
-                    @*<th>deadline</th>*@
-                    @*<th>video</th>*@
-                    @*<th>actions</th>*@
-                </tr>
-            </thead>
-        </table>
+        <div class="row">
+            <div id="filterContainer" class="col-sm-3">
+                @Html.DropDownList("filterStatus", Enumerable.Empty<SelectListItem>(), new { @class = "form-control input-sm", onchange = "ReloadRequests(this.value);" })
+            </div>
+        </div>
+        <br />
+        
+        <div>
+            <table id="videoRequests" class="table table-condensed table-hover" width="100%">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        @*<th>toFrom</th>*@
+                        <th></th>@*person*@
+                        <th>statusId</th>
+                        @*<th>statusName</th>*@
+                        @*<th>dateCreated</th>*@
+                        @*<th>deadline</th>*@
+                        @*<th>video</th>*@
+                        @*<th>actions</th>*@
+                    </tr>
+                </thead>
+            </table>
+        </div>
 
         @*<partial name="_VideoRequestsTable" />*@
     </div>
@@ -43,14 +51,62 @@
     @*<script src="~/js/FileAjaxUpload.js"></script>*@
 
     <script>
-        $(document).ready(function () {
-            initVideoRequestsDatatable(@ViewBag.status);
+        var statusID = Number("@ViewData["statusID"]");
+        var table;
+
+        $(document).ready(function ()
+        {
+            InitFilter(statusID);
         });
 
-        function initVideoRequestsDatatable(status)
+        function InitFilter(statusID)
         {
-            console.log(status);
-            $("#videoRequests").DataTable({
+            $.ajax({
+                type: "GET",
+                url: "/VideoRequestStatus/GetAsSelectList",
+                //data: JSON.stringify({
+                //    selected: categoryID
+                //}),
+                data: {
+                    selected: statusID
+                },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    //console.log(data);
+                    var html = "<option value='0'>Все</option>";
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        var selected = "";
+                        if (data[i].selected === true)
+                            selected = "selected='selected'";
+
+                        html += "<option value='" + data[i].value + "' " + selected + ">" + data[i].text + "</option>";
+                    }
+
+                    $("#filterStatus").html(html);
+
+                    InitVideoRequestsDatatable(statusID);
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                }
+            });
+        }
+
+        function ReloadRequests(val)
+        {
+            statusID = val;
+
+            window.history.pushState("object or string", "Title", "?status=" + statusID);
+            table.draw();
+        }
+
+        function InitVideoRequestsDatatable()
+        {
+            table = $("#videoRequests").DataTable({
                 searching: false,
                 ordering: false,
                 processing: true,
@@ -75,12 +131,20 @@
                     //contentType: "application/json",
                     //datatype: "json",
                     //data: function (d) {
-                    //    d.modelVM = searchVM;
+                    //    //d.modelVM = searchVM;
+                    //    d.statusID = statusID;
                     //    return JSON.stringify(d);
                     //},
-                    //complete: function () {
-                    //    StartLoadingImagesAsync();
-                    //}
+                    //data: {
+                    //    statusID: statusID
+                    //},
+                    data: function (d)
+                    {
+                        d.statusID = $("#filterStatus").val();
+                    },
+                    complete: function () {
+                        //StartLoadingImagesAsync();
+                    }
                 },
                 "columnDefs": [
                     {

@@ -23,7 +23,7 @@ namespace Cameo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(int draw, int start, int length)
+        public IActionResult Index(int draw, int start, int length, int? statusID = 0)
         {
             int recordsTotal = 0;
             int recordsFiltered = 0;
@@ -43,7 +43,9 @@ namespace Cameo.Controllers
 
                 out recordsTotal,
                 out recordsFiltered,
-                out error
+                out error,
+
+                statusID
             );
 
             data = dataIQueryable

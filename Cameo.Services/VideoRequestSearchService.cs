@@ -38,7 +38,9 @@ namespace Cameo.Services
             
             out int recordsTotal, 
             out int recordsFiltered,
-            out string error)
+            out string error,
+
+            int? statusID = 0)
         {
             recordsTotal = 0;
             recordsFiltered = 0;
@@ -58,7 +60,18 @@ namespace Cameo.Services
                     personID = CustomerService.GetByUserID(userID)?.ID ?? 0;
                     videoRequests = videoRequests.Where(m => m.CustomerID == personID);
                 }
-                    
+
+                if (statusID.HasValue && statusID > 0)
+                {
+                    if (statusID.Value == (int)VideoRequestStatusEnum.videoCompleted)
+                    {
+                        videoRequests = videoRequests
+                            .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
+                                || m.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid);
+                    }
+                    else
+                        videoRequests = videoRequests.Where(m => m.RequestStatusID == statusID);
+                }
 
                 recordsTotal = videoRequests.Count();
                 recordsFiltered = videoRequests.Count();

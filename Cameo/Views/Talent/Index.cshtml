@@ -1,4 +1,5 @@
 ﻿@model Cameo.ViewModels.TalentShortInfoVM
+@using Cameo.Models.Enums
 
 @{
     ViewData["Title"] = "Моя страница";
@@ -38,7 +39,7 @@
             <div class="col-xs-6 col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <a href="/TalentVideoRequest?status=5">
+                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo)">
                             <p id="requestsWaiting"></p>
                             <p>Ожидающие</p>
                         </a>
@@ -48,7 +49,7 @@
             <div class="col-xs-6 col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <a href="/TalentVideoRequest?status=6">
+                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.videoCompleted)">
                             <p id="requestsCompleted"></p>
                             <p>Завершено</p>
                         </a>
@@ -58,7 +59,7 @@
             <div class="col-xs-6 col-sm-3">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <a href="/TalentVideoRequest?status=6">
+                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.videoPaid)">
                             <p id="requestsPaid"></p>
                             <p>Оплачено</p>
                         </a>
