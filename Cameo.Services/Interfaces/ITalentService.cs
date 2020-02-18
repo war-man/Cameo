@@ -15,5 +15,6 @@ namespace Cameo.Services.Interfaces
         IEnumerable<Talent> SearchBySearchText(string searchText);
         IEnumerable<Talent> GetRelated(Talent model);
         void AssignAccountNumber(Talent model);
+        void SetAvailability(Talent model, bool availability, string userID);
     }
 }

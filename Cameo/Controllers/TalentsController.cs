@@ -16,15 +16,18 @@ namespace Cameo.Controllers
         private readonly ITalentService TalentService;
         private readonly ICategoryService CategoryService;
         private readonly IVideoRequestTypeService VideoRequestTypeService;
+        private readonly IVideoRequestService VideoRequestService;
 
         public TalentsController(
             ITalentService talentService,
             ICategoryService categoryService,
-            IVideoRequestTypeService videoRequestTypeService)
+            IVideoRequestTypeService videoRequestTypeService,
+            IVideoRequestService videoRequestService)
         {
             TalentService = talentService;
             CategoryService = categoryService;
             VideoRequestTypeService = videoRequestTypeService;
+            VideoRequestService = videoRequestService;
         }
 
         public IActionResult Index(int? cat)
@@ -48,11 +51,19 @@ namespace Cameo.Controllers
 
         public IActionResult Details(string username)
         {
+            var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetActiveByUsername(username);
             if (model == null)
                 return NotFound();
 
             TalentDetailsVM modelVM = new TalentDetailsVM(model);
+
+            VideoRequest videoRequest = VideoRequestService.GetRandomSinglePublishedByTalent(model, curUser.ID);
+            if (videoRequest != null)
+            {
+                modelVM.Video = new AttachmentDetailsVM(videoRequest.Video);
+                modelVM.RequestID = videoRequest.ID;
+            }
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 

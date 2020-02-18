@@ -132,6 +132,12 @@ namespace Cameo.Services
             return result;
         }
 
+        public void SetAvailability(Talent model, bool availability, string userID)
+        {
+            model.IsAvailable = availability;
+            base.Update(model, userID);
+        }
+
         private IQueryable<Talent> GetWithRelatedDataForSearchAsIQueryable()
         {
             return GetWithRelatedDataAsIQueryable()

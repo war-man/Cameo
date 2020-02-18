@@ -8,7 +8,14 @@
 
 <div class="row" id="profileBox">
     <div class="col-lg-offset-1 col-lg-3 col-sm-4" id="photoBox">
-        <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
+        @if (Model.Video != null && Model.Video.ID > 0)
+        {
+            <video id="imgContainer" width="240" height="320" controls><source src="/Video/GetVideo/@Model.RequestID" type="video/mp4"></video>
+        }
+        else
+        {
+            <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
+        }
     </div>
     <div class="col-lg-7 col-sm-8" id="infoBox">
         <div class="row">

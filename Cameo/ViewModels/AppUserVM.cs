@@ -15,7 +15,7 @@ namespace Cameo.ViewModels
 
         public AppUserVM(ClaimsPrincipal user)
         {
-            if (user == null)
+            if (user == null || !user.Identity.IsAuthenticated)
                 return;
 
             ID = user.FindFirst(ClaimTypes.NameIdentifier).Value;

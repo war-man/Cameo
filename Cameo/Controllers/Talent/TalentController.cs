@@ -80,5 +80,18 @@ namespace Cameo.Controllers
                 earned
             });
         }
+
+        [HttpPost]
+        public IActionResult SetAvailability(bool availability)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            Talent talent = TalentService.GetByUserID(curUser.ID);
+            if (talent == null)
+                return NotFound("Talent not found");
+
+            TalentService.SetAvailability(talent, availability, curUser.ID);
+
+            return Ok();
+        }
     }
 }

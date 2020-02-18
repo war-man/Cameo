@@ -9,6 +9,7 @@ namespace Cameo.ViewModels
 {
     public class TalentShortInfoVM : PersonShortInfoVM
     {
+        public bool IsAvailable { get; set; }
         public TalentShortInfoVM() { }
 
         public TalentShortInfoVM(Talent model)
@@ -16,6 +17,8 @@ namespace Cameo.ViewModels
         {
             if (model == null)
                 return;
+
+            IsAvailable = model.IsAvailable;
         }
     }
 
@@ -61,10 +64,12 @@ namespace Cameo.ViewModels
 
     public class TalentDetailsVM : TalentGridViewItem
     {
-        public bool IsAvailable { get; set; }
         public string Bio { get; set; }
 
         public TalentDetailsVM() { }
+
+        public AttachmentDetailsVM Video { get; set; }
+        public int RequestID { get; set; }
 
         public TalentDetailsVM(Talent model) : base(model)
         {

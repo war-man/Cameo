@@ -48,5 +48,6 @@ namespace Cameo.Services.Interfaces
         IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent);
         int GetEarnedByTalent(Talent talent);
         int GetWaitingCountByTalent(Talent talent);
+        VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID);
     }
 }

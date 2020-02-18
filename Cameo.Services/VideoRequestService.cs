@@ -4,6 +4,7 @@ using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cameo.Services
@@ -399,6 +400,21 @@ namespace Cameo.Services
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
                     && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo));
+        }
+
+        public VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID)
+        {
+            List<int> ids = GetAllPaidByTalent(talent)
+                .Where(m => !m.IsNotPublic)
+                .Select(m => m.ID)
+                .ToList();
+
+            if (ids.Count == 0)
+                return null;
+
+            var rand = new Random();
+            int randomIndex = rand.Next(0, ids.Count);
+            return GetSinglePublished(ids[randomIndex], userID);
         }
     }
 }

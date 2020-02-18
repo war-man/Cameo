@@ -15,13 +15,16 @@
             <div class="col-sm-4">
                 <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-thumbnail img-responsive" height="150" width="150" />
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                 <div>
                     <i class="glyphicon glyphicon-star text-warning"></i> 5.0
                 </div>
                 <div>
                     Rating
                 </div>
+            </div>
+            <div class="col-sm-4">
+                Доступность: @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-control", @onchange = "ToogleAvailability(this);" })
             </div>
         </div>
         <br />
@@ -107,5 +110,37 @@
                 }
             });
         });
+
+        function ToogleAvailability(checkbox)
+        {
+            var availability = $(checkbox).prop("checked");
+
+            var confirmQuestion = "Вы уверены, что хотите стать недоступным(ой)?";
+            if (availability)
+                confirmQuestion = "Вы уверены, что хотите стать доступным(ой)?";
+            if (!confirm(confirmQuestion))
+                return;
+
+            $.ajax({
+                type: "POST",
+                url: "/Talent/SetAvailability?availability=" + availability,
+                //data: JSON.stringify({
+                //    availability: availability
+                //}),
+                //data: {
+                //    availability: availability
+                //},
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    alert("Статус успешно изменен!");
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                }
+            });
+        }
     </script>
 }
