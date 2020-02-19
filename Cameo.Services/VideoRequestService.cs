@@ -58,28 +58,18 @@ namespace Cameo.Services
             EmailService.Send(toTalent, subjectTalent, bodyTalent);
         }
 
-        //public void AnswerDeadlineReaches(VideoRequest model, string userID)
-        //{
-        //    //1. set status = expired
-        //    model.RequestStatusID = (int)VideoRequestStatusEnum.requestExpired;
-        //    model.DateRequestExpired = DateTime.Now;
-            
-        //    Update(model, userID);
+        public void Edit(VideoRequest model, string userID)
+        {
+            Update(model, userID);
 
-        //    //2. send emails to customer and talent
-        //    string toCustomer = "cortex91@inbox.ru";
-        //    string subjectCustomer = "Subject - Customer";
-        //    string bodyCustomer = "This is email for Customer";
+            //send email to Talent
+            string toTalent = "xenon1991@inbox.ru";
+            string subjectTalent = "Subject - Talent";
+            string bodyTalent = "This is email for Talent";
 
-        //    EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
-
-        //    string toTalent = "xenon1991@inbox.ru";
-        //    string subjectTalent = "Subject - Talent";
-        //    string bodyTalent = "This is email for Talent";
-
-        //    EmailService.Send(toTalent, subjectTalent, bodyTalent);
-        //}
-
+            EmailService.Send(toTalent, subjectTalent, bodyTalent);
+        }
+        
         /// <summary>
         /// this method is used for cancelling both the REQUEST and VIDEO 
         /// by both CUSTOMER and TALENT
@@ -102,54 +92,30 @@ namespace Cameo.Services
                     model.DateVideoCanceledByCustomer = DateTime.Now;
                 }
             }
-            //else if (RequestIsWaitingForResponse(model))
-            //{
-            //    if (userType == UserTypesEnum.talent.ToString())
-            //    {
-            //        model.RequestStatusID = (int)VideoRequestStatusEnum.requestCanceledByTalent;
-            //        model.DateRequestCanceledByTalent = DateTime.Now;
-            //    }
-            //    else
-            //    {
-            //        model.RequestStatusID = (int)VideoRequestStatusEnum.requestCanceledByCustomer;
-            //        model.DateRequestCanceledByCustomer = DateTime.Now;
-            //    }
-            //}
             else
                 throw new Exception("Текущий статус запроса не позволяет отменить его");
 
             Update(model, userID);
+
+            if (userType == UserTypesEnum.talent.ToString())
+            {
+                //send email to Customer
+                string toCustomer = "cortex91@inbox.ru";
+                string subjectCustomer = "Subject - Customer";
+                string bodyCustomer = "This is email for Customer";
+
+                EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+            }
+            else
+            {
+                //send email to Talent
+                string toTalent = "xenon1991@inbox.ru";
+                string subjectTalent = "Subject - Talent";
+                string bodyTalent = "This is email for Talent";
+
+                EmailService.Send(toTalent, subjectTalent, bodyTalent);
+            }
         }
-
-//        public void Accept(VideoRequest model, string userID)
-//        {
-//            CheckIfRequestIsAcceptable(model, userID);
-
-//            model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
-//            model.DateRequestAccepted = DateTime.Now;
-//#if DEBUG
-//            model.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
-//#else
-//            model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
-//#endif
-
-//            Update(model, userID);
-//        }
-
-        //private void CheckIfRequestIsAcceptable(VideoRequest model, string userID)
-        //{
-        //    if (!RequestBelongsToUser(model, userID))
-        //        throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
-
-        //    //if (!TalentsCardPeriodIsValid(model.Talent))
-        //    //    throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
-
-        //    if (!TalentBalanceService.BalanceAllowsToAcceptRequest(model.Talent.Balance, model.Price))
-        //        throw new Exception("Текущий баланс не позволяет принять запрос");
-
-        //    if (!RequestIsWaitingForResponse(model))
-        //        throw new Exception("Текущий статус запроса не позволяет отменить его");
-        //}
 
         public void VideoDeadlineReaches(VideoRequest model, string userID)
         {
@@ -184,7 +150,7 @@ namespace Cameo.Services
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoPaid;
             Update(model, userID);
 
-            //2. send emails to customer and talent
+            //send emails to customer and talent
             string toCustomer = "cortex91@inbox.ru";
             string subjectCustomer = "Subject - Customer";
             string bodyCustomer = "This is email for Customer";
@@ -198,28 +164,6 @@ namespace Cameo.Services
             EmailService.Send(toTalent, subjectTalent, bodyTalent);
         }
 
-        //public void PaymentDeadlineReaches(VideoRequest model, string userID)
-        //{
-        //    //1. set status = expired
-        //    model.RequestStatusID = (int)VideoRequestStatusEnum.videoPaymentExpired;
-        //    model.DatePaymentExpired = DateTime.Now;
-
-        //    Update(model, userID);
-
-        //    //2. send emails to customer and talent
-        //    string toCustomer = "cortex91@inbox.ru";
-        //    string subjectCustomer = "Subject - Customer";
-        //    string bodyCustomer = "This is email for Customer";
-
-        //    EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
-
-        //    string toTalent = "xenon1991@inbox.ru";
-        //    string subjectTalent = "Subject - Talent";
-        //    string bodyTalent = "This is email for Talent";
-
-        //    EmailService.Send(toTalent, subjectTalent, bodyTalent);
-        //}
-
         private bool RequestBelongsToUser(VideoRequest model, string userID)
         {
             return model.Customer.UserID == userID || model.Talent.UserID == userID;
@@ -229,12 +173,7 @@ namespace Cameo.Services
         {
             return model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
         }
-
-        //private bool RequestIsWaitingForResponse(VideoRequest model)
-        //{
-        //    return model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse;
-        //}
-
+        
         private bool RequestIsPaid(VideoRequest model)
         {
             return model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid;
@@ -282,18 +221,18 @@ namespace Cameo.Services
 
         public void SendEmailOnceVideoConfirmed(VideoRequest model)
         {
-            //send email to Customer and Talent
+            //send email to Customer
             string toCustomer = "cortex91@inbox.ru";
             string subjectCustomer = "Subject - Customer";
             string bodyCustomer = "This is email for Customer";
 
             EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
 
-            string toTalent = "xenon1991@inbox.ru";
-            string subjectTalent = "Subject - Talent";
-            string bodyTalent = "This is email for Talent";
+            //string toTalent = "xenon1991@inbox.ru";
+            //string subjectTalent = "Subject - Talent";
+            //string bodyTalent = "This is email for Talent";
 
-            EmailService.Send(toTalent, subjectTalent, bodyTalent);
+            //EmailService.Send(toTalent, subjectTalent, bodyTalent);
         }
 
         public VideoRequest GetSinglePublished(int id, string userID)

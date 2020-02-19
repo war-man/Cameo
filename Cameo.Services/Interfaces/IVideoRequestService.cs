@@ -5,6 +5,7 @@ namespace Cameo.Services.Interfaces
 {
     public interface IVideoRequestService : IBaseCRUDService<VideoRequest>
     {
+        void Edit(VideoRequest model, string userID);
         VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id);
 
         //void AnswerDeadlineReaches(VideoRequest model, string userID);

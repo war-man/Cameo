@@ -114,7 +114,7 @@ namespace Cameo.Controllers
                         //var curCustomer = CustomerService.GetByUserID(curUser.ID);
                         modelVM.UpdateModel(model);
 
-                        VideoRequestService.Update(model, curUser.ID);
+                        VideoRequestService.Edit(model, curUser.ID);
 
                         return Ok();
                     }
@@ -131,7 +131,7 @@ namespace Cameo.Controllers
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
-            return PartialView("_Create", modelVM);
+            return PartialView("_Edit", modelVM);
 
 
             ////---------
