@@ -70,6 +70,24 @@ namespace Cameo.Controllers
             return View(modelVM);
         }
 
+        public IActionResult GetLatestForTalent(int talentID, int requestIDToBeExcluded)
+        {
+            Talent talent = TalentService.GetActiveByID(talentID);
+            if (talent == null)
+                return NotFound();
+
+            List<VideoRequest> videos = VideoRequestService.GetPublicForTalent(talent, requestIDToBeExcluded)
+                .ToList();
+
+            List<VideoDetailsVM> videosVM = new List<VideoDetailsVM>();
+            foreach (var item in videos)
+            {
+                videosVM.Add(new VideoDetailsVM(item));
+            }
+
+            return PartialView(videosVM);
+        }
+
         public IActionResult GetRelated(int id)
         {
             Talent model = TalentService.GetActiveByID(id);

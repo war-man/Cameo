@@ -404,8 +404,7 @@ namespace Cameo.Services
 
         public VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID)
         {
-            List<int> ids = GetAllPaidByTalent(talent)
-                .Where(m => !m.IsNotPublic)
+            List<int> ids = GetPublicForTalent(talent)
                 .Select(m => m.ID)
                 .ToList();
 
@@ -415,6 +414,12 @@ namespace Cameo.Services
             var rand = new Random();
             int randomIndex = rand.Next(0, ids.Count);
             return GetSinglePublished(ids[randomIndex], userID);
+        }
+
+        public IQueryable<VideoRequest> GetPublicForTalent(Talent talent, int requestIDToBeExcluded = 0)
+        {
+            return GetAllPaidByTalent(talent)
+                .Where(m => !m.IsNotPublic && m.ID != requestIDToBeExcluded);
         }
     }
 }

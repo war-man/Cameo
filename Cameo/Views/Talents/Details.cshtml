@@ -1,6 +1,11 @@
 ﻿@model Cameo.ViewModels.TalentDetailsVM
 @using Cameo.Models.Enums
 
+@using Cameo.Common
+@using Microsoft.Extensions.Options;
+
+@inject IOptions<AppConfiguration> AppSettings
+
 @{
     ViewData["Title"] = "Details";
     ViewData["talent"] = Model;
@@ -78,7 +83,7 @@
     </div>
 </div>
 <div class="row" id="latestBox">
-
+    <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
 </div>
 
 <!-- Modal -->
@@ -114,4 +119,31 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function ()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Talents/GetLatestForTalent",
+                //data: JSON.stringify({
+                //    selected: categoryID
+                //}),
+                data: {
+                    talentID: Number("@Model.ID"),
+                    requestIDToBeExcluded: Number("@Model.RequestID")
+                },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    $("#latestBox").html(data);
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
 }
