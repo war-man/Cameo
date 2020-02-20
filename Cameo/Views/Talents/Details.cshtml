@@ -48,15 +48,22 @@
                 </div>
                 <br />
                 <div class="bookBox">
-                    @if (Model.IsAvailable)
+                    @if ((bool)ViewData["bookBtnIsAvailable"] == true)
                     {
-                        <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#bookModal">
-                            Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
-                        </button>
+                        if (Model.IsAvailable)
+                        {
+                            <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#bookModal">
+                                Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Временно недоступен</button>
+                        }
                     }
                     else
                     {
-                        <button type="button" disabled="disabled">Временно недоступен</button>
+                        <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Таланты не могут заказывать видео. Зайдите как клиент.</button>
                     }
                 </div>
                 <br />

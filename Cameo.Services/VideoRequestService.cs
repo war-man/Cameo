@@ -117,6 +117,38 @@ namespace Cameo.Services
             }
         }
 
+
+        //        public void Accept(VideoRequest model, string userID)
+        //        {
+        //            CheckIfRequestIsAcceptable(model, userID);
+
+        //            model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
+        //            model.DateRequestAccepted = DateTime.Now;
+        //#if DEBUG
+        //            model.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+        //#else
+        //            model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
+        //#endif
+
+        //            Update(model, userID);
+        //        }
+
+        //private void CheckIfRequestIsAcceptable(VideoRequest model, string userID)
+        //{
+        //    if (!RequestBelongsToUser(model, userID))
+        //        throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
+
+        //    //if (!TalentsCardPeriodIsValid(model.Talent))
+        //    //    throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
+
+        //    if (!TalentBalanceService.BalanceAllowsToAcceptRequest(model.Talent.Balance, model.Price))
+        //        throw new Exception("Текущий баланс не позволяет принять запрос");
+
+        //    if (!RequestIsWaitingForResponse(model))
+        //        throw new Exception("Текущий статус запроса не позволяет отменить его");
+        //}
+
+
         public void VideoDeadlineReaches(VideoRequest model, string userID)
         {
             //0. TO-DO: apply some disciplinary penalty that negatively affects talent's reputation

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
+using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,51 +43,56 @@ namespace Cameo.Controllers
         [HttpPost]
         public IActionResult Create(VideoRequestCreateVM modelVM)
         {
-            var talent = TalentService.GetAvailableByID(modelVM.TalentID);
-
-            if (ModelState.IsValid)
+            var curUser = accountUtil.GetCurrentUser(User);
+            if (AccountUtil.IsUserCustomer(curUser))
             {
-                if (ValidateFromProperty(modelVM.From, modelVM.TypeID))
+                if (ModelState.IsValid)
                 {
-                    if (talent != null)
+                    if (ValidateFromProperty(modelVM.From, modelVM.TypeID))
                     {
-                        if (talent.Price == modelVM.Price)
+                        var talent = TalentService.GetAvailableByID(modelVM.TalentID);
+                        if (talent != null)
                         {
-                            try
+                            if (talent.Price == modelVM.Price)
                             {
-                                var curUser = accountUtil.GetCurrentUser(User);
-                                var curCustomer = CustomerService.GetByUserID(curUser.ID);
+                                try
+                                {
 
-                                VideoRequest model = modelVM.ToModel(curCustomer);
+                                    var curCustomer = CustomerService.GetByUserID(curUser.ID);
 
-                                //1. create model and send email
-                                VideoRequestService.Add(model, curUser.ID);
+                                    VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                ////2. create hangfire RequestAnswerJobID and save it
-                                //model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
-                                //create hangfire VideoJobID
-                                model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
+                                    //1. create model and send email
+                                    VideoRequestService.Add(model, curUser.ID);
 
-                                VideoRequestService.Update(model, curUser.ID);
+                                    ////2. create hangfire RequestAnswerJobID and save it
+                                    //model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
+                                    //create hangfire VideoJobID
+                                    model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
-                                ViewBag.success = true;
+                                    VideoRequestService.Update(model, curUser.ID);
+
+                                    ViewBag.success = true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    ModelState.AddModelError("", ex.Message);
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                ModelState.AddModelError("", ex.Message);
-                            }
+                            else
+                                ModelState.AddModelError("", "Пока вы заполняли форму, Талант успел изменить цену");
                         }
                         else
-                            ModelState.AddModelError("", "Пока вы заполняли форму, Талант успел изменить цену");
+                            ModelState.AddModelError("", "Талант не существует либо временно недоступен");
                     }
                     else
-                        ModelState.AddModelError("", "Талант не существует либо временно недоступен");
+                        ModelState.AddModelError("From", "Укажите от кого");
                 }
                 else
-                    ModelState.AddModelError("From", "Укажите от кого");
+                    ModelState.AddModelError("", "Указаны некорректные данные");
             }
             else
-                ModelState.AddModelError("", "Указаны некорректные данные");
+                ModelState.AddModelError("", "Таланты не могут заказывать видео. Зайдите как клиент.");
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
             ViewData["talent"] = new TalentDetailsVM();

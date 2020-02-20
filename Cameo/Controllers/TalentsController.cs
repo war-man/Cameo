@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
+using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -66,6 +67,7 @@ namespace Cameo.Controllers
             }
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+            ViewData["bookBtnIsAvailable"] = AccountUtil.IsUserCustomer(curUser);
 
             return View(modelVM);
         }

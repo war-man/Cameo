@@ -1,4 +1,5 @@
 ﻿using Cameo.Models;
+using Cameo.Models.Enums;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -15,6 +16,16 @@ namespace Cameo.Utils
         public AppUserVM GetCurrentUser(ClaimsPrincipal user)
         {
             return new AppUserVM(user);
+        }
+
+        public static bool IsUserCustomer(AppUserVM userVM)
+        {
+            return userVM.Type == UserTypesEnum.customer.ToString();
+        }
+
+        public static bool IsUserTalent(AppUserVM userVM)
+        {
+            return userVM.Type == UserTypesEnum.talent.ToString();
         }
     }
 
