@@ -18,13 +18,13 @@ namespace Cameo.Controllers
         }
 
         //For Customer
-        public IActionResult ThanksForRegistration()
+        public IActionResult ThanksForRegistrationCustomer()
         {
             return View();
         }
 
         //For Talent
-        public IActionResult ThanksForRegistering()
+        public IActionResult ThanksForRegistrationTalent()
         {
             return View();
         }
