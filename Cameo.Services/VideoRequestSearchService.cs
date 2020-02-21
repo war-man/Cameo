@@ -90,11 +90,11 @@ namespace Cameo.Services
             }
         }
 
-        public IEnumerable<VideoRequest> GetTalentVideoRequestsReservingBalance(Talent talent)
-        {
-            return VideoRequestRepository.GetRequestsByTalent(talent)
-                .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo
-                    || m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted);
-        }
+        //public IEnumerable<VideoRequest> GetTalentVideoRequestsReservingBalance(Talent talent)
+        //{
+        //    return VideoRequestRepository.GetRequestsByTalent(talent)
+        //        .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo
+        //            || m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted);
+        //}
     }
 }

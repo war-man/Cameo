@@ -40,16 +40,6 @@ namespace Cameo.Controllers
             return View(modelVM);
         }
 
-        public string GetPrice()
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
-            if (model == null)
-                return "0";
-            else
-                return model.Price.ToString();
-        }
-
         public IActionResult GetDashboardInfo()
         {
             var curUser = accountUtil.GetCurrentUser(User);

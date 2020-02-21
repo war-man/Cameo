@@ -34,9 +34,9 @@ namespace Cameo.Controllers
 
             TalentPriceEditVM modelVM = new TalentPriceEditVM(model);
 
-            ViewData["balance"] = TalentBalanceService.GetBalanceIncludingReservations(model);
-            ViewData["maxAvailablePrice"] = TalentBalanceService.CalculateMaxAvailablePriceForCameo(model)
-                .ToString(AppData.Configuration.NumberViewStringFormat);
+            ViewData["balance"] = TalentBalanceService.GetBalance(model);
+            //ViewData["maxAvailablePrice"] = TalentBalanceService.CalculateMaxAvailablePriceForCameo(model)
+            //    .ToString(AppData.Configuration.NumberViewStringFormat);
 
             return View(modelVM);
         }
@@ -49,12 +49,12 @@ namespace Cameo.Controllers
             if (model == null || !model.UserID.Equals(curUser.ID))
                 return NotFound();
 
-            int maxAvailablePrice = TalentBalanceService.CalculateMaxAvailablePriceForCameo(model);
+            //int maxAvailablePrice = TalentBalanceService.CalculateMaxAvailablePriceForCameo(model);
 
             if (ModelState.IsValid)
             {
-                if (modelVM.Price <= maxAvailablePrice)
-                {
+                //if (modelVM.Price <= maxAvailablePrice)
+                //{
                     try
                     {
                         model.Price = modelVM.Price;
@@ -67,15 +67,15 @@ namespace Cameo.Controllers
                     {
                         ModelState.AddModelError("", "Something went wrong while saving data: " + ex.Message);
                     }
-                }
-                else
-                    ModelState.AddModelError("", "Ваш баланс не позволяет установить указанную цену");
+                //}
+                //else
+                //    ModelState.AddModelError("", "Ваш баланс не позволяет установить указанную цену");
             }
             else
                 ModelState.AddModelError("", "Неверные данные");
 
-            ViewData["balance"] = TalentBalanceService.GetBalanceIncludingReservations(model);
-            ViewData["maxAvailablePrice"] = maxAvailablePrice.ToString(AppData.Configuration.NumberViewStringFormat);
+            ViewData["balance"] = TalentBalanceService.GetBalance(model);
+            //ViewData["maxAvailablePrice"] = maxAvailablePrice.ToString(AppData.Configuration.NumberViewStringFormat);
 
             return View(modelVM);
         }
@@ -83,6 +83,27 @@ namespace Cameo.Controllers
         public IActionResult CalculateMaxNumberOfPossibleRequests(int balance, int price)
         {
             return Ok(TalentBalanceService.CalculateMaxNumberOfPossibleRequests(balance, price));
+        }
+
+        public string GetPrice()
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            Talent model = TalentService.GetByUserID(curUser.ID);
+            if (model == null)
+                return "0";
+            else
+                return model.Price.ToString(AppData.Configuration.NumberViewStringFormat);
+        }
+
+        public string GetBalance()
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            Talent model = TalentService.GetByUserID(curUser.ID);
+            if (model == null)
+                return "0";
+            else
+                return TalentBalanceService.GetBalance(model)
+                    .ToString(AppData.Configuration.NumberViewStringFormat);
         }
     }
 }

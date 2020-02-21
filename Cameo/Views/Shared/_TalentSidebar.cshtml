@@ -33,7 +33,7 @@
         if (controller.Equals("TalentBalanceReplenish"))
         { active = "active"; }
     }
-    <a href="~/TalentBalanceReplenish" class="list-group-item @active">Пополнить баланс</a>
+    <a href="~/TalentBalanceReplenish" class="list-group-item @active">Пополнить баланс (<span id="talentBalance">...</span> сум)</a>
     @{
         active = "";
         if (controller.Equals("TalentCreditCard"))
@@ -61,13 +61,30 @@
 </div>
 
 <script>
-    const Http = new XMLHttpRequest();
-    const url = '/Talent/GetPrice';
-    Http.open("GET", url);
-    Http.send();
+    //get price
+    getFoo("/TalentPrice/GetPrice", "talentPrice");
 
-    Http.onreadystatechange = (e) => {
-        //console.log(Http.responseText)
-        document.getElementById("talentPrice").innerText = Http.responseText;
+    getFoo("/TalentPrice/GetBalance", "talentBalance");
+    //const Http = new XMLHttpRequest();
+    //const url = '/Talent/GetPrice';
+    //Http.open("GET", url);
+    //Http.send();
+    //Http.onreadystatechange = (e) => {
+    //    //console.log(Http.responseText)
+    //    document.getElementById("talentPrice").innerText = Http.responseText;
+    //}
+
+    //get balance
+    function getFoo(url, elementID)
+    {
+        const Http = new XMLHttpRequest();
+        //const url = '/Talent/GetPrice';
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e) =>
+        {
+            //console.log(Http.responseText)
+            document.getElementById(elementID).innerText = Http.responseText;
+        }
     }
 </script>

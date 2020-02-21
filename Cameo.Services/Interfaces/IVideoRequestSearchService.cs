@@ -19,6 +19,6 @@ namespace Cameo.Services.Interfaces
 
             int? statusID = 0);
 
-        IEnumerable<VideoRequest> GetTalentVideoRequestsReservingBalance(Talent talent);
+        //IEnumerable<VideoRequest> GetTalentVideoRequestsReservingBalance(Talent talent);
     }
 }

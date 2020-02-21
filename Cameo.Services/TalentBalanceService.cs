@@ -22,41 +22,42 @@ namespace Cameo.Services
             return talent?.Balance ?? 0;
         }
 
-        public int GetBalanceIncludingReservations(Talent talent)
-        {
-            int clearBalance = GetBalance(talent);
-            IEnumerable<VideoRequest> videoRequestsReservingBalance =
-                VideoRequestSearchService.GetTalentVideoRequestsReservingBalance(talent);
+        //public int GetBalanceIncludingReservations(Talent talent)
+        //{
+        //    int clearBalance = GetBalance(talent);
+        //    IEnumerable<VideoRequest> videoRequestsReservingBalance =
+        //        VideoRequestSearchService.GetTalentVideoRequestsReservingBalance(talent);
 
-            int reservedAmount = 0;
-            foreach (var item in videoRequestsReservingBalance)
-            {
-                reservedAmount += CalculateMoneyThatTalentPaysToSystemForCameo(item.Price);
-            }
+        //    int reservedAmount = 0;
+        //    foreach (var item in videoRequestsReservingBalance)
+        //    {
+        //        reservedAmount += CalculateMoneyThatTalentPaysToSystemForCameo(item.Price);
+        //    }
 
-            return clearBalance - reservedAmount;
-        }
+        //    return clearBalance - reservedAmount;
+        //}
 
-        public int CalculateMaxAvailablePriceForCameo(Talent talent)
-        {
-            int price = 1000;
+        //public int CalculateMaxAvailablePriceForCameo(Talent talent)
+        //{
+        //    int price = 1000;
 
-            int balance = GetBalanceIncludingReservations(talent);
-            if (balance == 0)
-                price = 0;
+        //    //int balance = GetBalanceIncludingReservations(talent);
+        //    int balance = GetBalance(talent);
+        //    if (balance == 0)
+        //        price = 0;
 
-            int k = AppData.Configuration.PaymentSystemCommission;
-            double priceDouble = (balance * (100 + k) / (25 - 0.75 * k));
-            if (priceDouble > 1000)
-            {
-                price = (int)priceDouble;
-                price /= 1000;
-                price *= 1000;
-                price += 1000;
-            }
+        //    int k = AppData.Configuration.PaymentSystemCommission;
+        //    double priceDouble = (balance * (100 + k) / (25 - 0.75 * k));
+        //    if (priceDouble > 1000)
+        //    {
+        //        price = (int)priceDouble;
+        //        price /= 1000;
+        //        price *= 1000;
+        //        price += 1000;
+        //    }
 
-            return price;
-        }
+        //    return price;
+        //}
 
         //сумма, которая снимается с биллингового счета продавца после оплаты клиентом
         //и попадает на счет сайта
@@ -89,14 +90,19 @@ namespace Cameo.Services
             return balance / moneyThatTalentPaysToSystemForCameo;
         }
 
-        public bool BalanceAllowsToAcceptRequest(int balance, int price)
+        //public bool BalanceAllowsToAcceptRequest(int balance, int price)
+        //{
+        //    return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
+        //}
+
+        public bool BalanceAllowsToConfirmVideo(int balance, int price)
         {
             return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
         }
 
-        public bool BalanceAllowsToUploadVideo(int balance, int price)
-        {
-            return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
-        }
+        //public bool BalanceAllowsToUploadVideo(int balance, int price)
+        //{
+        //    return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
+        //}
     }
 }

@@ -37,18 +37,18 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="alert alert-success">
-                        С учетом указанной цены Ваш баланс позволяет получить до <b id="maxAvailableRequests"></b> запросов
+                        С учетом указанной цены Ваш баланс позволяет ответить на до <b id="maxAvailableRequests"></b> запросов
                     </div>
                 </div>
             </div>
 
-            <div class="row">
+            @*<div class="row">
                 <div class="col-sm-12">
                     <div class="alert alert-info">
                         Максимальная цена, которую Вы можете установить за видео: <b>@ViewData["maxAvailablePrice"] сум</b>
                     </div>
                 </div>
-            </div>
+            </div>*@
 
             <button type="submit" class="btn btn-default">Сохранить</button>
         </form>
@@ -59,10 +59,13 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         var balance = parseInt("@ViewData["balance"]".replace(/ /g, ''));
-        var maxAvailablePrice = 0;
+        //var maxAvailablePrice = 0;
 
-        $(document).ready(function () {
-            maxAvailablePrice = parseInt("@ViewData["maxAvailablePrice"]".replace(/ /g, ''));
+        var currentRequest = null;
+
+        $(document).ready(function () 
+        {
+            //maxAvailablePrice = parseInt("@ViewData["maxAvailablePrice"]".replace(/ /g, ''));
 
             $("input#Price").keyup(function (event)
             {
@@ -71,7 +74,7 @@
 
                 if (price != undefined && !isNaN(price))
                 {
-                    $.ajax({
+                    currentRequest = $.ajax({
                         type: "GET",
                         url: "/TalentPrice/CalculateMaxNumberOfPossibleRequests",
                         data: {
@@ -84,6 +87,11 @@
                         //}),
                         contentType: "application/json; charset=utf-8",
                         //dataType: "json",
+                        beforeSend: function ()
+                        {
+                            if (currentRequest != null)
+                                currentRequest.abort();
+                        },
                         success: function (data) {
                             maxAvailableRequests = Number(data);
                         },
