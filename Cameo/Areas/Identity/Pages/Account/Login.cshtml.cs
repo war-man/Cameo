@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Cameo.Models;
+using Cameo.Models.Enums;
 
 namespace Cameo.Areas.Identity.Pages.Account
 {
@@ -18,11 +19,16 @@ namespace Cameo.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(
+            SignInManager<ApplicationUser> signInManager, 
+            ILogger<LoginModel> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -77,6 +83,14 @@ namespace Cameo.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    var existingUser = await _userManager.FindByEmailAsync(Input.Email);
+                    if (existingUser.UserType == UserTypesEnum.talent.ToString()
+                        && !existingUser.TalentApprovedByAdmin)
+                    {
+                        ModelState.AddModelError(string.Empty, "Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.");
+                        return Page();
+                    }
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

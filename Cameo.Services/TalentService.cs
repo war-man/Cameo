@@ -20,13 +20,24 @@ namespace Cameo.Services
             LogTalentPriceService = logTalentPriceService;
         }
 
+        //public override void GetActiveByID(int id)
+        //{
+        //    Talent model = base.GetActiveByID(id);
+        //    if (model.us)
+
+        //    AssignAccountNumber(entity);
+        //    base.Update(entity, userID);
+        //}
+
         public Talent GetActiveByUsername(string username)
         {
             if (!string.IsNullOrWhiteSpace(username))
                 username = username.ToLower();
 
             Talent model = _repository.GetWithRelatedDataAsIQueryable()
-                .FirstOrDefault(m => m.User.UserName.ToLower() == username);
+                .FirstOrDefault(m => m.User.TalentApprovedByAdmin 
+                    && m.User.UserName.ToLower() == username);
+
             if (model != null)
                 return model.IsDeleted ? null : model;
 
@@ -141,7 +152,8 @@ namespace Cameo.Services
         private IQueryable<Talent> GetWithRelatedDataForSearchAsIQueryable()
         {
             return GetWithRelatedDataAsIQueryable()
-                .Where(m => m.IsAvailable
+                .Where(m => m.User.TalentApprovedByAdmin
+                    && m.IsAvailable
                     /*&& m.IsConfirmed*/
                     && !m.IsDeleted);
                     //&& m.CreditCardExpire);

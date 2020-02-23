@@ -33,13 +33,13 @@ namespace Cameo.Controllers
                 return RedirectToAction("Index", "Customer");
         }
 
-        public IActionResult Book(int id)
-        {
-            Talent model = TalentService.GetActiveByID(id);
+        //public IActionResult Book(int id)
+        //{
+        //    Talent model = TalentService.GetActiveByID(id);
 
 
 
-            return View();
-        }
+        //    return View();
+        //}
     }
 }

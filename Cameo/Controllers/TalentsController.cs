@@ -114,8 +114,8 @@ namespace Cameo.Controllers
                 item.Avatar.Url = GetRandomPhotoUrl();
             }
 
-            ViewData["categories"] = CategoryService.GetAllActive()
-                .ToDictionary(m => m.ID, m => m.Name);
+            //ViewData["categories"] = CategoryService.GetAllActive()
+            //    .ToDictionary(m => m.ID, m => m.Name);
 
             return PartialView(talents);
         }
