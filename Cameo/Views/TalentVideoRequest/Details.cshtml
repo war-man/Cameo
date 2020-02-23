@@ -109,21 +109,33 @@
         }
         else
         {
+            if (!Model.BalanceAllowsToConfirm && Model.CancelBtnIsAvailable)
+            {
+                <div class="alert alert-danger">
+                    <small><i>У Вас недостаточно средств, чтобы подтвердить запрос.</i></small>
+                </div>
+            }
+
             if (Model.UploadVideoBtnIsAvailable)
             {
                 if (Model.Video.ID > 0)
                 {
-                    <button type="button" class="btn btn-danger btn-sm" id="deleteBtn_@Model.ID" onclick="DeleteVideo(@Model.Video.ID, @Model.ID);" title="Удалить Видео"><i class="glyphicon glyphicon-remove-sign"></i></button>
-                    <div class="alert alert-warning"><small>Видео еще не подтверждено. Для завершения запроса, пожалуйста, подтвердите</small></div>
-                    <button type="button" class="btn btn-success btn-sm" onclick="ConfirmVideo(@Model.ID);">Подтвердить</button>
+                    if (Model.BalanceAllowsToConfirm)
+                    {
+                        <button type="button" class="btn btn-danger btn-sm" id="deleteBtn_@Model.ID" onclick="DeleteVideo(@Model.Video.ID, @Model.ID);" title="Удалить Видео"><i class="glyphicon glyphicon-remove-sign"></i></button>
+                        <div class="alert alert-warning"><small>Видео еще не подтверждено. Для завершения запроса, пожалуйста, подтвердите</small></div>
+                        <button type="button" class="btn btn-success btn-sm" onclick="ConfirmVideo(@Model.ID);">Подтвердить</button>
+                    }
                 }
 
                 <img id="spinner_@Model.ID" src="@AppData.Configuration.SpinnerUrl" style="display: none; height:20px;" />
                 <input type="file" id="imgInp_@Model.ID" onchange="VideoAjaxUpload(this, @Model.ID, '@Constants.FileTypes.VIDEO_REQUEST_VIDEO', 'spinner_@Model.ID', 'imgContainer_@Model.ID');" />
             }
-            else
+            else if (Model.CancelBtnIsAvailable)
             {
-                <small><i>Текущий статус запроса не позволяет загрузить видео</i></small>
+                <div class="alert alert-warning">
+                    <small><i>Текущий статус запроса не позволяет загрузить видео.</i></small>
+                </div>
             }
         }
     </div>

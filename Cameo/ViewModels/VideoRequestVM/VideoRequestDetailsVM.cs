@@ -36,6 +36,7 @@ namespace Cameo.ViewModels
 
         public AttachmentDetailsVM Video { get; set; }
         public bool VideoConfirmed { get; set; }
+        public bool BalanceAllowsToConfirm { get; set; }
 
         public VideoRequestDetailsVM() { }
 

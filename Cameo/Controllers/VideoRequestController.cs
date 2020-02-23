@@ -20,19 +20,22 @@ namespace Cameo.Controllers
         private readonly ITalentService TalentService;
         private readonly ICustomerService CustomerService;
         private readonly IHangfireService HangfireService;
+        private readonly ITalentBalanceService TalentBalanceService;
 
         public VideoRequestController(
             IVideoRequestService videoRequestService,
             IVideoRequestTypeService videoRequestTypeService,
             ITalentService talentService,
             ICustomerService customerService,
-            IHangfireService hangfireService)
+            IHangfireService hangfireService,
+            ITalentBalanceService talentBalanceService)
         {
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
             TalentService = talentService;
             CustomerService = customerService;
             HangfireService = hangfireService;
+            TalentBalanceService = talentBalanceService;
         }
 
         public IActionResult Index()
@@ -239,6 +242,10 @@ namespace Cameo.Controllers
                 var curUser = accountUtil.GetCurrentUser(User);
                 if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
                     throw new Exception("Вы не являетесь талантом");
+
+                int balance = TalentBalanceService.GetBalance(model.Talent);
+                if (balance <= 0)
+                    throw new Exception("У Вас недостаточно средств, чтобы подтвердить запрос");
 
                 //cancel hangfire RequestAnswerJobID
                 //HangfireService.CancelJob(model.RequestAnswerJobID);

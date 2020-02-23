@@ -15,15 +15,18 @@ namespace Cameo.Controllers
         private readonly ICustomerService CustomerService;
         private readonly IVideoRequestSearchService SearchService;
         private readonly IVideoRequestService VideoRequestService;
+        private readonly ITalentBalanceService TalentBalanceService;
 
         public TalentVideoRequestController(
             ICustomerService customerService,
             IVideoRequestSearchService searchService,
-            IVideoRequestService videoRequestService)
+            IVideoRequestService videoRequestService,
+            ITalentBalanceService talentBalanceService)
         {
             CustomerService = customerService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
+            TalentBalanceService = talentBalanceService;
         }
 
         public IActionResult Index(int? status = 0)
@@ -46,6 +49,8 @@ namespace Cameo.Controllers
                 return NotFound();
 
             VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(model);
+            int balance = TalentBalanceService.GetBalance(model.Talent);
+            modelVM.BalanceAllowsToConfirm = balance > 0;
 
             return View(modelVM);
         }
