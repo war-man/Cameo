@@ -17,6 +17,7 @@ namespace Cameo.Common
         public string ApplicationRootPath { get; set; }
         public string NoPhotoUrl { get; set; }
         public string SpinnerUrl { get; set; }
+        public int WebsiteCommission { get; set; }
         public int PaymentSystemCommission { get; set; }
         public string NumberViewStringFormat { get; set; }
         public string DateViewStringFormat { get; set; }

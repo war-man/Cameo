@@ -44,7 +44,7 @@ namespace Cameo.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
 
             IFormFile file = files[0];
-            if (file == null)
+            if (file != null)
             {
                 Attachment attachment = new Attachment()
                 {

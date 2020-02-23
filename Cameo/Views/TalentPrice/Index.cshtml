@@ -34,13 +34,13 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 
-            <div class="row">
+            @*<div class="row">
                 <div class="col-sm-12">
-                    <div class="alert alert-success">
+                    <div class="alert alert-info">
                         С учетом указанной цены Ваш баланс позволяет ответить на до <b id="maxAvailableRequests"></b> запросов
                     </div>
                 </div>
-            </div>
+            </div>*@
 
             @*<div class="row">
                 <div class="col-sm-12">
@@ -57,7 +57,7 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
+    @*<script>
         var balance = parseInt("@ViewData["balance"]".replace(/ /g, ''));
         //var maxAvailablePrice = 0;
 
@@ -107,5 +107,5 @@
 
 			$("input#Price").keyup();
         });
-    </script>
+    </script>*@
 }

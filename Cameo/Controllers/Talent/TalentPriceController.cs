@@ -34,7 +34,7 @@ namespace Cameo.Controllers
 
             TalentPriceEditVM modelVM = new TalentPriceEditVM(model);
 
-            ViewData["balance"] = TalentBalanceService.GetBalance(model);
+            //ViewData["balance"] = TalentBalanceService.GetBalance(model);
             //ViewData["maxAvailablePrice"] = TalentBalanceService.CalculateMaxAvailablePriceForCameo(model)
             //    .ToString(AppData.Configuration.NumberViewStringFormat);
 
@@ -74,16 +74,21 @@ namespace Cameo.Controllers
             else
                 ModelState.AddModelError("", "Неверные данные");
 
-            ViewData["balance"] = TalentBalanceService.GetBalance(model);
+            //ViewData["balance"] = TalentBalanceService.GetBalance(model);
             //ViewData["maxAvailablePrice"] = maxAvailablePrice.ToString(AppData.Configuration.NumberViewStringFormat);
 
             return View(modelVM);
         }
 
-        public IActionResult CalculateMaxNumberOfPossibleRequests(int balance, int price)
-        {
-            return Ok(TalentBalanceService.CalculateMaxNumberOfPossibleRequests(balance, price));
-        }
+        //public IActionResult CalculateMaxNumberOfPossibleRequests(int balance, int price)
+        //{
+        //    double commission = 0;
+        //    double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out commission);
+        //    if (commission <= 0)
+        //        commission = 25;
+
+        //    return Ok(TalentBalanceService.CalculateMaxNumberOfPossibleRequests(balance, price, commission));
+        //}
 
         public string GetPrice()
         {

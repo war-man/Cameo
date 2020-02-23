@@ -1,4 +1,5 @@
-﻿using Cameo.Data.Infrastructure;
+﻿using Cameo.Common;
+using Cameo.Data.Infrastructure;
 using Cameo.Data.Repository.Interfaces;
 using Cameo.Models;
 using Cameo.Models.Enums;
@@ -33,6 +34,13 @@ namespace Cameo.Services
 
         new public void Add(VideoRequest entity, string creatorID)
         {
+            double commission = 0;
+            double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out commission);
+            if (commission <= 0)
+                commission = 25;
+
+            entity.WebsiteCommission = commission;
+
             //entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
             entity.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
 #if DEBUG
@@ -177,6 +185,11 @@ namespace Cameo.Services
         {
             if (!RequestBelongsToUser(model, userID))
                 throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
+
+            int amountToBeTakenOff = TalentBalanceService
+                .CalculateMoneyThatTalentPaysToSystemForCameo(model.Price, model.WebsiteCommission);
+
+            TalentBalanceService.TakeOffBalance(model.Talent, amountToBeTakenOff, userID);
 
             model.DatePaid = DateTime.Now;
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoPaid;

@@ -10,11 +10,12 @@ namespace Cameo.Services
 {
     public class TalentBalanceService : /*BaseCRUDService<Talent>,*/ ITalentBalanceService
     {
-        private readonly IVideoRequestSearchService VideoRequestSearchService;
+        //private readonly IVideoRequestSearchService VideoRequestSearchService;
+        private readonly ITalentService TalentService;
 
-        public TalentBalanceService(IVideoRequestSearchService videoRequestSearchService)
+        public TalentBalanceService(ITalentService talentService)
         {
-            VideoRequestSearchService = videoRequestSearchService;
+            TalentService = talentService;
         }
 
         public int GetBalance(Talent talent)
@@ -61,12 +62,12 @@ namespace Cameo.Services
 
         //сумма, которая снимается с биллингового счета продавца после оплаты клиентом
         //и попадает на счет сайта
-        public int CalculateMoneyThatTalentPaysToSystemForCameo(int price)
+        public int CalculateMoneyThatTalentPaysToSystemForCameo(int price, double websiteCommission)
         {
             int d = 0;
 
-            int k = AppData.Configuration.PaymentSystemCommission;
-            double mDouble = (price * 100) / (100 + k);
+            double paymentSystemCommission = AppData.Configuration.PaymentSystemCommission;
+            double mDouble = (price * 100) / (100 + paymentSystemCommission);
             int m = 0;
             if (mDouble > 0)
             {
@@ -75,34 +76,43 @@ namespace Cameo.Services
                 m *= 1000;
             }
 
-            d = m - (int)(0.75 * price);
+            d = m - (int)(((100.0 - websiteCommission) / 100) * price);
 
             return d;
         }
 
-        //количество запросов, которые можно обработать исходя из баланса и цены, указанной за Cameo
-        public int CalculateMaxNumberOfPossibleRequests(int balance, int price)
-        {
-            int moneyThatTalentPaysToSystemForCameo = CalculateMoneyThatTalentPaysToSystemForCameo(price);
-            if (moneyThatTalentPaysToSystemForCameo == 0)
-                return 0;
+        ////количество запросов, которые можно обработать исходя из баланса и цены, указанной за Cameo
+        //public int CalculateMaxNumberOfPossibleRequests(int balance, int price, double commission)
+        //{
+        //    if (balance <= 0)
+        //        return 0;
 
-            return balance / moneyThatTalentPaysToSystemForCameo;
-        }
+        //    int moneyThatTalentPaysToSystemForCameo = CalculateMoneyThatTalentPaysToSystemForCameo(price, commission);
+        //    if (moneyThatTalentPaysToSystemForCameo == 0)
+        //        return 0;
+
+        //    return balance / moneyThatTalentPaysToSystemForCameo;
+        //}
 
         //public bool BalanceAllowsToAcceptRequest(int balance, int price)
         //{
         //    return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
         //}
 
-        public bool BalanceAllowsToConfirmVideo(int balance, int price)
-        {
-            return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
-        }
+        //public bool BalanceAllowsToConfirmVideo(int balance, int price)
+        //{
+        //    return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
+        //}
 
         //public bool BalanceAllowsToUploadVideo(int balance, int price)
         //{
         //    return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
         //}
+
+        public void TakeOffBalance(Talent talent, int amount, string userID)
+        {
+            talent.Balance -= amount;
+            //TalentService.Update(talent, userID);
+        }
     }
 }

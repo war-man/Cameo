@@ -24,6 +24,7 @@ namespace Cameo.Models
         public string Email { get; set; }
         public bool IsNotPublic { get; set; }
         public int Price { get; set; }
+        public double WebsiteCommission { get; set; }
 
         [ForeignKey("Customer")]
         public int CustomerID { get; set; }
