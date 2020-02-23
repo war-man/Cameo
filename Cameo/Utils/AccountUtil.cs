@@ -47,12 +47,21 @@ namespace Cameo.Utils
             if (!string.IsNullOrWhiteSpace(user.UserType))
             {
                 ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
-                    new Claim(ClaimTypes.UserData, user.UserType)
+                    //new Claim(ClaimTypes.UserData, user.UserType),
+                    new Claim(CustomClaimTypes.UserType, user.UserType),
+                    new Claim(CustomClaimTypes.EmailConfirmed, user.EmailConfirmed.ToString()),
+                    new Claim(CustomClaimTypes.TalentApprovedByAdmin, user.TalentApprovedByAdmin.ToString())
                 });
             }
 
-
             return principal;
         }
+    }
+
+    public static class CustomClaimTypes
+    {
+        public const string UserType = "UserType";
+        public const string EmailConfirmed = "EmailConfirmed";
+        public const string TalentApprovedByAdmin = "TalentApprovedByAdmin";
     }
 }

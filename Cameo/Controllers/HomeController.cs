@@ -31,7 +31,7 @@ namespace Cameo.Controllers
             //int k = 6;
             //int l = k / 0;
 
-
+            var curUser = accountUtil.GetCurrentUser(User);
 
             return View();
         }

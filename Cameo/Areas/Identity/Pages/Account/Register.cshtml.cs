@@ -119,13 +119,12 @@ namespace Cameo.Areas.Identity.Pages.Account
                                 values: new { userId = user.Id, code = code },
                                 protocol: Request.Scheme);
 
-                            string body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
-
+                            //string body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
                             //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", body);
 
                             await _signInManager.SignInAsync(user, isPersistent: false);
-                            //return LocalRedirect(returnUrl);
-                            return RedirectToAction("ThanksForRegistrationCustomer", "User");
+                            return LocalRedirect(returnUrl);
+                            //return RedirectToAction("ThanksForRegistrationCustomer", "User");
                         }
                         foreach (var error in result.Errors)
                         {

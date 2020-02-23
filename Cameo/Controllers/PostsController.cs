@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Cameo.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using Cameo.Utils;
 
 namespace Cameo.Controllers
 {
@@ -30,7 +31,8 @@ namespace Cameo.Controllers
         {
             var posts = PostService.GetAll();
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Claim claim = User.FindFirst(ClaimTypes.UserData);
+            //Claim claim = User.FindFirst(ClaimTypes.UserData);
+            Claim claim = User.FindFirst(CustomClaimTypes.UserType);
             string userType = claim?.Value;
 
 

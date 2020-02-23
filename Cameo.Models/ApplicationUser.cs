@@ -10,6 +10,7 @@ namespace Cameo.Models
     public class ApplicationUser : IdentityUser
     {
         public string UserType { get; set; }
+        public bool TalentApprovedByAdmin { get; set; } = false;
 
         //==========================================================
         public string CustomTag { get; set; }
