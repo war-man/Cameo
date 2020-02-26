@@ -11,6 +11,7 @@ namespace Cameo.Models
     {
         public string UserType { get; set; }
         public bool TalentApprovedByAdmin { get; set; } = false;
+        public DateTime? DateTalentApprovedByAdmin { get; set; }
 
         //==========================================================
         public string CustomTag { get; set; }

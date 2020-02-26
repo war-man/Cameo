@@ -1,0 +1,97 @@
+﻿@model Cameo.AdminPanel.ViewModels.TalentAccountDetailsVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="ID">@Html.DisplayNameFor(m => m.ID)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.ID)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="Username">@Html.DisplayNameFor(m => m.Username)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.Username)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="FullName">@Html.DisplayNameFor(m => m.FullName)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.FullName)
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="TalentApprovedByAdmin">@Html.DisplayNameFor(m => m.TalentApprovedByAdmin)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.TalentApprovedByAdmin)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="DateTalentApprovedByAdmin">@Html.DisplayNameFor(m => m.DateTalentApprovedByAdmin)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.DateTalentApprovedByAdmin)
+    </div>
+</div>
+
+@if (!Model.TalentApprovedByAdmin)
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-success" onclick="Approve('@Model.ID');">Подтвердить</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function Approve(id)
+        {
+            if (confirm("Ты уверен, что хочешь подтвердить @Model.FullName ?"))
+            {
+                $(".btn").attr("disabled", "disabled");
+                $.ajax({
+                    type: "POST",
+                    url: "/Account/Approve?id=" + id,
+                    //data: {
+                    //    id: requestID
+                    //},
+                    //data: JSON.stringify({
+                    //    id: requestID
+                    //}),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data)
+                    {
+                        alert("success");
+                        //alert(data);
+                    },
+                    error: function (data)
+                    {
+                        //alert("error");
+                        console.log(data);
+                    },
+                    complete: function (data)
+                    {
+                        //alert("completed");
+                        $(".btn").removeAttr("disabled");
+                    }
+                });
+            }
+        }
+    </script>
+}

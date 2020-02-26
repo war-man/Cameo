@@ -14,6 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Cameo.Models;
 using Cameo.Data;
+using Cameo.Common;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace Cameo.AdminPanel
 {
@@ -46,6 +49,17 @@ namespace Cameo.AdminPanel
                .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.Configure<AppConfiguration>(Configuration.GetSection("MySettings"));
+
+            //add common dependencies
+            services.AddCommonDependencies(); //UnitOfWork and DatabaseFactory
+
+            //add repositories
+            services.AddRepositories();
+
+            //add services
+            services.AddServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +77,15 @@ namespace Cameo.AdminPanel
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Content")),
+                RequestPath = "/Content"
+            });
+
             app.UseCookiePolicy();
 
             app.UseAuthentication();
