@@ -28,8 +28,8 @@ namespace Cameo.Controllers
             //_backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
 
             //_logger.LogInformation("Home Index page opened");
-            //int k = 6;
-            //int l = k / 0;
+            int k = 6;
+            int l = k / 0;
 
             var curUser = accountUtil.GetCurrentUser(User);
 
@@ -53,19 +53,20 @@ namespace Cameo.Controllers
 
         public IActionResult Privacy()
         {
+            throw new Exception("This is some thrown exception");
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            var pathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            Exception exception = pathFeature?.Error; // Here will be the exception details
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    var pathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+        //    Exception exception = pathFeature?.Error; // Here will be the exception details
 
-            var curUser = accountUtil.GetCurrentUser(User);
-            _logger.LogError(exception, "UserID = " + curUser?.ID ?? "unauthorized");
+        //    var curUser = accountUtil.GetCurrentUser(User);
+        //    _logger.LogError(exception, "UserID = " + curUser?.ID ?? "unauthorized");
 
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }

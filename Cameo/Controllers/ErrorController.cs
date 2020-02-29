@@ -18,14 +18,21 @@ namespace Cameo.Controllers
         {
             _logger = logger;
         }
-        //[Route("error/404")]
-        //public IActionResult Error404()
-        //{
-        //    return View();
-        //}
 
-        [Route("Error/{code:int}")]
-        public IActionResult Error(int? code)
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Index()
+        {
+            var pathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            Exception exception = pathFeature?.Error; // Here will be the exception details
+
+            var curUser = accountUtil.GetCurrentUser(User);
+            _logger.LogError(exception, "UserID = " + curUser?.ID ?? "unauthorized");
+
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Route("Error/Status/{code:int}")]
+        public IActionResult Status(int? code)
         {
             var pathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             Exception exception = pathFeature?.Error; // Here will be the exception details
@@ -40,7 +47,8 @@ namespace Cameo.Controllers
 
             ViewBag.code = code;
 
-            return View("Error");
+            //return View("Error");
+            return View();
         }
     }
 }
