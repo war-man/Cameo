@@ -67,7 +67,7 @@ namespace Cameo.Controllers
             }
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
-            ViewData["bookBtnIsAvailable"] = AccountUtil.IsUserCustomer(curUser);
+            ViewData["isUserCustomer"] = AccountUtil.IsUserCustomer(curUser);
 
             return View(modelVM);
         }
@@ -111,7 +111,8 @@ namespace Cameo.Controllers
 
             foreach (var item in talents)
             {
-                item.Avatar.Url = GetRandomPhotoUrl();
+                if (item.Avatar.ID == 0)
+                    item.Avatar.Url = GetRandomPhotoUrl();
             }
 
             //ViewData["categories"] = CategoryService.GetAllActive()
@@ -128,7 +129,8 @@ namespace Cameo.Controllers
 
             foreach (var item in talents)
             {
-                item.Avatar.Url = GetRandomPhotoUrl();
+                if (item.Avatar.ID == 0)
+                    item.Avatar.Url = GetRandomPhotoUrl();
             }
 
             return PartialView("_SearchBoxResult", talents);

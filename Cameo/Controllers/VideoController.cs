@@ -28,6 +28,9 @@ namespace Cameo.Controllers
         {
             var curUser = accountUtil.GetCurrentUser(User);
             VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
+            if (model == null)
+                return NotFound();
+
             VideoDetailsVM modelVM = new VideoDetailsVM(model);
 
             return View(modelVM);
@@ -39,7 +42,7 @@ namespace Cameo.Controllers
             VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
 
             if (model == null)
-                return null;
+                return NotFound();
 
             string fileAbsolutePath = FileManagement.GetFileAbsolutePath(
                 model.Video.Path, 

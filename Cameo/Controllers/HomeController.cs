@@ -28,8 +28,8 @@ namespace Cameo.Controllers
             //_backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
 
             //_logger.LogInformation("Home Index page opened");
-            int k = 6;
-            int l = k / 0;
+            //int k = 6;
+            //int l = k / 0;
 
             var curUser = accountUtil.GetCurrentUser(User);
 

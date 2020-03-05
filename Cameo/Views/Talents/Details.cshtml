@@ -48,7 +48,35 @@
                 </div>
                 <br />
                 <div class="bookBox">
-                    @if ((bool)ViewData["bookBtnIsAvailable"] == true)
+                    @if (Model.IsAvailable)
+                    {
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            if ((bool)ViewData["isUserCustomer"] == true)
+                            {
+                                <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#bookModal">
+                                    Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Таланты не могут заказывать видео. Зайдите как клиент.</button>
+                            }
+                        }
+                        //show login page (or redirect)
+                        else
+                        {
+                            <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#logInModal">
+                                Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Временно недоступен</button>
+                    }
+
+                    @*@if ((bool)ViewData["isUserCustomer"] == true)
                     {
                         if (Model.IsAvailable)
                         {
@@ -64,7 +92,7 @@
                     else
                     {
                         <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Таланты не могут заказывать видео. Зайдите как клиент.</button>
-                    }
+                    }*@
                 </div>
                 <br />
                 <div class="bookBox">

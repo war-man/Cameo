@@ -15,7 +15,7 @@ namespace Cameo.Services
         private readonly IEmailService EmailService;
         private readonly ITalentBalanceService TalentBalanceService;
 
-        private int tmpPeriodMinutes = 1440;
+        private int tmpPeriodMinutes = 2;
 
         public VideoRequestService(IVideoRequestRepository repository,
                            IUnitOfWork unitOfWork,
@@ -224,6 +224,11 @@ namespace Cameo.Services
             return model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid;
         }
 
+        private bool RequestIsNotPublic(VideoRequest model)
+        {
+            return model.IsNotPublic;
+        }
+
         public bool VideoIsUploadable(VideoRequest model)
         {
             return (/*!model.DateVideoCompleted.HasValue &&*//*RequestIsWaitingForResponse(model) 
@@ -239,7 +244,14 @@ namespace Cameo.Services
         public bool VideoIsAllowedToBeDeleted(VideoRequest model)
         {
             //return RequestIsAcceptedAndWaitingForVideo(model);
-            return VideoIsUploadable(model);
+            //return VideoIsUploadable(model);
+            return (model.VideoID.HasValue && !VideoIsConfirmed(model));
+        }
+
+        private bool VideoIsConfirmed(VideoRequest model)
+        {
+            return (model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
+                || model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid);
         }
 
         public void SaveDetachedVideo(VideoRequest model, string userID)
@@ -286,23 +298,20 @@ namespace Cameo.Services
             if (model == null)
                 return null;
 
-            if (RequestIsPaid(model))
+            //if request belongs to current Talent
+            if (model.Talent.UserID == userID)
+                return model;
+            else if (RequestIsPaid(model))
             {
-                //if request belongs to current Talent
-                if (model.Talent.UserID == userID)
-                    return model;
-                else
+                //if unauthorized
+                if (string.IsNullOrWhiteSpace(userID))
                 {
-                    //if unauthorized
-                    if (string.IsNullOrWhiteSpace(userID))
-                    {
-                        if (!model.IsNotPublic)
-                            return model;
-                    }
-                    //if request belongs to current Customer
-                    else if (model.Customer.UserID == userID)
+                    if (!RequestIsNotPublic(model))
                         return model;
                 }
+                //if request belongs to current Customer
+                else if (model.Customer.UserID == userID)
+                    return model;
             }
             
             return null;
@@ -315,7 +324,8 @@ namespace Cameo.Services
                 return null;
 
             //if request belongs to current Talent
-            if (model.Talent.UserID == userID)
+            //if (model.Talent.UserID == userID)
+            if (BelongsToTalent(model, userID))
                 return model;
             else
                 return null;
