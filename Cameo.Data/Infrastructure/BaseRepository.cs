@@ -105,7 +105,7 @@ namespace Cameo.Data.Infrastructure
 
         public virtual T GetActiveSingleDetailsWithRelatedDataByID(int id)
         {
-            return _dataContext.Set<T>().FirstOrDefault();
+            return _dataContext.Set<T>().FirstOrDefault(m => m.ID == id);
         }
 
         #region potentially unused methods

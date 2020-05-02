@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClassLibrary1
+namespace Cameo.DependencyIjections
 {
     public class Class1
     {

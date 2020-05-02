@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Cameo
+namespace Cameo.DependencyInjections
 {
     public static class ServiceProviderExtensions
     {

@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.Services", "Cameo.Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.Common", "Cameo.Common\Cameo.Common.csproj", "{80E632AC-7259-48DC-871A-D811298FFA91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cameo.AdminPanel", "Cameo.AdminPanel\Cameo.AdminPanel.csproj", "{7457DD36-4426-4225-9444-2A4C2BB54407}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cameo.AdminPanel", "Cameo.AdminPanel\Cameo.AdminPanel.csproj", "{7457DD36-4426-4225-9444-2A4C2BB54407}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cameo.API", "Cameo.API\Cameo.API.csproj", "{43E77F6E-3905-425B-853D-18E4070CF385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cameo.DependencyInjections", "Cameo.DependencyInjections\Cameo.DependencyInjections.csproj", "{21A2AAC0-F8AF-4AC3-B363-C93D5A1FE35A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{7457DD36-4426-4225-9444-2A4C2BB54407}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7457DD36-4426-4225-9444-2A4C2BB54407}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7457DD36-4426-4225-9444-2A4C2BB54407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43E77F6E-3905-425B-853D-18E4070CF385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43E77F6E-3905-425B-853D-18E4070CF385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43E77F6E-3905-425B-853D-18E4070CF385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43E77F6E-3905-425B-853D-18E4070CF385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21A2AAC0-F8AF-4AC3-B363-C93D5A1FE35A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21A2AAC0-F8AF-4AC3-B363-C93D5A1FE35A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21A2AAC0-F8AF-4AC3-B363-C93D5A1FE35A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21A2AAC0-F8AF-4AC3-B363-C93D5A1FE35A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

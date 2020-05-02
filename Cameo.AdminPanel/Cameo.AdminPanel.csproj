@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cameo.DependencyInjections\Cameo.DependencyInjections.csproj" />
     <ProjectReference Include="..\Cameo.Models\Cameo.Models.csproj" />
     <ProjectReference Include="..\Cameo.Services\Cameo.Services.csproj" />
   </ItemGroup>

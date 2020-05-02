@@ -14,8 +14,9 @@ namespace Cameo.Models
 
         [StringLength(32)]
         public string CreditCardNumber { get; set; }
-        [StringLength(5)]
-        public string CreditCardExpire { get; set; }
+
+        public DateTime? CreditCardExpire { get; set; }
+
 
         public bool IsAvailable { get; set; }
 
@@ -23,6 +24,12 @@ namespace Cameo.Models
 
         public int Balance { get; set; }
         public string AccountNumber { get; set; } //лицевой счет
+
+        public bool IsFeatured { get; set; } = false;
+
+        [ForeignKey("IntroVideo")]
+        public int? IntroVideoID { get; set; }
+        public virtual Attachment IntroVideo { get; set; }
 
         [InverseProperty("Talent")]
         public virtual ICollection<TalentProject> Projects { get; set; }

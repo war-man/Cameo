@@ -13,7 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Content\Images\nophoto.png" />
+    <Compile Remove="Data\Migrations\20200305174923_CreditCardExpireDatetime.cs" />
+    <Compile Remove="Data\Migrations\20200305174923_CreditCardExpireDatetime.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200305175502_CreditCardExpireDatetime.cs" />
+    <Compile Remove="Data\Migrations\20200305175502_CreditCardExpireDatetime.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200305181454_CreditCardNumberLength.cs" />
+    <Compile Remove="Data\Migrations\20200305181454_CreditCardNumberLength.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,8 +37,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\images\nophoto.png" />
+    <None Include="wwwroot\images\spinner.gif" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Cameo.Common\Cameo.Common.csproj" />
     <ProjectReference Include="..\Cameo.Data\Cameo.Data.csproj" />
+    <ProjectReference Include="..\Cameo.DependencyInjections\Cameo.DependencyInjections.csproj" />
     <ProjectReference Include="..\Cameo.Models\Cameo.Models.csproj" />
     <ProjectReference Include="..\Cameo.Services\Cameo.Services.csproj" />
   </ItemGroup>

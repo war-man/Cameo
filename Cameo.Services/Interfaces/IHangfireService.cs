@@ -14,7 +14,7 @@ namespace Cameo.Services.Interfaces
 
         void CancelJob(string jobID);
         
-        void CreateTaskForConvertingVideo(int attachmentID, string userID);
-        void StartConvertingVideo(int attachmentID, string userID );
+        //void CreateTaskForConvertingVideo(int attachmentID, string userID);
+        //void StartConvertingVideo(int attachmentID, string userID );
     }
 }

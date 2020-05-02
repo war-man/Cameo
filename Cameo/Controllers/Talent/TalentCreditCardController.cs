@@ -42,12 +42,32 @@ namespace Cameo.Controllers
             {
                 try
                 {
-                    model.CreditCardNumber = modelVM.CreditCardNumber;
-                    model.CreditCardExpire = modelVM.CreditCardExpire;
+                    model.CreditCardNumber = modelVM.CreditCardNumber.Replace(" ", "");
+                    if (!string.IsNullOrWhiteSpace(modelVM.CreditCardExpire))
+                    {
+                        string[] tmp = modelVM.CreditCardExpire.Split('/');
 
-                    TalentService.Update(model, curUser.ID);
+                        string monthString = tmp[0];
+                        string yearString = tmp[1];
 
-                    ViewData["successfullySaved"] = true;
+                        int month = int.Parse(monthString);
+                        int year = int.Parse(yearString) + 2000;
+
+                        DateTime creditCardExpireTmp = new DateTime(year, month, 1); //day does not play any role
+
+                        if (!ExpiresIn3Months(creditCardExpireTmp))
+                        {
+                            model.CreditCardExpire = creditCardExpireTmp;
+
+                            TalentService.Update(model, curUser.ID);
+
+                            ViewData["successfullySaved"] = true;
+                        }
+                        else
+                            ModelState.AddModelError("", "Срок годности карты истекает менее чем через 3 месяца");
+                    }
+                    else
+                        ModelState.AddModelError("", "Некорректный срок годности");
                 }
                 catch (Exception ex)
                 {
@@ -58,6 +78,27 @@ namespace Cameo.Controllers
                 ModelState.AddModelError("", "Неверные данные");
 
             return View(modelVM);
+        }
+
+        private bool ExpiresIn3Months(DateTime creditCardExpire)
+        {
+            DateTime now = DateTime.Now;
+
+            int diffInYears = creditCardExpire.Year - now.Year;
+            if (diffInYears < 0)
+                return true;
+            else if (diffInYears == 0 || diffInYears == 1)
+            {
+                int diffInMonths = creditCardExpire.Month + (diffInYears * 12) - now.Month;
+                if (diffInMonths >= 3)
+                    return false;
+                else
+                    return true;
+            }
+            else if (diffInYears > 1)
+                return false;
+
+            return true;
         }
     }
 }

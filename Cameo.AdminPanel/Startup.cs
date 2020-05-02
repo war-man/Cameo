@@ -17,6 +17,7 @@ using Cameo.Data;
 using Cameo.Common;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Cameo.DependencyInjections;
 
 namespace Cameo.AdminPanel
 {

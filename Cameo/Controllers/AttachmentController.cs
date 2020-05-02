@@ -7,6 +7,7 @@ using Cameo.Services.Interfaces;
 using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NReco;
@@ -23,18 +24,22 @@ namespace Cameo.Controllers
         private readonly IVideoRequestService VideoRequestService;
         private readonly IHangfireService HangfireService;
 
+        private readonly IHostingEnvironment _env;
+
         public AttachmentController(
             IAttachmentService attachmentService,
             ICustomerService customerService,
             ITalentService talentService,
             IVideoRequestService videoRequestService,
-            IHangfireService hangfireService)
+            IHangfireService hangfireService,
+            IHostingEnvironment env)
         {
             AttachmentService = attachmentService;
             CustomerService = customerService;
             TalentService = talentService;
             VideoRequestService = videoRequestService;
             HangfireService = hangfireService;
+            _env = env;
         }
 
         [HttpPost]
@@ -56,7 +61,7 @@ namespace Cameo.Controllers
                     MimeType = file.ContentType
                 };
 
-                string rootPath = AppData.Configuration.ApplicationRootPath;
+                string rootPath = _env.ContentRootPath;
 
                 string path = AppData.Configuration.UploadsPath;
                 if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
@@ -117,7 +122,7 @@ namespace Cameo.Controllers
                         model.Video = attachment;
                         VideoRequestService.SaveUploadedVideo(model, curUserID);
 
-                        HangfireService.CreateTaskForConvertingVideo(attachment.ID, curUserID);
+                        //HangfireService.CreateTaskForConvertingVideo(attachment.ID, curUserID);
                     }
                 }
             }

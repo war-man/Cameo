@@ -14,7 +14,6 @@ namespace Cameo.Common
     public class AppConfiguration
     {
         public string UploadsPath { get; set; }
-        public string ApplicationRootPath { get; set; }
         public string NoPhotoUrl { get; set; }
         public string SpinnerUrl { get; set; }
         public int WebsiteCommission { get; set; }
@@ -24,5 +23,10 @@ namespace Cameo.Common
         public string DateTextViewStringFormat { get; set; }
         public string DateDbViewStringFormat { get; set; }
         public string TimeViewStringFormat { get; set; }
+
+        public string TokenValidAudience { get; set; }
+        public string TokenValidIssuer { get; set; }
+        public string TokenSecurityKey { get; set; }
+        public int TokenExpirationPeriodInDays { get; set; }
     }
 }

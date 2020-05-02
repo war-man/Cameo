@@ -24,6 +24,7 @@ using Cameo.Common;
 using Microsoft.Extensions.Options;
 using Cameo.Utils;
 using Microsoft.Extensions.Logging;
+using Cameo.DependencyInjections;
 
 namespace Cameo
 {
@@ -104,16 +105,19 @@ namespace Cameo
 
             if (env.IsDevelopment())
             {
-                app.UseStatusCodePagesWithReExecute("/Error/Status/{0}");
-                app.UseExceptionHandler("/Error/Index");
+                //app.UseStatusCodePagesWithReExecute("/Error/Status/{0}");
+                //app.UseExceptionHandler("/Error/Index");
 
-                //app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
-                app.UseStatusCodePagesWithReExecute("/Error/Status/{0}");
-                app.UseExceptionHandler("/Error/Index");
+                //app.UseStatusCodePagesWithReExecute("/Error/Status/{0}");
+                //app.UseExceptionHandler("/Error/Index");
+
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
 
                 app.UseHsts();
             }
@@ -121,12 +125,12 @@ namespace Cameo
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "Content")),
-                RequestPath = "/Content"
-            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), "Content")),
+            //    RequestPath = "/Content"
+            //});
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(

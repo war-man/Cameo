@@ -305,8 +305,7 @@ namespace Cameo.Data.Migrations
 
                     b.Property<string>("CreatedBy");
 
-                    b.Property<string>("CreditCardExpire")
-                        .HasMaxLength(5);
+                    b.Property<DateTime?>("CreditCardExpire");
 
                     b.Property<string>("CreditCardNumber")
                         .HasMaxLength(32);
@@ -320,9 +319,13 @@ namespace Cameo.Data.Migrations
 
                     b.Property<string>("FollowersCount");
 
+                    b.Property<int?>("IntroVideoID");
+
                     b.Property<bool>("IsAvailable");
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsFeatured");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(256);
@@ -344,6 +347,8 @@ namespace Cameo.Data.Migrations
                     b.HasIndex("AvatarID");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("IntroVideoID");
 
                     b.HasIndex("ModifiedBy");
 
@@ -759,6 +764,10 @@ namespace Cameo.Data.Migrations
                     b.HasOne("Cameo.Models.ApplicationUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatedBy");
+
+                    b.HasOne("Cameo.Models.Attachment", "IntroVideo")
+                        .WithMany()
+                        .HasForeignKey("IntroVideoID");
 
                     b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
                         .WithMany()

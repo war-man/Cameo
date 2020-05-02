@@ -121,10 +121,12 @@ namespace Cameo.ViewModels
     {
         public int ID { get; set; }
 
+        [Required]
         [Display(Name = "Номер Вашей карты Uzcard")]
-        [StringLength(32)]
+        [StringLength(16 + 3)] // 16 - card numer digits + 3 - whitespaces
         public string CreditCardNumber { get; set; }
 
+        [Required]
         [Display(Name = "Срок действия (мм/гг)")]
         [StringLength(5)]
         public string CreditCardExpire { get; set; }
@@ -138,7 +140,11 @@ namespace Cameo.ViewModels
 
             this.ID = model.ID;
             this.CreditCardNumber = model.CreditCardNumber;
-            this.CreditCardExpire = model.CreditCardExpire;
+            if (model.CreditCardExpire.HasValue)
+            {
+                this.CreditCardExpire = model.CreditCardExpire.Value.ToString("MM");
+                this.CreditCardExpire += "/" + (model.CreditCardExpire.Value.Year - 2000);
+            }
         }
     }
 

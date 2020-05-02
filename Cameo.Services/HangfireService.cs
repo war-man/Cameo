@@ -125,32 +125,32 @@ namespace Cameo.Services
             }
         }
 
-        public void CreateTaskForConvertingVideo(int attachmentID, string userID)
-        {
-            try
-            {
-                BackgroundJob.Enqueue(() => StartConvertingVideo(attachmentID, userID));
-            }
-            catch (Exception ex)
-            { }
-        }
+        //public void CreateTaskForConvertingVideo(int attachmentID, string userID)
+        //{
+        //    try
+        //    {
+        //        BackgroundJob.Enqueue(() => StartConvertingVideo(attachmentID, userID));
+        //    }
+        //    catch (Exception ex)
+        //    { }
+        //}
 
-        public void StartConvertingVideo(int attachmentID, string userID)
-        {
-            try
-            {
-                Attachment attachment = AttachmentService.GetByID(attachmentID);
-                string newVideoName = FileManagement.ConvertVideoToMp4(attachment.Path, attachment.GUID + "." + attachment.Extension);
-                FileManagement.DeleteFile(attachment.Path + "/" + attachment.GUID + "." + attachment.Extension);
+        //public void StartConvertingVideo(int attachmentID, string userID)
+        //{
+        //    try
+        //    {
+        //        Attachment attachment = AttachmentService.GetByID(attachmentID);
+        //        string newVideoName = FileManagement.ConvertVideoToMp4(attachment.Path, attachment.GUID + "." + attachment.Extension);
+        //        FileManagement.DeleteFile(attachment.Path + "/" + attachment.GUID + "." + attachment.Extension);
 
-                string[] tmp = newVideoName.Split('.');
-                attachment.GUID = tmp[0];
-                attachment.Extension = tmp[1];
+        //        string[] tmp = newVideoName.Split('.');
+        //        attachment.GUID = tmp[0];
+        //        attachment.Extension = tmp[1];
 
-                AttachmentService.Update(attachment, userID);
-            }
-            catch (Exception ex)
-            { }
-        }
+        //        AttachmentService.Update(attachment, userID);
+        //    }
+        //    catch (Exception ex)
+        //    { }
+        //}
     }
 }

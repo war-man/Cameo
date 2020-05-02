@@ -1,5 +1,6 @@
 ﻿using Cameo.Common;
 using Cameo.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using NReco.VideoConverter;
@@ -14,12 +15,15 @@ namespace Cameo.Services
     {
         //private readonly IOptions<AppConfiguration> AppSettings;
         private AppConfiguration AppSettings;
-        private readonly string projectPath = @"C:\Users\MIRAZAM\Documents\Visual Studio 2017\Projects\GitHub\Cameo\Cameo";
+        //private readonly string projectPath = @"C:\Users\MIRAZAM\Documents\Visual Studio 2017\Projects\GitHub\Cameo\Cameo";
+        private readonly IHostingEnvironment _env;
 
-        public FileManagement(IOptions<AppConfiguration> appSettings)
+        public FileManagement(
+            IOptions<AppConfiguration> appSettings,
+            IHostingEnvironment env)
         {
             AppSettings = appSettings.Value;
-
+            _env = env;
         }
 
         public bool SaveFile(byte[] fileByte, string path)
@@ -30,7 +34,7 @@ namespace Cameo.Services
             {
                 try
                 {
-                    string rootPath = AppSettings.ApplicationRootPath;
+                    string rootPath = _env.ContentRootPath;
                     path = path.Replace('/', '\\');
 
                     string target = rootPath + path;
@@ -65,27 +69,27 @@ namespace Cameo.Services
             }
         }
 
-        public string ConvertVideoToMp4(string videoPath, string videoName)
-        {
-            videoPath = videoPath.Replace('/', '\\');
+        //public string ConvertVideoToMp4(string videoPath, string videoName)
+        //{
+        //    videoPath = videoPath.Replace('/', '\\');
 
-            var sourceFile = projectPath + videoPath + @"\" + videoName;
+        //    var sourceFile = projectPath + videoPath + @"\" + videoName;
 
-            string GUID = Guid.NewGuid().ToString();
-            string newVideoName = GUID + "." + Format.mp4;
-            var destinationFile = projectPath + videoPath + @"\" + newVideoName;
+        //    string GUID = Guid.NewGuid().ToString();
+        //    string newVideoName = GUID + "." + Format.mp4;
+        //    var destinationFile = projectPath + videoPath + @"\" + newVideoName;
 
-            //NRecoService.ConvertMedia(sourceFile, destinationFile, Format.mp4);
-            CopyFile(videoPath, videoName, videoPath, newVideoName);
+        //    //NRecoService.ConvertMedia(sourceFile, destinationFile, Format.mp4);
+        //    CopyFile(videoPath, videoName, videoPath, newVideoName);
 
-            return newVideoName;
-        }
+        //    return newVideoName;
+        //}
 
         public bool DeleteFile(string fileUrl)
         {
             try
             {
-                string rootPath = AppSettings.ApplicationRootPath;
+                string rootPath = _env.ContentRootPath;
                 fileUrl = fileUrl.Replace('/', '\\');
                 string target = rootPath + fileUrl;
 
@@ -111,35 +115,35 @@ namespace Cameo.Services
         /// <param name="destinationPath">/Uploads</param>
         /// <param name="destinationFilename">newVideoName.mp4</param>
         /// <returns></returns>
-        public bool CopyFile(string sourcePath, string sourceFilename, string destinationPath, string destinationFilename)
-        {
-            sourcePath = sourcePath.Replace('/', '\\');
-            sourcePath = projectPath + sourcePath + @"\";
-            sourceFilename = sourcePath + sourceFilename;
+        //public bool CopyFile(string sourcePath, string sourceFilename, string destinationPath, string destinationFilename)
+        //{
+        //    sourcePath = sourcePath.Replace('/', '\\');
+        //    sourcePath = projectPath + sourcePath + @"\";
+        //    sourceFilename = sourcePath + sourceFilename;
 
-            destinationPath = destinationPath.Replace('/', '\\');
-            destinationPath = projectPath + destinationPath + @"\";
-            destinationFilename = destinationPath + destinationFilename;
+        //    destinationPath = destinationPath.Replace('/', '\\');
+        //    destinationPath = projectPath + destinationPath + @"\";
+        //    destinationFilename = destinationPath + destinationFilename;
 
-            try
-            {
-                if (Directory.Exists(destinationPath))
-                {
-                    if (File.Exists(sourceFilename))
-                        File.Copy(sourceFilename, destinationFilename);
-                    else
-                        throw new Exception("Source file not found");
-                }
-                else
-                    throw new Exception("Target Path not found");
+        //    try
+        //    {
+        //        if (Directory.Exists(destinationPath))
+        //        {
+        //            if (File.Exists(sourceFilename))
+        //                File.Copy(sourceFilename, destinationFilename);
+        //            else
+        //                throw new Exception("Source file not found");
+        //        }
+        //        else
+        //            throw new Exception("Target Path not found");
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public string GetFileAbsolutePath(string path, string filename)
         {
