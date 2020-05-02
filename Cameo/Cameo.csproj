@@ -39,6 +39,130 @@
   <ItemGroup>
     <None Include="wwwroot\images\nophoto.png" />
     <None Include="wwwroot\images\spinner.gif" />
+    <None Include="wwwroot\lib\DavenTheme\css\maps\plugins.min.css.map" />
+    <None Include="wwwroot\lib\DavenTheme\css\maps\style.css.map" />
+    <None Include="wwwroot\lib\DavenTheme\fonts\dlicon.woff2" />
+    <None Include="wwwroot\lib\DavenTheme\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\lib\DavenTheme\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\lib\DavenTheme\fonts\slick.svg" />
+    <None Include="wwwroot\lib\DavenTheme\img\icon-box\icon-archery-target.svg" />
+    <None Include="wwwroot\lib\DavenTheme\img\icon-box\icon-handshake.svg" />
+    <None Include="wwwroot\lib\DavenTheme\img\icon-box\icon-responsive.svg" />
+    <None Include="wwwroot\lib\DavenTheme\img\icon-responsive.svg" />
+    <None Include="wwwroot\lib\DavenTheme\js\ajax-mail.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\jquery.themepunch.revolution.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\jquery.themepunch.tools.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\main.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\plugins.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\plugins.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.actions.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.carousel.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.kenburn.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.layeranimation.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.migration.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.navigation.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.parallax.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.slideanims.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revolution.extension.video.min.js" />
+    <None Include="wwwroot\lib\DavenTheme\js\revoulation.js" />
+    <None Include="wwwroot\lib\DavenTheme\php\mail.php" />
+    <None Include="wwwroot\lib\DavenTheme\scss\about\_about.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\about\_fresh-agency.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\blog\_blog-details.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\blog\_blog-element.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\blog\_sidebar.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\default\_animations.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\default\_common-ext.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\default\_mixins.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\default\_reset.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\default\_shortcode.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\default\_spacing.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\default\_typography.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\default\_variables.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_brand.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_button.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_cart-flyover.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_contact.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_countdown.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_counter.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_divider.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_faqs.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_hamburger.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_iconbox.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_list-style.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_loading.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_more-demo.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_pricing-table.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_progress-bar.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_search-fly-overlay.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_section-title.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_separator.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_service-classic.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_slick-arrow.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_slick-dots.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_social.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_support-list.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_tab.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_team.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_timeline.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_toggle.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_tracking.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_typed-heading.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\elements\_video.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\flyover\_shopping-cart.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\footer\_footer-default.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\footer\_footer2.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\header\_header-color.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\header\_header-default.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\header\_header-sidebar.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\header\_megamenu.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\header\_navigation.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\header\_popup.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\pages\_career.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_case-studies.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_column-01.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_home-masonry.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_hover.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_portfolio-details.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_portfolio-grid.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_portfolio-metro.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_project.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\portfolio\_with-caption.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\service\_service.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_cart.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_checkout.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_compare.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_my-account.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_product.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_quickview.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_shop-list.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_shopgrid.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_sidebar.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\shop\_wishlist.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\style.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_404.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_app.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_banner.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_breadcaump.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_business.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_corporate.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_feature.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_freelancer.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_homeshop.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_page-typo.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_photography.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_portfolio-horizontal.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_portfolio-showcase.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_preivew-demo.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_slider.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_spa.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_spliteslider.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_studio1.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_studio2.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\template\_vcard.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\testimonial\_testimonial.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\variation-page\_color.scss" />
+    <None Include="wwwroot\lib\DavenTheme\scss\variation-page\_font.scss" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,7 +183,31 @@
     <Content Update="Views\Error\Status.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\_HeaderDaven.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_LoaderAreaDaven.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_FooterDaven.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_CustomerSidebar.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_LayoutDaven.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_LoginPartialDaven.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Talents\_GetCategorized.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Talents\Index0.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Talents\_SingleGridViewItem.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\TalentVideoRequest\Details.cshtml">

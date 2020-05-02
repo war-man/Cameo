@@ -1,0 +1,443 @@
+/*======================
+    Button
+=========================*/
+a ,
+button {
+    &.button-link {
+        font-size: 16px;
+        padding: 15px 30px;
+        @extend %transition;
+        @extend %textwhite;
+        display: inline-block;
+        line-height: 1;
+        border: 0 none;
+        cursor: pointer;
+    
+        &.button-size{
+            &__xs{
+                padding: 10px 20px;
+            }
+            &__sm{
+                padding: 12px 24px;
+            }
+    
+            &__lg{
+                line-height: 20px;
+                padding: 20px 55px;
+                @media #{$sm-layout} {
+                    padding: 20px 23px
+                }
+                @media #{$laptop-device} {
+                    padding: 20px 23px
+                }
+            }
+    
+            &__lg2{
+                padding: 25px 40px;
+            }
+    
+            &__xl{
+                line-height: 20px;
+                padding: 30px 65px;
+                @media #{$sm-layout} {
+                    padding: 24px 29px
+                }
+            }
+
+            &__xxl{
+                line-height: 20px;
+                padding: 30px 90px;
+            }
+
+            &__xxxxl{
+                line-height: 20px;
+                padding: 30px 130px;
+                @media #{$sm-layout} {
+                    padding: 26px 75px;
+                }
+            }
+
+            &__xxxl{
+                font-weight: 700;
+                line-height: 1em;
+                border-radius: 0;
+                padding: 38px 110px;
+
+                @media #{$sm-layout} {
+                    padding: 25px 30px;
+                }
+
+                .button-text{
+                    font-size: 24px;
+                    @media #{$sm-layout} {
+                        font-size: 18px;
+                    }
+                }
+            }
+
+
+
+            &__large-midium {
+                line-height: 20px;
+                padding: 20px 80px;
+            }
+
+            
+            &__8{
+                padding: 8px;
+            }
+    
+            &__12{
+                padding: 12px;
+            }
+    
+            &__16{
+                padding: 16px;
+            }
+    
+            &__20{
+                padding: 20px;
+            }
+    
+            &__radious10{
+                border-radius: 10px;
+            }
+            
+            &__radious18{
+                border-radius: 18px;
+            }
+    
+            &__radious50{
+                border-radius: 50px;
+            }
+        }
+        
+        .button-text{
+            line-height: 1;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-block;
+            &__13 {
+                font-size: 13px;
+            }
+            &__14 {
+                font-size: 14px;
+            }
+            &__15 {
+                font-size: 15px;
+            }
+            &__10 {
+                font-size: 10px;
+            }
+            &.text-dark{
+                color: #2f2f2f;
+                @extend %transition;
+            }
+        } 
+
+        .icon-left{
+            margin-right: 5px;
+        }
+        .icon-right{
+            margin-left: 5px;
+        }
+
+        &.button{
+            &__theme-color{
+                background-color: $theme-color;
+                &:hover{
+                    background-color: #2f2f2f;
+                    color: #fff;
+                }
+            }
+    
+            &__infocolor{
+                background-color: #5bc0de;
+                &:hover{
+                    @extend .button__theme-color:hover;
+                }
+            }
+            
+            &__successcolor{
+                background-color: #5cb85c;
+                &:hover{
+                    @extend .button__theme-color:hover;
+                }
+            }
+    
+            &__warningcolor{
+                background-color: #f0ad4e;
+                &:hover{
+                    @extend .button__theme-color:hover;
+                }
+            }
+    
+            &__color--1{
+                background-color: #f53e6a;
+                &:hover{
+                    @extend .button__theme-color:hover;
+                }
+            }
+    
+            &__color--2{
+                background-color: #2c51d6;
+                &:hover{
+                    @extend .button__theme-color:hover;
+                }
+            }
+    
+            &__color--3{
+                background-color: #7817e8;
+                &:hover{
+                    @extend .button__theme-color:hover;
+                }
+            }
+    
+            &__color--4{
+                background-color: #02deea;
+                &:hover{
+                    @extend .button__theme-color:hover;
+                }
+            }
+    
+            &__color--5{
+                background-color: #8956e2;
+                &:hover{
+                    @extend .button__theme-color:hover;
+                }
+            }
+    
+            &__transparent{
+                color: #2f2f2f;
+                background-color: rgba(255,255,255,0);
+                &--border{
+                    border-style: solid;
+                    border-width: 1px;
+                    border-color: #2f2f2f;
+                    color: #2f2f2f;
+                    background-color: rgba(255,255,255,0);
+
+                    &.border_gray{
+                        border-color: #535353;
+                        color: #ffffff;
+                        border-width: 2px;
+                    }
+
+                    &:hover{
+                        color: #fff;
+                        background-color: $theme-color;
+                        border-color: $theme-color;
+                    }
+                    &--double{
+                        @extend .button__transparent--border;
+                        border-style: double;
+                        border-width: 4px;
+                    }
+                    &--dotted{
+                        @extend .button__transparent--border;
+                        border-style: dotted;
+                        border-width: 2px;
+                    }
+    
+                    &--dashed{
+                        @extend .button__transparent--border;
+                        border-style: dashed;
+                        border-width: 2px;
+                    }
+                    
+                    &--two{
+                        @extend .button__transparent--border;
+                        border-width: 2px;
+                    }
+    
+                    &--three{
+                        @extend .button__transparent--border;
+                        border-width: 3px;
+                    }
+                    &--four{
+                        @extend .button__transparent--border;
+                        border-width: 4px;
+                    }
+                }
+            }
+    
+            &__transparent--bordertheme{
+                border-style: solid;
+                border-width: 1px;
+                color: $theme-color;
+                background-color: rgba(255,255,255,0);
+                border-color: $theme-color;
+                &:hover{
+                    color: #fff;
+                    background-color: $theme-color;
+                    border-color: $theme-color;
+                }
+            }
+    
+            &__black{
+                color: #fff;
+                background-color: #2f2f2f;
+                border-radius: 0;
+                &:hover{
+                    color: #fff;
+                    background-color: $theme-color;
+                }
+            }
+            &__white{
+                color: #000000;
+                background-color: #ffffff;
+                &:hover{
+                    color: #fff;
+                    background-color: $theme-color;
+                }
+            }
+        }
+    
+        // Animation
+        
+        &.grow-animation{
+            &:hover{
+                transform: scale(1.1);
+            }
+        }
+        &.shink-animation{
+            &:hover{
+                transform: scale(0.9);
+            }
+        }
+        &.pulse-animation{
+            &:hover{
+                animation-name: custom-animation-pulse;
+                animation-duration: 1s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+            }
+        }
+        &.pulse-grow-animation{
+            &:hover{
+                animation-name: custom-animation-pulse-grow;
+                animation-duration: .3s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+                animation-direction: alternate;
+            }
+        }
+        // Typography
+    }
+}
+
+
+.read-more-button{
+    a{
+        font-size: 16px;
+        color: #2f2f2f;
+        line-height: 1.4074; 
+    }
+}
+
+.case-studies-btn{
+    a{
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c2c2c;
+        display: inline-block;
+        @extend %transition;
+        &:hover{
+            
+        }
+        i{
+            margin-right: 20px;
+        }
+        span{
+            display: inline-block;
+        }
+    }
+}
+
+
+
+/* ========================
+    Slider Video Play 
+=========================*/
+
+
+.yu2fvl {
+    z-index: 9999;
+    top: 0;
+}
+
+.yu2fvl-iframe {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border: 0;
+}
+
+.yu2fvl-overlay {
+    z-index: 9998;
+    background: #000;
+    opacity: 0.8;
+}
+
+.yu2fvl-close {
+    position: absolute;
+    top: 1px;
+    left: 100%;
+    display: inline-block;
+    height: 35px;
+    width: 35px;
+    line-height: 35px;
+    text-align: center;
+    background: #f10 !important;
+    background-color: #f10 !important;
+    color: #ffffff;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+
+
+@media #{$md-layout} {
+    .yu2fvl-close {
+        left: auto;
+        right: 0;
+        top: auto;
+        bottom: 100%;
+    }
+}
+
+@media #{$sm-layout} {
+    .yu2fvl-close {
+        left: auto;
+        right: 0;
+        top: auto;
+        bottom: 100%;
+    }
+
+    .video {
+        h2 {
+            color: #ffffff;
+            font-size: 32px;
+        }
+
+        h4 {
+            font-size: 22px;
+            line-height: 32px;
+        }
+    }
+}
+.button-top-bar {
+    .button-size {
+        line-height: 20px;
+        
+        .button-text {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            color: $white;
+        }  
+    }
+    
+}
+ 
+

@@ -1,0 +1,28 @@
+/*=========================
+    Feature Area 
+==========================*/
+
+
+.dr-feature-area{
+    position: relative;
+    .feature-image{
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        @media #{$sm-layout} {
+            display: none; 
+        }
+
+        &--1 {
+
+        }
+
+        &--2 {
+
+        }
+
+    }
+}
+

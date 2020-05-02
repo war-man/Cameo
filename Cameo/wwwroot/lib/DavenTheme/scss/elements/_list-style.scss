@@ -1,0 +1,189 @@
+/*========================
+    List Style 
+===========================*/
+
+.list-container{
+    @extend %liststyle;
+
+
+    .list-items{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: start;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        position: relative;
+
+        .list__icon{
+            font-size: 14px;
+            top: -1px;
+            position: relative;
+            vertical-align: middle;
+            -webkit-flex-shrink: 0;
+            -ms-flex-negative: 0;
+            flex-shrink: 0;
+            width: 14px;
+        }
+        .list__text{
+            -webkit-align-self: center;
+            -ms-flex-item-align: center;
+            align-self: center;
+            padding-left: 5px;
+        }
+
+        &:not(:last-child){
+            padding-bottom: calc(10px/2);
+        }
+
+        &:not(:first-child){
+            margin-top: calc(10px/2);
+        }
+
+        &.with-dividers{
+            &:not(:last-child){
+                padding-bottom: calc(15px/2);
+                &::after{
+                    @extend %posabsolute;
+                    bottom: 0;
+                    width: 100%;
+                    left: 0;
+                    content: "";
+                    border-color: #ddd;
+                    border-top-style: solid;
+                    border-top-width: 1px;
+                }
+            }
+    
+            &:not(:first-child){
+                margin-top: calc(15px/2);
+            }
+        }
+        &.with-spacebetween{
+            &:not(:last-child){
+                padding-bottom: calc(15px/2);
+            }
+            &:not(:first-child){
+                margin-top: calc(15px/2);
+            }
+        }
+    }
+
+    &.custom-color__icon{
+        .list-items{
+            .list__icon{
+                color: $theme-color;
+            }        
+        }
+        &hover{
+            .list-items{
+                .list__icon{
+                    @extend %bodyColor;
+                    @extend %transition;
+                }  
+                &:hover{
+                    .list__icon{
+                        @extend %themecolor;
+                    }
+                }      
+            }
+        }
+    }
+
+    &.custom-color__text{
+        .list-items{
+            .list__text{
+                color: $theme-color;
+            }        
+        }
+        &hover{
+            .list-items{
+                .list__text{
+                    @extend %bodyColor;
+                    @extend %transition;
+                }  
+                &:hover{
+                    .list__text{
+                        @extend %themecolor;
+                    }
+                }      
+            }
+        }
+    }
+
+
+    &.custom-color__icon__text{
+        .list-items{
+            .list__icon{
+                color: $theme-color;
+            }        
+        }
+        .list-items{
+            .list__text{
+                color: $theme-color;
+            }        
+        }
+
+        &hover{
+            .list-items{
+                .list__text{
+                    @extend %bodyColor;
+                    @extend %transition;
+                }  
+                &:hover{
+                    .list__text{
+                        @extend %themecolor;
+                    }
+                }      
+            }
+            .list-items{
+                .list__icon{
+                    @extend %bodyColor;
+                    @extend %transition;
+                }  
+                &:hover{
+                    .list__icon{
+                        @extend %themecolor;
+                    }
+                }      
+            }
+        }
+    }
+
+    &.font-20{
+        .list-items{
+            .list__icon{
+                font-size: 20px;
+                width: 20px;
+            }
+        }
+    }
+    &.with__dot{
+        .list-items{
+            .list__icon{
+                color: #f4769a;
+                font-size: 8px;
+                width: 8px;
+                top: 12px;
+            }
+            .list__text{
+                font-size: 20px;
+            }
+        }
+    }
+
+    &.fontandIcon-20{
+        .list-items{
+            .list__icon{
+                font-size: 20px;
+                width: 20px;
+            }
+            .list__text{
+                font-size: 20px;
+                padding-left: 10px;
+            }
+        }
+    }
+}

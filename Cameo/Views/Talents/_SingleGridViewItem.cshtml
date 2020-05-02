@@ -1,0 +1,31 @@
+﻿@model Cameo.ViewModels.TalentGridViewItem
+
+<div class="col-lg-3 col-xl-2 col-md-4 col-6 mt--20">
+    <a href="/talents/details/@Model.Username">
+        <div class="team team__style--4 text-center">
+            <div class="thumbnail paralax-image">
+                <img class="lozad" data-src="@Model.Avatar.Url" src="~/lib/DavenTheme/img/ajax-loader.gif" alt="@Model.FullName">
+                @*<img src="@Model.Avatar.Url" alt="@Model.FullName">*@
+                @*<div class="hover-action">
+                    <div class="social-icons white-round-border text-center">
+                        <a class="facebook" href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+                        <a class="twitter" href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+                        <a class="pinterest" href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+                        <a class="youtube" href="https://www.youtube.com/"><i class="fa fa-youtube"></i></a>
+                        <a class="linkedin" href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>*@
+                <div class="team-badge badge--right">
+                    <span>@Model.Price.ToString("### ### ##0") сум</span>
+                </div>
+            </div>
+            <div class="info">
+                <h3 class="title mb--0">@Model.FullName</h3>
+                @if (Model.Projects.Count > 0)
+                {
+                    <span class="desc font--12">@Model.Projects[0].Name</span>
+                }
+            </div>
+        </div>
+    </a>
+</div>

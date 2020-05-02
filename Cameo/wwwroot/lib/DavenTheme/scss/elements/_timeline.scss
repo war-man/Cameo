@@ -1,0 +1,197 @@
+/*================================
+    Timeline Css
+===================================*/    
+    
+.htc-verctimeline-wrapper{
+    position: relative;
+    margin-top: 30px;
+    &::before{
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 6px;
+        background: $theme-color;
+        height: 100%;
+        margin-left: -1px;
+        border-radius: 20px;
+    }
+    @media #{$large-mobile}{
+        &::before{
+            left: 0%;
+        }
+    }
+}
+    
+/* Start Single Timeline */
+.ht-ver-timeline--2{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-justify-content: space-between;
+    justify-content: space-between;
+    position: relative;
+    &::before{
+        position: absolute;
+        content: "";
+        width: 6px;
+        height: 100%;
+        background: $theme-color;
+        left: 50%;
+        transform: translateX(-1px);
+        top: 0;
+        transition: 0.4s ease-in-out;
+        opacity: 0;
+        border-radius: 20px;
+    }
+
+    @media #{$large-mobile}{
+        &::before{
+            left: 0%;
+        }
+    }
+    
+    &:hover::before{
+        opacity: 1;
+    }
+    .vertical-time{
+        width: 50%;
+        text-align: right;
+        padding: 0 40px;
+        position: relative;
+        -webkit-align-self: baseline;
+        -moz-align-self: baseline;
+        -ms-flex-item-align: baseline;
+        align-self: baseline;
+        position: relative;
+            
+        @media #{$sm-layout} {
+            padding: 0 20px;
+        }
+        @media #{$large-mobile}{
+            width: 100%;
+            text-align: left;
+            padding-left: 30px;
+        }
+
+        
+        &::before{
+            position: absolute;
+            content: "";
+            right: -12px;
+            top: 50%;
+            margin-top: -15px;
+            height: 20px;
+            width: 20px;
+            border: 10px solid $theme-color;
+            border-radius: 100%;
+            background: #fff;
+            transform: translateY(-50%);
+            transition: 0.4s ease-in-out;
+        }
+        @media #{$large-mobile}{
+            &::before{
+                right: 0px;
+                left: -8px;
+            }
+        }
+        .vertical-date {
+            span{
+                display: block;
+                font-size: 36px;
+                font-weight: 400;
+                @media #{$sm-layout} {
+                    font-size: 24px;
+                }
+
+                &.month{
+                    margin-top: 7px;
+                }
+            }
+            p{
+                font-size: 18px;
+                line-height: 2em;
+                color: #535353;
+                @media #{$sm-layout} {
+                    font-size: 14px;
+                    line-height: 24px;
+                }
+            }
+        }
+    }
+
+    &:hover .vertical-time::before{
+        border: 6px solid $theme-color;
+    }
+
+    .timeline-content{
+        padding-left: 40px;
+        text-align: left;
+        width: 50%;
+        position: relative;
+        @media  #{$large-mobile}{
+            width: 0%;
+            padding-left: 0px;
+        }
+        h6{
+            color: #18012c;
+            font-size: 18px;
+            font-weight: 700; 
+            transition: 0.4s ease-in-out;
+        }
+        p{
+            color: #313131;
+            font-size: 15px;
+            line-height: 25px;
+            font-family: $heading-font;
+        }
+    }
+
+    &:hover .timeline-content h6{
+        color: #cf2037;
+    }
+    &.vertical-reverse{
+        -webkit-box-direction: reverse;
+        -webkit-box-orient: horizontal;
+        -webkit-flex-direction: row-reverse;
+        -moz-flex-direction: row-reverse;
+        -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse;
+        .vertical-time{
+            text-align: left;
+            padding: 0 40px;
+            @media #{$sm-layout} {
+                padding: 0 10px;
+            }
+            
+            &::before{
+                right: auto;
+                left: -9px;
+                @media #{$large-mobile}{
+                    right: 0px;
+                    left: -8px;
+                }
+            }
+            .vertical-date{
+                margin-right: 0;
+                margin-left: 11px;
+                @media #{$large-mobile}{
+                    margin-left: 20px;
+                }
+            }
+        }
+        .timeline-content{
+            padding-left: 0;
+            padding-right: 40px;
+            text-align: right;
+            @media #{$large-mobile}{
+                padding-right: 0px;
+            }
+        }
+    }
+}

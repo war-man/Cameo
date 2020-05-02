@@ -1,0 +1,53 @@
+/* Page Typography */
+
+.typography{
+    padding: 20px;
+}
+
+p{
+    a{
+        @extend %themecolor;
+    }
+}
+
+blockquote{
+    &.quote{
+        background-color: #f5fbff;
+        color: #2f2f2f;
+        padding: 6% 8%;
+        background-image: url(../img/icons/quote.png);
+        background-repeat: no-repeat;
+        background-position: top right;
+        text-align: center;
+        border: none;
+        p{
+            font-style: normal;
+            font-size: 16px;
+            line-height: 1.75;
+            font-family: $font-2;
+            cite{
+                font-style: normal;
+                font-size: 14px;
+                line-height: 1.75;
+                text-transform: none;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

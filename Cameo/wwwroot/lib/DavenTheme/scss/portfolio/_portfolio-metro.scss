@@ -1,0 +1,267 @@
+/*==========================
+    Portfolio Metro 
+============================*/
+
+.portfolio_metro{
+    position: relative;
+    .port-overlay-info{
+        position: absolute;
+        width: 100%;
+        padding: 7% 9%;
+        pointer-events: none;
+        text-align: center;
+        color: #fff;
+        top: 50%;
+        transform: translateY(-50%);
+        .hover-action{
+            position: relative;
+            padding-top: 70px;
+            .icon {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 50%;
+                font-size: 0;
+                width: 50px;
+                height: 50px;
+                background: #fff;
+                border-radius: 50%;
+                padding: 0;
+                margin-left: -25px;
+                line-height: 66px;
+                opacity: 0;
+                transform: translateY(20px);
+                -webkit-transform: translateY(20px);
+                transition: all .4s ease-in-out .4s;
+                a{
+                    i{
+                        color: #000;
+                        font-size: 20px;
+                    }
+                }
+            }
+            .title {
+                opacity: 0;
+                transition: all .4s ease-in-out .1s;
+                transform: translateY(20px);
+                -webkit-transform: translateY(20px);
+                font-size: 32px;
+                a{
+                    color: #fff;
+                }
+                @media #{$large-mobile}{
+                    font-size: 22px;
+                    margin-bottom: 5px;
+                }
+            }
+            p {
+                font-size: 16px;
+                opacity: 0;
+                transform: translateY(20px);
+                -webkit-transform: translateY(20px);
+                transition: all .4s ease-in-out .3s;
+            }
+        }
+    }
+
+    &:hover{
+        .port-overlay-info{
+            .hover-action{
+                .icon {
+                    opacity: 1;
+                    transform: translateY(0);
+                    -webkit-transform: translateY(0);
+                    a{
+                        i{
+    
+                        }
+                    }
+                }
+    
+                .title {
+                    opacity: 1;
+                    transform: translateY(0);
+                    -webkit-transform: translateY(0);
+                    a{
+    
+                    }
+                }
+                p {
+                    opacity: 1;
+                    transform: translateY(0);
+                    -webkit-transform: translateY(0);
+                }
+            }
+        }
+    }
+}
+
+
+.portfolio-scattered{
+    .portfolio{
+        padding: 0 35px;
+
+        @media #{$lg-layout} {
+            padding: 0 10px;
+        }
+
+        @media #{$md-layout} {
+            padding: 0 10px;
+        }
+
+        @media #{$sm-layout} {
+            padding: 0 10px;
+        }
+
+        .inner{
+            position: relative;
+            margin-bottom: 90px;
+
+            @media #{$lg-layout} {
+                margin-bottom: 20px;
+            }
+
+            @media #{$md-layout} {
+                margin-bottom: 20px;
+            }
+
+            @media #{$sm-layout} {
+                margin-bottom: 20px;
+            }
+
+        }
+    }
+}
+
+
+
+
+.portfolio-view-button{
+    a{
+        font-size: 14px;
+        line-height: 2em;
+        letter-spacing: 5px;
+        color: #535353;
+        background-color: #fff5f5;
+        padding: 50px 0;
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+        @extend %transition;
+        &:hover{
+            color: #fff;
+            background-color: #f4769a;
+        }
+    }
+}
+
+
+
+.portfolio-portrait .portfolio_metro .port-overlay-info{
+    text-align: left;
+}
+
+
+
+
+
+
+
+/*==========================
+    Portfolio Patriot 
+============================*/
+.portfolio-portrit-wrapper{
+    .slick-btn{
+        position: absolute;
+        right: -58px;
+        top: 50%;
+        transform: translateY(-50%);
+        left: auto;
+        background: transparent;
+        z-index: 2;
+
+        @media #{$sm-layout} {
+            right: 44px;
+        }
+
+        i{
+            color: rgba(17,17,17,.2);
+            font-size: 40px;
+            @extend %transition;
+            &:hover{
+                @extend %themecolor;
+            }
+        }
+        &::before{
+            display: none;
+
+        }
+        &.slick-next{
+            top: 54%;
+        }
+    }
+    
+}
+
+
+
+/*====================================
+    Home Portfolio Masonry 
+=======================================*/
+
+.home-mesonry {
+    margin: 0 -20px;
+
+    &.portfolio-grid-metro2 {
+        @media #{$md-layout} {
+            .portfolio-33-33 {
+                width: 50%;
+            }
+            .grid-width-2{
+                width: 100%;
+            }
+            .resizer {
+                width: 1%;
+            }
+        }
+    }
+    @media #{$md-layout} {
+        padding: 0 -1px;
+    }
+    .portfolio{
+        padding: 0 20px;
+        @media #{$md-layout} {
+            padding: 0 10px;
+        }
+        .inner{
+            position: relative;
+            margin-bottom: 40px;
+            @media #{$md-layout} {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
+
+.portfolio-scattered {
+    .portfolio-33-33 {
+        width: 33%;
+        @media #{$lg-layout} {
+            width: 50%;
+        }
+        @media #{$md-layout} {
+            width: 50%;
+        }
+        @media #{$sm-layout} {
+            width: 50%;
+        }
+        @media #{$large-mobile} {
+            width: 100%;
+        }
+    }
+}
+
+
+
+
+

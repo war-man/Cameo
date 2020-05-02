@@ -1,0 +1,529 @@
+/*==========================
+    Pricing Table 
+============================*/
+
+.pricing-table {
+    @extend %textCenter;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .14);
+    padding-bottom: 50px;
+    background-image: url(../img/icons/pricing-table-bg.png);
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    margin-top: 30px !important;
+    &__price {
+        @extend %textCenter;
+        padding: 15px 0;
+
+        &-prefix {
+            vertical-align: baseline;
+            @extend %inlineBlock;
+            font-size: 18px;
+        }
+
+        &-val {
+            font-size: 64px;
+            color: #2f21b3;
+
+            sup {
+                font-size: 20px;
+                vertical-align: super;
+                line-height: 0;
+                @extend %posrelative;
+            }
+        }
+
+        &-suffix {
+            vertical-align: baseline;
+            @extend %inlineBlock;
+            font-size: 18px;
+        }
+    }
+    @media #{$laptop-device}{
+        .pricing-table__price-val{
+            font-size: 44px;
+        }
+        .pricing-table__price-suffix {
+            font-size: 14px;
+        }
+    }
+    @media #{$lg-layout,$sm-layout}{
+        .pricing-table__price-val{
+            font-size: 48px;
+        }
+        .pricing-table__price-suffix {
+            font-size: 14px;
+        }
+        .pricing-table__features__inner li {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .pricing-table__features__inner li .feature-text {
+            font-size: 15px;
+        }
+    }
+    &__features {
+        width: 230px;
+        margin-left: auto;
+        margin-right: auto;
+        @extend %textLeft;
+
+        &__inner {
+            @extend %liststyle;
+
+            li {
+                padding-top: 15px;
+                padding-bottom: 15px;
+                @extend %flexbox;
+                @extend %align-center;
+                font-size: 18px;
+
+                .feature-icon {
+                    width: 14px;
+                    @extend %inlineBlock;
+                    margin-right: 20px;
+
+                    i {
+                        color: #2f21b3;
+                    }
+                }
+
+                .feature-text {
+                    font-size: 18px;
+                    @extend %inlineBlock;
+                }
+
+                &.item-excluded {
+                    opacity: 0.5;
+                }
+
+            }
+        }
+    }
+
+    &__action {
+        @extend %textCenter;
+
+        a{
+            &.pricing-table-button {
+                @extend .button-link;
+                @extend %textUpper;
+                border-radius: 30px;
+                border: 2px solid #d2d2d2;
+                background: 0 0;
+                color: #2f2f2f;
+                padding: 20px 44px;
+                @extend %transition;
+    
+                &:hover {
+                    background-color: #2f21b3;
+                    border-color: #2f21b3;
+                    color: #fff;
+                }
+            }
+        }
+        
+    }
+    @media #{$sm-layout}{
+        max-width: 400px;
+        margin: auto;
+        position: relative;
+    }
+
+}
+
+// Picing Table Style Two
+.pricing__tabletwo {
+    background-color: #fff;
+    box-shadow: 0px 0px 33px 0px rgba(0, 0, 0, .1);
+    padding: 50px;
+
+    .pricing--heading {
+        @extend %textLeft;
+
+        h2 {
+            font-size: 36px;
+            @extend %fontWeight400;
+            line-height: 1em;
+            margin: 20px 0 0;
+        }
+    }
+
+    .pricing--desc {
+        margin-top: 20px;
+
+        p {
+            color: #747474;
+            font-size: 14px;
+            line-height: 2em;
+        }
+    }
+
+    .pricing__price {
+        padding: 15px 0;
+        @extend %textLeft;
+
+        &-prefix {
+            font-size: 23px;
+            @extend %color-1;
+        }
+
+        &-val {
+            font-size: 86px;
+            @extend %fontWeight400;
+            line-height: 80px;
+            @extend %color-1;
+
+            sup {
+                font-size: 20px;
+                vertical-align: super;
+                line-height: 0;
+                @extend %posrelative;
+            }
+        }
+
+        &-suffix {
+            vertical-align: baseline;
+            @extend %inlineBlock;
+            font-size: 14px;
+        }
+
+    }
+
+    .pricing__features {
+        padding: 30px 0 40px;
+        @extend %textLeft;
+
+        &__inner {
+            @extend %liststyle;
+
+            li {
+                padding-top: 15px;
+                padding-bottom: 15px;
+                @extend %flexbox;
+                @extend %align-center;
+                font-size: 18px;
+
+                .feature-icon {
+                    width: 18px;
+                    @extend %inlineBlock;
+                    margin-right: .8em;
+
+                    i {
+                        @extend %color-1;
+                    }
+                }
+
+                .feature-text {
+                    font-size: 18px;
+                    @extend %inlineBlock;
+                }
+
+                &.item-excluded {
+                    opacity: 0.5;
+                }
+
+            }
+        }
+    }
+
+    .pricing__action {
+        .pricing-button {
+            @extend .button-link;
+            @extend %textUpper;
+            border-radius: 30px;
+            border: 2px solid #d2d2d2;
+            background: 0 0;
+            color: #2f2f2f;
+            padding: 20px 44px;
+            @extend %transition;
+
+            &:hover {
+                background-color: #2f21b3;
+                border-color: #2f21b3;
+                color: #fff;
+            }
+        }
+    }
+    
+    @media #{$sm-layout}{
+        padding: 30px;
+        .pricing--heading h2 {
+            font-size: 26px;
+        }
+        .pricing__price-val {
+            font-size: 46px;
+            line-height: 1.3;
+        }
+    }
+    @media #{$sm-layout}{
+        max-width: 400px;
+        margin: auto;
+        position: relative;
+    }
+}
+
+// Picing Table Style Three
+.pricing__tablethree {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .15);
+    padding: 50px;
+    .pricing--heading {
+        @extend %textCenter;
+
+        h5 {
+            @extend %fontWeight600;
+            @extend %color-2;
+            font-size: 16px;
+            margin: 20px 0 0;
+        }
+    }
+    @media #{$sm-layout} {
+        padding: 40px 15px;
+    }
+    .price-off{
+        @extend %posabsolute;
+        right: 15%;
+        left: auto;
+        top: 8%;
+        @media #{$small-mobile}{
+            top: 3%;
+        }
+    }
+
+    .pricing--icon {
+        i {
+            font-size: 40px;
+        }
+    }
+
+    .pricing__price {
+        padding: 15px 0;
+        @extend %textCenter;
+
+        &-prefix {
+            font-size: 16px;
+        }
+
+        &-val {
+            font-size: 68px;
+            line-height: 1em;
+            @extend %fontWeight400;
+
+            sup {
+                font-size: 20px;
+                vertical-align: super;
+                line-height: 0;
+                @extend %posrelative;
+            }
+        }
+
+        &-suffix {
+            vertical-align: baseline;
+            @extend %inlineBlock;
+            font-size: 14px;
+        }
+
+    }
+
+    .pricing__features {
+        width: 220px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px 0 20px;
+        @extend %textCenter;
+
+        &__inner {
+            @extend %liststyle;
+
+            li {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                @extend %flexbox;
+                @extend %align-center;
+
+                .feature-icon {
+                    width: 14px;
+                    @extend %inlineBlock;
+                    margin-right: .8em;
+                    color: rgba(51, 51, 51, .3);
+                }
+
+                .feature-text {
+                    font-size: 16px;
+                    @extend %inlineBlock;
+                    @extend %textLeft;
+                }
+
+                &.item-excluded {
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+
+    .pricing__action {
+        .button-link {
+            &.button__black{
+                &:hover {
+                    @extend %bgColor-2;
+                }
+            }
+        }
+    }
+    
+    @media #{$lg-layout,$sm-layout}{
+        .pricing__tablethree .pricing__price-val {
+            font-size: 48px;
+            line-height: 1em;
+        }
+        a.button-link.button-size__lg, .pricing-table__action a.button-size__lg.pricing-table-button, .pricing__tabletwo .pricing__action a.button-size__lg.pricing-button, button.button-link.button-size__lg, .pricing__tabletwo .pricing__action button.button-size__lg.pricing-button {
+            padding: 20px 40px;
+        }
+        .pricing__tablethree {
+            padding: 30px;
+        }
+    }
+    @media #{$md-layout}{
+        .pricing__tablethree .pricing__price-val {
+            font-size: 48px;
+            line-height: 1em;
+        }
+        a.button-link.button-size__lg, .pricing-table__action a.button-size__lg.pricing-table-button, .pricing__tabletwo .pricing__action a.button-size__lg.pricing-button, button.button-link.button-size__lg, .pricing__tabletwo .pricing__action button.button-size__lg.pricing-button {
+            padding: 20px 40px;
+        }
+        .pricing__tablethree {
+            padding: 30px;
+        }
+    }
+    @media #{$sm-layout}{
+        max-width: 400px;
+        margin: auto;
+        position: relative;
+    }
+}
+
+// Picing Table Style Three
+.pricing__tablefour {
+    padding: 40px;
+    
+    @media #{$laptop-device} {
+        padding: 0px;
+    }
+    @media #{$lg-layout} {
+        padding: 0;
+    }
+
+    @media #{$md-layout} {
+        padding: 0px;
+    }
+
+    @media #{$sm-layout} {
+        padding: 10px 15px;
+    }
+
+    .inner{
+        border-style: solid;
+        border-width: 1px;
+        border-color: #c4c4c4;
+        box-shadow: 0px 0px 19px 0px rgba(0,0,0,.13);
+        padding: 25px 15px 60px;
+        position: relative;
+        .pricing-badge{
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            @media #{$small-mobile} {
+                right: 10px;
+                top: -20px;
+            }
+        }
+    }
+
+    .pricing--heading {
+        .title {
+            font-size: 36px;
+            font-style: italic;
+            font-family: "Playfair Display",sans-serif;
+        }
+    }
+
+    .pricing__price {
+        font-family: "Playfair Display",sans-serif;
+        &-prefix {
+            font-size: 36px;
+            font-weight: 700;
+            font-style: italic;
+            color: #2f2f2f;
+        }
+
+        &-val {
+            font-size: 86px;
+            font-weight: 700;
+            font-style: italic;
+            line-height: 1em;
+            color: #2f2f2f;
+
+            @media #{$lg-layout} {
+                font-size: 70px;
+            }
+
+            @media #{$md-layout} {
+                font-size: 50px;
+            }
+
+            @media #{$sm-layout} {
+                font-size: 40px;
+            }
+
+        }
+
+        &-suffix {
+            font-size: 24px;
+            font-weight: 700;
+            font-style: italic;
+            color: #2f2f2f;
+        }
+
+    }
+
+    .pricing__features {
+        width: 220px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px 0 20px;
+        @extend %textCenter;
+
+        &__inner {
+            @extend %liststyle;
+
+            li {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                @extend %flexbox;
+                @extend %align-center;
+                .feature-icon {
+                    width: 14px;
+                    @extend %inlineBlock;
+                    margin-right: .8em;
+                    color: $theme-color;
+                }
+                .feature-text {
+                    font-size: 18px;
+                    @extend %inlineBlock;
+                    @extend %textLeft;
+                    font-family: "Playfair Display",sans-serif;
+                }
+
+                &.item-excluded {
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+    @media #{$sm-layout}{
+        max-width: 400px;
+        margin: auto;
+        position: relative;
+    }
+}

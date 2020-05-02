@@ -1,0 +1,441 @@
+/*=======================
+    Photography Area 
+==========================*/
+
+.photography{
+    position: relative;
+    .content{
+        position: absolute;
+        bottom: -100px;
+        text-align: left;
+        width: 100%;
+        padding: 7% 9%;
+        transition: all 1s;
+        .title{
+            font-size: 36px;
+            font-weight: 400;
+            line-height: 1;
+            transition: all .4s ease-in-out .1s;
+            transform: translateY(20px);
+            -webkit-transform: translateY(20px);
+            margin-bottom: 30px;
+        }
+        p{
+            transition: all .4s ease-in-out .2s;
+            transform: translateY(20px);
+            -webkit-transform: translateY(20px);
+        }
+        .photo-btn {
+            opacity: 0;
+            transform: translateY(20px);
+            -webkit-transform: translateY(20px);
+            transition: all .4s ease-in-out .4s;
+            .button-link{
+                border: 2px solid rgba(255,255,255,.2);
+                color: #fff;
+                padding: 25px 50px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+        }
+
+    }
+    &:hover{
+        .content{
+            bottom: 0px;
+            .title{
+                opacity: 1;
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+            }
+            p{
+                opacity: 1;
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+            }
+            .photo-btn {
+                opacity: 1;
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+            }
+        }
+    }
+}
+.photography-01 .slick-track {
+    margin-bottom: -10px;
+}
+
+
+
+/*=============================
+    Photo Graphy Style Two 
+===============================*/
+.photography__style--2{
+    padding: 0 40px;
+    width: 1170px !important;
+    margin: 0 auto;
+
+    @media #{$laptop-device} {
+        width: auto !important;
+    }
+
+    @media #{$md-layout} {
+        width: auto !important;
+    }
+
+    @media #{$lg-layout} {
+        width: auto !important;
+    }
+
+    @media #{$sm-layout} {
+        width: auto !important;
+    }
+    .thumb{
+        display: inline-block !important;
+    }
+    .content{
+        text-align: left;
+        padding-top: 15px;
+
+        .title{
+            opacity: 0;
+            transition: all .4s ease-in-out .1s;
+            transform: translateY(20px);
+            -webkit-transform: translateY(20px);
+        }
+        p{
+            opacity: 0;
+            transition: all .4s ease-in-out .2s;
+            transform: translateY(20px);
+            -webkit-transform: translateY(20px);
+        }
+    }
+    &:hover{
+        .content{
+            .title{
+                opacity: 1;
+                transform: none;
+                -webkit-transform: none;
+            }
+            p {
+                opacity: 1;
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+            }
+            .photo-btn {
+               
+            }
+        }
+    }
+}
+
+.slick-slide{
+    &.slick-center{
+        .photography__style--2{
+            .content{
+                .title{
+                    opacity: 1;
+                    transform: none;
+                    -webkit-transform: none;
+                }
+                p{
+                    opacity: 1;
+                    transform: translateY(0);
+                    -webkit-transform: translateY(0);
+                }
+            }
+        }
+    }
+}
+
+.photography-02 .slick-initialized .slick-slide {
+    display: block;
+    text-align: center;
+}
+
+.photography-02 .slick-slide {
+    padding: 25px 0;
+}
+
+.photography-02 .photography__style--2 {
+    padding: 0 25px;
+}
+
+.photography-02 {
+    position: relative;
+    .slick-btn{
+        position: absolute;
+        bottom: 66px;
+        background: transparent;
+        z-index: 2;
+        width: 20px;
+        height: 20px;
+        left: auto;
+        top: auto;
+        right: 24%;
+        cursor: pointer;
+
+        @media #{$sm-layout} {
+            display: none !important;
+        }
+        &::before{
+            display: none;
+        }
+        i{
+            color: #fff;
+            font-size: 35px;
+        }
+        &.slick-next{
+            right: 21%;
+        }
+    }
+}
+
+
+
+/*=============================
+Photography Style Three 
+===============================*/
+
+.custom-bg{
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+.custom-bg--1{
+    background-image: url(../img/photography/photo-04/photo-slide-three-01.jpg);
+}
+.custom-bg--2 {
+    background-image: url(../img/photography/photo-04/photo-slide-three-02.jpg);
+}
+.custom-bg--3 {
+    background-image: url(../img/photography/photo-04/photo-slide-three-03.jpg);
+}
+.custom-bg--4 {
+    background-image: url(../img/photography/photo-04/photo-slide-three-04.jpg);
+}
+.custom-bg--5 {
+    background-image: url(../img/photography/photo-04/photo-slide-three-05.jpg);
+}
+.custom-bg--6 {
+    background-image: url(../img/photography/photo-04/photo-slide-three-06.jpg);
+}
+.custom-bg--7 {
+    background-image: url(../img/photography/photo-04/photo-slide-three-07.jpg);
+}
+.photography__style--3{
+    position: relative;
+    @media #{$sm-layout} {
+        width: 100% !important;
+        text-align: center;
+    }
+    .inner{
+        @media #{$sm-layout} {
+            width: 100%;
+        }
+    }
+    .content {
+        .title {
+            opacity: 0;
+            transform: translate(0,20px);
+            -webkit-transform: translate(0,20px);
+            transition: all .4s cubic-bezier(.22,.61,.36,1) 1s;
+            transition-delay: 1.2s;
+        }
+        p {
+            opacity: 0;
+            transform: translate(0,20px);
+            -webkit-transform: translate(0,20px);
+            transition: all .4s cubic-bezier(.22,.61,.36,1) 1s;
+        }
+        .photo-btn {
+            .button-link {
+                color: #fff;
+                border: 1px solid rgba(255,255,255,.5);
+                margin: 40px auto 0;
+                font-weight: 700;
+                padding: 29px 45px;
+                display: inline-block;
+                line-height: 20px;
+
+                transition-delay: 1.4s;
+                opacity: 0;
+                transform: translate(0,20px);
+                -webkit-transform: translate(0,20px);
+                transition: all .4s cubic-bezier(.22,.61,.36,1) 1s;
+            }
+        }
+    }
+}
+.slick-slide{
+    &.slick-active{
+        .photography__style--3{
+            position: relative;
+            .content {
+                .title {
+                    opacity: 1;
+                    transform: none;
+                    -webkit-transform: none;
+                }
+                p {
+                    opacity: 1;
+                    transform: none;
+                    -webkit-transform: none;
+                }
+                .photo-btn {
+                    .button-link {
+                        opacity: 1;
+                        transform: none;
+                        -webkit-transform: none;
+                    }
+                }
+            }
+        }
+        
+    }
+}
+.footer-absolute{
+    position: absolute;
+    bottom: 60px;
+    width: 100%;
+    left: 0;
+    right: 0;
+    @media #{$sm-layout} {
+        bottom: 165px;
+    }
+}
+
+/*=============================
+Photography Style Four 
+===============================*/
+
+.customcat2 {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+.customcat2--1{
+    background-image: url(../img/photography/photo-04/photo-slide-four-01.jpg);
+}
+.customcat2--2 {
+    background-image: url(../img/photography/photo-04/photo-slide-four-02.jpg);
+}
+.customcat2--3 {
+    background-image: url(../img/photography/photo-04/photo-slide-four-03.jpg);
+}
+.customcat2--4 {
+    background-image: url(../img/photography/photo-04/photo-slide-four-04.jpg);
+}
+.customcat2--5 {
+    background-image: url(../img/photography/photo-04/photo-slide-four-05.jpg);
+}
+.customcat2--6 {
+    background-image: url(../img/photography/photo-04/photo-slide-four-06.jpg);
+}
+.customcat2--7 {
+    background-image: url(../img/photography/photo-04/photo-slide-four-07.jpg);
+}
+
+/*==============================
+    Photography Activation Four 
+=================================*/
+.photography-activation-wrap {
+    position: relative; 
+    .slick-controls {
+        position: absolute;
+        right: 90px;
+        bottom: 90px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        @media #{$sm-layout} {
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    &.position-center{
+        .slick-controls{
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .photo-navigation{
+        margin: 0 5px;
+        transform: none;
+        background-color: rgba(21,21,21,.5);
+        color: #fff;
+        width: 52px;
+        height: 52px;
+        border-radius: 0;
+        left: auto;
+        text-align: center;
+        line-height: 52px;
+        cursor: pointer;
+        transition: 0.4s;
+        &:hover{
+            background-color: $theme-color;
+        }
+    }
+    .pause-play{
+        color: #fff;
+        border-radius: 0;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        button{
+            border: 0 none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            color: #fff;
+            &.pause {
+                top: 50%;
+                text-align: center;
+                display: inline-block;
+                width: 52px;
+                text-align: center;
+                background: rgba(21, 21, 21, 0.5);
+                margin: 0 5px;
+            }
+            &.play {
+                text-align: center;
+                width: 53px;
+                text-align: center;
+                display: inline-block;
+                margin: 0 5px;
+                height: 52px;
+                background: rgba(21, 21, 21, 0.5);
+            }
+            &.photo4-play{
+                &.play{
+                    &.active{
+                        background: $theme-color;
+                    }
+                }
+            }
+            &.photo4-pause{
+                &.pause{
+                    &.active{
+                        background: $theme-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+

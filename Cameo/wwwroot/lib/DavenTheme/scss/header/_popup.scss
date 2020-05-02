@@ -1,0 +1,187 @@
+/* =====================
+    Popup Area 
+======================*/
+
+.popup-fly-over-wrapper{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: rgba(8, 8, 8, 0.9);
+    z-index: 999;
+    @extend %textwhite;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &.is-visiable{
+        opacity: 1;
+        visibility: visible;
+        transition: opacity .5s;
+    }
+}
+
+.popup-fly-over-wrapper{
+    .close-button {
+        position: fixed;
+        top: 20%;
+        right: 10%;
+        .close_btn{
+            padding: 0;
+            border: 0 none;
+            font-size: 40px;
+            background: transparent;
+            i{
+                @extend %textwhite;
+            }
+        }
+        
+        @media #{$laptop-device}{
+            top: 10%;
+        }
+    }
+
+    // Start Popup Menu
+    .popup-menu{
+        max-width: 1330px;
+
+        @media #{$laptop-device} {
+            max-width: 1100px;
+        }
+
+        width: 100%;
+        .mainmenu{
+            @extend %liststyle;
+            li{
+                font-weight: 400;
+                transition: all .3s ease;
+                @extend %posrelative;
+                @extend %textwhite;
+                font-size: 14px;
+                padding-top: 6px;
+                padding-bottom: 6px;
+                &.title{
+                    font-size: 32px;
+                    font-weight: 600;
+                    margin-bottom: 5px;
+                }
+                a{
+                    @extend %textwhite;
+                    @extend %transition;
+                    &:hover{
+                        @extend %themecolor;
+                    }
+                }
+
+                // DropDown
+                &.drdropdown{
+                    > a{
+                        @extend %posrelative;
+                        @extend %inlineBlock;
+                        &::before{
+                            @extend %posabsolute;
+                            content: "\f107";
+                            font-size: 12px;
+                            left: 100%;
+                            font-family: FontAwesome;
+                            padding-left: 15px;
+                            top: 3px;
+                        }
+                        &.is-visiable{
+                            @extend %themecolor;
+                            &::before{
+                                content: "\f106";
+                                @extend %themecolor;
+                            }
+                        }
+                    }
+                    .drlabel2{
+                        display: none;
+                        @extend %liststyle;
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                        li{
+                            a{
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .popup-bottom{
+        @extend %posabsolute;
+        width: 250px;
+        bottom: 80px;
+        right: 100px;
+        .logo{
+            width: 68px;
+            margin-bottom: 25px;      
+            img{
+                vertical-align: middle;
+                max-width: 100%;
+                height: auto;
+            }
+        }
+        .address{
+            font-size: 12px;
+            line-height: 2;
+            margin-bottom: 15px;
+            p{
+                color: rgba(255,255,255,.8);
+                margin-bottom: 0;
+            }
+        }
+
+        .share{
+            @extend %inlineBlock;
+            a{
+                margin-right: 7px;
+                @extend %textCenter;
+                text-decoration: none;
+                transition: all .31s ease;
+                @extend %inlineBlock;
+                @extend %textwhite;
+            }
+        }
+    }
+}
+/*=========================
+    Golobal DropDown MEnu 
+===========================*/
+
+.drdropdown{
+    > a{
+        @extend %posrelative;
+        @extend %inlineBlock;
+        &::before{
+            @extend %posabsolute;
+            content: "\f107";
+            font-size: 12px;
+            left: 100%;
+            font-family: FontAwesome;
+            padding-left: 15px;
+            top: 3px;
+        }
+        &.is-visiable{
+            &::before{
+                content: "\f106";
+            }
+        }
+    }
+    .drlabel2{
+        display: none;
+        @extend %liststyle;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        li{
+            a{
+
+            }
+        }
+    }
+}

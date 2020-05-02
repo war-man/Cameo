@@ -1,0 +1,97 @@
+/*======================
+    Brand Area 
+======================*/
+
+.brand-list {
+    a {
+        display: block;
+
+        img {
+            width: 140px;
+            filter: grayscale(100);
+            -webkit-filter: grayscale(100);
+            opacity: .7;
+            transition: all .25s ease-out;
+        }
+
+        &:hover {
+            img {
+                opacity: 1;
+                filter: grayscale(0);
+                -webkit-filter: grayscale(0);
+            }
+        }
+    }
+}
+
+.brand_style--2 {
+    display: flex;
+    display: -webkit-flex;
+    align-items: stretch;
+    -webkit-align-items: stretch;
+    justify-content: center;
+    
+    .brand {
+        width: 190px;
+        text-align: center;
+
+        a {
+            img {}
+        }
+    }
+    @media #{$sm-layout}{
+        flex-wrap: wrap;
+        .brand {
+            margin-bottom: 15px;
+            width: 95px;
+            padding: 0 10px;
+            
+        }
+    }
+    @media #{$large-mobile}{
+        flex-wrap: wrap;
+        .brand {
+            width: auto;
+            padding: 0 10px;
+        }
+    }
+}
+
+
+/*------------------------------
+    ScrollTo Up 
+--------------------------------*/
+#scrollUp {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 25px;
+    line-height: 60px;
+    background-color: #2f2f2f;
+    right: 20px;
+    top: calc(70% + 170px);
+    text-align: center;
+    overflow: hidden;
+    z-index: 9811 !important;
+    color: #fff;
+    transition: all .25s ease-out;
+    display: inline-block;
+    position: fixed;
+    & i {
+        display: block;
+        line-height: 55px;
+        font-size: 25px;
+    }
+
+    &:hover {
+        & i {
+            animation-name: fadeInUp;
+            animation-duration: 1s;
+            animation-fill-mode: both;
+            animation-iteration-count: infinite;
+        }
+    }
+}
+
+
+

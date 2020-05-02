@@ -1,0 +1,167 @@
+/*========================= 
+    Megamenu Area 
+===========================*/
+
+.primary-menu{
+    > li {
+        &.label-1{
+            position: relative;
+            @media #{$laptop-device}{
+                position: static;
+            }
+            &.static-mega {
+                position: static;
+                .megamenu{
+                    left: auto;
+                    transform:  translateX(0%);
+                    right: 80px;
+                    @media #{$laptop-device}{
+                        right: 15px;
+                    }
+                }
+            }
+            > a{
+                position: relative;
+                &::before{
+                    content: "\f107";
+                    font-family: 'FontAwesome';
+                    font-size: 12px;
+                    color: #999;
+                    font-weight: 600;
+                    position: absolute;
+                    right: 0;
+                    top: 50%;
+                    -webkit-transform: translate(-50%,-50%);
+                    transform: translate(-50%,-50%);
+                    opacity: .6; 
+                }
+            }
+            .megamenu{
+                box-shadow: 0px 1px 24px 0px rgba(0,0,0,.09);
+                margin-top: 20px;
+                display: block;
+                opacity: 0;
+                visibility: hidden;
+                -webkit-transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                -moz-transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                width: 1000px;
+                left: 50%;
+                transform:  translateX(-50%);
+                z-index: -99;
+                position: absolute;
+                background-color: #151515;
+                padding: 40px 5px;
+                display: -webkit-box !important;
+                display: -moz-box !important;
+                display: -ms-flexbox !important;
+                display: -webkit-flex !important;
+                display: flex !important;
+                @media #{$laptop-device}{
+                    left: auto;
+                    transform:  translateX(0%);
+                    right: 80px;
+                    
+                }
+                @media #{$laptop-device}{
+                    right: 15px;
+                }
+                .menu-item {
+                    width: 25%;
+                    @extend %liststyle;
+                    &.item--3 {
+                        width: 33.333%;
+                    }
+                    &.item--4 {
+                        width: 25%;
+                    }
+                    &.item--6 {
+                        width: 16.667%;
+                    }
+                   
+                }
+            }
+            .dropdown{
+                @extend %liststyle;
+                box-shadow: 0px 1px 24px 0px rgba(0,0,0,.09);
+                margin-top: 20px;
+                display: block;
+                opacity: 0;
+                visibility: hidden;
+                -webkit-transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                -moz-transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                z-index: -99;
+                position: absolute;
+                width: 220px;
+                background-color: #151515;
+                padding: 30px 0;
+                li{
+                    a {
+                        position: relative;
+                    }
+                    &.label-2 {
+                        position: relative;
+                        > a{
+                            &::before {
+                                content: "\f105";
+                                font-family: 'FontAwesome';
+                                font-size: 12px;
+                                color: #999;
+                                font-weight: 600;
+                                position: absolute;
+                                right: 14px;
+                                top: 50%;
+                                -webkit-transform: translate(-50%,-50%);
+                                transform: translate(-50%,-50%);
+                            }
+                        }
+                        .dropright {
+                            background-color: #323232;
+                            padding: 30px 0;
+                            top: -10px;
+                            left: 100%;
+                            position: absolute;
+                            width: 220px;
+                            opacity: 0;
+                            visibility: hidden;
+                            -webkit-transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                            -moz-transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                            transition: margin .1s linear .3s,visibility .1s linear .3s,opacity .1s linear .3s;
+                            z-index: -99;
+                            &.left {
+                               left: auto; 
+                                right: 100%;
+                            }
+                        }
+                        &:hover{
+                            .dropright{
+                                opacity: 1;
+                                visibility: visible;
+                                margin-top: 0;
+                                z-index: 3;
+                            }
+                        }
+                        
+                    }
+                }
+            }
+
+            &:hover{
+                .megamenu{
+                    opacity: 1;
+                    visibility: visible;
+                    margin-top: 0;
+                    z-index: 3;
+                }
+                .dropdown{
+                    opacity: 1;
+                    visibility: visible;
+                    margin-top: 0;
+                    z-index: 3;
+                }
+            }
+        }
+    }
+}
+

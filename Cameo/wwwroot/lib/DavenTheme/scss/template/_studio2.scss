@@ -1,0 +1,54 @@
+
+/*=======================
+    Studio Two 
+========================*/
+
+.studio-history-thumb-wrapper{
+    margin: -200px 0 0;
+    overflow: hidden;
+    padding-bottom: 66px;
+
+    @media #{$lg-layout} {
+        margin: 0;
+        padding-bottom: 0;
+    }
+
+    @media #{$md-layout} {
+        margin: 0;
+        padding-bottom: 0;
+    }
+
+    @media #{$sm-layout} {
+        margin: 0;
+        padding-bottom: 0;
+    }
+
+    .studio-history-thumb{
+        position: relative;
+        z-index: 1;
+        &::after{
+            content: '';
+            background-color: #f53e6a;
+            position: absolute;
+            right: 27px;
+            bottom: -60px;
+            width: 88%;
+            top: 200px;
+            z-index: -1;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

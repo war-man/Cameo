@@ -37,6 +37,64 @@ namespace Cameo.Controllers
             return View(new FilterVM());
         }
 
+        public IActionResult GetCategorized()
+        {
+            List<TalentsCategorizedVM> talentsCategorizedVM = new List<TalentsCategorizedVM>();
+
+            //TO-DO:
+            //add popular and new talents
+            //add TalentService.GetNew method
+            
+            List<Category> categories = new List<Category>()
+            {
+                new Category() { ID = (int)CategoryEnum.featured },
+                new Category() { ID = (int)CategoryEnum.neW }
+            };
+
+            var featuredTalents = TalentService.GetFeatured(null, 6);
+            if (featuredTalents.Count() > 0)
+            {
+                var featuredTalentsVM = new TalentsCategorizedVM(
+                    new Category()
+                    {
+                        ID = (int)CategoryEnum.featured,
+                        Name = "Популярные"
+                    },
+                    featuredTalents.ToList());
+                talentsCategorizedVM.Add(featuredTalentsVM);
+            }
+
+            var newTalents = TalentService.GetNew(null, 6);
+            if (newTalents.Count() > 0)
+            {
+                var newTalentsVM = new TalentsCategorizedVM(
+                    new Category()
+                    {
+                        ID = (int)CategoryEnum.neW,
+                        Name = "Новые"
+                    },
+                    newTalents.ToList());
+                talentsCategorizedVM.Add(newTalentsVM);
+            }
+
+            categories.AddRange(CategoryService.GetAllActive());
+            foreach (var category in categories)
+            {
+                var talentsCategorized = TalentService.Search(category.ID, SortTypeEnum.def, 6);
+                var categoryTalentsVM = new TalentsCategorizedVM(category, talentsCategorized.ToList());
+                
+                foreach (var item in categoryTalentsVM.Talents)
+                {
+                    if (item.Avatar.ID == 0)
+                        item.Avatar.Url = GetRandomPhotoUrl();
+                }
+
+                talentsCategorizedVM.Add(categoryTalentsVM);
+            }
+
+            return PartialView("_GetCategorized", talentsCategorizedVM);
+        }
+
         //public IActionResult Details(int id)
         //{
         //    Talent model = TalentService.GetActiveByID(id);

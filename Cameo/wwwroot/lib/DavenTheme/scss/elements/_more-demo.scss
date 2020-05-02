@@ -1,0 +1,127 @@
+/*=======================
+    More Demos Area 
+==========================*/
+.more_demo_aside{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    z-index: 9999;
+    transform: translate(480px,0);
+    -webkit-transform: translate(480px,0);
+    -webkit-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+    @media #{$large-mobile}{
+        display: none;
+    }
+    .inner_trigget {
+        color: #fff;
+        background: #282828;
+        font-size: 16px;
+        line-height: 18px;
+        border: none;
+        width: auto;
+        height: auto;
+        text-align: left;
+        padding: 8px;
+        position: absolute;
+        right: 480px;
+        top: 40%;
+        transition: all .4s ease-out;
+        max-width: inherit;
+        border-radius: 5px 0 0 5px;
+        a {
+            display: block;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            color: $white;
+            text-align: center;
+            -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            -o-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        @media #{$sm-layout}{
+            right: 350px;
+        }
+    }
+
+    .demo-asid{
+        position: absolute;
+        width: 480px;
+        background: #fff;
+        top: 0;
+        right: 0;
+        height: 100%;
+        padding: 50px;
+        box-shadow: 0 1px 26px 0 rgba(0,0,0,.13);
+        transition: all .4s ease-out;
+        overflow: auto;
+        @media #{$sm-layout}{
+            width: 350px;
+            padding: 30px 10px;
+        }
+    }
+    &.open{
+        transform: translate(0px,0);
+        -webkit-transform: translate(0px,0);
+        button {
+            @media #{$sm-layout}{
+                right: 350px;
+            }
+        }
+    }
+    
+    .demo__aside_flex {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+    
+    .demo-item {
+        display: flex;
+        width: 46%;
+        margin-bottom: 10px;
+        padding-bottom: 15px;
+        padding-left: 10px;
+        position: relative;
+        transition: all .3s;
+        .title {
+            margin-top: 10px;
+            width: 100%;
+            & h6 {
+                font-size: 13px;
+                transition: all .3s;
+                margin-bottom: 0;
+                @media #{$sm-layout}{
+                    font-size: 11px;
+                }
+            }
+        }
+        &:hover {
+            box-shadow: 0 1px 26px 0 
+            rgba(0,0,0,.13);
+            .title {
+                & h6 {
+                    font-weight: bold;
+                    padding-left: 5px;
+                }
+            }
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+

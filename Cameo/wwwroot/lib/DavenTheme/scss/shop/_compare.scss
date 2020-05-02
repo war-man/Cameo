@@ -1,0 +1,102 @@
+/*=====================
+    Compare Area 
+=======================*/
+
+.compare-table{
+    border-left: 1px solid #e7e7e7;
+    border-right: 1px solid #e7e7e7;
+    display: block;
+    margin: 0;
+    border: none;
+    width: 100%;
+    overflow: auto;
+    padding: 0;
+    tbody{
+        .compare-info{
+            th{
+                border-style: solid;
+                min-width: 200px;
+                background-color: #f2f2f2;
+                vertical-align: middle;
+                border-color: #e7e7e7;
+                font-weight: 700;
+                border-left: 0;
+                color: #2f2f2f;
+                border-width: 1px;
+                padding: 10px;
+                font-size: 13px;
+            }
+            td{
+                min-width: 250px;
+                border-color: #e7e7e7;
+                text-align: center;
+                vertical-align: middle;
+                border-width: 1px;
+                border-style: solid;
+                padding: 10px;
+                line-height: 1.714286;
+
+                .remove{
+                    a{
+                        font-size: 13px;
+                        color: #535353;
+                    }
+                }
+                .content{
+                    .image{
+                        width: 120px;
+                        max-width: 100%;
+                        margin: 0 auto;
+                        img{
+
+                        }
+                    }
+                    h4{
+                        font-size: 14px;
+                        font-weight: 400;
+                        line-height: normal;
+                        color: #2f2f2f;
+                        margin: 15px 0;
+                    }
+                    .add-to-cart{
+                        a{
+                            &.cart-btn{
+                                background-color: #343538;
+                                color: #fff;
+                                padding: 5px 15px;
+                                display: inline-block;
+                                text-align: center;
+                                transition: all .25s ease-out;
+                                font-weight: 700;
+                                line-height: 1;
+                            }
+                        }
+                    }
+                }
+
+                span{
+                    &.amount{
+                        line-height: 1.75;
+                        font-size: 14px;
+                        color: #343538;
+                    }
+                }
+                del{
+                    span{
+                        &.amount{
+                            color: #8a8a8a;
+                            font-size: 14px;
+                        }
+                    }
+                }
+                ins{
+                    background: transparent;
+                    span{
+                        font-size: 14px;
+                        color: #343538;
+                    }
+                }
+            }
+        }
+    }
+}

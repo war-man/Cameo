@@ -1,0 +1,137 @@
+/*=======================
+    Service Area 
+=========================*/
+
+.service-box {
+    .icon {
+        i {
+            background-color: #ffd600;
+            width: 270px;
+            height: 270px;
+            border-radius: 50%;
+            color: #2f2f2f;
+            font-size: 45px;
+            line-height: 270px;
+            @extend %transition;
+
+            @media #{$lg-layout} {
+                width: 150px;
+                height: 150px;
+                line-height: 150px;
+            }
+
+            @media #{$md-layout} {
+                width: 150px;
+                height: 150px;
+                line-height: 150px;
+            }
+
+            @media #{$sm-layout} {
+                width: 100px;
+                height: 100px;
+                line-height: 100px;
+            }
+        }
+    }
+    .content{
+        h3 {
+            &.title{
+                @media #{$lg-layout} {    
+                    &.font--32 {
+                        font-size: 26px;
+                    }  
+                }
+            }
+        }
+        p {
+            &.font--22 {
+                @media #{$sm-layout} {  
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    &:hover{
+        .icon{
+            i{
+                -webkit-transform: scale(0.9);
+                transform: scale(0.9);
+            }
+        }
+    }
+}
+
+
+.spa-service {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    max-width: 550px;
+    @media #{$large-mobile} {
+        display: block;
+    }
+
+    .icon {
+        transition: all .3s;
+        width: 140px;
+        height: 140px;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 50%;
+        margin: 0 60px 0 0;
+        flex: 1 0 auto;
+        @media #{$md-layout} {
+            margin: 0 20px 0 0;
+        }
+        @media #{$sm-layout} {
+            margin: 0 20px 0 0;
+        }
+        @media #{$large-mobile} {
+            margin: 0 20px 0 0;
+            margin-bottom: 20px;
+        }
+        .inner{
+            background-color: rgba(255, 255, 255, 0);
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            position: relative;
+            top: 17%;
+            i {
+                color: #fff;
+                line-height: 1;
+            }
+        }
+    }
+
+    .content{
+        h3 {
+            &.title{
+                @media #{$md-layout} {
+                    font-size: 26px;
+                }
+            }
+            a{
+
+            }
+        }
+        p {
+
+        }
+    }
+
+    &:hover{
+        .icon{
+            
+            background-color: #e87141;
+            border-color: transparent;
+            .inner{
+                -webkit-filter: brightness(0) invert(1);
+                filter: brightness(0) invert(1);
+            }
+            i{
+
+            }
+        }
+    }
+}

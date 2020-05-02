@@ -1,0 +1,93 @@
+/* ==========================
+    Portfolio With Caption 
+==============================*/
+
+.portfolio_with--cation {
+    overflow: hidden;
+    .inner {
+        position: relative;
+        .thumb {
+            position: relative;
+            display: block;
+            height: 100%;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+           
+            .icon {
+                position: absolute;
+                left: 50%;
+                font-size: 2.5em;
+                top: 50%;
+                line-height: 1;
+                z-index: 1;
+                color: #fff;
+                opacity: 0;
+                transition: all .4s ease-in-out .2s;
+                margin-top: 1em;
+                transform: translate(-50%,-50%);
+            }
+        }
+    }
+    .port-overlay-info {
+        pointer-events: none;
+        position: relative;
+        background-color: #fff;
+        padding: 20px 0;
+        transition: all .4s;
+        z-index: 2;
+        .hover-action {
+            padding: 0 30px;
+            .title {
+                opacity: 1;
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+            }
+            p {
+                opacity: 0;
+                transform: translateY(20px);
+                -webkit-transform: translateY(20px);
+                transition: all .4s ease-in-out .3s;
+                font-size: 16px;
+                margin: 0 0 5px;
+                &.subtitle {
+                    opacity: 1;
+                    transform: translateY(0);
+                    -webkit-transform: translateY(0);
+                    font-size: 14px;
+                    margin-bottom: 20px;
+                }
+            }
+        }
+    }
+    &:hover {
+        .thumb {
+            .icon {
+                opacity: 1;
+                margin-top: -.5em;
+            }
+        }
+        .port-overlay-info {
+            margin-top: -80px;
+            padding-bottom: 80px;
+            .hover-action {
+                .title {
+                    opacity: 1;
+                    transform: translateY(0);
+                    -webkit-transform: translateY(0);
+                }
+                p {
+                    opacity: 1;
+                    transform: translateY(0);
+                    -webkit-transform: translateY(0);
+                    &.subtitle {
+                        opacity: 1;
+                        transform: translateY(0);
+                        -webkit-transform: translateY(0);
+                    }
+                }
+            }
+        }
+    }
+}

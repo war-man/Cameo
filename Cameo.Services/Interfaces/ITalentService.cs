@@ -1,6 +1,7 @@
 ﻿using Cameo.Models;
 using Cameo.Models.Enums;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cameo.Services.Interfaces
 {
@@ -11,9 +12,11 @@ namespace Cameo.Services.Interfaces
         Talent GetActiveByUsername(string username);
         Talent GetActiveSingleDetailsWithRelatedDataByID(int id);
 
-        IEnumerable<Talent> Search(int categoryID, SortTypeEnum sort);
-        IEnumerable<Talent> SearchBySearchText(string searchText);
-        IEnumerable<Talent> GetRelated(Talent model);
+        IQueryable<Talent> GetFeatured(int? categoryID, int count);
+
+        IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null);
+        IQueryable<Talent> SearchBySearchText(string searchText);
+        IQueryable<Talent> GetRelated(Talent model);
         void AssignAccountNumber(Talent model);
         void SetAvailability(Talent model, bool availability, string userID);
     }

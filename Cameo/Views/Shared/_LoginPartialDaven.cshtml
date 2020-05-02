@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="header-icon" style="margin-right: 15px;">
+        <a asp-controller="Person" asp-action="Index" title="Account">
+            @*<i class="dlicon ui-1_zoom"></i>*@
+            @UserManager.GetUserName(User)
+        </a>
+    </div>
+    <div class="header-icon" style="margin-right: 15px;">
+        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm">
+            <button type="submit" class="btn btn-link">Logout</button>
+        </form>
+    </div>
+}
+else
+{
+    <div class="header-icon" style="margin-right: 15px;">
+        <a asp-area="Identity" asp-page="/Account/RegisterAsTalent" class="search-trigger">
+            @*<i class="dlicon ui-1_zoom"></i>*@
+            Enroll as Talent
+        </a>
+    </div>
+    <div class="header-icon" style="margin-right: 15px;">
+        <a asp-area="Identity" asp-page="/Account/Register">
+            @*<i class="dlicon ui-1_zoom"></i>*@
+            Register
+        </a>
+    </div>
+    <div class="header-icon" style="margin-right: 15px;">
+        <a asp-area="Identity" asp-page="/Account/Login">
+            @*<i class="dlicon ui-1_zoom"></i>*@
+            Login
+        </a>
+    </div>
+}

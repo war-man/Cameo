@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewData["Title"] - Cameo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/lib/DavenTheme/img/favicon.ico" type="image/x-icon">
+
+    <link href="~/lib/DavenTheme/css/plugins.css" rel="stylesheet" />
+    <link href="~/lib/DavenTheme/css/style.css" rel="stylesheet" />
+
+    @*<environment include="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+            <link rel="stylesheet" href="~/css/site.css" />
+        </environment>*@
+    @*<environment exclude="Development">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        </environment>*@
+</head>
+<body class="template-color-1 template-font-1">
+    <partial name="_CookieConsentPartial" />
+
+    <!-- Wrapper -->
+    <div id="wrapper" class="wrapper">
+        <!-- Start Header -->
+        <partial name="_HeaderDaven" />
+        <!-- Start Header -->
+
+        <!-- Start Loader Area -->
+        <partial name="_LoaderAreaDaven" />
+        <!-- End Loader Area -->
+
+        <!-- Start Page Wrapper -->
+        <main class="page-content">
+            @RenderBody()
+        </main>
+        <!-- End Page Wrapper -->
+        
+
+        <!-- Start Footer Area -->
+        <partial name="_FooterDaven" />
+        <!-- End Footer Area -->
+    </div>
+    <!--// Wrapper -->
+
+    <script src="~/lib/DavenTheme/js/ajax-mail.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/DavenTheme/js/plugins.js"></script>
+    <script src="~/lib/DavenTheme/js/main.js"></script>
+
+    <!-- REVOLUTION JS FILES -->
+    <script src="~/lib/DavenTheme/js/jquery.themepunch.tools.min.js"></script>
+    <script src="~/lib/DavenTheme/js/jquery.themepunch.revolution.min.js"></script>
+
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->
+    <script src="~/lib/DavenTheme/js/revolution.extension.actions.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revolution.extension.carousel.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revolution.extension.kenburn.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revolution.extension.layeranimation.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revolution.extension.migration.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revolution.extension.navigation.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revolution.extension.parallax.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revolution.extension.slideanims.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revolution.extension.video.min.js"></script>
+    <script src="~/lib/DavenTheme/js/revoulation.js"></script>
+
+    @*<environment include="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+        </environment>
+        <environment exclude="Development">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+            </script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+            </script>
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+        </environment>*@
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+@*<script src="~/js/ImageAsyncLoader.js"></script>*@
+<script src="~/js/lozad.min.js"></script>
+
+<script type="text/javascript">
+    const lozadObserver = lozad(); // lazy loads elements with default selector as '.lozad'
+
+    //$(document).ready(function () {
+    //    //StartLoadingImagesAsync();
+    //    $('[data-toggle="tooltip"]').tooltip(); 
+    //});
+</script>

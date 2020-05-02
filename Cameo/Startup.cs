@@ -151,7 +151,7 @@ namespace Cameo
 
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Talents}/{action=Index}/{id?}");
             });
 
             app.UseHangfireServer();

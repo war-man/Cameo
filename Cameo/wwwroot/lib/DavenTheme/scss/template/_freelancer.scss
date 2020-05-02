@@ -1,0 +1,77 @@
+/*=========================
+    Freelancer 
+===========================*/
+.freelancer-slider-area{
+    &.fullscreen{
+        height: 1250px;
+        @media #{$laptop-device} {
+            height: 900px;
+        }
+        @media #{$lg-layout} {
+            height: 800px;
+        }
+        @media #{$md-layout} {
+            height: 800px;
+        }
+        @media #{$sm-layout} {
+            height: auto;
+            padding: 150px 24px 100px;
+        }
+    }
+}
+
+
+.freelancer-slide{
+    width: 100%;
+    .inner{
+        width: 100%;
+        .title{
+            color: #fff;
+            font-size: 250px;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 210px;
+            padding: 0;
+            margin: 0;
+
+            @media #{$laptop-device} {
+                font-size: 136px;
+                line-height: 161px;
+            }
+            @media #{$lg-layout} {
+                font-size: 110px;
+                line-height: 110px;
+            }
+
+            @media #{$md-layout} {
+                font-size: 70px;
+                line-height: 91px;
+            }
+
+            @media #{$sm-layout} {
+                font-size: 48px;
+                line-height: 70px;
+                br{
+                    display: none;
+                }
+            }
+
+        }
+        p{
+            color: #fff;
+            font-size: 32px;
+            line-height: 45px;
+            @media #{$md-layout} {
+                font-size: 17px;
+                line-height: 38px;
+            }
+            @media #{$sm-layout} {
+                font-size: 16px;
+                line-height: 31px;
+            }
+        }
+        .slide-btn{
+
+        }
+    }
+}

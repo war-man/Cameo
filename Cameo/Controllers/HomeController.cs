@@ -53,7 +53,7 @@ namespace Cameo.Controllers
 
         public IActionResult Privacy()
         {
-            throw new Exception("This is some thrown exception");
+            //throw new Exception("This is some thrown exception");
             return View();
         }
 

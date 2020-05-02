@@ -1,0 +1,121 @@
+/*==========================
+    Navigation Css 
+============================*/
+.haeder-default {
+    .mainmenu-nav {
+        ul {
+            &.primary-menu {
+                @extend %liststyle;
+                @include flexbox;
+                @include justify-content(center);
+                > li {
+                    > a {
+                        display: -webkit-box;
+                        display: -moz-box;
+                        display: -ms-flexbox;
+                        display: -webkit-flex;
+                        display: flex;
+                        -webkit-box-align: center;
+                        -moz-box-align: center;
+                        -ms-flex-align: center;
+                        -webkit-align-items: center;
+                        align-items: center;
+                        font-size: 18px;
+                        font-weight: 700;
+                        padding: 0 25px;
+                        height: 160px;
+                        @media #{$laptop-device} {
+                            font-size: 16px;
+                            padding: 0 20px;
+                        }
+                    }
+                }
+                .drop-item {
+                    li {
+                        &.title{
+                            padding: 8px 30px;
+                            color: #fff;
+                            font-weight: 600;
+                            letter-spacing: 0;
+                            font-size: 16px;
+                            text-transform: uppercase;
+                            margin-bottom: 10px;
+                            display: block;
+                        }
+                        a {
+                            padding: 8px 30px;
+                            color: silver;
+                            display: block;
+                            @extend %transition;
+                            &:hover {
+                                color: $theme-color;
+                            }
+                        }
+                    }
+                }
+            }
+            &.navigation-menu--onepage {
+                @extend %liststyle;
+                @include flexbox;
+                @include justify-content(center);
+                > li {
+                    display: inline-block;
+                    > a {
+                        padding: 0 25px;
+                        height: 160px;
+                        @media #{$laptop-device} {
+                            font-size: 16px;
+                            padding: 0 20px;
+                        }
+                    }
+                }
+                &.apps-menu {
+                    > li {
+                        > a {
+                            font-weight: 400;
+                            @media #{$laptop-device} {
+                                font-size: 16px;
+                                padding: 0 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.header-sticky.is-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    -webkit-animation: .95s ease-in-out 0s normal none 1 running fadeInDown;
+    animation: .95s ease-in-out 0s normal none 1 running fadeInDown;
+    z-index: 93;
+    -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    -o-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px 0 
+    rgba(0, 0, 0, 0.1);
+    background-color:
+        #ffffff;
+    
+    .header-height--160 {
+        height: 100px;
+    }
+    .mainmenu-nav .primary-menu li a {
+    color: #333;
+    }
+    .mainmenu-nav ul.navigation-menu--onepage > li > a {
+        padding: 0 25px;
+        height: 100px;
+    }
+    .header-icon a i {
+        color: #333;
+    }
+    &.haeder-default .mainmenu-nav ul.primary-menu > li > a {
+        height: 100px;
+    }
+}

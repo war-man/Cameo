@@ -1,0 +1,148 @@
+/*======================
+*   Section Title
+========================*/
+
+.section_title--2 {
+    .title{
+        position: relative;
+        display: inline-block;
+        &::before{
+            width: 130px;
+            position: absolute;
+            @extend %bgthemecolor;
+            content: "";
+            height: 3px;
+            left: 0;
+            bottom: 0;
+        }
+
+        &.shape-dark{
+            &::before{
+                background-color: #2f2f2f !important;
+            }
+        }
+
+        &.line--width80{
+            &::before{
+                width: 80px;
+            }
+        }
+
+        &.text-white {
+            &::before{
+                @extend %bgwhitecolor;
+            }
+        }
+    }
+    &.text-center{
+        .title{
+            &::before{
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    
+    &.text-right{
+        .title{
+            &::before{
+                right: 0;
+            }
+        }
+    }
+}
+
+.letterspacing--2 {
+    letter-spacing: 2px;
+}
+.pra{
+    font-size: 18px;
+    line-height: 2em;
+    
+    @media #{$sm-layout} {
+        font-size: 14px;
+        line-height: 24px;
+        br{
+            display: none;
+        }
+    }
+    @media #{$md-layout} {
+        br{
+            display: none;
+        }
+    }
+}
+
+.pra2{
+    font-size: 22px;
+    line-height: 2.4em;
+    margin-bottom: 0;
+    
+    @media #{$lg-layout, $md-layout} {
+        font-size: 14px;
+        line-height: 26px;
+    }
+
+    @media #{$md-layout} {
+        br{
+            display: none;
+        }
+    }
+
+    @media #{$sm-layout} {
+        font-size: 14px;
+        line-height: 26px;
+        br{
+            display: none;
+        }
+    }
+}
+
+.pra3 {
+    font-size: 18px;
+    line-height: 2em;
+    margin-bottom: 0;
+    color: #747474;
+    @media #{$md-layout} {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    @media #{$sm-layout} {
+        font-size: 14px;
+        line-height: 26px;
+    }
+}
+
+.pra4 {
+    font-size: 18px;
+    line-height: 2em;
+    margin-bottom: 0;
+    color: rgba(255,255,255,.6);
+    @media #{$md-layout} {
+        br{
+            display: none;
+        }
+    }
+    @media #{$sm-layout} {
+        font-size: 14px;
+        line-height: 26px;
+        br{
+            display: none;
+        }
+    }
+}
+
+.pra5 {
+    font-size: 24px;
+    line-height: 2em;
+    color: #747474;
+    @media #{$md-layout} {
+        font-size: 16px;
+        line-height: 26px;
+    }
+    @media #{$sm-layout} {
+        font-size: 14px;
+        line-height: 26px;
+    }
+}
+

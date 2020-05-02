@@ -1,0 +1,341 @@
+/*======================
+    App Area 
+========================*/
+
+
+/*========================
+    App Slider Area
+==========================*/
+
+
+.appslider-wrapper{
+    position: relative;
+    .appslide-content{
+        .title{
+            font-size: 72px;
+            line-height: 1.4074;
+            @media #{$laptop-device} {
+                font-size: 42px;
+            }
+            @media #{$lg-layout} {
+                font-size: 42px;
+            }
+            @media #{$md-layout} {
+                font-size: 42px;
+            }
+            @media #{$sm-layout} {
+                font-size: 42px;
+            }
+        }
+        p{
+            color: #747474;
+            font-size: 18px;
+            line-height: 2em;
+            margin: 20px 0 55px;
+            @media #{$md-layout} {
+                font-size: 16px;
+                line-height: 28px;
+            }
+        }
+        .app-button{
+            a{
+                &.button-link{
+                    padding: 33px 80px;
+                    font-size: 24px;
+                    line-height: 30px;
+                    @media #{$sm-layout} {
+                        padding: 20px 37px;
+                    }
+                    &.button__transparent--border{
+                        border-style: solid;
+                        border-width: 2px;
+                        border-color: #888;
+                        color: #888;
+                        padding: 33px 88px;
+                        @media #{$sm-layout} {
+                            padding: 20px 45px;
+                        }
+                        &:hover{
+                            border-color: $theme-color;
+                            color: #ffffff;
+                        }
+                    }
+                    span{
+                        &.button-text{
+                            font-size: 24px;
+                            @media #{$sm-layout} {
+                                font-size: 16px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .appslide-thumb {
+        .thumb {
+            position: absolute;
+            right: 150px;
+            bottom: -57px;
+            @media #{$laptop-device} {
+                right: 0;
+            }
+
+            &.thumb-1 {
+                z-index: 2;
+                right: 300px;
+                @media #{$laptop-device} {
+                    right: 0;
+                }
+            }
+            &.thumb-2 {
+
+            }
+
+        }
+    }
+}
+
+
+/*==============================
+    App Screenhshot Area 
+================================*/
+
+.screenshot-gallery{
+    display: block;
+    text-align: center;
+    clear: both;
+    overflow: hidden;
+    margin: 12px auto;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding-bottom: 20px;
+}
+.screenshot{
+    float: left;
+    margin-top: 10px;
+    text-align: center;
+    width: 33%;
+    overflow: visible;
+    position: relative;
+    z-index: 1;
+    transition: all .3s;
+    top: 0;
+
+    @media #{$md-layout} {
+        width: 50%;
+    }
+    @media #{$sm-layout} {
+        width: 100%;
+    }
+    .gallery-item{
+        a{
+            background: 0 0;
+            border: none;
+            box-shadow: none;
+            padding: 20px;
+            margin: 0;
+            img{
+                margin-left: 0;
+                box-shadow: 0 0 30px 0 rgba(0,0,0,.08);
+                width: 78%;
+            }
+        }
+    }
+    &:hover{
+        z-index: 2 !important;
+        top: -20px;
+        .gallery-item{
+
+            a{
+                img{
+                    @media #{$md-layout} {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    &:nth-child(4){
+        z-index: 0;
+        .gallery-item{
+            a{
+                img{
+                    margin-left: 35%;
+                    margin-top: -50%;
+                    @media #{$md-layout} {
+                        margin-left: 0;
+                        margin-top: 0;
+                    }
+                    @media #{$sm-layout} {
+                        margin-left: 0;
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+    }
+    &:nth-child(5){
+        .gallery-item{
+            a{
+                img{
+                    margin-left: 35%;
+                    margin-top: -50%;
+                    @media #{$md-layout} {
+                        margin-left: 0;
+                        margin-top: 0;
+                    }
+                    @media #{$sm-layout} {
+                        margin-left: 0;
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+    }
+    &:nth-child(6) {
+        .gallery-item {
+            a {
+                img {
+                    margin-left: 35%;
+                    margin-top: -50%;
+                    
+                    @media #{$md-layout} {
+                        margin-left: 0;
+                        margin-top: 0;
+                    }
+
+                    @media #{$sm-layout} {
+                        margin-left: 0;
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+    }
+
+
+}
+
+
+/*========================
+Testimonial Area 
+========================*/
+.appclient-gradient{
+    background-color: transparent;
+    background-image: linear-gradient(180deg,#f3eaff 0%,#ffe9fe 100%);
+    transition: background .3s,border .3s,border-radius .3s,box-shadow .3s;
+}
+
+
+/*=====================
+Support All Device 
+=========================*/
+
+.support-all-device-mobile{
+    background-color: transparent;
+    background-image: linear-gradient(180deg,#e55dff 0%,#ff734b 100%);
+    transition: background .3s,border .3s,border-radius .3s,box-shadow .3s;
+    position: relative;
+    padding: 280px 0;
+
+    @media #{$lg-layout} {
+        padding-top: 80px;
+        padding-bottom: 60px;
+    }
+
+    @media #{$md-layout} {
+        padding-top: 100px;
+        padding-bottom: 60px;
+    }
+
+    @media #{$sm-layout} {
+        padding-top: 100px;
+        padding-bottom: 60px;
+    }
+    
+    .app-image{
+        position: absolute;
+        top: 0;
+        right: 0;
+        overflow: hidden;
+        pointer-events: none;
+        perspective: 1200px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        &.image-1 {
+            right: 17%;
+        }
+        &.image-3 {
+            right: 19%;
+            top: 58%;
+        }
+    }
+
+    .content{
+        padding-right: 29%;
+        @media #{$lg-layout} {
+            padding-right: 30px;
+        }
+        @media #{$md-layout} {
+            padding-right: 30px;
+        }
+        @media #{$sm-layout} {
+            padding-right: 30px;
+        }
+        .title{
+            font-weight: 400;
+            line-height: 1.4074;
+        }
+        p{
+            margin: 20px 0 55px;
+            color: #fff;
+            font-size: 18px;
+            line-height: 2em;
+        }
+        .applist{
+            @extend %liststyle;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            margin: 0 -5px;
+            li{
+                margin: 0 5px;
+                a{
+
+                }
+            }
+        }
+    }
+
+
+}
+.app-about-area {
+    & .about-content {
+        @media #{$lg-layout}{
+            .pra3 {
+                font-size: 15px;
+            }
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

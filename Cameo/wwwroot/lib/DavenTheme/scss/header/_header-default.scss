@@ -1,0 +1,171 @@
+/*========================
+    Header Default 
+==========================*/
+.draven-haeder {
+    @extend %posrelative;
+    z-index: 8;
+    &.header--transparent{
+        @extend %posabsolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: auto;
+    }
+    .header-height--160{
+        height: 160px;
+        @media #{$lg-layout}{
+            height: 120px;
+        }
+        @media #{$md-layout}{
+            height: 120px;
+        }
+        @media #{$sm-layout}{
+            height: 120px;
+        }
+    }
+
+    .header-wrap{
+        @include flexbox;
+        @include flex-wrap(wrap);
+        @include align-items(center);
+        width: 100%;
+
+        @media #{$lg-layout} {
+            justify-content: space-between;
+        }
+
+        @media #{$md-layout} {
+            justify-content: space-between;
+        }
+
+        @media #{$sm-layout} {
+            justify-content: space-between;
+        }
+
+        &.paddingLeftRight--80{
+            padding-left: 80px;
+            padding-right: 80px;
+            
+            @media #{$sm-layout} {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            @media #{$laptop-device} {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+
+        .header-col{
+            @include align-items(center);
+            .logo{
+                img{
+                    width: 80px;
+                    display: inline-block;
+                }
+            }
+            &__left{
+                @include flex(0 0 25%);
+            }
+            &__full-__left {
+                @include flexbox;
+                @include flex(0 0 75%);
+                @include justify-content(flex-end);
+            }
+            &__center{
+                @include flex(0 0 50%);
+            }
+
+            &__right{
+                @include flexbox;
+                @include flex(0 0 25%);
+                @include justify-content(flex-end);
+            }
+            &__full-right {
+                @include flexbox;
+                @include flex(0 0 75%);
+                @include justify-content(flex-end);
+            }
+        }
+    }
+}
+
+.header-icon{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    position: relative;
+    a{
+        display: inline-block;
+        line-height: 30px;
+        transition: all .2s ease;
+        vertical-align: middle;
+        &.popup-round{
+            background-color: #fff;
+            color: #111;
+            height: 80px;
+            line-height: 80px;
+            width: 80px;
+            text-align: center;
+            border-radius: 100%;
+            @extend %transition;
+            &:hover{
+                background-color: $theme-color;
+                color: #fff;
+            }
+            i{
+                font-size: 28px;
+            }
+        }
+
+        i{
+            display: inline-block;
+            font-size: 22px;
+            vertical-align: middle;
+        }
+    }
+    &.cart{
+        width: 50px;
+        margin-right: 15px;
+        margin-left: 10px;
+        justify-content: center;
+        a{
+            display: block;
+            
+            span{
+                &.cart-count{
+                    position: absolute;
+                    top: 0;
+                    font-size: 10px;
+                    width: 16px;
+                    height: 16px;
+                    display: inline-block;
+                    line-height: 16px;
+                    color: #fff;
+                    text-align: center;
+                    right: 0;
+                    border-radius: 10px;
+                    background-color: $theme-color;
+                }
+            }
+        }
+    }
+
+    .hamburger-trigger{
+        &.open{
+            i{
+                &::before{
+                    content: '\ed2b';
+                }
+            }
+        }
+    }
+}

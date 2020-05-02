@@ -1,0 +1,106 @@
+/*===================
+    Home Shop 
+====================*/
+
+
+
+
+/*======================
+    About Area 
+======================*/
+
+
+.shop-about{
+    .title{
+        font-size: 60px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 10px;
+        margin: 0;
+        
+    }
+    p{
+        color: #989898;
+        font-size: 24px;
+        line-height: 2em;
+        @media #{$sm-layout} {
+            font-size: 16px;
+            line-height: 28px;
+        }
+    }
+    .about-btn{
+        margin-top: 50px;
+        .button-link{
+            padding: 35px 135px;
+            line-height: 30px;
+            border-style: solid;
+            border-width: 2px;
+            border-color: #979797;
+
+            @media #{$sm-layout} {
+                padding: 21px 53px;
+            }
+
+            .button-text{
+                font-size: 24px;
+                font-weight: 700;
+            }
+        }
+    }
+    @media #{$laptop-device} {
+        .title{
+            font-size: 40px;
+        }
+        p {
+            font-size: 18px;
+        }
+        .about-btn{
+            margin-top: 30px;
+            .button-link{
+                padding: 20px 80px;
+            }
+        }
+    }
+    @media #{$lg-layout} {
+        .title{
+            font-size: 40px;
+        }
+        p {
+            font-size: 18px;
+        }
+        .about-btn{
+            margin-top: 30px;
+            .button-link{
+                padding: 20px 80px;
+            }
+        }
+    }
+
+    @media #{$md-layout} {
+        .title{
+            font-size: 40px;
+        }
+        p {
+            font-size: 18px;
+        }
+        .about-btn{
+            margin-top: 20px;
+            .button-link{
+                padding: 20px 80px;
+            }
+        }
+    }
+    @media #{$sm-layout} {
+        .title{
+            font-size: 36px;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+        }
+    }
+    @media #{$large-mobile} {
+
+    }
+
+    
+}
+

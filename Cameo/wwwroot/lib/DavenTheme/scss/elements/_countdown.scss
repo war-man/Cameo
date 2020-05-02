@@ -1,0 +1,131 @@
+/*==========================
+    Countdown Css 
+===========================*/
+.countdown-style-1 {
+    .timer-grid {
+        >div {
+            display: flex;
+            margin: 0 -15px;
+
+            @media #{$large-mobile} {
+                flex-wrap: wrap;
+            }
+            span {
+                &.ht-count {
+                    margin: 0 19px;
+                    text-align: center;
+                    @media #{$large-mobile} {
+                        margin-bottom: 30px;
+                    }
+                }
+            }
+            span {
+                &.time-count {
+                    display: inline-block;
+                    padding: 31px 10px;
+                    width: 70px;
+                    text-align: center;
+                    margin-bottom: 18px;
+                    font-weight: 600;
+                    font-size: 49px;
+                    line-height: 1.2em;
+                }
+            }
+            span {
+                &.count-inner {
+                    p {
+                        font-size: 18px;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+    }
+
+    &.bg-solid-theme {
+        .timer-grid {
+            >div {
+                span {
+                    &.time-count {
+                        background: $theme-color;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+    }
+
+    &.font-lg-size {
+        .timer-grid {
+            >div {
+                .second {
+                    span {
+                        &.time-count {
+                            
+                        }
+                    }
+                }
+
+                span {
+                    &.time-count {
+                        color: #ffffff;
+                        font-size: 49px;
+                        padding: 0px 4px;
+                        width: auto;
+                        display: block;
+                        line-height: 1.2em;
+                        font-weight: 400;
+                        margin-bottom: 10px;
+
+                        @media #{$sm-layout} {
+                            font-size: 40px;
+                            margin-bottom: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+.comming-soon-newsletter{
+    position: relative;
+    input{
+        padding: 14px;
+        border-radius: 0;
+        border: 1px solid #e0e0e8;
+        background-color: #f7fafd;
+        height: 55px;
+        padding-right: 155px;
+    }
+    button{
+        background-color: #2f2f2f;
+        padding: 0 30px;
+        margin: 0;
+        border-radius: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        border: 0 none;
+        font-size: 16px;
+        color: #fff;
+        font-weight: 600;
+
+        @media #{$sm-layout} {
+            position: inherit;
+            height: 40px;
+            margin-top: 20px;
+        }
+
+    }
+}
+.comming-soon-area,
+.error-area{
+    &.fullscreen {
+        @media #{$sm-layout} {
+            min-height: auto;
+            padding: 150px 0;
+        }
+    }
+}

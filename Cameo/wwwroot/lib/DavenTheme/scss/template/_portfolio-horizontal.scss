@@ -1,0 +1,151 @@
+/*========================
+    Portfolio Horizontal 
+=========================*/
+
+.portfolio-horizoltal-container .slick-list {
+    padding-right:38%;
+}
+
+.portfolio-horozontal {
+    position: relative;
+    padding-bottom: 60px;
+    .content {
+        background: rgba(21,21,21,.9);
+        width: 570px;
+        max-width: 90%;
+        padding: 50px;
+        color: #fff;
+        opacity: 0;
+        transition: all .3s;
+        position: absolute;
+        bottom: 0;
+        text-align: left;
+        .title {
+            opacity: 0;
+            transition: all .4s ease-in-out .1s;
+            transform: translateY(20px);
+            -webkit-transform: translateY(20px);
+            @media #{$large-mobile} {
+                font-size: 22px !important;
+            }
+        }
+        p{
+            opacity: 0;
+            transform: translateY(20px);
+            -webkit-transform: translateY(20px);
+            transition: all .4s ease-in-out .3s;
+        }
+    }
+}
+
+
+
+.slick-slide{
+    &.slick-active{
+        .portfolio-horozontal{
+            .content{
+                opacity: 1;
+                transform: none;
+                -webkit-transform: none;
+                .title{
+                    opacity: 1;
+                    transform: none;
+                    -webkit-transform: none;
+                }
+                p{
+                    opacity: 1;
+                    transform: none;
+                    -webkit-transform: none;
+                }
+            }
+        }
+    }
+}
+
+
+/* Portfolio Slick Dots */
+.portfolio-horizoltal-container{
+    padding-left: 330px;
+    @media #{$lg-layout} {
+        padding-left: 160px;
+    }
+    @media #{$md-layout} {
+        padding-left: 160px;
+    }
+    @media #{$sm-layout} {
+        padding-left: 160px;
+    }
+    @media #{$large-mobile} {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
+.portfolio-slick {
+    .slick-dots{
+        position: absolute;
+        bottom: auto;
+        display: block;
+        width: 100%;
+        list-style: none;
+        text-align: left;
+        top: 30%;
+        z-index: 2;
+        left: -126px;
+
+        @media #{$large-mobile} {
+            display: none !important;
+        }
+
+        li{
+            background: transparent;
+            display: block;
+            margin: 10px 0 !important;
+            width: auto;
+            height: auto;
+            bottom: auto;
+            padding: 0;
+            &.slick-active{
+                background: transparent !important;
+                button{
+                    color: #000000;
+                    &::after{
+                        width: 50px;
+                    }
+                }
+            }
+            button{
+                font-size: 21px;
+                color: #777;
+                width: auto;
+                height: auto;
+                position: relative;
+                display: block;
+                padding: 10px 17px 20px;
+                font-weight: 700;
+                &::after{
+                    content: '';
+                    display: block;
+                    width: 0;
+                    height: 2px;
+                    background: #f53e6a;
+                    transition: all .2s ease-out;
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                }
+            }
+        }
+    }
+}
+
+@media #{$md-layout}{
+    .portfolio-horizoltal-container .slick-list {
+        padding-right: 0;
+    }
+}
+
+@media #{$sm-layout}{
+    .portfolio-horizoltal-container .slick-list {
+        padding-right: 0;
+    }
+}

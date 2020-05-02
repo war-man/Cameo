@@ -94,26 +94,43 @@ namespace Cameo.Services
                 model.AccountNumber = model.ID.ToString().PadLeft(8, '0');
         }
 
-        public IEnumerable<Talent> Search(int categoryID, SortTypeEnum sort)
+        public IQueryable<Talent> GetFeatured(int? categoryID, int count)
         {
-            IQueryable<Talent> result = GetWithRelatedDataForSearchAsIQueryable();
+            IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
+
+            talents = talents.Where(m => m.IsFeatured);
+
+            if (categoryID.HasValue && categoryID > 0)
+            {
+                talents = talents.Where(m =>
+                    m.TalentCategories
+                        .Select(c => c.CategoryId)
+                        .Contains(categoryID.Value));
+            }
+
+            return talents.Take(count);
+        }
+
+        public IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null)
+        {
+            IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
 
             if (categoryID > 0)
             {
-                result = result.Where(m =>
+                talents = talents.Where(m =>
                     m.TalentCategories.Select(c => c.CategoryId).Contains(categoryID));
             }
 
             switch (sort)
             {
                 case SortTypeEnum.priceAsc:
-                    result = result.OrderBy(m => m.Price);
+                    talents = talents.OrderBy(m => m.Price);
                     break;
                 case SortTypeEnum.priceDesc:
-                    result = result.OrderByDescending(m => m.Price);
+                    talents = talents.OrderByDescending(m => m.Price);
                     break;
                 case SortTypeEnum.az:
-                    result = result.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
+                    talents = talents.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
                     break;
                 //this case will be uncommented 
                 //when responseTime field will be filled after giving response to request
@@ -121,17 +138,20 @@ namespace Cameo.Services
                 //    result = result.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
                 //    break;
                 default: //def
-                    result = result.OrderBy(m => m.ID);
+                    talents = talents.OrderBy(m => m.ID);
                     break;
             }
 
-            return result;
+            if (count.HasValue && count > 0)
+                talents = talents.Take(count.Value);
+
+            return talents;
         }
 
-        public IEnumerable<Talent> SearchBySearchText(string searchText)
+        public IQueryable<Talent> SearchBySearchText(string searchText)
         {
             if (string.IsNullOrWhiteSpace(searchText))
-                return Enumerable.Empty<Talent>();
+                return Enumerable.Empty<Talent>().AsQueryable();
 
             searchText = searchText.ToLower();
 
@@ -167,7 +187,7 @@ namespace Cameo.Services
 #endif
         }
 
-        public IEnumerable<Talent> GetRelated(Talent model)
+        public IQueryable<Talent> GetRelated(Talent model)
         {
             List<int> categories = model.TalentCategories
                 .Select(m => m.CategoryId)

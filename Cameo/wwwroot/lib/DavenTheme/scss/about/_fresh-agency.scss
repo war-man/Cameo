@@ -1,0 +1,44 @@
+
+/*==================
+    Fresh Agency 
+=====================*/
+
+.fresh-thumbnail{
+    position: relative;
+    .thumb{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+.contruction-thumbnail {
+    position: relative;
+    z-index: 2;
+    .thumb{
+        img{
+            box-shadow: 0px 0px 55px 0px rgba(0,0,0,.21);
+        }
+    }
+    .thumb2{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: -1;
+    }
+}
+
+.construction-about{
+    background-image: url(../img/about/construction-mokup-02.png);
+    background-position: 94% 30%;
+    background-repeat: no-repeat;
+    background-size: 80px auto;
+    transition: background .3s,border .3s,border-radius .3s,box-shadow .3s;
+    padding: 140px 0 160px;
+
+    @media #{$md-layout} {
+        padding: 80px 0 80px;
+    }
+    @media #{$sm-layout} {
+        padding: 80px 0 80px;
+    }
+}

@@ -1,0 +1,295 @@
+/***************************************************
+	Version: 1.0
+*****************************************************/
+
+/****************************************************
+	
+	STYLESHEET INDEXING
+	|
+	|
+	|___ Default Styles
+	|	|
+	|	|___ Reset Styles
+	|	|___ Typography
+	|	|___ Animations
+	|	|___ Utilities
+	|
+	|
+	|___ Elements Styles
+	|	|___ Button
+	|	|___ Section Title
+	|	|___ Support List 
+	|	|___ Search Overlay 
+	|	|___ Search Oprtion
+	|	|___ Humburger Area 
+	|	|___ Separator
+	|	|___ List Style
+	|	|___ Pricing Table
+	|	|___ Contact Form 
+	|	|___ Social Share
+	|	|___ Icon Style
+	|	|___ Counter 
+	|	|___ Slick Dots
+	|	|___ Team Area
+	|	|___ Accordion Area
+	|	|___ Progress Bar
+	|	|___ Video Area
+	|	|___ Service Clssic 
+	|	|___ Timeline Css
+	|	|___ Countdown Css
+	|	|___ Brand Area
+	|	|___ Faqs Area
+	|	|___ Tab Area
+	|
+	|
+	|___ Header
+	|	|___ Header Default  
+	|	|___ Navigation Css
+	|	|___ Popup Area
+	|	|___ Sidebar Header
+	|	|___ Megamenu Area 
+	|
+	|___ Blog Styles
+	|	|___ Blog Element Area  
+	|	|___ Sidebar 
+	|	|___ Blog Details
+    |  
+    |     
+	|___ About Styles
+	|	|___ About Area   
+	|	|___ Fresh Agency
+    |  
+    |     
+	|___ Service Styles
+	|	|___ Service Area  
+	|  
+    |    
+	|___ Portfolio Styles
+	|	|___ Portfolio Grid 
+	|	|___ Portfolio With Caption 
+	|	|___ Portfolio Metro 
+	|	|___ Portfolio Column One 
+	|	|___ Portfolio Hover Style
+	|	|___ Case Sudies
+	|	|___ Portfolio Details
+	|
+    |    
+	|___ Shop Styles
+	|	|___ Compare Area 
+	|	|___ Wishlist Area
+	|	|___ Product Area
+	|	|___ Quickview Style
+	|	|___ Shop List
+	|	|___ Shop Grid Area
+	|	|___ Shop SIdebar
+	|	|___ Cart pages
+	|	|___ Checkout
+	|	|___ My account
+	|
+    |    
+	|___ Page Styles
+	|	|___ Career Area 
+	|
+    |    
+	|___ Footer Styles
+	|	|___ Footer Default 
+	|	|___ Footer Style Two
+	|
+    |    
+	|___ Flyover Styles
+	|	|___ Shopping Cart 
+    |
+    |___ Color Variation
+	|	|___ Variation Color Style 
+	|	|___ Variation Font Style 
+    |
+    |
+    |___Template Styles
+	|	|___ Breadcaump Area
+	|	|___ 404 Area
+	|	|___ Slider Area
+	|	|___ Feature Area 
+	|	|___ Business Creative
+	|	|___ Portfolio Showcase
+	|	|___ Spa About Area
+	|	|___ Vcard Area 
+	|	|___ Studio Area 
+	|	|___ Studio Two 
+	|	|___ Freelancer
+	|	|___ Corporate Area
+	|	|___ Home Shop
+	|	|___ Portfolio Horizontal
+	|	|___ Splite Slider
+	|	|___ Prview Demos Area
+    |
+	|
+	|___ END STYLESHEET INDEXING
+
+***************************************************************/
+
+
+/**************************************
+    Default Styles
+***************************************/
+@import 'default/variables';
+@import 'default/mixins';
+@import 'default/reset';
+@import 'default/typography';
+@import 'default/animations';
+@import 'default/shortcode';
+@import 'default/common-ext';
+@import 'default/spacing';
+
+/**************************************
+	Elements Styles
+***************************************/
+@import 'elements/button';
+@import 'elements/section-title';
+@import 'elements/support-list';
+@import 'elements/more-demo';
+@import 'elements/cart-flyover';
+@import 'elements/search-fly-overlay';
+@import 'elements/hamburger';
+@import 'elements/separator';
+@import 'elements/list-style';
+@import 'elements/loading';
+@import 'elements/pricing-table';
+@import 'elements/contact';
+@import 'elements/social';
+@import 'elements/iconbox';
+@import 'elements/counter';
+@import 'elements/slick-dots';
+@import 'elements/slick-arrow';
+@import 'elements/team';
+@import 'elements/typed-heading';
+@import 'elements/toggle';
+@import 'elements/progress-bar';
+@import 'elements/video';
+@import 'elements/service-classic';
+@import 'elements/divider';
+@import 'elements/timeline';
+@import 'elements/countdown';
+@import 'elements/brand';
+@import 'elements/faqs';
+@import 'elements/tracking';
+@import 'elements/tab';
+
+
+/**************************************
+	Header Styles
+***************************************/
+@import 'header/header-default';
+@import 'header/navigation';
+@import 'header/popup';
+@import 'header/header-sidebar';
+@import 'header/header-color';
+@import 'header/megamenu';
+
+
+/**************************************
+	Testimonial Styles
+***************************************/
+@import 'testimonial/testimonial';
+
+
+/**************************************
+	Blog Styles
+***************************************/
+@import 'blog/blog-element';
+@import 'blog/sidebar';
+@import 'blog/blog-details';
+
+
+/**************************************
+	About Styles
+***************************************/
+@import 'about/about';
+@import 'about/fresh-agency';
+
+
+/**************************************
+	Service Styles
+***************************************/
+@import 'service/service';
+
+
+/**************************************
+	Portfolio Styles
+***************************************/
+@import 'portfolio/portfolio-grid';
+@import 'portfolio/with-caption';
+@import 'portfolio/portfolio-metro';
+@import 'portfolio/column-01';
+@import 'portfolio/hover';
+@import 'portfolio/home-masonry';
+@import 'portfolio/project';
+@import 'portfolio/case-studies';
+@import 'portfolio/portfolio-details';
+
+
+/**************************************
+	Shop Pages
+***************************************/
+@import 'shop/compare';
+@import 'shop/wishlist';
+@import 'shop/product';
+@import 'shop/quickview';
+@import 'shop/shop-list';
+@import 'shop/shopgrid';
+@import 'shop/sidebar';
+@import 'shop/cart';
+@import 'shop/checkout';
+@import 'shop/my-account';
+
+
+/**************************************
+	Pages Styles
+***************************************/
+@import 'pages/career';
+
+
+/**************************************
+	Footer Styles
+***************************************/
+@import 'footer/footer-default';
+@import 'footer/footer2';
+
+
+/**************************************
+	Flyover Page
+***************************************/
+@import 'flyover/shopping-cart';
+
+
+/**************************************
+	Variation Page
+***************************************/
+@import 'variation-page/color';
+@import 'variation-page/font';
+
+
+/**************************************
+	Template Styles
+***************************************/
+@import 'template/breadcaump';
+@import 'template/banner';
+@import 'template/page-typo';
+@import 'template/404';
+@import 'template/slider';
+@import 'template/feature';
+@import 'template/business';
+@import 'template/portfolio-showcase';
+@import 'template/spa';
+@import 'template/photography';
+@import 'template/app';
+@import 'template/vcard';
+@import 'template/studio1';
+@import 'template/studio2';
+@import 'template/freelancer';
+@import 'template/corporate';
+@import 'template/homeshop';
+@import 'template/portfolio-horizontal';
+@import 'template/spliteslider';
+@import 'template/preivew-demo';
+
+

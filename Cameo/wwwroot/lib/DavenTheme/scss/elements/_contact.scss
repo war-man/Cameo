@@ -1,0 +1,417 @@
+/* ====================
+    Contact Form 
+======================*/
+
+// Address Style 1
+.adress__style--1{
+    padding: 31% 12%;
+
+    @media #{$md-layout} {
+        padding: 8% 4%;
+    }
+
+    @media #{$sm-layout} {
+        padding: 8% 4%;
+    }
+
+    .contact-address{
+        @extend %liststyle;
+        li{
+            @extend %flexbox;
+            @extend %align-center;
+    
+            span {
+                &.address-icon{
+                    color: #f53e6a;
+                    font-size: 30px;
+                }
+    
+                &.address-text{
+                    padding-left: 15px;
+                    font-size: 16px;
+                }
+            }
+    
+            &:not(:first-child){
+                margin-top: calc(30px/2);
+            }
+    
+            &:not(:last-child){
+                padding-bottom: calc(30px/2);
+            }
+    
+        }
+    }
+}
+.ht-gmap2 {
+    height: 900px;
+    width: 100%;
+    
+    @media #{$md-layout} {
+        height: 500px;
+    }
+
+    @media #{$sm-layout} {
+        height: 400px;
+    }
+}
+
+.ht-gmap3 {
+    height: 410px;
+    width: 100%;
+}
+
+.ht-gmap4 {
+    height: 330px;
+    width: 100%;
+}
+
+
+.draven-contact-form{
+    .bg-image-1{
+        background-image: url(../img/icons/m10-leaf2.png);
+        background-position: bottom center;
+        background-repeat: no-repeat;
+        transition: background .3s,border .3s,border-radius .3s,box-shadow .3s;
+        
+        @media #{$md-layout} {
+            background-image: inherit;
+        }
+
+        @media #{$sm-layout} {
+            background-image: inherit;
+        }
+    }
+}
+
+.contact-custom-content{
+    @extend %verticalCenter;
+
+    @media #{$md-layout} {
+        position: inherit;
+        top: auto;
+        transform: inherit;
+        padding-top: 50px;
+    }
+
+    @media #{$sm-layout} {
+        position: inherit;
+        top: auto;
+        transform: inherit;
+        padding-top: 50px;
+    }
+
+    h1{
+        @extend %textUpper;
+        @extend %fontWeight600;
+        font-size: 74px;
+        line-height: 1.35em;
+        letter-spacing: 2px;
+
+        @media #{$lg-layout} {
+            font-size: 56px;
+        }
+
+        @media #{$md-layout} {
+            font-size: 50px;
+        }
+
+        @media #{$sm-layout} {
+            font-size: 30px;
+        }
+
+    }
+}
+
+.bg-gradient {
+    @extend %posrelative;
+    &--1 {
+        @extend %positionFull;
+        background-color: transparent;
+        background-image: linear-gradient(134deg, #3023ae 46%, #c86dd7 100%);
+        opacity: .85;
+        transition: background .3s, border-radius .3s, opacity .3s;
+    }
+}
+
+
+// Contact Form Style One
+.contact__form--1 {
+    input {
+        font-size: 18px;
+        padding: 25px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #d4d4d4;
+        width: 100%;
+        line-height: inherit;
+        height: auto;
+        @extend %block;
+
+        &[type=submit] {
+            background-color: #2f2f2f;
+            text-decoration: none;
+            padding: 30px;
+            border-radius: 0;
+            @extend %block;
+            width: 100%;
+            font-size: 14px;
+            @extend %fontWeight700;
+            @extend %textUpper;
+            line-height: 20px;
+            color: #fff;
+            @extend %transition;
+
+            &:hover {
+                @extend %bgthemecolor;
+            }
+        }
+    }
+
+    textarea {
+        @extend input;
+        height: 200px;
+        min-height: 200px;
+    }
+}
+
+// Contact Form Style Two
+.contact__form--2 {
+    input {
+        background-color: rgba(255, 255, 255, 0);
+        padding: 15px 0;
+        margin: 0 0 20px;
+        border-style: solid;
+        border-width: 0 0 1px;
+        border-color: rgba(255, 255, 255, .36);
+        height: auto;
+        @extend %textwhite;
+        @include placeholder {
+            color: #ffffff;
+        }
+        &[type=submit] {
+            @extend %fontWeight700;
+            @extend %textUpper;
+            @extend %textwhite;
+            @extend %transition;
+            @extend %fontWeight700;
+            padding: 25px 50px;
+            border-radius: 0;
+            border-style: solid;
+            border-width: 1px;
+            border-color: rgba(255, 255, 255, .43);
+            width: auto;
+            &:hover {
+                @extend %bgwhitecolor;
+                @extend %textBlack;
+            }
+        }
+    }
+
+    textarea {
+        @extend input;
+        height: 150px;
+        min-height: 150px;
+    }
+}
+
+// Contact Form Style Three
+
+.contact__form--3 {
+    padding: 50px 30px 30px;
+    background-color: #fff;
+    @media #{$md-layout} {
+        padding: 30px 12px 30px;
+    }
+    @media #{$sm-layout} {
+        padding: 0px 12px 30px;
+    }
+    input {
+        font-size: 18px;
+        padding: 0 0 15px;
+        margin: 50px 0 10px;
+        border-style: solid;
+        border-width: 0 0 2px;
+        border-color: #2f2f2f;
+        height: auto;
+        
+        &[type=submit] {
+            font-size: 14px;
+            @extend %fontWeight700;
+            @extend %textUpper;
+            line-height: 20px;
+            padding: 30px;
+            border-radius: 0;
+            @extend %block;
+            width: 100%;
+            margin: 25px 0 0;
+            background-color: #2f2f2f;
+            text-decoration: none;
+            @extend %textwhite;
+            border-color: transparent;
+            &:hover {
+                @extend %bgthemecolor;
+                @extend %textwhite;
+            }
+        }
+    }
+
+    select{
+        @extend input;
+    }
+    textarea {
+        @extend input;
+        height: 150px;
+        min-height: 150px;
+    }
+}
+
+
+// Contact Form Style 4
+.contact__form--4 {
+    padding: 50px 30px 30px;
+    background-color: #fff;
+    input {
+        padding: 17px 20px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #d4d4d4;
+        height: auto;
+        
+        &[type=submit] {
+            padding: 23px;
+            border-radius: 0;
+            display: block;
+            width: 100%;
+            margin: 30px 0 0;
+            @extend %fontWeight700;
+            @extend %bgBlack;
+            @extend %textwhite;
+            &:hover {
+                @extend %bgColor-2;
+                @extend %textwhite;
+            }
+        }
+    }
+
+    textarea {
+        @extend input;
+        height: 170px;
+        min-height: 170px;
+    }
+
+    &.form-variation{
+        padding: 0;
+        background-color: rgba(255,255,255,.34);
+        padding-bottom: 0;
+        .spaceround{
+            padding: 50px 30px;
+            padding-bottom: 0;
+        }
+        input{
+            background: #ffffff;
+            font-family: $font-2;
+            padding: 18px 20px;
+            &[type=submit]{
+                background: $theme-color;
+                color: #ffffff;
+                border: 1px solid $theme-color;
+                font-family: $font-1;
+                padding: 23px;
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 1px;
+            }
+        }
+        .textarea{
+            font-family: $font-2;
+            background: #ffffff;
+        }
+    }
+}
+
+// Contact Form Style 5
+.contact__form--5{
+    @extend .contact__form--3;
+    background-color: transparent;
+
+    @media #{$md-layout} {
+        padding: 12px 30px 50px;
+    }
+
+    @media #{$sm-layout} {
+        padding: 12px 30px 50px;
+    }
+
+    input{
+        color: #fff;
+        &[type="submit"]{
+            background: $theme-color;
+            &:hover{
+                background: $heading-color;
+            }
+        }
+        @include placeholder {
+            color: #ffffff;
+        }
+    }
+}
+// Contact Form Style 6
+.contact__form--6{
+    @extend .contact__form--3;
+    background-color: transparent;
+}
+
+// Contact Form Style 7
+.contact__form--7{
+    input {
+        font-size: 18px;
+        padding: 20px;
+        margin: 0 0 20px;
+        border-style: solid;
+        border-width: 0;
+        height: auto;
+        @extend %block;
+        @extend %bodyColor;
+        @extend %bgwhitecolor;
+        @include placeholder{
+            color: #535353;
+        }
+        &[type=submit] {
+            background-color: #181818;
+            text-decoration: none;
+            padding: 30px;
+            border-radius: 0;
+            @extend %block;
+            width: 100%;
+            font-size: 24px;
+            @extend %fontWeight700;
+            line-height: 20px;
+            color: #fff;
+            @extend %transition;
+            margin: 0;
+            &:hover {
+                @extend %bgwhitecolor;
+                @extend %textBlack;
+            }
+        }
+    }
+
+    textarea {
+        @extend input;
+        height: 200px;
+        min-height: 200px;
+    }
+}
+.fresh-agency-contact .contact__form--6 input[type=submit] {
+    background-color: #ffd600;
+    color: #2f2f2f;
+    @extend %transition;
+}
+.fresh-agency-contact .contact__form--6 input[type=submit]:hover {
+    background-color: #222222;
+    color: #ffffff;
+}
+.contact-custom-content--2 {
+    
+}

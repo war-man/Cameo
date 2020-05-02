@@ -1,0 +1,172 @@
+/*========================
+    Studio Area 
+==========================*/
+
+
+/*--
+SLider Area 
+-----------------------*/
+
+.studio-slider-area{
+    &.fullscreen{
+        @media #{$sm-layout} {
+            min-height: auto;
+            padding: 150px 30px;
+        }
+    }
+}
+.studio-slide{
+    .inner{
+        h1{
+            font-size: 120px;
+            font-weight: 600;
+            line-height: 1.1em;
+            @media #{$laptop-device} {
+                font-size: 90px;
+            }
+            @media #{$lg-layout} {
+                font-size: 68px;
+            }
+            @media #{$md-layout} {
+                font-size: 70px;
+            }
+            @media #{$sm-layout} {
+                font-size: 50px;
+            }
+            @media #{$large-mobile} {
+                font-size: 40px;
+            }
+        }
+        .slide-btn{
+            a{
+                font-size: 24px;
+                font-weight: 600;
+                line-height: 1.3em;
+                color: $theme-color;
+                display: inline-block;
+                padding-left: 350px;
+                position: relative;
+                @media #{$sm-layout} {
+                    padding-left: 108px;
+                }
+                &::before{
+                    position: absolute;
+                    content: "";
+                    left: 0;
+                    top: 50%;
+                    width: 300px;
+                    height: 2px;
+                    background: $theme-color;
+                    @media #{$sm-layout} {
+                        width: 100px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*======================
+    Service Area 
+=========================*/
+
+.studio-service {
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    .thumb{
+        img{
+            width: 95%;
+            transition: all .3s;
+        }
+    }
+    .hover-action {
+        position: absolute;
+        text-align: center;
+        font-style: normal;
+        width: 100%;
+        top: 50%;
+        margin-top: -16px;
+        opacity: 0;
+        transition: all .3s;
+        .inner{
+            h3{
+                font-size: 20px;
+                font-weight: 400;
+            }
+        }
+    }
+    &:hover{
+        .hover-action{
+            opacity: 1;
+        }
+        .thumb{
+            img{
+                filter: brightness(50%);
+            }
+        }
+    }
+
+}
+
+
+
+.view-studio-btn {
+    a{
+        font-weight: 400;
+        line-height: 1;
+        font-size: 24px;
+        color: #ffffff;
+    }
+}
+
+
+/*======================
+    Feature Area 
+=========================*/
+.studio-feature {
+    .icon {
+        margin-bottom: 35px;
+        i {
+            width: 1em;
+            height: 1em;
+            position: relative;
+            color: #11ccd3;
+            color: #11ccd3;
+            border-color: #11ccd3;
+            display: inline-block;
+            line-height: 1;
+            font-size: 100px;
+        }
+    }
+    .content{
+        h3{
+            @media #{$laptop-device} {
+                font-size: 25px !important;
+            }
+            @media #{$lg-layout} {
+                font-size: 25px !important;
+            }
+        }
+        p{
+            color: rgba(255,255,255,.6);
+            font-size: 24px;
+            line-height: 1.8em;
+            
+            @media #{$laptop-device} {
+                font-size: 20px;
+            }
+            @media #{$lg-layout} {
+                font-size: 16px;
+            }
+
+            @media #{$md-layout} {
+                font-size: 16px;
+            }
+
+            @media #{$sm-layout} {
+                font-size: 16px;
+            }
+        }
+    }
+}

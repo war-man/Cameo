@@ -1,0 +1,36 @@
+/*==========================
+    Support List 
+==============================*/
+
+.support-list{
+    position: fixed;
+    top: 70%;
+    right: 50px;
+    list-style: none;
+    width: 60px;
+    background: #fff;
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.16);
+    border-radius: 30px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    z-index: 9;
+    li{
+        display: block;
+        a{
+            font-size: 20px;
+            height: 40px;
+            line-height: 40px;
+            @extend %transition;
+            @extend %bodyColor;
+            &:hover{
+                @extend %themecolor;
+            }
+        }
+    }
+    @media #{$sm-layout}{
+        display: none;
+    }
+}

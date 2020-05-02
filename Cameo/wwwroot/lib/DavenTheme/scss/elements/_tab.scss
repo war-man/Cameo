@@ -1,0 +1,193 @@
+
+/*======================
+    Tab Area 
+========================*/
+
+.tab-default{
+
+}
+
+.tab_style--1{
+    display: flex;
+    background-color: #fff;
+    border-color: #e8e8f6;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    align-self: flex-start;
+    flex-flow: row wrap;
+    z-index: 1;
+    .nav-item{
+        .nav-link{
+            border: 0 none;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #535353;
+            &.active{
+                border-color: transparent;
+                color: $theme-color;
+            }
+            @media #{$large-mobile}{
+                padding: 10px 15px;
+            }
+        }
+    }
+}
+.tab-default-content{
+    .tab-pane{
+        padding: 20px;
+        animation-name: moveUp;
+        animation-duration: .5s;
+        animation-timing-function: cubic-bezier(.26,.69,.37,.96);
+        animation-play-state: running;
+    }
+}
+/*===================
+    Tab Style Two 
+=====================*/
+
+.tab_style--2 {
+    display: flex;
+    background-color: transparent;
+    overflow: hidden;
+    align-self: flex-start;
+    flex-flow: row wrap;
+    z-index: 1;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    border-color: rgba(47,47,47,.5);
+    border-radius: 0;
+    .nav-item{
+        .nav-link{
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #535353;
+            border-radius: 0;
+            border-style: solid;
+            border-width: 1px 1px 0;
+            border-color: rgba(47,47,47,.5);
+
+            &.active{
+                background-color: transparent;
+                color: $theme-color;
+            }
+            @media #{$large-mobile}{
+                padding: 10px 15px;
+            }
+        }
+    }
+}
+
+.tab-with-border{
+    background-color: rgba(255,255,255,0);
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgba(0,0,0,.5);
+    border-radius: 0;
+    .tab-pane{
+        padding: 20px;
+        animation-name: moveUp;
+        animation-duration: .5s;
+        animation-timing-function: cubic-bezier(.26,.69,.37,.96);
+        animation-play-state: running;
+    }
+}
+
+/*===================
+    Tab Style Three
+=====================*/
+
+.tab-vertical-wrapper {
+    .tab_style--3 {
+        border-style: solid;
+        border-width: 0;
+        border-radius: 0;
+        flex: 0 1 auto;
+        min-width: 200px;
+        order: 1;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: stretch;
+        .nav-item {
+            .nav-link {
+                padding: 10px 20px;
+                font-weight: 600;
+                font-size: 14px;
+                color: #535353;
+                border-radius: 0;
+                border-style: solid;
+                border-width: 1px 1px 0;
+                border-color: rgba(47,47,47,.5);
+    
+                &.active{
+                    background-color: transparent;
+                    color: $theme-color;
+                }
+                 @media #{$large-mobile}{
+                    padding: 10px 15px;
+                }
+            }
+        }
+    }
+}
+.tab_style--3 {
+    display: flex;
+    background-color: transparent;
+    overflow: hidden;
+    align-self: flex-start;
+    flex-flow: row wrap;
+    z-index: 1;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    border-color: rgba(47,47,47,.5);
+    border-radius: 0;
+    .nav-item{
+        .nav-link{
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #535353;
+            border-radius: 0;
+            border-style: solid;
+            border-width: 1px 1px 0;
+            border-color: rgba(47,47,47,.5);
+
+            &.active{
+                background-color: transparent;
+                color: $theme-color;
+            }
+             @media #{$large-mobile}{
+                padding: 10px 15px;
+            }
+        }
+    }
+}
+
+.tab-vertical {
+    background-color: rgba(255,255,255,0);
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgba(0,0,0,.5);
+    border-radius: 0;
+    .tab-pane{
+        padding: 20px;
+        animation-name: moveUp;
+        animation-duration: .5s;
+        animation-timing-function: cubic-bezier(.26,.69,.37,.96);
+        animation-play-state: running;
+    }
+}
+
+@keyframes moveUp {
+    0% {
+        opacity: 0;
+        transform: translateY(25px)
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}

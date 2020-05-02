@@ -1,0 +1,20 @@
+﻿@model List<Cameo.ViewModels.TalentsCategorizedVM>
+
+@{ 
+    //Dictionary<int, string> categories = ViewData["categories"] as Dictionary<int, string>;
+}
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <h2 class="plr--80">@item.Category.Name</h2>
+        <div class="tema-area pb--20 pt_md--60 pb_md--80 pt_sm--50 pb_sm--40 bg-color" data-bg-color="#ffffff">
+            <div class="talentsCategorizedContainer row plr--80 plr_lg--50 plr_md--50 plr_sm--30">
+                @foreach (var talent in item.Talents)
+                {
+                    <!-- Start Single Team -->
+                    <partial name="_SingleGridViewItem" model="talent" />
+                }
+            </div>
+        </div>
+    }
+</div>

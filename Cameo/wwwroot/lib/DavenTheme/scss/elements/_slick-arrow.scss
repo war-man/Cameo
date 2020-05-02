@@ -1,0 +1,43 @@
+/*======================
+    Slick Arrow 
+======================*/
+
+.draven-element-carousel{
+    .custom-arrow{
+        position: absolute;
+        bottom: -62px;
+        background: transparent;
+        left: 50%;
+        top: auto;
+        transform: translateX(-50%);
+        &::before{
+            display: none;
+        }
+        &-left{
+            background-color: #d8d8d8;
+            padding: 0;
+            overflow: hidden;
+            width: 150px;
+            font-size: 1px;
+            height: 16px;
+            border-radius: 9px;
+            @extend %transition;
+            &:hover{
+                background-color: $theme-color;
+            }
+        }
+        &-right{
+            background-color: #d8d8d8;
+            padding: 0;
+            overflow: hidden;
+            width: 150px;
+            font-size: 1px;
+            height: 16px;
+            border-radius: 9px;
+            left: 61%;
+            &:hover{
+                background-color: $theme-color;
+            }
+        }
+    }
+}

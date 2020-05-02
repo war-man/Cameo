@@ -1,0 +1,19 @@
+/* Divider Css */
+
+
+.divider {
+    position: relative;
+    display: block;
+    &::after{
+        background: #f53e6a;
+        left: 50%;
+        bottom: 0;
+        content: '';
+        height: 3px;
+        width: 90px;
+        display: block;
+        position: absolute;
+        border: 0 solid;
+        transform: translateX(-50%);
+    }
+}

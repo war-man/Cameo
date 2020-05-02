@@ -1,0 +1,161 @@
+/*==============================
+Business Creative 
+================================*/
+
+.business-crative-area{
+   
+}
+
+
+.business-creative-wrapper{
+    background-color: transparent;
+    background-image: linear-gradient(90deg,#3023ae 0%,#c86dd7 100%);
+    position: relative;
+    .slick-slider ,
+    .slick-list ,
+    .slick-track ,
+    .slick-slide{
+        height: 100%;
+    }
+    .slick-dots{
+        bottom: 86px;
+        li{
+            padding: 7px;
+            margin: 0 8px;
+        }
+    }
+}
+
+.slick-slide {
+    .business-creative {
+        height: 1000px;
+        position: relative;
+        @media #{$lg-layout}{
+            height: 550px;
+        }
+        @media #{$md-layout}{
+            height: 550px;
+        }
+        @media #{$sm-layout}{
+            height: 550px;
+        }
+        @media #{$large-mobile}{
+            height: 620px;
+        }
+        .tumbnail {
+            position: absolute;
+            height: 100%;
+            width: 1920px;
+            top: 0;
+            bottom: 0;
+        }
+        .content {
+            max-width: 50%;
+            position: absolute;
+            width: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            z-index: 2;
+           
+            @media #{$lg-layout}{
+                max-width: 95%;
+                position: absolute;
+                width: 100%;
+            }
+            @media #{$md-layout}{
+                max-width: 95%;
+                position: absolute;
+                width: 100%;
+            }
+             @media #{$sm-layout}{
+                max-width: 100%;
+                position: absolute;
+                width: 100%;
+            }
+            .title{
+                font-size: 62px;
+                padding: 0 0 0 10%;
+                margin: 10px 0;
+                font-weight: 600;
+                line-height: 1.4074;
+                position: relative;
+                padding-bottom: 35px;
+                &::before{
+                    position: absolute;
+                    content: "";
+                    left: 10%;
+                    width: 130px;
+                    height: 5px;
+                    bottom: 0;
+                    background: #fff;
+                }
+                @media #{$sm-layout}{
+                    font-size: 32px;
+                    padding: 0px 0 0 15px;
+                    padding-bottom: 35px;
+                    &::before{
+                        left: 15px;
+                    }
+                }
+                @media #{$lg-layout}{
+                    font-size: 42px;
+                }
+                @media #{$md-layout}{
+                    font-size: 32px;
+                }
+                @media #{$large-mobile}{
+                    font-size: 28px;
+                }
+            }
+            .pra{
+                font-size: 18px;
+                padding: 0 0 0 10%;
+                margin: 34px 0 50px;
+                @media #{$sm-layout}{
+                    padding: 15px 15px 0 15px;
+                    font-size: 16px;
+                    margin: 24px 0 30px;
+                }
+            }
+            .creative-button{
+                padding: 0 0 0 10%;
+                @media #{$sm-layout}{
+                    padding: 15px 0 0 15px;
+                }
+                a{
+                    &.button-link{
+                        border-color: #fff;
+                        color: #fff;
+                        &:hover{
+                            background: #fff;
+                            border-color: #fff;
+                            color: #222222;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.slick-current{
+        &.slick-active{
+            .business-creative {
+                .content {
+                    .title{
+                        -webkit-animation: 800ms ease-in-out 0s normal none 1 running fadeInDown;
+                        animation: 800ms ease-in-out 0s normal none 1 running fadeInDown;
+                    }
+                    .pra{
+                        -webkit-animation: 900ms ease-in-out 0s normal none 1 running fadeInDown;
+                        animation: 900ms ease-in-out 0s normal none 1 running fadeInDown;
+                    }
+                    .creative-button{
+                        -webkit-animation: 1000ms ease-in-out 0s normal none 1 running fadeInDown;
+                        animation: 1000ms ease-in-out 0s normal none 1 running fadeInDown;
+                    }
+                }
+            } 
+        }
+    }
+}
+

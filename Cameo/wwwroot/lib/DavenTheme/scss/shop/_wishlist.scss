@@ -1,0 +1,100 @@
+/*========================
+    Wishlist Area 
+==========================*/
+
+
+.wishlist-table{
+    width: 100%;
+    text-align: left;
+    margin-bottom: 20px;
+    border: 0 none;
+    margin: 0;
+    thead{
+        background-color: #f7f7f7;
+        tr{
+            th{
+                color: #535353;
+                letter-spacing: 1px;
+                border: none;
+                padding: 13px 0;
+                font-weight: 100;
+
+            }
+        }
+    }
+
+    tbody{
+        tr{
+            td{
+                border-color: #e8e8e8;
+                border-width: 0;
+                padding: 20px 0;
+                &.product-remove{
+                    min-width: 30px;
+                    a{
+                        i{
+                            font-size: 16px;
+                            color: #535353;
+                        }
+                    }
+                }
+
+                &.product-thumbnail {
+                    min-width: 90px;
+                    img{
+                        max-width: 70px;
+                    }
+                }
+
+                &.product-name {
+                    h4{
+                        margin-bottom: 0;
+                        a{
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: #535353;
+                            @extend %transition;
+                            &:hover{
+                                color: $theme-color;
+                            }
+                        }
+                    }
+                }
+
+                &.product-stock-status {
+                    font-size: 16px;
+                    line-height: 1.75;
+                }
+
+                &.product-action {
+                    .add-to-cart{
+                        a{
+                            &.cart-btn{
+                                border: 1px solid;
+                                font-size: 12px;
+                                padding: 8px 20px;
+                                display: inline-block;
+                                line-height: 1;
+                                color: #fff;
+                                background-color: #2f2f2f;
+                                text-align: center;
+                                transition: all .25s ease-out;
+                                font-weight: 700;
+                                &:hover{
+                                    color: #fff;
+                                    background-color: $theme-color;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                @media #{$sm-layout}{
+                    min-width: 165px;
+                }
+            }
+        }
+    }
+
+}
+

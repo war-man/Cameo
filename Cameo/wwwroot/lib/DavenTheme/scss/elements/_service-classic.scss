@@ -1,0 +1,115 @@
+/*=============================
+    Service Clssic 
+=================================*/
+.draven-banner{
+    &.fullscreen{
+
+        @media #{$md-layout} {
+            min-height: auto;
+            padding: 150px 0;
+        }
+
+        @media #{$sm-layout} {
+            min-height: auto;
+            padding: 150px 0;
+        }
+    }
+}
+
+.separator_3px{
+    border-top-style: solid;
+    border-top-width: 3px;
+    border-top-color: #f53e6a;
+    width: 130px;
+}
+
+
+.business-service{
+    transition: all .25s ease-out;
+    .content{
+        border-style: solid;
+        border-width: 1px;
+        border-color: #cfcfcf;
+        padding: 30px;
+        text-align: center;
+        .title {
+            position: relative;
+            padding-bottom: 15px;
+            &::before{
+                position: absolute;
+                background: $theme-color;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 2px;
+                content: "";
+                bottom: 0;
+            }
+        }
+        p {
+            line-height: 2em;
+        }
+    }
+    &:hover{
+        transform: translateY(-20px);
+        -webkit-transform: translateY(-20px);
+    }
+}
+
+/*========================
+    Construction Service 
+===========================*/
+.bg_image--28{
+    background-attachment: fixed;
+}
+.construction-service{
+    .inner{
+        .thumbnail{
+            img{
+                width: 120px;
+            }
+        }
+        .content{
+            h3{
+                position: relative;
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+                &::before{
+                    position: absolute;
+                    content: "";
+                    background: #2f2f2f;
+                    width: 50px;
+                    height: 2px;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+            p{
+                color: #2c2c2c;
+                font-size: 14px;
+            }
+            .button-link{
+                border-style: solid;
+                border-width: 0 0 1px;
+                border-color: #2f2f2f;
+                padding: 0;
+                padding-bottom: 3px;
+                font-size: 12px;
+            }
+        }
+        &:hover{
+            .content{
+                h3{
+                    color: $heading-color !important;
+                }
+                p{
+                    
+                }
+                .button-link{
+                    color: $heading-color !important;
+                }
+            }
+        }
+    }
+}

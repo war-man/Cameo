@@ -1,0 +1,140 @@
+﻿@model Cameo.ViewModels.FilterVM
+
+@using Cameo.Common
+@using Microsoft.Extensions.Options;
+
+@inject IOptions<AppConfiguration> AppSettings
+
+@{
+    ViewData["Title"] = "Поиск";
+}
+
+<br />
+<div class="row">
+    <div class="col-xs-4 col-xs-offset-4">
+        <partial name="_SearchBox" />
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-2">
+        <h3>Категории</h3>
+    </div>
+    <div class="col-md-10">
+        <div class="pull-right">
+            @Html.DropDownList("sort", ViewData["sortingItems"] as List<SelectListItem>, new { @class = "form-control", onchange = "ReloadTalents(undefined, this.value)" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2" id="categoriesContainer">
+        <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
+    </div>
+    <div class="col-md-10" id="talentsContainer">
+        <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
+        <div class="innerContainer"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jQuery-Autocomplete/jquery.autocomplete.min.js"></script>
+    <script>
+        @*var filterVM = @Html.Raw(Json.Serialize(Model));
+        console.log(filterVM);*@
+        var categoryID = Number("@ViewData["cat"]");
+        if (categoryID == 0)
+            categoryID = 1;
+        
+        var sort = "def";
+
+        $(document).ready(function () {
+            LoadCategories();
+            $('#autocomplete').autocomplete({
+                serviceUrl: '/Talents/GetBySearchText',
+                onSelect: function (suggestion) {
+                    alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+                }
+            });
+        });
+
+        function LoadCategories()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Category/GetAll",
+                //data: JSON.stringify({
+                //    selected: categoryID
+                //}),
+                data:{
+                    selected: categoryID
+                },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data) {
+                    $("#categoriesContainer").html(data);
+                    categoryID = $("#categoriesContainer ul li.active:first").data("category");
+
+                    ReloadTalents();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function ReloadTalents(category, sorting)
+        {
+            if (category != undefined)
+                categoryID = category;
+
+            MarkSelectedCategoryAsActive(categoryID);
+
+            //$("#categoriesContainer > ul > li").removeClass("active");
+            //$("#categoriesContainer > ul > li[data-customerID='" + categoryID + "']").addClass("active");
+
+            if (sorting != undefined)
+                sort = sorting;
+
+            window.history.pushState("object or string", "Title", "?cat=" + categoryID);
+
+            LoadTalents();
+        }
+
+        function LoadTalents()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Talents/Get",
+                data: {
+                    categoryID: categoryID,
+                    sort: sort
+                },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                beforeSend: function () {
+                    $("#talentsContainer .spinner").css("display", "block");
+                    $("#talentsContainer .innerContainer").html("");
+                },
+                success: function (data) {
+                    $("#talentsContainer .innerContainer").html(data);
+                    //document.addEventListener("DOMContentLoaded", yall);
+
+                    observer.observe();
+                },
+                error: function (data) {
+                    console.log(data);
+                    $("#talentsContainer .innerContainer").html(data);
+                },
+                complete: function (data) {
+                    $("#talentsContainer .spinner").css("display", "none");
+                }
+            });
+        }
+
+        function MarkSelectedCategoryAsActive(catID)
+        {
+            $("#categoriesContainer ul > li").removeClass("active");
+            $("#categoriesContainer ul > li[data-category='" + catID + "']").addClass("active");
+        }
+    </script>
+}

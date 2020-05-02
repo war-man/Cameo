@@ -1,0 +1,96 @@
+/*==========================
+    Footer Style Two
+=============================*/
+
+.footer_style--2{
+    .copyright-inner{
+        .logo{
+            a{
+                img{
+                    width: 70px;
+                }
+            }
+        }
+        .social-share{
+            margin: 15px 0 10px;
+            a{
+                i{
+                    font-size: 22px;
+                    color: rgba(255,255,255,.3);
+                    @extend %transition;
+                    &:hover {
+                        color: rgba(255,255,255,1);
+                    }
+                }
+                &:not(:last-child){
+                    margin-right: 30px;
+                }
+            }
+        }
+        p{
+
+        }
+    }
+}
+
+
+
+.footer_style--3{
+    .single-widget{
+        .ft_menu {
+            @extend %liststyle;
+            li{
+                margin-right: calc(25px/2);
+                margin-left: calc(25px/2);
+                display: inline-block;
+                a{
+                    font-weight: 700;
+                    color: #151515;
+                    font-size: 14px;
+                    @extend %transition;
+                    &:hover{
+                        color: $theme-color;
+                    }
+                }
+            }
+        }
+
+        .input-box {
+            position: relative;
+            input{
+                padding: 0;
+                background: transparent;
+                border: 0 none;
+                border-bottom: 1px solid #e0e0e8;
+                padding: 15px 0;
+                padding-right: 95px;
+                @include placeholder {
+                    color: #ffffff;
+                }
+            }
+            button{
+                position: absolute;
+                right: 0;
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 20px;
+                color: #2f2f2f;
+                top: 50%;
+                background: transparent;
+                border: 0 none;
+                padding: 0;
+                margin: 0;
+                transform: translateY(-50%);
+            }
+        }
+    }
+
+    .copyright{
+        p{
+            color: #989898;
+            font-size: 12px;
+            line-height: 1.4074;
+        }
+    }
+}
+

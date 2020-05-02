@@ -1,0 +1,420 @@
+/*=================================
+    Variation Color Style 
+===================================*/
+
+@for $i from 1 through length($colorList) {
+    body.template-color-#{$i} {
+        .theme-color {
+            color: nth($colorList, $i);
+        }
+        .messonry-button{
+            button{
+                &:hover{
+                    color: nth($colorList, $i);
+                }
+                &.is-checked{
+                    color: nth($colorList, $i);
+                }
+            }
+        } 
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .h1,
+        .h2,
+        .h3,
+        .h4,
+        .h5,
+        .h6 {
+            a {
+                &:hover {
+                    color: nth($colorList, $i);
+                }
+            }
+        }
+
+        .footer-widget{
+            &.widget_style--2{
+                .ft-title{
+                    &::before{
+                        background: nth($colorList, $i);
+                    }
+                }
+            }
+        }
+
+        .header-icon {
+            &.cart {
+                a {
+                    span {
+                        &.cart-count {
+                            background-color: nth($colorList, $i);
+                        }
+                    }
+                }
+            }
+        }
+
+        .light-logo-version {
+            .header-icon {
+                a {
+                    &:hover {
+                        color: nth($colorList, $i);
+                    }
+                }
+            }
+        }
+
+        ul {
+            &.support-list {
+                li {
+                    a {
+                        &:hover {
+                            color: nth($colorList, $i);
+                        }
+                    }
+                }
+            }
+        }
+
+        .search-flyoverlay-area {
+            .btn-close-search {
+                &:hover {
+                    color: nth($colorList, $i);
+                }
+            }
+        }
+
+        .heading-divider__themeColor {
+            &::before {
+                background: nth($colorList, $i);
+            }
+        }
+       
+        .button-link {
+            &.button {
+                &__theme-color {
+                    background-color: nth($colorList, $i);
+
+                    &:hover {
+                        background-color: #2f2f2f;
+                        color: #fff !important;
+                    }
+                }
+
+                &__transparentBorder {
+                    color: #2f2f2f;
+                    background-color: rgba(255, 255, 255, 0);
+                    border-color: #2f2f2f;
+
+                    &:hover {
+                        color: #fff;
+                        background-color: nth($colorList, $i);
+                        border-color: nth($colorList, $i);
+                    }
+                }
+
+                &__transparentBordertheme {
+                    color: nth($colorList, $i);
+                    background-color: rgba(255, 255, 255, 0);
+                    border-color: nth($colorList, $i);
+
+                    &:hover {
+                        color: #fff;
+                        background-color: nth($colorList, $i);
+                        border-color: nth($colorList, $i);
+                    }
+                }
+
+                &__black {
+                    color: #fff;
+                    background-color: #2f2f2f;
+                    border-radius: 0;
+
+                    &:hover {
+                        color: #fff;
+                        background-color: nth($colorList, $i);
+                    }
+                }
+
+
+            }
+            &:hover{
+                .button-text {
+                    &.text-dark {
+                        color: #fff !important;
+                    }
+                }
+            }
+        }
+
+        .la-loader {
+            &.spinner3 {
+
+                .bounce1,
+                .bounce2,
+                .bounce3 {
+                    background: nth($colorList, $i);
+                }
+            }
+        }
+
+        a {
+            &.bodyColor {
+                &:hover {
+                    color: nth($colorList, $i);
+                }
+            }
+        }
+
+        .cart-flyout {
+            .cart-flyout-inner {
+                .btn-close-cart {
+                    i {
+                        &:hover {
+                            color: nth($colorList, $i);
+                        }
+                    }
+                }
+
+                .widget_shopping_cart_content {
+                    .product_list_widget {
+                        li {
+                            .content {
+                                h6 {
+                                    a {
+                                        &:hover {
+                                            color: nth($colorList, $i);
+                                        }
+                                    }
+                                }
+
+                                .remove-btn {
+                                    &:hover {
+                                        color: nth($colorList, $i);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .cart__btn {
+                    a {
+                        &:hover {
+                            background-color: nth($colorList, $i);
+                        }
+                    }
+                }
+            }
+        }
+        .progress-charts {
+            .progress {
+                .progress-bar {
+                    background: nth($colorList, $i);
+                }
+            }
+        }
+        .icon__style--4 {
+            .icon {
+                &.btn-transparent {
+                    i {
+                        color: nth($colorList, $i);
+                    }
+                }
+            }
+        }
+        .icon__style--4 {
+            &.text-white {
+                .content {
+                    a {
+                        &.service__btn {
+                            &:hover {
+                                background: nth($colorList, $i);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .header-icon {
+            a {
+                &.popup-round {
+                    &:hover {
+                        background-color: nth($colorList, $i);
+                    }
+                }
+            }
+        }
+        .hamburger-area {
+            .btn-close-search {
+                button:hover {
+                    color: nth($colorList, $i);
+                }
+            }
+        }
+        .section_title--2 {
+            .title {
+                &::before {
+                    background-color: nth($colorList, $i);
+                }
+            }
+        }
+        .list-container {
+            &.with__dot {
+                .list-items {
+                    .list__icon {
+                        color: nth($colorList, $i);
+                    }
+                }
+            }
+        }
+        .business-service {
+            .content {
+                .title {
+                    &::before {
+                        background: nth($colorList, $i);
+                    }
+                }
+            }
+        }
+        .slick-dots {
+            li {
+                &.slick-active {
+                    background: nth($colorList, $i);
+                }
+            }
+        }
+
+        .portfolio-hover-theme {
+            .portfolio_hover--3 {
+                .thumb {
+                    &::after {
+                        background: nth($colorList, $i);
+                        opacity: 0;
+                    }
+                }
+
+                &:hover {
+                    .thumb {
+                        &::after {
+                            opacity: 0.9;
+                        }
+                    }
+                }
+            }
+        }
+        
+        .portfolio {
+            .thumb{
+                &::before{
+                    background-color: nth($colorList, $i);
+                }
+            }
+        }
+
+
+        .contact__form--6{
+            input {
+                &[type=submit]{
+                    
+                }
+            }
+        } 
+
+        .contact__form--6 ,
+        .contact__form--2 ,
+        .contact__form--4{
+            textarea ,
+            input {
+                &:focus {
+                    border-color: nth($colorList, $i);
+                }
+                &[type=submit]{
+                    &:hover{
+                        background: nth($colorList, $i);
+                    }
+                }
+            }
+        } 
+
+        .contact__form--4{
+            &.form-variation{
+                input{
+                    &[type=submit]{
+                        background: nth($colorList, $i);
+                        border: 1px solid nth($colorList, $i);
+                        
+                    }
+                }
+            }
+        } 
+
+        .icon__style--1{
+            .inner{
+                &:hover{
+                    .content{
+                        .title{
+                            color: nth($colorList, $i);
+                        }
+                        .button-link{
+                            color: nth($colorList, $i);
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        .divider {
+            &::after{
+                background: nth($colorList, $i);
+            }
+        }
+
+        .case-studies-btn{
+            a{
+                &:hover{
+                    color: nth($colorList, $i);
+                }
+            }
+        }
+
+        .team__style--3{
+            .thumbnail{
+                &::before{
+                    background-color: nth($colorList, $i);
+                }
+            }
+        } 
+
+        .blog_style--1 {
+            .inner{
+                .meta{
+                    li{
+                        a{
+                            &:hover{
+                                color: nth($colorList, $i);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        a {
+            &.button-link {
+                &.button__transparent--border {
+                    &:hover {
+                        background-color: nth($colorList, $i);
+                        border-color: nth($colorList, $i);
+                    }
+                }
+            }
+        }
+    }
+}

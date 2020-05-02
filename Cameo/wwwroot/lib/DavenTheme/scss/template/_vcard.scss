@@ -1,0 +1,148 @@
+
+/*=======================
+    Vcard Area 
+=========================*/
+
+.vcard-area {
+    padding: 80px;
+    padding-top: 120px;
+    @media #{$sm-layout} {
+        padding: 80px;
+        padding-top: 155px;
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+}
+.bg_image--33 {
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.v-card-wrapper{
+    position: relative;
+    .inner{
+        .title{
+            font-size: 250px;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 210px;
+            color: #f53e6a;
+            
+            @media #{$laptop-device} {
+                font-size: 155px;
+                line-height: 163px;
+            }
+            @media #{$lg-layout} {
+                font-size: 115px;
+                line-height: 143px;
+            }
+
+            @media #{$md-layout} {
+                font-size: 94px;
+                line-height: 99px;
+            }
+
+            @media #{$sm-layout} {
+                font-size: 80px;
+                line-height: 78px;
+            }
+            @media #{$large-mobile} {
+                font-size: 51px;
+                line-height: 65px;
+            }
+        }
+        p{
+            color: #fff;
+            font-size: 36px;
+            line-height: 46px;
+            max-width: 670px;
+
+            @media #{$laptop-device} {
+                font-size: 24px;
+                line-height: 39px;
+            }
+            @media #{$lg-layout} {
+                font-size: 24px;
+                line-height: 39px;
+            }
+            @media #{$md-layout} {
+                font-size: 24px;
+                line-height: 39px;
+            }
+
+            @media #{$sm-layout} {
+                font-size: 18px;
+                line-height: 28px;
+                br{
+                    display: none;
+                }
+            }
+
+            @media #{$large-mobile} {
+                font-size: 14px;
+                line-height: 28px;
+            }
+
+        }
+    }
+    .address-list {
+        span {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 45px;
+            color: #fff;
+            margin-right: 8px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+    }
+    .cv-button{
+        position: absolute;
+        bottom: -145px;
+        left: 0;
+
+        @media #{$sm-layout} {
+            position: inherit;
+            bottom: 0;
+            margin-top: 30px;
+        }
+
+        @media #{$md-layout} {
+            position: inherit;
+            bottom: 0;
+            margin-top: 30px;
+        }
+
+        .button-link{
+            font-size: 24px;
+            line-height: 1em;
+            border-radius: 0;
+            padding: 40px 150px;
+            
+            @media #{$sm-layout} {
+                line-height: 7px;
+                padding: 21px 59px;
+            }
+
+        }
+    } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

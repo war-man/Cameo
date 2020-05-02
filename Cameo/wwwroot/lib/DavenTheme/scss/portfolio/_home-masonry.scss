@@ -1,0 +1,70 @@
+/*=========================
+    Home Masonry 
+============================*/
+
+.masonry-header{
+    position: relative;
+    padding-top: 180px;
+    padding-bottom: 110px;
+    z-index: 2;
+
+    @media #{$lg-layout} {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+
+    @media #{$md-layout} {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+
+    @media #{$sm-layout} {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+
+    .masonry-leaf{
+        position: absolute;
+        right: 15%;
+        top: 4px;
+        width: 100%;
+        text-align: right;
+        height: 100%;
+        img{
+
+        }
+    }
+    .masonry-title{
+        h1{
+            font-weight: 600;
+            line-height: 1.4074;
+            position: relative;
+            span{
+                font-size: 150px;
+                text-transform: uppercase;
+                line-height: 1em;
+                @media #{$laptop-device} {
+                    font-size: 100px;
+                }
+                @media #{$lg-layout} {
+                    font-size: 100px;
+                }
+                @media #{$md-layout} {
+                    font-size: 80px;
+                    br{
+                        display: none;
+                    }
+                }
+                @media #{$sm-layout} {
+                    font-size: 70px;
+                    br{
+                        display: none;
+                    }
+                }
+                @media #{$large-mobile} {
+                    font-size: 40px;
+                }
+            }
+        }
+    }
+}

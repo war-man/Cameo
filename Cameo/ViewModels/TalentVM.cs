@@ -62,6 +62,32 @@ namespace Cameo.ViewModels
         }
     }
 
+    public class TalentsCategorizedVM
+    {
+        public int Priority { get; set; }
+        public CategoryShortInfoVM Category { get; set; }
+        public List<TalentGridViewItem> Talents { get; set; }
+
+        public TalentsCategorizedVM() { }
+        public TalentsCategorizedVM(Category category, List<Talent> talents)
+        {
+            if (category == null)
+                return;
+
+            Priority = category.ID;
+            Category = new CategoryShortInfoVM(category);
+
+            Talents = new List<TalentGridViewItem>();
+            if (talents != null && talents.Count > 0)
+            {
+                foreach (var talent in talents)
+                {
+                    Talents.Add(new TalentGridViewItem(talent));
+                }
+            }
+        }
+    }
+
     public class TalentDetailsVM : TalentGridViewItem
     {
         public string Bio { get; set; }
@@ -78,104 +104,6 @@ namespace Cameo.ViewModels
 
             this.IsAvailable = model.IsAvailable;
             this.Bio = model.Bio;
-        }
-    }
-
-    public class TalentPersonalDataEditVM : PersonEditVM
-    {
-        [Display(Name = "Количество подписчиков")]
-        public string FollowersCount { get; set; }
-
-        public TalentPersonalDataEditVM() { }
-
-        public TalentPersonalDataEditVM(Talent model) : base(model)
-        {
-            if (model == null)
-                return;
-
-            this.FollowersCount = model.FollowersCount;
-        }
-    }
-
-    public class TalentPriceEditVM 
-    {
-        public int ID { get; set; }
-
-        [Display(Name = "Цена Вашего видео")]
-        [Range(1000, int.MaxValue)]
-        public int Price { get; set; }
-
-        public TalentPriceEditVM() { }
-
-        public TalentPriceEditVM(Talent model)
-        {
-            if (model == null)
-                return;
-
-            this.ID = model.ID;
-            this.Price = model.Price;
-        }
-    }
-
-    public class TalentCreditCardEditVM
-    {
-        public int ID { get; set; }
-
-        [Required]
-        [Display(Name = "Номер Вашей карты Uzcard")]
-        [StringLength(16 + 3)] // 16 - card numer digits + 3 - whitespaces
-        public string CreditCardNumber { get; set; }
-
-        [Required]
-        [Display(Name = "Срок действия (мм/гг)")]
-        [StringLength(5)]
-        public string CreditCardExpire { get; set; }
-
-        public TalentCreditCardEditVM() { }
-
-        public TalentCreditCardEditVM(Talent model)
-        {
-            if (model == null)
-                return;
-
-            this.ID = model.ID;
-            this.CreditCardNumber = model.CreditCardNumber;
-            if (model.CreditCardExpire.HasValue)
-            {
-                this.CreditCardExpire = model.CreditCardExpire.Value.ToString("MM");
-                this.CreditCardExpire += "/" + (model.CreditCardExpire.Value.Year - 2000);
-            }
-        }
-    }
-
-    public class TalentProjectsAndCategoriesEditVM
-    {
-        public int TalentID { get; set; }
-
-        [Display(Name = "Мои проекты")]
-        public List<string> Projects { get; set; }
-
-        [Display(Name = "Категории")]
-        public List<int> Categories { get; set; }
-
-        public TalentProjectsAndCategoriesEditVM() { }
-
-        public TalentProjectsAndCategoriesEditVM(Talent model)
-        {
-            if (model == null)
-                return;
-
-            this.TalentID = model.ID;
-
-            this.Projects = model.Projects?
-                .Select(m => m.Name)
-                .ToList()
-                ?? new List<string>();
-
-            this.Categories = model.TalentCategories?
-                .Select(m => m.CategoryId)
-                .ToList()
-                ?? new List<int>();
         }
     }
 }
