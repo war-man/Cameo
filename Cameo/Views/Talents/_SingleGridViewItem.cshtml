@@ -1,6 +1,6 @@
 ﻿@model Cameo.ViewModels.TalentGridViewItem
 
-<div class="col-lg-3 col-xl-2 col-md-4 col-6 mt--20">
+<div class="col-lg-3 col-xl-2 col-md-4 col-6">
     <a href="/talents/details/@Model.Username">
         <div class="team team__style--4 text-center">
             <div class="thumbnail paralax-image">
@@ -16,7 +16,7 @@
                     </div>
                 </div>*@
                 <div class="team-badge badge--right">
-                    <span>@Model.Price.ToString("### ### ##0") сум</span>
+                    <span>@Model.PriceStr сум</span>
                 </div>
             </div>
             <div class="info">

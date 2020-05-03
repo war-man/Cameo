@@ -3,6 +3,7 @@ using Cameo.Data.Repository.Interfaces;
 using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -94,7 +95,7 @@ namespace Cameo.Services
                 model.AccountNumber = model.ID.ToString().PadLeft(8, '0');
         }
 
-        public IQueryable<Talent> GetFeatured(int? categoryID, int count)
+        public IQueryable<Talent> GetFeatured(int? categoryID, int? count = null)
         {
             IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
 
@@ -108,7 +109,30 @@ namespace Cameo.Services
                         .Contains(categoryID.Value));
             }
 
-            return talents.Take(count);
+            if (count.HasValue && count > 0)
+                talents = talents.Take(count.Value);
+
+            return talents;
+        }
+
+        public IQueryable<Talent> GetNew(int? categoryID, int? count = null)
+        {
+            IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
+
+            talents = talents.Where(m => m.DateCreated >= DateTime.Now.AddDays(-360)); //must be set to -7
+
+            if (categoryID.HasValue && categoryID > 0)
+            {
+                talents = talents.Where(m =>
+                    m.TalentCategories
+                        .Select(c => c.CategoryId)
+                        .Contains(categoryID.Value));
+            }
+
+            if (count.HasValue && count > 0)
+                talents = talents.Take(count.Value);
+
+            return talents;
         }
 
         public IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null)

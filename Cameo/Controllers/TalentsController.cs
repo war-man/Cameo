@@ -40,16 +40,7 @@ namespace Cameo.Controllers
         public IActionResult GetCategorized()
         {
             List<TalentsCategorizedVM> talentsCategorizedVM = new List<TalentsCategorizedVM>();
-
-            //TO-DO:
-            //add popular and new talents
-            //add TalentService.GetNew method
-            
-            List<Category> categories = new List<Category>()
-            {
-                new Category() { ID = (int)CategoryEnum.featured },
-                new Category() { ID = (int)CategoryEnum.neW }
-            };
+            List<Category> categories = new List<Category>();
 
             var featuredTalents = TalentService.GetFeatured(null, 6);
             if (featuredTalents.Count() > 0)
@@ -83,13 +74,16 @@ namespace Cameo.Controllers
                 var talentsCategorized = TalentService.Search(category.ID, SortTypeEnum.def, 6);
                 var categoryTalentsVM = new TalentsCategorizedVM(category, talentsCategorized.ToList());
                 
-                foreach (var item in categoryTalentsVM.Talents)
-                {
-                    if (item.Avatar.ID == 0)
-                        item.Avatar.Url = GetRandomPhotoUrl();
-                }
-
                 talentsCategorizedVM.Add(categoryTalentsVM);
+            }
+
+            foreach (var categoryTalentsVM in talentsCategorizedVM)
+            {
+                foreach (var talent in categoryTalentsVM.Talents)
+                {
+                    if (talent.Avatar.ID == 0)
+                        talent.Avatar.Url = GetRandomPhotoUrl();
+                }
             }
 
             return PartialView("_GetCategorized", talentsCategorizedVM);

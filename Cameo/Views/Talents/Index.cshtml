@@ -10,36 +10,51 @@
     Layout = "_LayoutDaven";
 }
 
+<!-- Start Beadcaump Area -->
+<div class="dn-breadcaump-area breadcrumb-default bg_image bg_image--41 ptb--120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-content text-center">
+                    <h1 class="breadcrumb-content__title text-white fontWeight400">Get personalized messages from your favorite celebrities</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Beadcaump Area -->
+<br />
+
 <div id="talentsContainer">
     <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />
     <div class="innerContainer"></div>
 </div>
 @*<br />
-<div class="row">
-    <div class="col-xs-4 col-xs-offset-4">
-        <partial name="_SearchBox" />
-    </div>
-</div>
-<br />*@
-@*<div class="row">
-    <div class="col-md-2">
-        <h3>Категории</h3>
-    </div>
-    <div class="col-md-10">
-        <div class="pull-right">
-            @Html.DropDownList("sort", ViewData["sortingItems"] as List<SelectListItem>, new { @class = "form-control", onchange = "ReloadTalents(undefined, this.value)" })
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">
+            <partial name="_SearchBox" />
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-2" id="categoriesContainer">
-        <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
+    <br />*@
+@*<div class="row">
+        <div class="col-md-2">
+            <h3>Категории</h3>
+        </div>
+        <div class="col-md-10">
+            <div class="pull-right">
+                @Html.DropDownList("sort", ViewData["sortingItems"] as List<SelectListItem>, new { @class = "form-control", onchange = "ReloadTalents(undefined, this.value)" })
+            </div>
+        </div>
     </div>
-    <div class="col-md-10" id="talentsContainer">
-        <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
-        <div class="innerContainer"></div>
-    </div>
-</div>*@
+    <div class="row">
+        <div class="col-md-2" id="categoriesContainer">
+            <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
+        </div>
+        <div class="col-md-10" id="talentsContainer">
+            <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
+            <div class="innerContainer"></div>
+        </div>
+    </div>*@
 
 <style>
     .team__style--4 .thumbnail {
@@ -48,7 +63,7 @@
 
     .team .thumbnail .team-badge {
         position: absolute;
-        z-index: 9;
+        /*z-index: 9;*/
         top: 3px;
         left: auto;
         right: 5px;
@@ -59,7 +74,6 @@
         padding: 0px 3px;
         border-radius: 5px;
     }
-
 </style>
 @section Scripts {
     <script src="~/lib/jQuery-Autocomplete/jquery.autocomplete.min.js"></script>
@@ -69,10 +83,10 @@
         @*var categoryID = Number("@ViewData["cat"]");
         if (categoryID == 0)
             categoryID = 1;
-        
+
         var sort = "def";*@
 
-        $(document).ready(function () 
+        $(document).ready(function ()
         {
             LoadTalentsCategorized();
             //LoadCategories();

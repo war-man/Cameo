@@ -1,4 +1,5 @@
-﻿using Cameo.Models;
+﻿using Cameo.Common;
+using Cameo.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,8 @@ namespace Cameo.ViewModels
     public class TalentShortInfoVM : PersonShortInfoVM
     {
         public bool IsAvailable { get; set; }
+        public int Price { get; set; }
+        public string PriceStr { get; set; }
         public TalentShortInfoVM() { }
 
         public TalentShortInfoVM(Talent model)
@@ -19,6 +22,10 @@ namespace Cameo.ViewModels
                 return;
 
             IsAvailable = model.IsAvailable;
+            Price = model.Price;
+
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            PriceStr = model.Price.ToString(numberFormat);
         }
     }
 
@@ -34,13 +41,13 @@ namespace Cameo.ViewModels
                 return;
 
             if (model.Projects != null && model.Projects.Count > 0)
-                this.ProjectName = model.Projects.FirstOrDefault()?.Name;
+                ProjectName = model.Projects.FirstOrDefault()?.Name;
         }
     }
 
     public class TalentGridViewItem : TalentShortInfoVM
     {
-        public int Price { get; set; }
+        //public int Price { get; set; }
         public List<CategoryShortInfoVM> Categories { get; set; }
         public List<TalentProjectShortInfoVM> Projects { get; set; }
 
@@ -51,12 +58,12 @@ namespace Cameo.ViewModels
             if (model == null)
                 return;
 
-            this.Price = model.Price;
-            this.Categories = model.TalentCategories
+            //this.Price = model.Price;
+            Categories = model.TalentCategories
                 .Select(m => new CategoryShortInfoVM(m.Category))
                 .ToList();
 
-            this.Projects = model.Projects
+            Projects = model.Projects
                 .Select(m => new TalentProjectShortInfoVM(m))
                 .ToList();
         }

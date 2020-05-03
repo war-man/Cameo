@@ -12,7 +12,8 @@ namespace Cameo.Services.Interfaces
         Talent GetActiveByUsername(string username);
         Talent GetActiveSingleDetailsWithRelatedDataByID(int id);
 
-        IQueryable<Talent> GetFeatured(int? categoryID, int count);
+        IQueryable<Talent> GetFeatured(int? categoryID, int? count = null);
+        IQueryable<Talent> GetNew(int? categoryID, int? count = null);
 
         IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null);
         IQueryable<Talent> SearchBySearchText(string searchText);
