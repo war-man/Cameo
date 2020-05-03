@@ -1,28 +1,13 @@
-﻿@model Cameo.ViewModels.FilterVM
-
-@using Cameo.Common
+﻿@using Cameo.Common
 @using Microsoft.Extensions.Options;
 
 @inject IOptions<AppConfiguration> AppSettings
 
 @{
-    ViewData["Title"] = "Поиск";
+    ViewData["Title"] = "Атлеты";
     Layout = "_LayoutDaven";
 }
 
-<!-- Start Beadcaump Area -->
-<div class="dn-breadcaump-area breadcrumb-default bg_image bg_image--41 ptb--120">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="breadcrumb-content__title text-white fontWeight400">Get personalized messages from your favorite celebrities</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Beadcaump Area -->
 <br />
 
 <div id="talentsContainer">
@@ -50,21 +35,22 @@
     }
 </style>
 @section Scripts {
+    @*<script src="~/lib/jQuery-Autocomplete/jquery.autocomplete.min.js"></script>*@
     <script>
         $(document).ready(function ()
         {
-            LoadTalentsCategorized();
+            LoadTalentsByCategory(@ViewBag.categoryID);
         });
 
-        function LoadTalentsCategorized()
+        function LoadTalentsByCategory(categoryID)
         {
             $.ajax({
                 type: "GET",
-                url: "/Talents/GetCategorized",
-                //data: {
-                //    categoryID: categoryID,
-                //    sort: sort
-                //},
+                url: "/Talents/GetByCategory",
+                data: {
+                    categoryID: categoryID,
+                    //sort: sort
+                },
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 beforeSend: function ()

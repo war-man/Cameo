@@ -1,12 +1,24 @@
 ﻿@model List<Cameo.ViewModels.TalentsCategorizedVM>
 
-@{ 
-    //Dictionary<int, string> categories = ViewData["categories"] as Dictionary<int, string>;
-}
 <div class="row">
+    @if (ViewBag.categoryName != null)
+    {
+
+        <h1 class="text-center" style="width: 100%">@ViewBag.categoryName</h1>
+    }
     @foreach (var item in Model)
     {
-        <h2 class="plr--80 plr_lg--50 plr_md--50 plr_sm--30" style="width: 100%">@item.Category.Name <small class="pull-right"><a href="#" class="btn btn-link">Все</a></small></h2>
+        <h2 class="plr--80 plr_lg--50 plr_md--50 plr_sm--30" style="width: 100%">
+            @if (ViewBag.isHomePage != null)
+            {
+                <a href="/talents/bycategory?cat=@item.Category.ID">@item.Category.Name</a>
+                <small class="pull-right"><a href="/talents/bycategory?cat=@item.Category.ID" class="btn btn-link">Все</a></small>
+            }
+            else
+            {
+                @item.Category.Name
+            }
+        </h2>
         <div class="tema-area pb--50 pt_md--0 pb_md--60 pb_sm--40 bg-color" data-bg-color="#ffffff">
             <div class="talentsCategorizedContainer row plr--80 plr_lg--50 plr_md--50 plr_sm--30">
                 @foreach (var talent in item.Talents)

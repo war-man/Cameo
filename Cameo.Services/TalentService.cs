@@ -135,6 +135,18 @@ namespace Cameo.Services
             return talents;
         }
 
+        public IQueryable<Talent> GetNewInFeatured(int? count = null)
+        {
+            IQueryable<Talent> talents = GetFeatured(null);
+
+            talents = talents.Where(m => m.DateCreated >= DateTime.Now.AddDays(-360)); //must be set to -7
+            
+            if (count.HasValue && count > 0)
+                talents = talents.Take(count.Value);
+
+            return talents;
+        }
+
         public IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null)
         {
             IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();

@@ -14,6 +14,7 @@ namespace Cameo.Services.Interfaces
 
         IQueryable<Talent> GetFeatured(int? categoryID, int? count = null);
         IQueryable<Talent> GetNew(int? categoryID, int? count = null);
+        IQueryable<Talent> GetNewInFeatured(int? count = null);
 
         IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null);
         IQueryable<Talent> SearchBySearchText(string searchText);

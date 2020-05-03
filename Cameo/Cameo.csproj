@@ -201,6 +201,9 @@
     <Content Update="Views\Shared\_LoginPartialDaven.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Talents\ByCategory.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Talents\_GetCategorized.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

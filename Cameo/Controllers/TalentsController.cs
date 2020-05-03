@@ -86,6 +86,146 @@ namespace Cameo.Controllers
                 }
             }
 
+            ViewBag.isHomePage = true;
+
+            return PartialView("_GetCategorized", talentsCategorizedVM);
+        }
+
+        public IActionResult ByCategory(int cat)
+        {
+            ViewBag.categoryID = cat;
+
+            return View();
+        }
+
+        public IActionResult GetByCategory(int categoryID)
+        {
+            //1. if category = new then
+            //  - all in new
+            //2. if category = featured then:
+            //  - featured
+            //  - new in featured
+            //  - all in featured
+            //3. else (if normal category)
+            //  - featured in category
+            //  - new in category
+            //  - all in category
+
+            List<TalentsCategorizedVM> talentsCategorizedVM = new List<TalentsCategorizedVM>();
+
+            if (categoryID == (int)CategoryEnum.neW)
+            {
+                var newTalents = TalentService.GetNew(null);
+                if (newTalents.Count() > 0)
+                {
+                    var newTalentsVM = new TalentsCategorizedVM(
+                        new Category()
+                        {
+                            ID = (int)CategoryEnum.neW,
+                            Name = "Все новые"
+                        },
+                        newTalents.ToList());
+                    talentsCategorizedVM.Add(newTalentsVM);
+                }
+            }
+            else if (categoryID == (int)CategoryEnum.featured)
+            {
+                var featuredTalents = TalentService.GetFeatured(null, 6);
+                if (featuredTalents.Count() > 0)
+                {
+                    var featuredTalentsVM = new TalentsCategorizedVM(
+                        new Category()
+                        {
+                            ID = (int)CategoryEnum.featured,
+                            Name = "Популярные"
+                        },
+                        featuredTalents.ToList());
+                    talentsCategorizedVM.Add(featuredTalentsVM);
+                }
+
+                var newTalents = TalentService.GetNewInFeatured(6);
+                if (newTalents.Count() > 0)
+                {
+                    var newTalentsVM = new TalentsCategorizedVM(
+                        new Category()
+                        {
+                            ID = (int)CategoryEnum.neW,
+                            Name = "Новые"
+                        },
+                        newTalents.ToList());
+                    talentsCategorizedVM.Add(newTalentsVM);
+                }
+
+                var allTalents = TalentService.GetFeatured(null);
+                if (allTalents.Count() > 0)
+                {
+                    var allTalentsVM = new TalentsCategorizedVM(
+                        new Category()
+                        {
+                            ID = (int)CategoryEnum.neW,
+                            Name = "Все Популярные"
+                        },
+                        allTalents.ToList());
+                    talentsCategorizedVM.Add(allTalentsVM);
+                }
+            }
+            else
+            {
+                var categoryDB = CategoryService.GetActiveByID(categoryID);
+                if (categoryDB == null)
+                    return NotFound("Category not found");
+
+                var featuredTalents = TalentService.GetFeatured(categoryID, 6);
+                if (featuredTalents.Count() > 0)
+                {
+                    var featuredTalentsVM = new TalentsCategorizedVM(
+                        new Category()
+                        {
+                            ID = (int)CategoryEnum.featured,
+                            Name = "Популярные"
+                        },
+                        featuredTalents.ToList());
+                    talentsCategorizedVM.Add(featuredTalentsVM);
+                }
+
+                var newTalents = TalentService.GetNew(categoryID, 6);
+                if (newTalents.Count() > 0)
+                {
+                    var newTalentsVM = new TalentsCategorizedVM(
+                        new Category()
+                        {
+                            ID = (int)CategoryEnum.neW,
+                            Name = "Новые"
+                        },
+                        newTalents.ToList());
+                    talentsCategorizedVM.Add(newTalentsVM);
+                }
+
+                var allTalents = TalentService.Search(categoryID, SortTypeEnum.def);
+                if (allTalents.Count() > 0)
+                {
+                    var allTalentsVM = new TalentsCategorizedVM(
+                        new Category()
+                        {
+                            ID = (int)CategoryEnum.neW,
+                            Name = "Все"
+                        },
+                        allTalents.ToList());
+                    talentsCategorizedVM.Add(allTalentsVM);
+                }
+
+                ViewBag.categoryName = categoryDB.Name;
+            }
+
+            foreach (var categoryTalentsVM in talentsCategorizedVM)
+            {
+                foreach (var talent in categoryTalentsVM.Talents)
+                {
+                    if (talent.Avatar.ID == 0)
+                        talent.Avatar.Url = GetRandomPhotoUrl();
+                }
+            }
+
             return PartialView("_GetCategorized", talentsCategorizedVM);
         }
 
