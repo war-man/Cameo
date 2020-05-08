@@ -25,14 +25,19 @@ using Microsoft.Extensions.Options;
 using Cameo.Utils;
 using Microsoft.Extensions.Logging;
 using Cameo.DependencyInjections;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 namespace Cameo
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment _env;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -46,11 +51,16 @@ namespace Cameo
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+#if DEBUG
+            string connectionStringName = "DefaultConnection";
+#else
+            string connectionStringName = "ServerConnection";
+#endif
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Cameo")));
+               options.UseSqlServer(
+                   Configuration.GetConnectionString(connectionStringName),
+                   b => b.MigrationsAssembly("Cameo")));
 
             //services.AddDefaultIdentity<ApplicationUser>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -65,9 +75,14 @@ namespace Cameo
             services.Configure<AppConfiguration>(Configuration.GetSection("MySettings"));
 
             //Hangfire
+#if DEBUG
+            string connectionString = "Data Source=.;Initial Catalog=Cameo;User Id=sa;Password=490969;";
+#else
+            string connectionString = "Data Source=192.168.44.96;Initial Catalog=Cameo;User Id=sa;Password=cloudstack;";
+#endif
             services.AddHangfire(config => 
                 config.UseSqlServerStorage(
-                    "Data Source=.;Initial Catalog=Cameo;User Id=sa;Password=490969;", 
+                    connectionString, 
                     new SqlServerStorageOptions
                     {
                         CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
@@ -91,6 +106,14 @@ namespace Cameo
 
             //add services
             services.AddServices();
+
+            var webRoot = _env.ContentRootPath;
+
+            services.AddSingleton<IFileProvider>(
+              new PhysicalFileProvider(
+                Path.Combine(webRoot, "Uploads")));
+
+            ConfigureFirebase();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -167,6 +190,16 @@ namespace Cameo
             //both variants work
             //BackgroundJob.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
             //backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
+        }
+
+        private void ConfigureFirebase()
+        {
+            AppOptions options = new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile(_env.WebRootPath + "\\firebase\\cameo-uz-firebase-adminsdk-nqyi1-5db0b9990d.json")
+            };
+
+            FirebaseApp.Create(options);
         }
     }
 }

@@ -18,6 +18,9 @@ namespace Cameo.Models
         [StringLength(256)]
         public string LastName { get; set; }
 
+        [StringLength(256)]
+        public string FullName { get; set; }
+
         public string Bio { get; set; }
 
         [ForeignKey("SocialArea")]

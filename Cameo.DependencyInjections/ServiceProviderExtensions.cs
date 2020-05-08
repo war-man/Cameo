@@ -37,6 +37,7 @@ namespace Cameo.DependencyInjections
         {
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IHangfireService, HangfireService>();
+            services.AddTransient<IFirebaseService, FirebaseService>();
 
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<ICustomerService, CustomerService>();

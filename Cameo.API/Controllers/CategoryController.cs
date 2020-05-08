@@ -21,7 +21,7 @@ namespace Cameo.API.Controllers
             CategoryService = categoryService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public List<SelectListItem> Get(int selected = 0)
         {

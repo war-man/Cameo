@@ -7,5 +7,7 @@ namespace Cameo.Models
 {
     public class Customer : Person
     {
+        public int Balance { get; set; }
+        public string AccountNumber { get; set; } //лицевой счет
     }
 }

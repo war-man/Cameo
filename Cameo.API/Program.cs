@@ -19,6 +19,9 @@ namespace Cameo.API
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseIISIntegration()
+                .UseSetting(WebHostDefaults.DetailedErrorsKey, "true")
                 .UseStartup<Startup>();
     }
 }

@@ -15,7 +15,7 @@ namespace Cameo.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -37,6 +37,8 @@ namespace Cameo.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirebaseUid");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -158,7 +160,11 @@ namespace Cameo.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AccountNumber");
+
                     b.Property<int?>("AvatarID");
+
+                    b.Property<int>("Balance");
 
                     b.Property<string>("Bio");
 
@@ -169,6 +175,9 @@ namespace Cameo.Data.Migrations
                     b.Property<DateTime>("DateModified");
 
                     b.Property<string>("FirstName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("FullName")
                         .HasMaxLength(256);
 
                     b.Property<bool>("IsDeleted");
@@ -318,6 +327,9 @@ namespace Cameo.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("FollowersCount");
+
+                    b.Property<string>("FullName")
+                        .HasMaxLength(256);
 
                     b.Property<int?>("IntroVideoID");
 

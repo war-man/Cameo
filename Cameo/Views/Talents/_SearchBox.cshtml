@@ -6,7 +6,7 @@
         </div>
         <input type="text" id="search-box" class="form-control" onkeyup="Search(this.value)" placeholder="Попробуйте 'Abduvali' или 'Абдували'" />
         <div class="input-group-append">
-            <button class="btn btn-link" type="button" onclick="ClearSearchInput();"><i class="dlicon ui-1_simple-remove"></i></button>
+            <span class="input-group-text" onclick="ClearSearchInput();"><i class="dlicon ui-1_simple-remove" style="visibility:hidden;"></i></span>
         </div>
     </div>
     <div id="suggesstion-box"></div>
@@ -17,6 +17,11 @@
 
     function Search(searchText)
     {
+        if (searchText != "")
+            $(".frmSearch .input-group-append .dlicon").css("visibility", "visible");
+        else
+            $(".frmSearch .input-group-append .dlicon").css("visibility", "hidden");
+
         $("#suggesstion-box").html("");
 
         currentRequest = $.ajax({
@@ -58,6 +63,7 @@
 
         $("#search-box").val("").focus();
         $("#suggesstion-box").html("");
+        $(".frmSearch .input-group-append .dlicon").css("visibility", "hidden");
     }
 
     function SelectTalent(id) {
@@ -66,6 +72,27 @@
 </script>
 
 <style>
+    .frmSearch .input-group-text {
+        background-color: inherit;
+    }
+
+    .frmSearch #search-box {
+        border-left: none;
+        border-right: none;
+        border-radius: 0px;
+    }
+
+    .frmSearch #search-box:focus, .frmSearch #search-box:active {
+        outline: none !important;
+        box-shadow: none;
+        border-color: none;
+    }
+
+    .frmSearch .input-group-append
+    {
+        cursor: pointer;
+    }
+
     #talentsSearchList {
         float: left;
         list-style: none;

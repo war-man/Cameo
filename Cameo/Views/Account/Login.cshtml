@@ -1,0 +1,264 @@
+﻿@model Cameo.ViewModels.RegisterVM
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
+}
+
+<!-- Start Contact Form -->
+<div class="draven-contact-form bg-color ptb--100" data-bg-color="#f53e6a">
+    <div class="plr--180 plr_lp--70 plr_lp--70 plr_md--50 plr_lg--50 plr_sm--30">
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                <!--Google Map Area Start-->
+                <div class="contact-address contact-custom-content--2 ptb-10">
+                    <div class="inner plr--10">
+                        <div class="content">
+                            <h1 class="text-white font--72 textUpper font-2 mb--20">Авторизация</h1>
+                            <p class="lineheight--2 font--18 text-white">
+                                Ut in massa in quam cursus dapibus at quis
+                                tortor. Curabitur volutpat vitae ligula eu viverra.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--Google Map Area Start-->
+            </div>
+            <div class="col-lg-6 pr--140 offset-lg-1 pr_lg--15 pr_lp--15 pr_md--15 pr_sm--15 mt_md--40 mt_sm--40">
+                <div class="contact-form-wrapper">
+                    <!-- Form Style Wrapper -->
+                    <div class="contact__form--7" id="contact-form8">
+                        <!-- Phone number input -->
+                        <div class="row" id="phoneNumberForm">
+                            <div class="col-lg-12">
+                                <div class="input-group" style="margin-bottom: 20px">
+                                    @*<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>*@
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="border-radius: 0px; font-size: 18px">+998</span>
+                                    </div>
+                                    <input id="phoneNumber" type="text" placeholder="Номер телефона *" style="margin: 0px;">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <p class="form-messege"></p>
+                            </div>
+                            <div class="col-lg-12">
+                                <div id="recaptcha-container"></div>
+                                <input type="submit" value="Продолжить" onclick="SendVerificationCode()">
+                            </div>
+                        </div>
+
+                        <!-- Code input -->
+                        <div class="row" id="codeForm" style="display: none;">
+                            <div class="col-lg-12">
+                                <input id="code" type="text" placeholder="Код из смс">
+                            </div>
+                            <div class="col-lg-12">
+                                <p class="form-messege"></p>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="submit" value="Назад" onclick="BackToPhoneNumberForm()">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="submit" value="Продолжить" onclick="VerifyCode()">
+                            </div>
+                        </div>
+
+                        <!-- Full name and username inputs form -->
+                        <form asp-controller="Account" asp-action="Register" method="post" id="registrationForm" data-ajax="true" data-ajax-method="post" style="display: none;"
+                            data-ajax-begin="RegistrationBegin"
+                            data-ajax-failure="RegistrationError"
+                            data-ajax-success="RegistrationSucceeded"
+                            data-ajax-complete="RegistrationCompleted">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <input asp-for="FirebaseUid" type="hidden" />
+                                    <input asp-for="FullName" type="text" placeholder="Полное имя *">
+                                    <span asp-validation-for="FullName" class="form-messege"></span>
+                                </div>
+                                <div class="col-lg-12">
+                                    <input asp-for="UserName" type="text" placeholder="Имя пользователя *">
+                                    <span asp-validation-for="UserName" class="form-messege"></span>
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="form-messege"></p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="submit" value="Назад" onclick="BackToCodeForm()">
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="submit" value="Отправить">
+                                    @*<p class="form-messege">we fawe fwe we</p>*@
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Form Style Wrapper -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Contact Form -->
+
+<style>
+    #phoneNumber {
+        position: relative;
+        flex: 1 1 auto;
+        width: 1%;
+    }
+</style>
+
+@section Scripts {
+    @*<partial name="_ValidationScriptsPartial" />*@
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+
+    <script>
+        firebase.auth().languageCode = 'ru';
+
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+
+        function SendVerificationCode()
+        {
+            $("#phoneNumberForm .form-messege").html("");
+            $("#phoneNumberForm input").attr("disabled", "disabled");
+            var phoneNumber = "+998" + $("#phoneNumber").val();
+            var appVerifier = window.recaptchaVerifier;
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then(function (confirmationResult)
+                {
+                    // SMS sent. Prompt user to type the code from the message, then sign the
+                    // user in with confirmationResult.confirm(code).
+                    window.confirmationResult = confirmationResult;
+
+                    $("#phoneNumberForm").hide("fast");
+                    $("#codeForm").show("fast");
+
+                    $("#phoneNumberForm input").removeAttr("disabled");
+                }).catch(function (error)
+                {
+                    // Error; SMS not sent
+                    // ...
+                    //console.log(error);
+                    window.recaptchaVerifier.render().then(function (widgetId)
+                    {
+                        grecaptcha.reset(widgetId);
+                    });
+                    $("#phoneNumberForm input").removeAttr("disabled");
+                    $("#phoneNumberForm .form-messege").html("Не удалось отправить смс. Проверьте правильность номера")
+                });
+        }
+
+        function VerifyCode()
+        {
+            $("#codeForm .form-messege").html("");
+            $("#codeForm input").attr("disabled", "disabled");
+            var code = $("#code").val();
+            confirmationResult.confirm(code).then(function (result)
+            {
+                // User signed in successfully.
+                var user = result.user;
+                //console.log(user);
+                //console.log(user.uid);
+                Authenticate(user.uid);
+                // ...
+            }).catch(function (error)
+            {
+                //console.log(error);
+                // User couldn't sign in (bad verification code?)
+                // ...
+                $("#codeForm input").removeAttr("disabled");
+                $("#codeForm .form-messege").html("Неверный код");
+            });
+        }
+
+        function Authenticate(uid)
+        {
+            $.ajax({
+                type: "POST",
+                url: "/Account/Authenticate?uid=" + uid,
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                beforeSend: function ()
+                {
+                    $("#codeForm input").attr("disabled", "disabled");
+                },
+                success: function (data)
+                {
+                    if (data.registration_is_required == true)
+                    {
+                        $("#codeForm").hide("fast");
+                        $("#registrationForm").show("fast");
+                        $("#FirebaseUid").val(uid);
+                    }
+                    else
+                        window.location.replace("/");
+                },
+                error: function (data)
+                {
+                    //console.log(data);
+                    alert("Ajax error (status code = " + data.status + "): " + data.responseJSON.errorMessage);
+                },
+                complete: function (data)
+                {
+                    $("#codeForm input").removeAttr("disabled");
+                }
+            });
+        }
+
+        function BackToPhoneNumberForm()
+        {
+            window.recaptchaVerifier.render().then(function (widgetId)
+            {
+                grecaptcha.reset(widgetId);
+            });
+            $("#codeForm").hide("fast");
+            $("#phoneNumberForm").show("fast");
+        }
+
+        function BackToCodeForm()
+        {
+            $("#registrationForm").hide("fast");
+            $("#codeForm").show("fast");
+        }
+
+        function RegistrationBegin(data)
+        {
+            //console.log(data);
+            //console.log("begin");
+            $("#registrationForm input").attr("disabled", "disabled");
+            $("#registrationForm .form-messege").last().html("");
+        }
+
+        function RegistrationError(data)
+        {
+            //console.log(data);
+            //console.log("error!");
+
+            var errorMessage = "";
+            for (var key in data.responseJSON)
+            {
+                errorMessage += data.responseJSON[key] + "</br>";
+            }
+            $("#registrationForm .form-messege").last().html(errorMessage);
+        }
+
+        function RegistrationSucceeded(data)
+        {
+            //console.log(data);
+            //console.log("success!");
+            window.location.replace("/");
+        }
+
+        function RegistrationCompleted(data)
+        {
+            //console.log(data);
+            //console.log("completed!");
+            $("#registrationForm input").removeAttr("disabled");
+        }
+    </script>
+}

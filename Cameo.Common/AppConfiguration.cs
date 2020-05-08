@@ -26,6 +26,8 @@ namespace Cameo.Common
 
         public string TokenValidAudience { get; set; }
         public string TokenValidIssuer { get; set; }
+        public string TokenValidAudienceServer { get; set; }
+        public string TokenValidIssuerServer { get; set; }
         public string TokenSecurityKey { get; set; }
         public int TokenExpirationPeriodInDays { get; set; }
     }

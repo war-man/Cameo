@@ -32,18 +32,14 @@
         <!-- Start Header -->
         <partial name="_HeaderDaven" />
         <!-- Start Header -->
-
         <!-- Start Loader Area -->
         <partial name="_LoaderAreaDaven" />
         <!-- End Loader Area -->
-
         <!-- Start Page Wrapper -->
         <main class="page-content">
             @RenderBody()
         </main>
         <!-- End Page Wrapper -->
-        
-
         <!-- Start Footer Area -->
         <partial name="_FooterDaven" />
         <!-- End Footer Area -->
@@ -70,6 +66,8 @@
     <script src="~/lib/DavenTheme/js/revolution.extension.slideanims.min.js"></script>
     <script src="~/lib/DavenTheme/js/revolution.extension.video.min.js"></script>
     <script src="~/lib/DavenTheme/js/revoulation.js"></script>
+
+    <partial name="_FirebaseConfig" />
 
     @*<environment include="Development">
             <script src="~/lib/jquery/dist/jquery.js"></script>

@@ -35,10 +35,16 @@ namespace Cameo.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+#if DEBUG
+            string connectionStringName = "DefaultConnection";
+#else
+            string connectionStringName = "ServerConnection";
+#endif
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Cameo")));
+               options.UseSqlServer(
+                   Configuration.GetConnectionString(connectionStringName),
+                   b => b.MigrationsAssembly("Cameo")));
 
             //services.AddIdentity<ApplicationUser, IdentityRole>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -62,19 +68,25 @@ namespace Cameo.API
 
             //add services
             services.AddServices();
-
+            
+#if DEBUG
+            string validIssuer = "https://localhost:44322";
+#else
+            string validIssuer = "https://cameoapi.wiut.uz";
+#endif
+            string tokenSecurityKey = "9mxhkbcmmreh2hsnbqh6lisy21t06eg563txkb9w8t4012tiy1fa9xei4d80hucunvhdwgza0917hkf6b0mr36zyadoxxqhqrottbyuhylelvzhd69uz6znmii9lex1a";
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                     {
                         RequireExpirationTime = true,
-                        ValidIssuer = "https://localhost:44322",
+                        ValidIssuer = validIssuer,
                         ValidateIssuer = true,
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("9mxhkbcmmreh2hsnbqh6lisy21t06eg563txkb9w8t4012tiy1fa9xei4d80hucunvhdwgza0917hkf6b0mr36zyadoxxqhqrottbyuhylelvzhd69uz6znmii9lex1a"))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSecurityKey))
                     };
                 });
 
@@ -96,13 +108,20 @@ namespace Cameo.API
             }
             else
             {
+                app.UseDeveloperExceptionPage();
                 app.UseHsts();
             }
 
             app.UseAuthentication();
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            //app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

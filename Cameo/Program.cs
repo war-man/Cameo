@@ -21,6 +21,7 @@ namespace Cameo
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
                 .UseIISIntegration()
+                .UseSetting(WebHostDefaults.DetailedErrorsKey, "true")
                 .UseStartup<Startup>();
     }
 }
