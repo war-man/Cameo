@@ -139,8 +139,7 @@ namespace Cameo.Controllers
             }
             catch (Exception ex)
             {
-                int k = 0;
-                k++;
+                ModelState.AddModelError("", ex.Message);
             }
             
 

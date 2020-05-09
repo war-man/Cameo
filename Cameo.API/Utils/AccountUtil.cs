@@ -1,6 +1,6 @@
 ﻿using Cameo.Models;
 using Cameo.Models.Enums;
-using Cameo.ViewModels;
+using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Cameo.Utils
+namespace Cameo.API.Utils
 {
     public class AccountUtil
     {

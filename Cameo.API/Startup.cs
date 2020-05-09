@@ -7,6 +7,8 @@ using Cameo.Common;
 using Cameo.Data;
 using Cameo.DependencyInjections;
 using Cameo.Models;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,9 +27,12 @@ namespace Cameo.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment _env;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -56,7 +61,8 @@ namespace Cameo.API
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddCors();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.Configure<AppConfiguration>(Configuration.GetSection("MySettings"));
 
@@ -75,9 +81,16 @@ namespace Cameo.API
             string validIssuer = "https://cameoapi.wiut.uz";
 #endif
             string tokenSecurityKey = "9mxhkbcmmreh2hsnbqh6lisy21t06eg563txkb9w8t4012tiy1fa9xei4d80hucunvhdwgza0917hkf6b0mr36zyadoxxqhqrottbyuhylelvzhd69uz6znmii9lex1a";
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                     {
                         RequireExpirationTime = true,
@@ -95,6 +108,8 @@ namespace Cameo.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
+
+            ConfigureFirebase();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,6 +126,12 @@ namespace Cameo.API
                 app.UseDeveloperExceptionPage();
                 app.UseHsts();
             }
+
+            // global cors policy
+            //app.UseCors(x => x
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader());
 
             app.UseAuthentication();
 
@@ -132,6 +153,16 @@ namespace Cameo.API
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+        }
+
+        private void ConfigureFirebase()
+        {
+            AppOptions options = new AppOptions()
+            {
+                Credential = GoogleCredential.FromFile(_env.WebRootPath + "\\firebase\\cameo-uz-firebase-adminsdk-nqyi1-5db0b9990d.json")
+            };
+
+            FirebaseApp.Create(options);
         }
     }
 }

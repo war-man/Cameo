@@ -33,6 +33,8 @@ namespace Cameo.Controllers
 
         public IActionResult Index(int? cat)
         {
+            var curUser = accountUtil.GetCurrentUser(User);
+
             PrepareViewDataItems(cat);
             return View(new FilterVM());
         }

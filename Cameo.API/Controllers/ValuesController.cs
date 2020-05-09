@@ -2,25 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.API.Controllers
 {
+    //[AllowAnonymous()]
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ValuesController : BaseController
     {
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+            var curUser = accountUtil.GetCurrentUser(User);
+
             return new string[] { "value1", "value2" };
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer")]
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
+            var curUser = accountUtil.GetCurrentUser(User);
             return "value";
         }
 

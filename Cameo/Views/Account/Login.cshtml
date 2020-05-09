@@ -185,6 +185,7 @@
                 //dataType: "json",
                 beforeSend: function ()
                 {
+                    $("#codeForm .form-messege").html("");
                     $("#codeForm input").attr("disabled", "disabled");
                 },
                 success: function (data)
@@ -201,7 +202,8 @@
                 error: function (data)
                 {
                     //console.log(data);
-                    alert("Ajax error (status code = " + data.status + "): " + data.responseJSON.errorMessage);
+                    $("#codeForm .form-messege").html(data.responseJSON.errorMessage);
+                    //alert("Ajax error (status code = " + data.status + "): " + data.responseJSON.errorMessage);
                 },
                 complete: function (data)
                 {

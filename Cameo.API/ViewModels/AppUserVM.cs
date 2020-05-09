@@ -1,11 +1,11 @@
-﻿using Cameo.Utils;
+﻿using Cameo.API.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Cameo.ViewModels
+namespace Cameo.API.ViewModels
 {
     public class AppUserVM
     {

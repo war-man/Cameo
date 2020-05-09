@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Cameo.Utils
+namespace Cameo.Common
 {
     public static class Constants
     {
