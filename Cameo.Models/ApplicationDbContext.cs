@@ -46,5 +46,6 @@ namespace Cameo.Data
         public DbSet<VideoRequestType> VideoRequestTypes { get; set; }
         public DbSet<VideoRequestStatus> VideoRequestStatuses { get; set; }
         public DbSet<LogTalentPrice> LogTalentPrice { get; set; }
+        public DbSet<FirebaseRegistrationToken> FirebaseRegistrationTokens { get; set; }
     }
 }

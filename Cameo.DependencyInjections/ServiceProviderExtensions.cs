@@ -31,6 +31,7 @@ namespace Cameo.DependencyInjections
             services.AddTransient<IVideoRequestTypeRepository, VideoRequestTypeRepository>();
             services.AddTransient<ILogTalentPriceRepository, LogTalentPriceRepository>();
             services.AddTransient<IVideoRequestStatusRepository, VideoRequestStatusRepository>();
+            services.AddTransient<IFirebaseRegistrationTokenRepository, FirebaseRegistrationTokenRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -52,6 +53,7 @@ namespace Cameo.DependencyInjections
             services.AddTransient<ITalentBalanceService, TalentBalanceService>();
             services.AddTransient<ILogTalentPriceService, LogTalentPriceService>();
             services.AddTransient<IVideoRequestStatusService, VideoRequestStatusService>();
+            services.AddTransient<IFirebaseRegistrationTokenService, FirebaseRegistrationTokenService>();
         }
     }
 }

@@ -21,8 +21,8 @@ namespace Cameo.API.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         // GET api/values/5
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {

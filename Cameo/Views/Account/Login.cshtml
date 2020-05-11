@@ -11,7 +11,7 @@
             <div class="col-lg-8">
                 <div class="contact-form-wrapper">
                     <div class="section-title mb--30">
-                        <h1 class="fontWeight400">Стать талантом</h1>
+                        <h1 class="fontWeight400">Войти с помощью номера телефона</h1>
                         <p class="font--18">
                             If you have fans and want to join Cameo as talent, you can enroll here and we'll be in touch.
                         </p>
@@ -91,39 +91,6 @@
     </div>
 </div>
 <!-- End Contact Form -->
-
-@*<!-- Start Contact Form -->
-<div class="draven-contact-form bg-color ptb--100" data-bg-color="#f53e6a">
-    <div class="plr--180 plr_lp--70 plr_lp--70 plr_md--50 plr_lg--50 plr_sm--30">
-        <div class="row align-items-center">
-            <div class="col-lg-5">
-                <!--Google Map Area Start-->
-                <div class="contact-address contact-custom-content--2 ptb-10">
-                    <div class="inner plr--10">
-                        <div class="content">
-                            <h1 class="text-white font--72 textUpper font-2 mb--20">Авторизация</h1>
-                            <p class="lineheight--2 font--18 text-white">
-                                Ut in massa in quam cursus dapibus at quis
-                                tortor. Curabitur volutpat vitae ligula eu viverra.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!--Google Map Area Start-->
-            </div>
-            <div class="col-lg-6 pr--140 offset-lg-1 pr_lg--15 pr_lp--15 pr_md--15 pr_sm--15 mt_md--40 mt_sm--40">
-                <div class="contact-form-wrapper">
-                    <!-- Form Style Wrapper -->
-                    <div class="contact__form--7">
-                        
-                    </div>
-                    <!-- Form Style Wrapper -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Contact Form -->*@
 
 <style>
     #phoneNumber {
@@ -207,9 +174,9 @@
             {
                 // User signed in successfully.
                 var user = result.user;
-                //console.log(user);
+                console.log(user);
                 //console.log(user.uid);
-                Authenticate(user.uid);
+                //Authenticate(user.uid);
                 // ...
             }).catch(function (error)
             {

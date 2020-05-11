@@ -15,10 +15,14 @@ namespace Cameo.Services
     public class FirebaseService : IFirebaseService
     {
         private readonly IHostingEnvironment _env;
+        private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
 
-        public FirebaseService(IHostingEnvironment env)
+        public FirebaseService(
+            IHostingEnvironment env,
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
         {
             _env = env;
+            FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
         }
 
         //public void AddAndSaveFile(Attachment model, FileStream stream, string creatorID)
@@ -49,5 +53,10 @@ namespace Cameo.Services
 
             return userRecord.PhoneNumber;
         }
+
+        //public void AddRegistrationToken(FirebaseRegistrationToken registrationToken, string userID)
+        //{
+        //    FirebaseRegistrationTokenService.Add(registrationToken, userID);
+        //}
     }
 }

@@ -194,7 +194,8 @@ namespace Cameo.Services
             IQueryable<Talent> result = GetWithRelatedDataForSearchAsIQueryable();
             result = result.Where(m => 
                 !string.IsNullOrWhiteSpace(m.FirstName) && m.FirstName.ToLower().Contains(searchText) 
-                || !string.IsNullOrWhiteSpace(m.LastName) && m.LastName.ToLower().Contains(searchText));
+                || !string.IsNullOrWhiteSpace(m.LastName) && m.LastName.ToLower().Contains(searchText)
+                || !string.IsNullOrWhiteSpace(m.FullName) && m.FullName.ToLower().Contains(searchText));
 
             return result;
         }
@@ -207,20 +208,25 @@ namespace Cameo.Services
 
         private IQueryable<Talent> GetWithRelatedDataForSearchAsIQueryable()
         {
-#if DEBUG
+//#if DEBUG
+//            return GetWithRelatedDataAsIQueryable()
+//                .Where(m => m.IsAvailable
+//                    /*&& m.IsConfirmed*/
+//                    && !m.IsDeleted);
+//            //&& m.CreditCardExpire);
+//#else
+//             return GetWithRelatedDataAsIQueryable()
+//                .Where(m => m.User.TalentApprovedByAdmin
+//                    && m.IsAvailable
+//                    /*&& m.IsConfirmed*/
+//                    && !m.IsDeleted);
+//            //&& m.CreditCardExpire);
+//#endif
+
             return GetWithRelatedDataAsIQueryable()
                 .Where(m => m.IsAvailable
                     /*&& m.IsConfirmed*/
                     && !m.IsDeleted);
-            //&& m.CreditCardExpire);
-#else
-             return GetWithRelatedDataAsIQueryable()
-                .Where(m => m.User.TalentApprovedByAdmin
-                    && m.IsAvailable
-                    /*&& m.IsConfirmed*/
-                    && !m.IsDeleted);
-            //&& m.CreditCardExpire);
-#endif
         }
 
         public IQueryable<Talent> GetRelated(Talent model)

@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cameo.API.ViewModels;
 using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
-using Cameo.Utils;
-using Cameo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Cameo.Controllers
+namespace Cameo.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class TalentsController : BaseController
     {
         private readonly ITalentService TalentService;
@@ -31,15 +32,8 @@ namespace Cameo.Controllers
             VideoRequestService = videoRequestService;
         }
 
-        public IActionResult Index(int? cat)
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-
-            PrepareViewDataItems(cat);
-            return View(new FilterVM());
-        }
-
-        public IActionResult GetCategorized()
+        [HttpGet("GetCategorized")]
+        public ActionResult<IEnumerable<TalentsCategorizedVM>> GetCategorized()
         {
             List<TalentsCategorizedVM> talentsCategorizedVM = new List<TalentsCategorizedVM>();
             List<Category> categories = new List<Category>();
@@ -91,19 +85,11 @@ namespace Cameo.Controllers
                 }
             }
 
-            ViewBag.isHomePage = true;
-
-            return PartialView("_GetCategorized", talentsCategorizedVM);
+            return talentsCategorizedVM;
         }
 
-        public IActionResult ByCategory(int cat)
-        {
-            ViewBag.categoryID = cat;
-
-            return View();
-        }
-
-        public IActionResult GetByCategory(int categoryID)
+        [HttpGet("GetByCategory")]
+        public ActionResult<IEnumerable<TalentsCategorizedVM>> GetByCategory(int categoryID)
         {
             //1. if category = new then
             //  - all in new
@@ -135,31 +121,34 @@ namespace Cameo.Controllers
             }
             else if (categoryID == (int)CategoryEnum.featured)
             {
-                var featuredTalents = TalentService.GetFeatured(null, 6);
-                if (featuredTalents.Count() > 0)
-                {
-                    var featuredTalentsVM = new TalentsCategorizedVM(
-                        new Category()
-                        {
-                            ID = (int)CategoryEnum.featured,
-                            Name = "Популярные"
-                        },
-                        featuredTalents.ToList());
-                    talentsCategorizedVM.Add(featuredTalentsVM);
-                }
+                //DO NOT DELETE THIS CODE!!!
+                //must be uncommented later when number of telants will be large
 
-                var newTalents = TalentService.GetNewInFeatured(6);
-                if (newTalents.Count() > 0)
-                {
-                    var newTalentsVM = new TalentsCategorizedVM(
-                        new Category()
-                        {
-                            ID = (int)CategoryEnum.neW,
-                            Name = "Новые"
-                        },
-                        newTalents.ToList());
-                    talentsCategorizedVM.Add(newTalentsVM);
-                }
+                //var featuredTalents = TalentService.GetFeatured(null, 6);
+                //if (featuredTalents.Count() > 0)
+                //{
+                //    var featuredTalentsVM = new TalentsCategorizedVM(
+                //        new Category()
+                //        {
+                //            ID = (int)CategoryEnum.featured,
+                //            Name = "Популярные"
+                //        },
+                //        featuredTalents.ToList());
+                //    talentsCategorizedVM.Add(featuredTalentsVM);
+                //}
+
+                //var newTalents = TalentService.GetNewInFeatured(6);
+                //if (newTalents.Count() > 0)
+                //{
+                //    var newTalentsVM = new TalentsCategorizedVM(
+                //        new Category()
+                //        {
+                //            ID = (int)CategoryEnum.neW,
+                //            Name = "Новые"
+                //        },
+                //        newTalents.ToList());
+                //    talentsCategorizedVM.Add(newTalentsVM);
+                //}
 
                 var allTalents = TalentService.GetFeatured(null);
                 if (allTalents.Count() > 0)
@@ -180,31 +169,34 @@ namespace Cameo.Controllers
                 if (categoryDB == null)
                     return NotFound("Category not found");
 
-                var featuredTalents = TalentService.GetFeatured(categoryID, 6);
-                if (featuredTalents.Count() > 0)
-                {
-                    var featuredTalentsVM = new TalentsCategorizedVM(
-                        new Category()
-                        {
-                            ID = (int)CategoryEnum.featured,
-                            Name = "Популярные"
-                        },
-                        featuredTalents.ToList());
-                    talentsCategorizedVM.Add(featuredTalentsVM);
-                }
+                //DO NOT DELETE THIS CODE!!!
+                //must be uncommented later when number of telants will be large
 
-                var newTalents = TalentService.GetNew(categoryID, 6);
-                if (newTalents.Count() > 0)
-                {
-                    var newTalentsVM = new TalentsCategorizedVM(
-                        new Category()
-                        {
-                            ID = (int)CategoryEnum.neW,
-                            Name = "Новые"
-                        },
-                        newTalents.ToList());
-                    talentsCategorizedVM.Add(newTalentsVM);
-                }
+                //var featuredTalents = TalentService.GetFeatured(categoryID, 6);
+                //if (featuredTalents.Count() > 0)
+                //{
+                //    var featuredTalentsVM = new TalentsCategorizedVM(
+                //        new Category()
+                //        {
+                //            ID = (int)CategoryEnum.featured,
+                //            Name = "Популярные"
+                //        },
+                //        featuredTalents.ToList());
+                //    talentsCategorizedVM.Add(featuredTalentsVM);
+                //}
+
+                //var newTalents = TalentService.GetNew(categoryID, 6);
+                //if (newTalents.Count() > 0)
+                //{
+                //    var newTalentsVM = new TalentsCategorizedVM(
+                //        new Category()
+                //        {
+                //            ID = (int)CategoryEnum.neW,
+                //            Name = "Новые"
+                //        },
+                //        newTalents.ToList());
+                //    talentsCategorizedVM.Add(newTalentsVM);
+                //}
 
                 var allTalents = TalentService.Search(categoryID, SortTypeEnum.def);
                 if (allTalents.Count() > 0)
@@ -218,8 +210,6 @@ namespace Cameo.Controllers
                         allTalents.ToList());
                     talentsCategorizedVM.Add(allTalentsVM);
                 }
-
-                ViewBag.categoryName = categoryDB.Name;
             }
 
             foreach (var categoryTalentsVM in talentsCategorizedVM)
@@ -231,94 +221,11 @@ namespace Cameo.Controllers
                 }
             }
 
-            return PartialView("_GetCategorized", talentsCategorizedVM);
+            return talentsCategorizedVM;
         }
 
-        //public IActionResult Details(int id)
-        //{
-        //    Talent model = TalentService.GetActiveByID(id);
-        //    if (model == null)
-        //        return NotFound();
-
-        //    TalentDetailsVM modelVM = new TalentDetailsVM(model);
-
-        //    ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
-
-        //    return View(modelVM);
-        //}
-
-        public IActionResult Details(string username)
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetActiveByUsername(username);
-            if (model == null)
-                return NotFound();
-
-            TalentDetailsVM modelVM = new TalentDetailsVM(model);
-
-            VideoRequest videoRequest = VideoRequestService.GetRandomSinglePublishedByTalent(model, curUser.ID);
-            if (videoRequest != null)
-            {
-                modelVM.Video = new AttachmentDetailsVM(videoRequest.Video);
-                modelVM.RequestID = videoRequest.ID;
-            }
-
-            ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
-            ViewData["isUserCustomer"] = AccountUtil.IsUserCustomer(curUser);
-
-            return View(modelVM);
-        }
-
-        public IActionResult GetLatestForTalent(int talentID, int requestIDToBeExcluded)
-        {
-            Talent talent = TalentService.GetActiveByID(talentID);
-            if (talent == null)
-                return NotFound();
-
-            List<VideoRequest> videos = VideoRequestService.GetPublicForTalent(talent, requestIDToBeExcluded)
-                .ToList();
-
-            List<VideoDetailsVM> videosVM = new List<VideoDetailsVM>();
-            foreach (var item in videos)
-            {
-                videosVM.Add(new VideoDetailsVM(item));
-            }
-
-            return PartialView(videosVM);
-        }
-
-        public IActionResult GetRelated(int id)
-        {
-            Talent model = TalentService.GetActiveByID(id);
-            if (model == null)
-                return NotFound();
-
-            List<TalentGridViewItem> relatedTalents = TalentService.GetRelated(model)
-                .Select(m => new TalentGridViewItem(m))
-                .ToList();
-
-            return PartialView(relatedTalents);
-        }
-
-        public IActionResult Get(int categoryID, SortTypeEnum sort)
-        {
-            var talents = TalentService.Search(categoryID, sort)
-                .Select(m => new TalentGridViewItem(m))
-                .ToList();
-
-            foreach (var item in talents)
-            {
-                if (item.Avatar.ID == 0)
-                    item.Avatar.Url = GetRandomPhotoUrl();
-            }
-
-            //ViewData["categories"] = CategoryService.GetAllActive()
-            //    .ToDictionary(m => m.ID, m => m.Name);
-
-            return PartialView(talents);
-        }
-
-        public IActionResult GetBySearchText(string searchText)
+        [HttpGet("GetBySearchText")]
+        public ActionResult<IEnumerable<TalentShortInfoVM>> GetBySearchText(string searchText)
         {
             var talents = TalentService.SearchBySearchText(searchText)
                 .Select(m => new TalentShortInfoVM(m))
@@ -330,43 +237,7 @@ namespace Cameo.Controllers
                     item.Avatar.Url = GetRandomPhotoUrl();
             }
 
-            return PartialView("_SearchBoxResult", talents);
-        }
-
-        private void PrepareViewDataItems(int? cat)
-        {
-            List<SelectListItem> sortingItems = new List<SelectListItem>()
-            {
-                new SelectListItem()
-                {
-                    Value = SortTypeEnum.def.ToString(),
-                    Text = "Обычная сортировка",
-                    Selected = true
-                },
-                new SelectListItem()
-                {
-                    Value = SortTypeEnum.priceAsc.ToString(),
-                    Text = "Цена (по возрастанию)"
-                },
-                new SelectListItem()
-                {
-                    Value = SortTypeEnum.priceDesc.ToString(),
-                    Text = "Цена (по возрастанию)"
-                },
-                new SelectListItem()
-                {
-                    Value = SortTypeEnum.az.ToString(),
-                    Text = "А-Я"
-                },
-                new SelectListItem()
-                {
-                    Value = SortTypeEnum.responseTime.ToString(),
-                    Text = "Время отклика (от быстрого к долгому)"
-                },
-            };
-
-            ViewData["sortingItems"] = sortingItems;
-            ViewData["cat"] = cat;
+            return talents;
         }
 
         private string GetRandomPhotoUrl()
@@ -406,6 +277,45 @@ namespace Cameo.Controllers
             Random random = new Random();
             int randomIndex = random.Next(0, urls.Count);
             return urls[randomIndex];
+        }
+
+
+
+
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+
+            return new string[] { "value1", "value2" };
+        }
+
+        // GET api/values/5
+        [Authorize]
+        [HttpGet("{id}")]
+        public ActionResult<string> Get(int id)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            return "value";
+        }
+
+        // POST api/values
+        [HttpPost]
+        public void Post([FromBody] string value)
+        {
+        }
+
+        // PUT api/values/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
         }
     }
 }
