@@ -21,4 +21,16 @@ namespace Cameo.ViewModels
         [Required]
         public string FirebaseUid { get; set; }
     }
+
+    public class EnrollAsTalentVM : RegisterVM
+    {
+        [Display(Name = "Where can we find you?")]
+        public int? SocialAreaID { get; set; }
+
+        [Display(Name = "Your handle")]
+        public string SocialAreaHandle { get; set; }
+
+        [Display(Name = "How many followers do you have?")]
+        public string FollowersCount { get; set; }
+    }
 }

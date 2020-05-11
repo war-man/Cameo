@@ -1,6 +1,6 @@
-﻿@model Cameo.ViewModels.RegisterVM
+﻿@model Cameo.ViewModels.EnrollAsTalentVM
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Стать талантом";
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
@@ -26,7 +26,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="border-radius: 0px; font-size: 18px">+998</span>
                                     </div>
-                                    <input id="phoneNumber" type="text" placeholder="Номер телефона *" style="margin: 0px;">
+                                    <input id="phoneNumber" type="text" placeholder="901234567" style="margin: 0px;">
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -47,16 +47,16 @@
                                 <p class="form-messege text-danger"></p>
                             </div>
                             <div class="col-lg-6 mt--20">
-                                @*<button type="button" onclick="BackToPhoneNumberForm()">Назад</button>*@
+                                @*<input type="submit" value="Назад" onclick="BackToPhoneNumberForm()">*@
                                 <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToPhoneNumberForm()">Назад</button>
                             </div>
-                            <div class="col-lg-6 mt--20">
+                            <div class="col-lg-6 mt--20 ">
                                 <input type="submit" value="Продолжить" onclick="VerifyCode()">
                             </div>
                         </div>
 
-                        <!-- Full name and username inputs form -->
-                        <form asp-controller="Account" asp-action="Register" method="post" id="registrationForm" data-ajax="true" data-ajax-method="post" style="display: none;"
+                        <!-- Enrolment form -->
+                        <form asp-controller="Account" asp-action="EnrollAsTalent" method="post" id="enrollmentForm" style="display: none;" data-ajax="true" data-ajax-method="post" 
                               data-ajax-begin="RegistrationBegin"
                               data-ajax-failure="RegistrationError"
                               data-ajax-success="RegistrationSucceeded"
@@ -72,11 +72,25 @@
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                                 <div class="col-lg-12 mt--20">
-                                    <p class="form-messege text-danger"></p>
+                                    <p class="form-messege forError text-danger"></p>
+                                </div>
+                                <div class="col-lg-12 mt--20">
+                                    <select asp-for="SocialAreaID"
+                                            asp-items="@ViewData["socialAreas"] as IEnumerable<SelectListItem>">
+                                        <option>Где можно Вас найти?</option>
+                                    </select>
+                                    <span asp-validation-for="SocialAreaID" class="text-danger"></span>
+                                </div>
+                                <div class="col-lg-12 mt--20">
+                                    <input asp-for="SocialAreaHandle" type="text" placeholder="Ваше имя в соц.сети (например: @@petrivanov)">
+                                    <span asp-validation-for="SocialAreaHandle" class="text-danger"></span>
+                                </div>
+                                <div class="col-lg-12 mt--20">
+                                    <input asp-for="FollowersCount" type="text" placeholder="Количество подписчиков (например: 400 тыс.)">
+                                    <span asp-validation-for="FollowersCount" class="text-danger"></span>
                                 </div>
                                 <div class="col-lg-6 mt--20">
                                     <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">Назад</button>
-                                    @*<input type="submit" value="Назад" onclick="BackToCodeForm()">*@
                                 </div>
                                 <div class="col-lg-6 mt--20">
                                     <input type="submit" value="Отправить">
@@ -84,6 +98,57 @@
                                 </div>
                             </div>
                         </form>
+
+                        <!-- Start Box Style -->
+                        <div class="col-lg-12 mt_sm--40" id="thanksBox" style="display: none;">
+                            <div class="icon-box icon__style--1 text-center">
+                                <div class="inner">
+                                    <div class="thumbnail">
+                                        <img src="~/lib/DavenTheme/img/icon-box/icon-handshake.svg" alt="Draven">
+                                    </div>
+                                    <div class="content mt--35">
+                                        <h3 class="title mb--10">Спасибо, что решили присоединиться к нам!</h3>
+                                        <p>Fusce a augue lorem. Morbi ut orci nec odio placerat viverra. Mauris rhoncus purus vel orci posuere.</p>
+                                        <a class="button-link" href="/"><span>На главную</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Box Style -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-container adress__style--1">
+                    <ul class="contact-address">
+                        <li>
+                            <span class="address-icon"><i class="dlicon ui-3_phone-call"></i></span>
+                            <span class="address-text">+55 858 5858 68</span>
+                        </li>
+                        <li>
+                            <span class="address-icon"><i class="dlicon ui-1_email-85"></i></span>
+                            <span class="address-text">info@la-studioweb.com</span>
+                        </li>
+
+                        <li>
+                            <span class="address-icon"><i class="dlicon ui-3_chat-33"></i></span>
+                            <span class="address-text">Live chat with us</span>
+                        </li>
+
+                        <li>
+                            <span class="address-icon"><i class="dlicon location_pin"></i></span>
+                            <span class="address-text">
+                                PO Box 16122 Collins Street West Victoria 8007
+                                Australia
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="social-icons bg-white text-left mt--70">
+                        <a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a class="twitter" href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a class="pinterest" href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
+                        <a class="youtube" href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
+                        <a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a>
                     </div>
                 </div>
             </div>
@@ -92,38 +157,6 @@
 </div>
 <!-- End Contact Form -->
 
-@*<!-- Start Contact Form -->
-<div class="draven-contact-form bg-color ptb--100" data-bg-color="#f53e6a">
-    <div class="plr--180 plr_lp--70 plr_lp--70 plr_md--50 plr_lg--50 plr_sm--30">
-        <div class="row align-items-center">
-            <div class="col-lg-5">
-                <!--Google Map Area Start-->
-                <div class="contact-address contact-custom-content--2 ptb-10">
-                    <div class="inner plr--10">
-                        <div class="content">
-                            <h1 class="text-white font--72 textUpper font-2 mb--20">Авторизация</h1>
-                            <p class="lineheight--2 font--18 text-white">
-                                Ut in massa in quam cursus dapibus at quis
-                                tortor. Curabitur volutpat vitae ligula eu viverra.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!--Google Map Area Start-->
-            </div>
-            <div class="col-lg-6 pr--140 offset-lg-1 pr_lg--15 pr_lp--15 pr_md--15 pr_sm--15 mt_md--40 mt_sm--40">
-                <div class="contact-form-wrapper">
-                    <!-- Form Style Wrapper -->
-                    <div class="contact__form--7">
-                        
-                    </div>
-                    <!-- Form Style Wrapper -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Contact Form -->*@
 
 <style>
     #phoneNumber {
@@ -145,11 +178,22 @@
         color: #d3d3d3;
     }
 
+    select {
+        font-size: 18px;
+        padding: 25px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #d4d4d4;
+        width: 100%;
+        line-height: inherit;
+        height: auto;
+    }
+
     .backBtn {
         width: 100%;
         text-transform: uppercase;
         font-weight: 700;
-        font-size: 14px;
+        font-size: 14px !important;
     }
 </style>
 
@@ -209,7 +253,7 @@
                 var user = result.user;
                 //console.log(user);
                 //console.log(user.uid);
-                Authenticate(user.uid);
+                VerifyIfUserCanEnroll(user.uid);
                 // ...
             }).catch(function (error)
             {
@@ -221,11 +265,11 @@
             });
         }
 
-        function Authenticate(firebaseUid)
+        function VerifyIfUserCanEnroll(firebaseUid)
         {
             $.ajax({
                 type: "POST",
-                url: "/Account/Authenticate?firebaseUid=" + firebaseUid,
+                url: "/Account/VerifyIfUserCanEnroll?firebaseUid=" + firebaseUid,
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 beforeSend: function ()
@@ -235,14 +279,9 @@
                 },
                 success: function (data)
                 {
-                    if (data.registration_is_required == true)
-                    {
-                        $("#codeForm").hide("fast");
-                        $("#registrationForm").show("fast");
-                        $("#FirebaseUid").val(firebaseUid);
-                    }
-                    else
-                        window.location.replace("/");
+                    $("#codeForm").hide("fast");
+                    $("#enrollmentForm").show("fast");
+                    $("#FirebaseUid").val(firebaseUid);
                 },
                 error: function (data)
                 {
@@ -269,7 +308,7 @@
 
         function BackToCodeForm()
         {
-            $("#registrationForm").hide("fast");
+            $("#enrollmentForm").hide("fast");
             $("#codeForm").show("fast");
         }
 
@@ -277,35 +316,38 @@
         {
             //console.log(data);
             //console.log("begin");
-            $("#registrationForm input").attr("disabled", "disabled");
-            $("#registrationForm .form-messege").last().html("");
+            $("#enrollmentForm input").attr("disabled", "disabled");
+            $("#enrollmentForm .form-messege").last().html("");
         }
 
         function RegistrationError(data)
         {
-            //console.log(data);
-            //console.log("error!");
+            console.log(data);
+            console.log("error!");
 
             var errorMessage = "";
             for (var key in data.responseJSON)
             {
                 errorMessage += data.responseJSON[key] + "</br>";
             }
-            $("#registrationForm .form-messege").last().html(errorMessage);
+            $("#enrollmentForm .form-messege.forError").last().html(errorMessage);
         }
 
         function RegistrationSucceeded(data)
         {
-            //console.log(data);
-            //console.log("success!");
-            window.location.replace("/");
+            console.log(data);
+            console.log("success!");
+            //window.location.replace("/");
+
+            $("#enrollmentForm").hide("fast");
+            $("#thanksBox").show("fast");
         }
 
         function RegistrationCompleted(data)
         {
             //console.log(data);
             //console.log("completed!");
-            $("#registrationForm input").removeAttr("disabled");
+            $("#enrollmentForm input").removeAttr("disabled");
         }
     </script>
 }
