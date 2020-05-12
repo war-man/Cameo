@@ -18,7 +18,7 @@ namespace Cameo.Services.Interfaces
 
         IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null);
         IQueryable<Talent> SearchBySearchText(string searchText);
-        IQueryable<Talent> GetRelated(Talent model);
+        IQueryable<Talent> GetRelated(Talent model, int? count = null);
         void AssignAccountNumber(Talent model);
         void SetAvailability(Talent model, bool availability, string userID);
     }

@@ -9,25 +9,32 @@
 @{
     ViewData["Title"] = "Details";
     ViewData["talent"] = Model;
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
-<div class="row" id="profileBox">
-    <div class="col-lg-offset-1 col-lg-3 col-sm-4" id="photoBox">
-        @if (Model.Video != null && Model.Video.ID > 0)
-        {
-            <video id="imgContainer" width="240" height="320" controls><source src="/Video/GetVideo/@Model.RequestID" type="video/mp4"></video>
-        }
-        else
-        {
-            <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
-        }
-    </div>
-    <div class="col-lg-7 col-sm-8" id="infoBox">
+<!-- Start Single Product Details -->
+<div class="single-product-details  pt--80 pt_md--80 pt_sm--80  pb--80  pb_lg--20 pb_md--20 pb_sm--20 bg-color" data-bg-color="#ffffff">
+    <div class="wrapper plr--80 plr_lg--50 plr_md--30 plr_sm--30">
         <div class="row">
-            <div class="col-sm-12">
-                <h1>@Model.FullName</h1>
-                <br />
-                <div class="projectsBox">
+            <div class="col-lg-2 col-md-1 col-sm-1"></div>
+            <div class="col-lg-3 col-md-4 col-sm-5 col-12">
+                <div class="product__details__container">
+                    <div class="big_img">
+                        @if (Model.IntroVideo != null && Model.IntroVideo.ID > 0)
+                        {
+                            <video id="imgContainer" width="240" height="320" controls><source src="@Model.IntroVideo.Url" type="video/mp4"></video>
+                        }
+                        else
+                        {
+                            <img class="w-100" src="@Model.Avatar.Url" alt="@Model.FullName">
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-5 col-12 mt_md--40 mt_sm--40">
+                <div class="single-product-inner">
+                    <h2 class="title">@Model.FullName <br /></h2>
+                    <span class="prize">@Model.PriceStr сум</span>
                     @{
                         string projects = "";
                         foreach (var item in Model.Projects)
@@ -38,87 +45,97 @@
                         {
                             projects = projects.Substring(0, projects.Length - 2);
                         }
-
-                        @projects
                     }
-                </div>
-                <br />
-                <div class="bioBox">
-                    <span>@Model.Bio</span>
-                </div>
-                <br />
-                <div class="bookBox">
+                    <span class="prize">@projects</span>
+                    <p>
+                        @Model.Bio
+                    </p>
+
                     @if (Model.IsAvailable)
                     {
                         if (User.Identity.IsAuthenticated)
                         {
                             if ((bool)ViewData["isUserCustomer"] == true)
                             {
-                                <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#bookModal">
-                                    Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
-                                </button>
+                                <div class="product-action">
+                                    @*<div class="quentity-increase">
+                            <div class="pro-qty"><input type="text" value="1"></div>
+                        </div>*@
+                                    <div class="product-action-btn">
+                                        <button type="button" class="button-link button__black" data-toggle="modal" data-target="#bookModal">
+                                            Запросить видео (@Model.PriceStr сум)
+                                        </button>
+                                        @*<a class="cart" href="">Add to cart</a>*@
+                                        @*<a class="wishlist pro-action" href="wishlist.html">
+                                <i class="dlicon ui-3_heart"></i>
+                            </a>
+                            <a class="compare pro-action" href="compare.html">
+                                <i class="dlicon arrows-4_compare"></i>
+                            </a>*@
+                                    </div>
+                                </div>
                             }
                             else
                             {
-                                <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Таланты не могут заказывать видео. Зайдите как клиент.</button>
+                                <div class="alert alert-danger">Таланты не могут заказывать видео. Зайдите как клиент.</div>
                             }
                         }
-                        //show login page (or redirect)
                         else
                         {
-                            <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#logInModal">
-                                Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
-                            </button>
+                            <div class="alert alert-danger"><a href="/Account/Login">Войдите</a>, чтобы отправить запрос</div>
                         }
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Временно недоступен</button>
                     }
 
-                    @*@if ((bool)ViewData["isUserCustomer"] == true)
-                    {
-                        if (Model.IsAvailable)
-                        {
-                            <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#bookModal">
-                                Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
-                            </button>
+                    <div class="categoriesBox mt--40 mb--20">
+                        @{
+                            foreach (var item in Model.Categories)
+                            {
+                                <span>
+                                    <a class="button-link button-size__radious50 button__color--3" href="/Talents?cat=@item.ID">@item.Name</a>
+                                </span>
+                            }
                         }
-                        else
-                        {
-                            <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Временно недоступен</button>
-                        }
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Таланты не могут заказывать видео. Зайдите как клиент.</button>
-                    }*@
-                </div>
-                <br />
-                <div class="bookBox">
-                    <span>Обычно отвечает в течение 2х дней</span>
-                </div>
-                <br />
-                <div class="reviewsBox">
-                    <span><strong>292 Отзывов</strong></span>
-                </div>
-                <br />
-                <div class="categoriesBox">
-                    @{
-                        foreach (var item in Model.Categories)
-                        {
-                            <span>
-                                <a class="btn btn-default" href="/Talents?cat=@item.ID">@item.Name</a>
-                            </span>
-                        }
-                    }
+                    </div>
+
+                    @*<div class="product-html-custom">
+                        <a href="#"><i class="dlicon location_pin"></i>Store availability</a>
+                        <a href="#"><i class="dlicon location_pin"></i>Delivery and return</a>
+                        <a href="#"><i class="dlicon design_measure-17"></i>Size Guide</a>
+                    </div>
+
+                    <div class="product-meta mb--40">
+                        <div class="sku-wrapper">
+                            SKU: <span>REF. LA-2491</span>
+                        </div>
+                        <div class="sku-wrapper">
+                            Categories: <span>Brands</span>
+                        </div>
+                    </div>*@
+
+                    @*<div class="social-icons bg-owncolor text-left">
+                        <a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a class="twitter" href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a class="pinterest" href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
+                        <a class="youtube" href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
+                        <a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a>
+                    </div>*@
+
                 </div>
             </div>
+            <div class="col-lg-2 col-md-1 col-sm-1"></div>
         </div>
     </div>
 </div>
-<div class="row" id="latestBox">
-    <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
+<!-- End Single Product Details -->
+
+<div id="latestVideosContainer" class="plr--80 plr_lg--50 plr_md--50 plr_sm--30 mb--40">
+    <img class="spinner " src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />
+    <div class="innerContainer"></div>
+</div>
+
+<div id="relatedTalentsContainer" class="plr--80 plr_lg--50 plr_md--50 plr_sm--30 mb--40">
+    <img class="spinner " src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />
+    <div class="innerContainer"></div>
 </div>
 
 <!-- Modal -->
@@ -148,9 +165,26 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
 </div>
+
+<style>
+    .single-product-inner
+    {
+        padding: 0;
+    }
+
+    button.cart {
+        margin: 0;
+        padding: 15px 70px;
+        font-size: 14px;
+        background-color: #2f2f2f;
+        color: #fff;
+        font-weight: 700;
+        line-height: 30px;
+        transition: all .25s ease-out;
+    }
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -160,23 +194,55 @@
         {
             $.ajax({
                 type: "GET",
-                url: "/Talents/GetLatestForTalent",
+                url: "/Talents/GetLatestVideosForTalent",
                 //data: JSON.stringify({
                 //    selected: categoryID
                 //}),
                 data: {
-                    talentID: Number("@Model.ID"),
-                    requestIDToBeExcluded: Number("@Model.RequestID")
+                    id: Number("@Model.ID")
                 },
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function (data)
                 {
-                    $("#latestBox").html(data);
+                    $("#latestVideosContainer .innerContainer").html(data);
                 },
                 error: function (data)
                 {
                     console.log(data);
+                    alert("Ajax error (status code = " + data.status + "): " + data.statusText);
+                },
+                complete: function (data)
+                {
+                    $("#latestVideosContainer .spinner").hide();
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/Talents/GetRelated",
+                //data: JSON.stringify({
+                //    selected: categoryID
+                //}),
+                data: {
+                    id: Number("@Model.ID"),
+                    count: 7
+                },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    $("#relatedTalentsContainer .innerContainer").html(data);
+                    lozadObserver.observe();
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                    alert("Ajax error (status code = " + data.status + "): " + data.statusText);
+                },
+                complete: function (data)
+                {
+                    $("#relatedTalentsContainer .spinner").hide();
                 }
             });
         });

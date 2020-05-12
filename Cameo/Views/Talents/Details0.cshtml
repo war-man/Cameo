@@ -1,0 +1,184 @@
+﻿@model Cameo.ViewModels.TalentDetailsVM
+@using Cameo.Models.Enums
+
+@using Cameo.Common
+@using Microsoft.Extensions.Options;
+
+@inject IOptions<AppConfiguration> AppSettings
+
+@{
+    ViewData["Title"] = "Details";
+    ViewData["talent"] = Model;
+}
+
+<div class="row" id="profileBox">
+    <div class="col-lg-offset-1 col-lg-3 col-sm-4" id="photoBox">
+        @if (Model.IntroVideo != null && Model.IntroVideo.ID > 0)
+        {
+            <video id="imgContainer" width="240" height="320" controls><source src="/Video/GetVideo/@Model.IntroVideo.ID" type="video/mp4"></video>
+        }
+        else
+        {
+            <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
+        }
+    </div>
+    <div class="col-lg-7 col-sm-8" id="infoBox">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>@Model.FullName</h1>
+                <br />
+                <div class="projectsBox">
+                    @{
+                        string projects = "";
+                        foreach (var item in Model.Projects)
+                        {
+                            projects += item.Name + ", ";
+                        }
+                        if (projects.Length > 0)
+                        {
+                            projects = projects.Substring(0, projects.Length - 2);
+                        }
+
+                        @projects
+                    }
+                </div>
+                <br />
+                <div class="bioBox">
+                    <span>@Model.Bio</span>
+                </div>
+                <br />
+                <div class="bookBox">
+                    @if (Model.IsAvailable)
+                    {
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            if ((bool)ViewData["isUserCustomer"] == true)
+                            {
+                                <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#bookModal">
+                                    Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Таланты не могут заказывать видео. Зайдите как клиент.</button>
+                            }
+                        }
+                        //show login page (or redirect)
+                        else
+                        {
+                            <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#logInModal">
+                                Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Временно недоступен</button>
+                    }
+
+                    @*@if ((bool)ViewData["isUserCustomer"] == true)
+                    {
+                        if (Model.IsAvailable)
+                        {
+                            <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#bookModal">
+                                Отправить запрос @Model.FullName (@Model.Price.ToString("### ### ###") сум )
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Временно недоступен</button>
+                        }
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-lg btn-primary" disabled="disabled">Таланты не могут заказывать видео. Зайдите как клиент.</button>
+                    }*@
+                </div>
+                <br />
+                <div class="bookBox">
+                    <span>Обычно отвечает в течение 2х дней</span>
+                </div>
+                <br />
+                <div class="reviewsBox">
+                    <span><strong>292 Отзывов</strong></span>
+                </div>
+                <br />
+                <div class="categoriesBox">
+                    @{
+                        foreach (var item in Model.Categories)
+                        {
+                            <span>
+                                <a class="btn btn-default" href="/Talents?cat=@item.ID">@item.Name</a>
+                            </span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" id="latestBox">
+    <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:100px;" />
+</div>
+
+<!-- Modal -->
+<div id="bookModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Заказать видео от @Model.FullName</h4>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" asp-controller="VideoRequest"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-mode="replace"
+                      data-ajax-update="#ajaxresult">
+                    <div id="ajaxresult">
+                        @await Html.PartialAsync(
+                            "/Views/VideoRequest/_Create.cshtml",
+                            new Cameo.ViewModels.VideoRequestCreateVM() { TypeID = (int)VideoRequestTypeEnum.someone })
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function ()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Talents/GetLatestForTalent",
+                //data: JSON.stringify({
+                //    selected: categoryID
+                //}),
+                data: {
+                    talentID: Number("@Model.ID"),
+                    @*requestIDToBeExcluded: Number("@Model.RequestID")*@
+                },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    $("#latestBox").html(data);
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
+}

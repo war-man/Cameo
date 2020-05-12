@@ -256,12 +256,12 @@ namespace Cameo.Controllers
 
             TalentDetailsVM modelVM = new TalentDetailsVM(model);
 
-            VideoRequest videoRequest = VideoRequestService.GetRandomSinglePublishedByTalent(model, curUser.ID);
-            if (videoRequest != null)
-            {
-                modelVM.Video = new AttachmentDetailsVM(videoRequest.Video);
-                modelVM.RequestID = videoRequest.ID;
-            }
+            //VideoRequest videoRequest = VideoRequestService.GetRandomSinglePublishedByTalent(model, curUser.ID);
+            //if (videoRequest != null)
+            //{
+            //    modelVM.IntroVideo = new AttachmentDetailsVM(videoRequest.Video);
+            //    modelVM.RequestID = videoRequest.ID;
+            //}
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
             ViewData["isUserCustomer"] = AccountUtil.IsUserCustomer(curUser);
@@ -269,13 +269,13 @@ namespace Cameo.Controllers
             return View(modelVM);
         }
 
-        public IActionResult GetLatestForTalent(int talentID, int requestIDToBeExcluded)
+        public IActionResult GetLatestVideosForTalent(int id)
         {
-            Talent talent = TalentService.GetActiveByID(talentID);
+            Talent talent = TalentService.GetActiveByID(id);
             if (talent == null)
                 return NotFound();
 
-            List<VideoRequest> videos = VideoRequestService.GetPublicForTalent(talent, requestIDToBeExcluded)
+            List<VideoRequest> videos = VideoRequestService.GetPublicForTalent(talent, 0)
                 .ToList();
 
             List<VideoDetailsVM> videosVM = new List<VideoDetailsVM>();
@@ -287,15 +287,21 @@ namespace Cameo.Controllers
             return PartialView(videosVM);
         }
 
-        public IActionResult GetRelated(int id)
+        public IActionResult GetRelated(int id, int? count = null)
         {
             Talent model = TalentService.GetActiveByID(id);
             if (model == null)
                 return NotFound();
 
-            List<TalentGridViewItem> relatedTalents = TalentService.GetRelated(model)
+            List<TalentGridViewItem> relatedTalents = TalentService.GetRelated(model, count)
                 .Select(m => new TalentGridViewItem(m))
                 .ToList();
+
+            foreach (var talent in relatedTalents)
+            {
+                if (talent.Avatar.ID == 0)
+                    talent.Avatar.Url = GetRandomPhotoUrl();
+            }
 
             return PartialView(relatedTalents);
         }

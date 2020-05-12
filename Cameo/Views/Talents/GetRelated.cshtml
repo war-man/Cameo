@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Cameo.ViewModels.TalentGridViewItem>
+
+<h3 class="heading-divider heading-divider__themeColor">Связанные таланты</h3>
+<hr />
+
+<div class="row">
+    @foreach (var talent in Model)
+    {
+        <partial name="_SingleGridViewItem" model="talent" />
+    }
+</div>
+<style>
+    .team__style--4 .thumbnail {
+        border-radius: 5px;
+    }
+
+    .team .thumbnail .team-badge {
+        position: absolute;
+        /*z-index: 9;*/
+        top: 3px;
+        left: auto;
+        right: 5px;
+        color: white;
+        font-size: 11px;
+        font-weight: 500;
+        background: rgba(0,0,0,0.3);
+        padding: 0px 3px;
+        border-radius: 5px;
+    }
+</style>

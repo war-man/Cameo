@@ -99,10 +99,12 @@ namespace Cameo.ViewModels
     {
         public string Bio { get; set; }
 
-        public TalentDetailsVM() { }
+        public int RequestPrice { get; set; }
+        public string RequestPriceStr { get; set; }
 
-        public AttachmentDetailsVM Video { get; set; }
-        public int RequestID { get; set; }
+        public AttachmentDetailsVM IntroVideo { get; set; }
+
+        public TalentDetailsVM() { }
 
         public TalentDetailsVM(Talent model) : base(model)
         {
@@ -111,6 +113,7 @@ namespace Cameo.ViewModels
 
             this.IsAvailable = model.IsAvailable;
             this.Bio = model.Bio;
+            IntroVideo = new AttachmentDetailsVM(model.IntroVideo);
         }
     }
 }

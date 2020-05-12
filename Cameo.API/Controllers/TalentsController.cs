@@ -240,6 +240,65 @@ namespace Cameo.API.Controllers
             return talents;
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<TalentDetailsVM> Get(int id)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            Talent model = TalentService.GetActiveByID(id);
+            if (model == null)
+                return NotFound();
+
+            TalentDetailsVM modelVM = new TalentDetailsVM(model);
+
+            //VideoRequest videoRequest = VideoRequestService.GetRandomSinglePublishedByTalent(model, curUser.ID);
+            //if (videoRequest != null)
+            //{
+            //    modelVM.Video = new AttachmentDetailsVM(videoRequest.Video);
+            //    modelVM.RequestID = videoRequest.ID;
+            //}
+
+            return modelVM;
+        }
+
+        [HttpGet("GetLatestVideosForTalent")]
+        public ActionResult<IEnumerable<VideoDetailsVM>> GetLatestVideosForTalent(int id)
+        {
+            Talent talent = TalentService.GetActiveByID(id);
+            if (talent == null)
+                return NotFound();
+
+            List<VideoRequest> videos = VideoRequestService.GetPublicForTalent(talent, 0)
+                .ToList();
+
+            List<VideoDetailsVM> videosVM = new List<VideoDetailsVM>();
+            foreach (var item in videos)
+            {
+                videosVM.Add(new VideoDetailsVM(item));
+            }
+
+            return videosVM;
+        }
+
+        [HttpGet("GetRelated/{id}")]
+        public ActionResult<IEnumerable<TalentGridViewItem>> GetRelated(int id, int? count = null)
+        {
+            Talent model = TalentService.GetActiveByID(id);
+            if (model == null)
+                return NotFound();
+
+            List<TalentGridViewItem> relatedTalents = TalentService.GetRelated(model, count)
+                .Select(m => new TalentGridViewItem(m))
+                .ToList();
+
+            foreach (var talent in relatedTalents)
+            {
+                if (talent.Avatar.ID == 0)
+                    talent.Avatar.Url = GetRandomPhotoUrl();
+            }
+
+            return relatedTalents;
+        }
+
         private string GetRandomPhotoUrl()
         {
             List<string> urls = new List<string>()
@@ -277,45 +336,6 @@ namespace Cameo.API.Controllers
             Random random = new Random();
             int randomIndex = random.Next(0, urls.Count);
             return urls[randomIndex];
-        }
-
-
-
-
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        [Authorize]
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
