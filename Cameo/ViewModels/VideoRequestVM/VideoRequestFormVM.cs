@@ -22,10 +22,10 @@ namespace Cameo.ViewModels
         [Required]
         public string Instructions { get; set; }
 
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        //[Required]
+        //[EmailAddress]
+        //[Display(Name = "Email")]
+        //public string Email { get; set; }
 
         public bool IsNotPublic { get; set; }
 
@@ -40,7 +40,7 @@ namespace Cameo.ViewModels
             VideoRequest model = new VideoRequest()
             {
                 Customer = customer,
-                Email = this.Email,
+                //Email = this.Email,
                 From = this.From,
                 Instructions = this.Instructions,
                 IsNotPublic = this.IsNotPublic,
@@ -70,7 +70,7 @@ namespace Cameo.ViewModels
             To = model.To;
             From = model.From;
             Instructions = model.Instructions;
-            Email = model.Email;
+            //Email = model.Email;
             IsNotPublic = model.IsNotPublic;
             Price = model.Price;
             TalentID = model.TalentID;
@@ -82,7 +82,7 @@ namespace Cameo.ViewModels
             model.To = To;
             model.From = From;
             model.Instructions = Instructions;
-            model.Email = Email;
+            //model.Email = Email;
             model.IsNotPublic = IsNotPublic;
         }
     }

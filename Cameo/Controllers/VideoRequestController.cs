@@ -60,7 +60,6 @@ namespace Cameo.Controllers
                             {
                                 try
                                 {
-
                                     var curCustomer = CustomerService.GetByUserID(curUser.ID);
 
                                     VideoRequest model = modelVM.ToModel(curCustomer);

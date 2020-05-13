@@ -52,11 +52,11 @@
             <textarea asp-for="Instructions" class="form-control"></textarea>
             <span asp-validation-for="Instructions" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <label asp-for="Email"></label>
             <input type="text" class="form-control" asp-for="Email" placeholder="Email">
             <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
+        </div>*@
         <div class="form-group">
             <label asp-for="IsNotPublic"><input type="checkbox" asp-for="IsNotPublic"> Не делать это видео публичным на Cameo </label>
             <span asp-validation-for="IsNotPublic" class="text-danger"></span>

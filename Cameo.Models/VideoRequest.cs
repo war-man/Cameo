@@ -20,7 +20,7 @@ namespace Cameo.Models
         [Required]
         public string Instructions { get; set; }
 
-        [Required]
+        //[Required]
         public string Email { get; set; }
         public bool IsNotPublic { get; set; }
         public int Price { get; set; }

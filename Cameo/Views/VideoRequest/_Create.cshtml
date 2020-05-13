@@ -16,11 +16,82 @@
 }
 else
 {
-    @*<div asp-validation-summary="All" class="text-danger"></div>*@
-    <input asp-for="TalentID" type="hidden" value="@talent.ID" />
-    <input asp-for="Price" type="hidden" value="@talent.Price" />
+    <!-- Start Contact Form -->
+    <div class="draven-contact-form bg-color" data-bg-color="#ffffff">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="contact-form-wrapper">
+                        <!-- Start Contact Wrapper -->
+                        <div class="contact__form--1">
+                            @*<form asp-controller="Account" asp-action="Register" method="post" id="registrationForm" data-ajax="true" data-ajax-method="post">*@
+                                <div class="row">
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                    <div class="col-lg-12">
+                                        <input asp-for="TalentID" type="hidden" value="@talent.ID" />
+                                        <input asp-for="Price" type="hidden" value="@talent.Price" />
 
-    <div class="row">
+                                        <label asp-for="TypeID"></label>
+                                        @{
+                                            int i = 0;
+                                        }
+                                        @foreach (var item in videoRequestTypes)
+                                        {
+                                            <div class="custom-control custom-radio">
+                                                @Html.RadioButtonFor(model => model.TypeID, item.Value, new { @class = "custom-control-input", id = "customRadio_" + i, onclick = "OnTypeChanges(this.value)" })
+                                                <label class="custom-control-label" for="customRadio_@i">@item.Text</label>
+                                            </div>
+
+                                            i++;
+                                        }
+                                        <span asp-validation-for="TypeID" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-lg-6 mt--20">
+                                        <label asp-for="To"></label>
+                                        <input type="text" asp-for="To" placeholder="Carissa">
+                                        <span asp-validation-for="To" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-6 mt--20" id="fromBox">
+                                        <label asp-for="From"></label>
+                                        <input type="text" asp-for="From" placeholder="Shia">
+                                        <span asp-validation-for="From" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-12 mt--20">
+                                        <label asp-for="Instructions"></label>
+                                        <textarea asp-for="Instructions"></textarea>
+                                        <span asp-validation-for="Instructions" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-lg-12 mt--20">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" asp-for="IsNotPublic" class="custom-control-input" id="switch1">
+                                            <label class="custom-control-label" for="switch1">Не делать это видео публичным на Cameo</label>
+                                        </div>
+                                        <span asp-validation-for="IsNotPublic" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-lg-12 mt--20">
+                                        <p class="form-messege text-danger"></p>
+                                    </div>
+                                    <div class="col-lg-12 mt--20">
+                                        <input type="submit" value="Отправить">
+                                        @*<p class="form-messege">we fawe fwe we</p>*@
+                                    </div>
+                                </div>
+                            @*</form>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Contact Form -->
+
+
+    @*<div asp-validation-summary="All" class="text-danger"></div>*@
+    
+
+    @*<div class="row">
         <div class="col-sm-12">
             <div class="form-group">
                 <label asp-for="TypeID"></label>
@@ -77,7 +148,7 @@ else
                 Заказать прямо сейчас за @talent.Price.ToString(AppData.Configuration.NumberViewStringFormat) сум
             </button>
         </div>
-    </div>
+    </div>*@
 
     <script>
         var myselfID = Number("@myselfID");

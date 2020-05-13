@@ -238,40 +238,7 @@ namespace Cameo.Services
             var talents = Search(category.CategoryId, SortTypeEnum.def, count);
             talents = talents.Where(m => m.ID != model.ID);
 
-            //List<int> categoryIDs = model.TalentCategories
-            //    .Select(m => m.CategoryId)
-            //    .ToList();
-
-            //List<List<int>> variants = GenerateVariants(categoryIDs);
-
             return talents;
         }
-
-        //private List<List<int>> GenerateVariants(List<int> ints)
-        //{
-        //    for (int i = 1; i < ints.Count; i++)
-        //    {
-        //        while (NextSet(ints, ints.Count, i))
-        //        {
-
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-        //bool NextSet(List<int> a, int n, int m)
-        //{
-        //    int k = m;
-        //    for (int i = k - 1; i >= 0; --i)
-        //        if (a[i] < n - k + i + 1)
-        //        {
-        //            ++a[i];
-        //            for (int j = i + 1; j < k; ++j)
-        //                a[j] = a[j - 1] + 1;
-        //            return true;
-        //        }
-        //    return false;
-        //}
     }
 }
