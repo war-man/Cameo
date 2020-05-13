@@ -19,7 +19,8 @@ namespace Cameo.Data.Repository
                 .Include(m => m.TalentCategories).ThenInclude(m => m.Category)
                 .Include(m => m.Projects)
                 .Include(m => m.User)
-                .Include(m => m.Avatar);
+                .Include(m => m.Avatar)
+                .Include(m => m.IntroVideo);
         }
 
         override public Talent GetActiveSingleDetailsWithRelatedDataByID(int id)

@@ -6,8 +6,12 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-sm-4">
-            <div class="card">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-12  pb--40">
+            <span><a href="/Video/Details/@item.RequestID">От @item.From для @item.To</a></span>
+            <video class="video-js" controls preload="true">
+                <source src="/Video/GetVideo/@item.RequestID" type="video/mp4">
+            </video>
+            @*<div class="card">
                 <div class="card-header">
                     <span>От @item.From для @item.To</span>
                     <span><small><a href="/Video/Details/@item.RequestID">Подробнее</a></small></span>
@@ -15,7 +19,7 @@
                 <div class="card-body">
                     <video width="240" height="320" controls><source src="/Video/GetVideo/@item.RequestID" type="video/mp4"></video>
                 </div>
-            </div>
+            </div>*@
         </div>
     }
 </div>

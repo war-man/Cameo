@@ -22,7 +22,9 @@
                     <div class="big_img">
                         @if (Model.IntroVideo != null && Model.IntroVideo.ID > 0)
                         {
-                            <video id="imgContainer" width="240" height="320" controls><source src="@Model.IntroVideo.Url" type="video/mp4"></video>
+                            <video class="video-js" id="imgContainer" controls autoplay preload="auto">
+                                <source src="@Model.IntroVideo.Url" type="video/mp4">
+                            </video>
                         }
                         else
                         {
@@ -129,13 +131,21 @@
 <!-- End Single Product Details -->
 
 <div id="latestVideosContainer" class="plr--80 plr_lg--50 plr_md--50 plr_sm--30 mb--40">
-    <img class="spinner " src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />
-    <div class="innerContainer"></div>
+    <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />
+    <div class="row">
+        <div class="col-lg-2 col-md-1 col-sm-1"></div>
+        <div class="innerContainer col-lg-8 col-md-10 col-sm-10 col-12"></div>
+        <div class="col-lg-2 col-md-1 col-sm-1"></div>
+    </div>
 </div>
 
-<div id="relatedTalentsContainer" class="plr--80 plr_lg--50 plr_md--50 plr_sm--30 mb--40">
-    <img class="spinner " src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />
-    <div class="innerContainer"></div>
+<div id="relatedTalentsContainer" class="plr--80 plr_lg--50 plr_md--50 plr_sm--30  mb--40">
+    <img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />
+    <div class="row">
+        <div class="col-lg-2 col-md-1 col-sm-1"></div>
+        <div class="innerContainer col-lg-8 col-md-10 col-sm-10 col-12"></div>
+        <div class="col-lg-2 col-md-1 col-sm-1"></div>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -183,6 +193,12 @@
         font-weight: 700;
         line-height: 30px;
         transition: all .25s ease-out;
+    }
+
+    .video-js {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
     }
 </style>
 

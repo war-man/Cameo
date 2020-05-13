@@ -1,0 +1,52 @@
+﻿@model Cameo.ViewModels.VideoDetailsVM
+@{
+    ViewData["Title"] = "Details";
+}
+
+<br />
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+            <div class="col-md-6 col-sm-6" id="videoBox">
+                <video width="240" height="320" controls><source src="/Video/GetVideo/@Model.RequestID" type="video/mp4"></video>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                @{ 
+                    string fromTo = "Для " + Model.To;
+                    if (!string.IsNullOrWhiteSpace(Model.From))
+                    {
+                        fromTo += " От " + Model.From;
+                    }
+                }
+                <p>@fromTo</p>
+                <div id="shareButtonsBox">
+                    <button class="btn btn-sm">Поделиться на Instagram</button>
+                    <button class="btn btn-sm">Поделиться на Telegram</button>
+                    <button class="btn btn-sm">Поделиться на Facebook</button>
+                    <a class="btn btn-sm hidden-xs" download="" href="/Video/GetVideo/@Model.RequestID">
+                        <i class="glyphicon glyphicon-download" aria-hidden="true"></i>&nbsp;&nbsp;Загрузить видео
+                    </a>
+                </div>
+                <div id="talentBox">
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-4" id="talentPhoto">
+                            <a href="/Talents/Details/@Model.Talent.Username">
+                                <img class="img-circle img-responsive" src="@Model.Talent.Avatar.Url" />
+                            </a>
+                        </div>
+                        <div class="col-md-8">
+                            <a href="/Talents/Details/@Model.Talent.Username">
+                                <h3 style="margin-top: 0px;">@Model.Talent.FullName</h3>
+                            </a>
+                            <p>@Model.Talent.ProjectName</p>
+                            <a href="/Talents/Details/@Model.Talent.Username" class="btn btn-sm btn-primary">
+                                Написать @Model.Talent.FullName
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

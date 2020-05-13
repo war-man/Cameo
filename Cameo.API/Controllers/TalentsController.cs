@@ -260,7 +260,7 @@ namespace Cameo.API.Controllers
             return modelVM;
         }
 
-        [HttpGet("GetLatestVideosForTalent")]
+        [HttpGet("GetLatestVideosForTalent/{id}")]
         public ActionResult<IEnumerable<VideoDetailsVM>> GetLatestVideosForTalent(int id)
         {
             Talent talent = TalentService.GetActiveByID(id);
