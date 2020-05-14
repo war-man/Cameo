@@ -250,21 +250,21 @@ namespace Cameo.Controllers
         public IActionResult Details(string username)
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetActiveByUsername(username);
-            if (model == null)
+            Talent talent = TalentService.GetActiveByUsername(username);
+            if (talent == null)
                 return NotFound();
 
-            TalentDetailsVM modelVM = new TalentDetailsVM(model);
+            TalentDetailsVM modelVM = new TalentDetailsVM(talent);
+            modelVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
+            modelVM.RequestPriceToStr();
 
-            //VideoRequest videoRequest = VideoRequestService.GetRandomSinglePublishedByTalent(model, curUser.ID);
-            //if (videoRequest != null)
-            //{
-            //    modelVM.IntroVideo = new AttachmentDetailsVM(videoRequest.Video);
-            //    modelVM.RequestID = videoRequest.ID;
-            //}
-
-            ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+            //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
             ViewData["isUserCustomer"] = AccountUtil.IsUserCustomer(curUser);
+
+            //ViewData["VideoRequestCreateVM"] = new VideoRequestCreateVM()
+            //{
+            //    TypeID = (int)VideoRequestTypeEnum.someone
+            //};
 
             return View(modelVM);
         }

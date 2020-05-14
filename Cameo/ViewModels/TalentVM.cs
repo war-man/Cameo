@@ -25,7 +25,7 @@ namespace Cameo.ViewModels
             Price = model.Price;
 
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            PriceStr = model.Price.ToString(numberFormat);
+            PriceStr = model.Price.ToString(numberFormat).Trim();
         }
     }
 
@@ -114,6 +114,12 @@ namespace Cameo.ViewModels
             this.IsAvailable = model.IsAvailable;
             this.Bio = model.Bio;
             IntroVideo = new AttachmentDetailsVM(model.IntroVideo);
+        }
+
+        public void RequestPriceToStr()
+        {
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
         }
     }
 }

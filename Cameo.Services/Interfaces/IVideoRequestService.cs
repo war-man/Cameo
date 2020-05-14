@@ -51,5 +51,7 @@ namespace Cameo.Services.Interfaces
         int GetWaitingCountByTalent(Talent talent);
         VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID);
         IQueryable<VideoRequest> GetPublicForTalent(Talent talent, int requestIDToBeExcluded);
+
+        int CalculateRequestPrice(Talent talent);
     }
 }

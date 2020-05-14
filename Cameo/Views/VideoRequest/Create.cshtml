@@ -1,0 +1,65 @@
+﻿@model Cameo.ViewModels.VideoRequestCreateVM
+@using Cameo.Models.Enums
+@using Cameo.Common
+
+@{
+    ViewData["Title"] = "Заказать Видео";
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
+    var talent = ViewData["talent"] as Cameo.ViewModels.TalentDetailsVM;
+    int customerBalance = (int)ViewData["customerBalance"];
+}
+
+<div class="mt--30 mb--30">
+    @if (customerBalance < talent.RequestPrice)
+    {
+        <div class="container">
+            <div class="alert alert-danger">
+                Недостаточно средств на балансе, чтобы заказать видео. Пожалуйста, пополните баланс.
+            </div>
+            <div>
+                <a class="button-link button-size button__color--4 grow-animation" href="#">
+                    <span class="button-text">Пополнить баланс на <b>@talent.RequestPriceStr сум</b></span>
+                </a>
+            </div>
+        
+            <br />
+            <div class="alert alert-info">
+                Ваш баланс: <b>@customerBalance сум</b><br />
+                Стоимость заказа: <b>@talent.RequestPriceStr сум</b>
+            </div>
+        </div>
+        
+    }
+    else
+    {
+        <form asp-action="Create" asp-controller="VideoRequest"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-mode="replace"
+              data-ajax-update="#ajaxresult">
+            <div id="ajaxresult">
+                @await Html.PartialAsync(
+                    "/Views/VideoRequest/_Create.cshtml")
+            </div>
+        </form>
+    }
+</div>
+
+<style>
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #d3d3d3;
+        opacity: 1; /* Firefox */
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #d3d3d3;
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #d3d3d3;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -10,6 +10,8 @@
     ViewData["Title"] = "Details";
     ViewData["talent"] = Model;
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
+
+    //ViewData["RequestPriceToStr"] = Model.RequestPriceStr;
 }
 
 <!-- Start Single Product Details -->
@@ -60,20 +62,15 @@
                             if ((bool)ViewData["isUserCustomer"] == true)
                             {
                                 <div class="product-action">
-                                    @*<div class="quentity-increase">
-                            <div class="pro-qty"><input type="text" value="1"></div>
-                        </div>*@
                                     <div class="product-action-btn">
-                                        <button type="button" class="button-link button__black" data-toggle="modal" data-target="#bookModal">
+                                        <a class="button-link button-size__xl button__black" href="/VideoRequest/Create?username=@Model.Username">
+                                            <span class="button-text button-text__14">
+                                                Заказать видео (@Model.RequestPriceStr сум)
+                                            </span>
+                                        </a>
+                                        @*<button type="button" class="button-link button__black" data-toggle="modal" data-target="#bookModal">
                                             Запросить видео (@Model.PriceStr сум)
-                                        </button>
-                                        @*<a class="cart" href="">Add to cart</a>*@
-                                        @*<a class="wishlist pro-action" href="wishlist.html">
-                                <i class="dlicon ui-3_heart"></i>
-                            </a>
-                            <a class="compare pro-action" href="compare.html">
-                                <i class="dlicon arrows-4_compare"></i>
-                            </a>*@
+                                        </button>*@
                                     </div>
                                 </div>
                             }
@@ -148,7 +145,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+@*<!-- Modal -->
 <div id="bookModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 
@@ -159,6 +156,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
+                
                 <form asp-action="Create" asp-controller="VideoRequest"
                       data-ajax="true"
                       data-ajax-method="POST"
@@ -167,7 +165,7 @@
                     <div id="ajaxresult">
                         @await Html.PartialAsync(
                             "/Views/VideoRequest/_Create.cshtml",
-                            new Cameo.ViewModels.VideoRequestCreateVM() { TypeID = (int)VideoRequestTypeEnum.someone })
+                            ViewData["VideoRequestCreateVM"] as Cameo.ViewModels.VideoRequestCreateVM)
                     </div>
                 </form>
             </div>
@@ -176,7 +174,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 <style>
     .single-product-inner
@@ -200,23 +198,10 @@
         height: 100%;
         border-radius: 5px;
     }
-
-    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: #d3d3d3;
-        opacity: 1; /* Firefox */
-    }
-
-    :-ms-input-placeholder { /* Internet Explorer 10-11 */
-        color: #d3d3d3;
-    }
-
-    ::-ms-input-placeholder { /* Microsoft Edge */
-        color: #d3d3d3;
-    }
 </style>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @*<partial name="_ValidationScriptsPartial" />*@
 
     <script>
         $(document).ready(function ()

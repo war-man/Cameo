@@ -21,6 +21,7 @@ namespace Cameo.Controllers
         private readonly ICustomerService CustomerService;
         private readonly IHangfireService HangfireService;
         private readonly ITalentBalanceService TalentBalanceService;
+        private readonly ICustomerBalanceService CustomerBalanceService;
 
         public VideoRequestController(
             IVideoRequestService videoRequestService,
@@ -28,7 +29,8 @@ namespace Cameo.Controllers
             ITalentService talentService,
             ICustomerService customerService,
             IHangfireService hangfireService,
-            ITalentBalanceService talentBalanceService)
+            ITalentBalanceService talentBalanceService,
+            ICustomerBalanceService customerBalanceService)
         {
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
@@ -36,6 +38,7 @@ namespace Cameo.Controllers
             CustomerService = customerService;
             HangfireService = hangfireService;
             TalentBalanceService = talentBalanceService;
+            CustomerBalanceService = customerBalanceService;
         }
 
         public IActionResult Index()
@@ -43,17 +46,48 @@ namespace Cameo.Controllers
             return View();
         }
 
+        public IActionResult Create(string username)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            if (!AccountUtil.IsUserCustomer(curUser))
+                return NotFound();
+
+            var customer = CustomerService.GetByUserID(curUser.ID);
+            if (customer == null)
+                return BadRequest("You are not a customer");
+
+            Talent talent = TalentService.GetActiveByUsername(username);
+            if (talent == null)
+                return NotFound();
+
+            TalentDetailsVM talentVM = new TalentDetailsVM(talent);
+            talentVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
+            talentVM.RequestPriceToStr();
+            ViewData["talent"] = talentVM;
+
+            var createVM = new VideoRequestCreateVM()
+            {
+                TypeID = (int)VideoRequestTypeEnum.someone
+            };
+
+            ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+            ViewData["customerBalance"] = CustomerBalanceService.GetBalance(customer);
+
+            return View(createVM);
+        }
+
         [HttpPost]
         public IActionResult Create(VideoRequestCreateVM modelVM)
         {
             var curUser = accountUtil.GetCurrentUser(User);
+            var talent = TalentService.GetAvailableByID(modelVM.TalentID);
+
             if (AccountUtil.IsUserCustomer(curUser))
             {
                 if (ModelState.IsValid)
                 {
                     if (ValidateFromProperty(modelVM.From, modelVM.TypeID))
                     {
-                        var talent = TalentService.GetAvailableByID(modelVM.TalentID);
                         if (talent != null)
                         {
                             if (talent.Price == modelVM.Price)
@@ -61,10 +95,11 @@ namespace Cameo.Controllers
                                 try
                                 {
                                     var curCustomer = CustomerService.GetByUserID(curUser.ID);
+                                    CustomerBalanceService.TakeOffBalance(curCustomer, 100);
 
                                     VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                    //1. create model and send email
+                                    //1. create model and send notification
                                     VideoRequestService.Add(model, curUser.ID);
 
                                     ////2. create hangfire RequestAnswerJobID and save it
@@ -97,7 +132,11 @@ namespace Cameo.Controllers
                 ModelState.AddModelError("", "Таланты не могут заказывать видео. Зайдите как клиент.");
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
-            ViewData["talent"] = new TalentDetailsVM();
+
+            TalentDetailsVM talentVM = new TalentDetailsVM(talent);
+            talentVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
+            talentVM.RequestPriceToStr();
+            ViewData["talent"] = talentVM;
 
             return PartialView("_Create", modelVM);
         }

@@ -14,9 +14,23 @@ namespace Cameo.Services
         {
         }
 
+        public override void Add(Customer entity, string userID)
+        {
+            base.Add(entity, userID);
+
+            AssignAccountNumber(entity);
+            base.Update(entity, userID);
+        }
+
         public Customer GetByUserID(string userID)
         {
             return GetAsIQueryable().FirstOrDefault(m => m.UserID == userID && !m.IsDeleted);
+        }
+
+        private void AssignAccountNumber(Customer model)
+        {
+            if (string.IsNullOrWhiteSpace(model.AccountNumber))
+                model.AccountNumber = model.ID.ToString().PadLeft(8, '0');
         }
     }
 }

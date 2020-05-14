@@ -415,5 +415,15 @@ namespace Cameo.Services
             return GetAllPaidByTalent(talent)
                 .Where(m => !m.IsNotPublic && m.ID != requestIDToBeExcluded);
         }
+
+        public int CalculateRequestPrice(Talent talent)
+        {
+            int price = talent.Price;
+            double requestPriceDouble = (0.25 - (0.75 * 0.01)) * price;
+
+            int requestPriceInt = ((int)(requestPriceDouble / 1000)) * 1000;
+
+            return requestPriceInt;
+        }
     }
 }
