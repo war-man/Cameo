@@ -115,5 +115,45 @@ namespace Cameo.API.ViewModels
             this.Bio = model.Bio;
             IntroVideo = new AttachmentDetailsVM(model.IntroVideo);
         }
+
+        public void RequestPriceToStr()
+        {
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
+        }
+    }
+
+    public class TalentRequestInfoVM
+    {
+        public string FullName { get; set; }
+        public int Price { get; set; }
+        public string PriceStr { get; set; }
+
+        public int RequestPrice { get; set; }
+        public string RequestPriceStr { get; set; }
+
+        public int CustomerBalance { get; set; }
+        public string CustomerBalanceStr { get; set; }
+
+        public TalentRequestInfoVM(Talent model, int customerBalance)
+        {
+            if (model == null)
+                return;
+
+            this.FullName = model.FullName;
+            Price = model.Price;
+
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            PriceStr = model.Price.ToString(numberFormat).Trim();
+
+            CustomerBalance = customerBalance;
+            CustomerBalanceStr = customerBalance.ToString(numberFormat).Trim();
+        }
+
+        public void RequestPriceToStr()
+        {
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
+        }
     }
 }

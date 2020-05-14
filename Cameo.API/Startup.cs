@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cameo.API.Filters;
 using Cameo.Common;
 using Cameo.Data;
 using Cameo.DependencyInjections;
 using Cameo.Models;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using Hangfire;
+using Hangfire.Dashboard;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -65,6 +69,30 @@ namespace Cameo.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.Configure<AppConfiguration>(Configuration.GetSection("MySettings"));
+
+            //Hangfire
+#if DEBUG
+            string connectionString = "Data Source=.;Initial Catalog=Cameo;User Id=sa;Password=490969;";
+#else
+            string connectionString = "Data Source=192.168.44.96;Initial Catalog=Cameo;User Id=sa;Password=cloudstack;";
+#endif
+            services.AddHangfire(config =>
+                config.UseSqlServerStorage(
+                    connectionString,
+                    new SqlServerStorageOptions
+                    {
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        UsePageLocksOnDequeue = true,
+                        DisableGlobalLocks = true
+                    }
+                )
+            );
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
 
             //add common dependencies
             services.AddCommonDependencies(); //UnitOfWork and DatabaseFactory
@@ -142,6 +170,13 @@ namespace Cameo.API
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseHangfireServer();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAuthorizationFilter() },
+                IsReadOnlyFunc = (DashboardContext context) => true
             });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.

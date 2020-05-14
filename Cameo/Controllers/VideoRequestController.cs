@@ -92,29 +92,37 @@ namespace Cameo.Controllers
                         {
                             if (talent.Price == modelVM.Price)
                             {
-                                try
+                                var curCustomer = CustomerService.GetByUserID(curUser.ID);
+                                int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
+                                int requestPrice = VideoRequestService.CalculateRequestPrice(talent);
+
+                                if (customerBalance >= requestPrice)
                                 {
-                                    var curCustomer = CustomerService.GetByUserID(curUser.ID);
-                                    CustomerBalanceService.TakeOffBalance(curCustomer, 100);
+                                    try
+                                    {
+                                        CustomerBalanceService.TakeOffBalance(curCustomer, 100);
 
-                                    VideoRequest model = modelVM.ToModel(curCustomer);
+                                        VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                    //1. create model and send notification
-                                    VideoRequestService.Add(model, curUser.ID);
+                                        //1. create model and send notification
+                                        VideoRequestService.Add(model, curUser.ID);
 
-                                    ////2. create hangfire RequestAnswerJobID and save it
-                                    //model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
-                                    //create hangfire VideoJobID
-                                    model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
+                                        ////2. create hangfire RequestAnswerJobID and save it
+                                        //model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
+                                        //create hangfire VideoJobID
+                                        model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
-                                    VideoRequestService.Update(model, curUser.ID);
+                                        VideoRequestService.Update(model, curUser.ID);
 
-                                    ViewBag.success = true;
+                                        ViewBag.success = true;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        ModelState.AddModelError("", ex.Message);
+                                    }
                                 }
-                                catch (Exception ex)
-                                {
-                                    ModelState.AddModelError("", ex.Message);
-                                }
+                                else
+                                    ModelState.AddModelError("", "У Вас недостаточно средств на балансе");
                             }
                             else
                                 ModelState.AddModelError("", "Пока вы заполняли форму, Талант успел изменить цену");
