@@ -55,6 +55,8 @@ namespace Cameo.Models
         public int? VideoID { get; set; }
         public virtual Attachment Video { get; set; }
 
+        public bool ViewedByTalent { get; set; }
+
         #region RequestStatus change dates
         public DateTime? DateRequestCanceledByCustomer { get; set; }
         public DateTime? DateRequestExpired { get; set; }

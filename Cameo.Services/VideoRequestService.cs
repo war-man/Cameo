@@ -34,6 +34,8 @@ namespace Cameo.Services
 
         new public void Add(VideoRequest entity, string creatorID)
         {
+            entity.ViewedByTalent = false;
+
             double commission = 0;
             double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out commission);
             if (commission <= 0)
@@ -419,7 +421,14 @@ namespace Cameo.Services
         public int CalculateRequestPrice(Talent talent)
         {
             int price = talent.Price;
-            double requestPriceDouble = (0.25 - (0.75 * 0.01)) * price;
+
+            double websiteCommission = 0;
+            double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out websiteCommission);
+            if (websiteCommission <= 0)
+                websiteCommission = 25;
+
+            double requestPriceDouble = ((101 * websiteCommission - 100) / 10000) * price;
+            double requestPriceDouble2 = (0.25 - (0.75 * 0.01)) * price;
 
             int requestPriceInt = ((int)(requestPriceDouble / 1000)) * 1000;
 

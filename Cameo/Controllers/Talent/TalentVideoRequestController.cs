@@ -12,18 +12,18 @@ namespace Cameo.Controllers
     //[TalentAuthorization] - must be implemented
     public class TalentVideoRequestController : BaseController
     {
-        private readonly ICustomerService CustomerService;
+        private readonly ITalentService TalentService;
         private readonly IVideoRequestSearchService SearchService;
         private readonly IVideoRequestService VideoRequestService;
         private readonly ITalentBalanceService TalentBalanceService;
 
         public TalentVideoRequestController(
-            ICustomerService customerService,
+            ITalentService talentService,
             IVideoRequestSearchService searchService,
             IVideoRequestService videoRequestService,
             ITalentBalanceService talentBalanceService)
         {
-            CustomerService = customerService;
+            TalentService = talentService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
             TalentBalanceService = talentBalanceService;
@@ -43,13 +43,19 @@ namespace Cameo.Controllers
         public IActionResult Details(int id)
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            VideoRequest model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+            VideoRequest videoRequest = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
 
-            if (model == null || !VideoRequestService.BelongsToTalent(model, curUser.ID))
+            if (videoRequest.ViewedByTalent == false)
+            {
+                videoRequest.ViewedByTalent = true;
+                VideoRequestService.Update(videoRequest, curUser.ID);
+            }
+
+            if (videoRequest == null || !VideoRequestService.BelongsToTalent(videoRequest, curUser.ID))
                 return NotFound();
 
-            VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(model);
-            int balance = TalentBalanceService.GetBalance(model.Talent);
+            VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(videoRequest);
+            int balance = TalentBalanceService.GetBalance(videoRequest.Talent);
             modelVM.BalanceAllowsToConfirm = balance > 0;
 
             return View(modelVM);

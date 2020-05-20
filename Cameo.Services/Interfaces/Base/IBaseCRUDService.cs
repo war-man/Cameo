@@ -18,7 +18,7 @@ namespace Cameo.Services.Interfaces
         void DeleteCollection(ICollection<T> entities, string modifierID);
 
         //uncomment when it is need
-        //void DeletePermanently(T entity, string modifierID);
+        void DeletePermanently(T entity, string modifierID);
         //void DeletePermanentlyCollection(ICollection<T> entities, string modifierID);
 
         T GetByID(int id);

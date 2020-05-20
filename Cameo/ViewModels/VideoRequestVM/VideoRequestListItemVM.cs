@@ -17,7 +17,9 @@ namespace Cameo.ViewModels
         public string Deadline { get; set; }
         public string DeadlineText { get; set; }
         public BaseDropdownableDetailsVM Status { get; set; }
-        
+
+        public bool ViewedByTalent { get; set; }
+
         public VideoRequestListItemVM() { }
 
         public VideoRequestListItemVM(VideoRequest model, string curUserType)
@@ -56,6 +58,7 @@ namespace Cameo.ViewModels
                 Deadline = deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString();
 
             Status = new BaseDropdownableDetailsVM(model.RequestStatus);
+            ViewedByTalent = model.ViewedByTalent;
         }
     }
 }

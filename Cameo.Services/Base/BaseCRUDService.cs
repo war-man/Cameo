@@ -72,11 +72,11 @@ namespace Cameo.Services
             UpdateCollection(entities, modifierID);
         }
 
-        //public void DeletePermanently(T entity, string modifierID)
-        //{
-        //    _repository.Delete(entity);
-        //    Save();
-        //}
+        public void DeletePermanently(T entity, string modifierID)
+        {
+            _repository.Delete(entity);
+            Save();
+        }
 
         //public void DeletePermanentlyCollection(ICollection<T> entities, string modifierID)
         //{

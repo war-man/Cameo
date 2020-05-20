@@ -27,17 +27,20 @@ namespace Cameo.API.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICustomerService CustomerService;
+        private readonly ITalentService TalentService;
 
         public AccountController(
             IFirebaseService firebaseService,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            ITalentService talentService)
         {
             FirebaseService = firebaseService;
             _signInManager = signInManager;
             _userManager = userManager;
             CustomerService = customerService;
+            TalentService = talentService;
         }
 
         [HttpPost("Authenticate")]
@@ -168,6 +171,58 @@ namespace Cameo.API.Controllers
                     }
                     else
                         errorMessage = "Пользователь с таким телефоном уже зарегистрирован";
+                }
+                else
+                    errorMessage = "Введены неверные данные";
+
+                if (!string.IsNullOrWhiteSpace(errorMessage))
+                    statusCode = 400;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                statusCode = 500;
+
+                Response.StatusCode = statusCode;
+            }
+
+            return BadRequest(errorMessage);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DeleteVM deleteVM)
+        {
+            int statusCode = 200;
+            string errorMessage = null;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingUser = GetUserByPhoneNumber(deleteVM.phone);
+                    if (existingUser == null)
+                        return NotFound();
+                    else
+                    {
+                        if (existingUser.UserType == UserTypesEnum.customer.ToString())
+                        {
+                            var customer = CustomerService.GetByUserID(existingUser.Id);
+                            if (customer != null)
+                                CustomerService.DeletePermanently(customer, existingUser.Id);
+                        }
+                        else
+                        {
+                            var talent = TalentService.GetByUserID(existingUser.Id);
+                            if (talent != null)
+                                TalentService.DeletePermanently(talent, existingUser.Id);
+                        }
+
+                        var result = await _userManager.DeleteAsync(existingUser);
+                        if (result.Succeeded)
+                            return Ok();
+                        else
+                            errorMessage = "Не удалсоь удалить пользователя";
+                    }
                 }
                 else
                     errorMessage = "Введены неверные данные";

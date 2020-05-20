@@ -62,4 +62,10 @@ namespace Cameo.API.ViewModels
             user_type = userType;
         }
     }
+
+    public class DeleteVM
+    {
+        [Required]
+        public string phone { get; set; }
+    }
 }
