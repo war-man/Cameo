@@ -339,6 +339,9 @@
     <Content Update="Views\Error\Status.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\_CustomerSidebarDaven.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_FirebaseConfig.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

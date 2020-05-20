@@ -53,8 +53,9 @@ namespace Cameo.Controllers
             {
                 try
                 {
-                    model.FirstName = modelVM.FirstName;
-                    model.LastName = modelVM.LastName;
+                    model.FullName = modelVM.FullName;
+                    //model.FirstName = modelVM.FirstName;
+                    //model.LastName = modelVM.LastName;
                     model.Bio = modelVM.Bio;
                     model.SocialAreaID = modelVM.SocialAreaID;
                     model.SocialAreaHandle = modelVM.SocialAreaHandle;

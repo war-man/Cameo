@@ -7,87 +7,112 @@
 @inject IOptions<AppConfiguration> AppSettings
 
 @{
-    ViewData["Title"] = "Личные данные";
+    ViewData["Title"] = "Персональные данные";
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
-<br />
-<div class="row">
-    <div class="col-sm-3">
-        <partial name="_CustomerSidebar" />
-    </div>
-    <div class="col-sm-4">
-        <h2>@ViewData["Title"]</h2>
-        <hr />
 
-        @if (ViewData["successfullySaved"] != null)
-        {
-            <div class="alert alert-success">
-                Данные успешно сохранены
-            </div>
-        }
 
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <input asp-for="ID" type="hidden" />
-            <div class="form-group">
-                <input type="hidden" id="fileID" name="fileID" />
-                @*@{
-                        string photoUrl = AppSettings.Value.NophotoUrl;
-                        if (Model.Avatar != null && Model.Avatar.ID > 0)
-                        {
-                            photoUrl = Model.Avatar.Url;
-                        }
-                    }*@
-                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
-                <img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />
-                <input type='file' id="imgInp" />
+
+<style>
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #d3d3d3;
+        opacity: 1; /* Firefox */
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #d3d3d3;
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #d3d3d3;
+    }
+
+    select {
+        font-size: 18px;
+        padding: 25px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #d4d4d4;
+        width: 100%;
+        line-height: inherit;
+        height: auto;
+    }
+</style>
+
+@*<br />*@
+<div class="row bg-color ptb_md--60 ptb_sm--60" data-bg-color="#ffffff">
+    <div class="container">
+        <div class="row">
+            @*<div class="col-lg-2"></div>*@
+            <div class="col-lg-4 mt--30">
+                <partial name="_CustomerSidebarDaven" />
             </div>
-            <div class="form-group">
-                <label asp-for="FirstName"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div class="col-lg-8 mt--30 mb--30">
+                <h2>@ViewData["Title"]</h2>
+
+                @if (ViewData["successfullySaved"] != null)
+                {
+                    <div class="alert alert-success">
+                        Данные успешно сохранены
+                    </div>
+                }
+
+                <!-- Start Contact Form -->
+                <div class="draven-contact-form">
+                    <div class="container p-0">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="contact-form-wrapper">
+                                    <!-- Start Contact Wrapper -->
+                                    <div class="contact__form--1">
+                                        <!-- Enrolment form -->
+                                        <form method="post">
+                                            <div asp-validation-summary="All" class="text-danger"></div>
+                                            <div class="row">
+                                                <div class="col-lg-12 mt--20">
+                                                    <input asp-for="ID" type="hidden" />
+                                                    <input type="hidden" id="fileID" name="fileID" />
+
+                                                    <!-- Start Single Team -->
+                                                    <div class="col-lg-4 col-md-6 col-sm-6 p-0">
+                                                        <div class="team team__style--1 text-center">
+                                                            <div class="thumbnail">
+                                                                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar">
+                                                                <img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-6 col-sm-6 mt--10 p-0 text-center">
+                                                        @*<a class="button-link button-size__8 button__transparent--border--dashed" href="javascript: void(0);"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span><span class="button-text">Редактировать фото</span></a>*@
+                                                        <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span> <span class="button-text">Редактировать фото</span></label>
+                                                        <input type='file' id="imgInp" style="display: none;"/>
+                                                    </div>
+                                                    <!-- End Single Team -->
+                                                </div>
+                                                <div class="col-lg-12 mt--20">
+                                                    <input asp-for="FullName" type="text" placeholder="Имя *">
+                                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-lg-12 mt--20">
+                                                    <textarea asp-for="Bio" type="text" placeholder="О себе"></textarea>
+                                                    <span asp-validation-for="Bio" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-lg-12 mt--20">
+                                                    <input type="submit" value="Сохранить">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Contact Form -->
             </div>
-            <div class="form-group">
-                <label asp-for="LastName"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>*@
-            @*<div class="form-group">
-                    <label asp-for="UserName"></label>
-                    <input asp-for="UserName" class="form-control" />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>*@
-            @*<div class="form-group">
-                    <label asp-for="PhoneNumber"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="SocialAreaID"></label>
-                <select asp-for="SocialAreaID"
-                        asp-items="@ViewData["socialAreas"] as IEnumerable<SelectListItem>"
-                        class="form-control">
-                    <option> </option>
-                </select>
-                <span asp-validation-for="SocialAreaID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SocialAreaHandle"></label>
-                <input asp-for="SocialAreaHandle" class="form-control" />
-                <span asp-validation-for="SocialAreaHandle" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="FollowersCount"></label>
-                    <input asp-for="FollowersCount" class="form-control" />
-                    <span asp-validation-for="FollowersCount" class="text-danger"></span>
-                </div>*@
-            <button type="submit" class="btn btn-default">Сохранить</button>
-        </form>
+            @*<div class="col-lg-2"></div>*@
+        </div>
     </div>
 </div>
 

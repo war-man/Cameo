@@ -1,0 +1,46 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["Controller"];
+    string active = "";
+    string ariaSelected = "false";
+}
+
+<div class="tab-vertical-wrapper">
+    <ul class="nav nav-tabs tab-default tab_style--3" role="tablist">
+        <li class="nav-item">
+            @{
+                active = "";
+
+                if (controller.Equals("CustomerPersonalData"))
+                {
+                    active = "active";
+                    ariaSelected = "true";
+                }
+            }
+            <a class="nav-link @active" href="~/CustomerPersonalData" aria-selected="@ariaSelected"><i class="fa fa-arrow-circle-right"></i> Персональные данные</a>
+        </li>
+        <li class="nav-item">
+            @{
+                active = "";
+
+                if (controller.Equals("CustomerVideoRequest"))
+                {
+                    active = "active";
+                    ariaSelected = "true";
+                }
+            }
+            <a class="nav-link @active" href="~/CustomerVideoRequest" aria-selected="@ariaSelected"><i class="fa fa-arrow-circle-right"></i> История заказов</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-arrow-circle-right"></i> Security and privacy</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Home/TermsOfService"><i class="fa fa-arrow-circle-right"></i> Terms of service</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-arrow-circle-right"></i> Пополнить баланс <span class="badge">(45 000 сум)</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Home/SecurityAndPrivacy" style="border-bottom-width: 2px;"><i class="fa fa-arrow-circle-right"></i> Выйти</a>
+        </li>
+    </ul>
+</div>

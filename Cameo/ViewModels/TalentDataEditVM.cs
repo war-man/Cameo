@@ -9,6 +9,12 @@ namespace Cameo.ViewModels
 {
     public class TalentPersonalDataEditVM : PersonEditVM
     {
+        [Display(Name = "Меня можно найти в")]
+        public int? SocialAreaID { get; set; }
+
+        [Display(Name = "Моё имя пользователя в соц. сети")]
+        public string SocialAreaHandle { get; set; }
+
         [Display(Name = "Количество подписчиков")]
         public string FollowersCount { get; set; }
 
@@ -19,6 +25,8 @@ namespace Cameo.ViewModels
             if (model == null)
                 return;
 
+            this.SocialAreaID = model.SocialAreaID;
+            this.SocialAreaHandle = model.SocialAreaHandle;
             this.FollowersCount = model.FollowersCount;
         }
     }

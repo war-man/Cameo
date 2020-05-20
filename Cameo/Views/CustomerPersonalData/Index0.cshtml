@@ -1,4 +1,4 @@
-﻿@model Cameo.ViewModels.TalentPersonalDataEditVM
+﻿@*@model Cameo.ViewModels.CustomerEditVM
 @using Cameo.Utils
 @using Cameo.Common
 
@@ -13,7 +13,7 @@
 <br />
 <div class="row">
     <div class="col-sm-3">
-        <partial name="_TalentSidebar" />
+        <partial name="_CustomerSidebar" />
     </div>
     <div class="col-sm-4">
         <h2>@ViewData["Title"]</h2>
@@ -31,37 +31,20 @@
             <input asp-for="ID" type="hidden" />
             <div class="form-group">
                 <input type="hidden" id="fileID" name="fileID" />
-                @*@{
-                    string photoUrl = AppSettings.Value.NophotoUrl;
-                    if (Model.Avatar != null && Model.Avatar.ID > 0)
-                    {
-                        photoUrl = Model.Avatar.Url;
-                    }
-                }*@
                 <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-circle img-thumbnail" height="150" width="150" />
                 <img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />
                 <input type='file' id="imgInp" />
             </div>
             <div class="form-group">
-                <label asp-for="FullName"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Bio"></label>
-                <textarea asp-for="Bio" class="form-control"></textarea>
-                <span asp-validation-for="Bio" class="text-danger"></span>
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="UserName"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>*@
-            @*<div class="form-group">
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
                 <label asp-for="SocialAreaID"></label>
                 <select asp-for="SocialAreaID"
@@ -76,11 +59,6 @@
                 <input asp-for="SocialAreaHandle" class="form-control" />
                 <span asp-validation-for="SocialAreaHandle" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="FollowersCount"></label>
-                <input asp-for="FollowersCount" class="form-control" />
-                <span asp-validation-for="FollowersCount" class="text-danger"></span>
-            </div>
             <button type="submit" class="btn btn-default">Сохранить</button>
         </form>
     </div>
@@ -93,8 +71,8 @@
     <script>
         $(document).ready(function () {
             $("#imgInp").change(function () {
-                FileAjaxUpload(this, @Model.ID, "@Constants.FileTypes.TALENT_AVATAR", "spinner", "imgContainer");
+                FileAjaxUpload(this, @Model.ID, "@Constants.FileTypes.CUSTOMER_AVATAR", "spinner", "imgContainer");
             });
         });
     </script>
-}
+}*@
