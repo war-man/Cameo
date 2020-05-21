@@ -34,7 +34,7 @@ namespace Cameo.Controllers
             AppUserVM curUser = accountUtil.GetCurrentUser(User);
             ViewBag.userType = curUser.Type;
 
-            return View("Index2");
+            return View();
         }
 
         public IActionResult Details(int id)

@@ -145,7 +145,7 @@ namespace Cameo.API.Controllers
                 Response.StatusCode = statusCode;
             }
 
-            return BadRequest(errorMessage);
+            return BadRequest(new { errorMessage });
         }
 
         //[HttpPost]

@@ -330,7 +330,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\CustomerVideoRequest\Index2.cshtml">
+    <Content Update="Views\CustomerVideoRequest\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Error\Index.cshtml">

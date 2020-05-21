@@ -44,13 +44,16 @@ namespace Cameo.API.Controllers
         [HttpPost]
         public ActionResult Save(CustomerEditVM modelVM)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetByUserID(curUser.ID);
-            if (model == null)
-                return NotFound();
-
             int statusCode = 200;
             string errorMessage = null;
+
+            var curUser = accountUtil.GetCurrentUser(User);
+            Customer model = CustomerService.GetByUserID(curUser.ID);
+            if (model != null)
+            {
+                errorMessage = "Данные клиента не найдены";
+                return NotFound(new { errorMessage });
+            }
 
             try
             {
@@ -82,7 +85,7 @@ namespace Cameo.API.Controllers
                 Response.StatusCode = statusCode;
             }
 
-            return BadRequest(errorMessage);
+            return BadRequest(new { errorMessage });
         }
     }
 }
