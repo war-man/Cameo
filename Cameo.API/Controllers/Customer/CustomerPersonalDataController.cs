@@ -1,11 +1,15 @@
 ﻿using System;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
-using Cameo.ViewModels;
+using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Cameo.Controllers
+namespace Cameo.API.Controllers
 {
+    [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
     public class CustomerPersonalDataController : BaseController
     {
         private readonly ICustomerService CustomerService;
@@ -22,7 +26,8 @@ namespace Cameo.Controllers
             AttachmentService = attachmentService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public ActionResult<CustomerShortInfoVM> Details()
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Customer model = CustomerService.GetByUserID(curUser.ID);
@@ -31,50 +36,53 @@ namespace Cameo.Controllers
             if (model.AvatarID.HasValue)
                 model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
-            CustomerEditVM modelVM = new CustomerEditVM(model);
+            CustomerShortInfoVM modelVM = new CustomerShortInfoVM(model);
 
-            return View(modelVM);
+            return modelVM;
         }
 
         [HttpPost]
-        public IActionResult Index(CustomerEditVM modelVM)
+        public ActionResult Save(CustomerEditVM modelVM)
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetByID(modelVM.ID);
-            if (model == null || !model.UserID.Equals(curUser.ID))
+            Customer model = CustomerService.GetByUserID(curUser.ID);
+            if (model == null)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            int statusCode = 200;
+            string errorMessage = null;
+
+            try
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    model.FullName = modelVM.FullName;
+                    model.FullName = modelVM.full_name;
                     //model.FirstName = modelVM.FirstName;
                     //model.LastName = modelVM.LastName;
-                    model.Bio = modelVM.Bio;
+                    model.Bio = modelVM.bio;
                     //model.SocialAreaID = modelVM.SocialAreaID;
                     //model.SocialAreaHandle = modelVM.SocialAreaHandle;
 
                     CustomerService.Update(model, curUser.ID);
 
-                    ViewData["successfullySaved"] = true;
+                    return Ok();
                 }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "Something went wrong while saving data");
-                }
+                else
+                    errorMessage = "Неверные данные";
             }
-            else
-                ModelState.AddModelError("", "Неверные данные");
+            catch (Exception ex)
+            {
+                errorMessage = "Something went wrong while saving data.";
+                statusCode = 500;
+            }
 
-            if (model.AvatarID.HasValue)
-                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+            if (!string.IsNullOrWhiteSpace(errorMessage)
+                && statusCode != 200)
+            {
+                Response.StatusCode = statusCode;
+            }
 
-            modelVM.Avatar = new AttachmentDetailsVM(model.Avatar);
-
-            ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
-
-            return View(modelVM);
+            return BadRequest(errorMessage);
         }
     }
 }

@@ -62,6 +62,7 @@ namespace Cameo.ViewModels
         //    set { }
         //}
         public string Username { get; set; }
+        public string Bio { get; set; }
         public AttachmentDetailsVM Avatar { get; set; }
 
         public PersonShortInfoVM() { }
@@ -76,6 +77,7 @@ namespace Cameo.ViewModels
             //this.FirstName = model.FirstName;
             //this.LastName = model.LastName;
             this.Username = model.User?.UserName;
+            this.Bio = model.Bio;
             this.Avatar = new AttachmentDetailsVM(model.Avatar);
         }
     }

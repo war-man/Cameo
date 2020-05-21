@@ -9,12 +9,12 @@ namespace Cameo.API.ViewModels
 {
     public class PersonEditVM
     {
-        public int ID { get; set; }
+        public int id { get; set; }
 
         [Required]
         [Display(Name = "Имя")]
         [StringLength(256)]
-        public string FullName { get; set; }
+        public string full_name { get; set; }
 
         //[Required]
         //[Display(Name = "Имя")]
@@ -27,7 +27,7 @@ namespace Cameo.API.ViewModels
         //public string LastName { get; set; }
 
         [Display(Name = "О себе")]
-        public string Bio { get; set; }
+        public string bio { get; set; }
 
         //[Display(Name = "Меня можно найти в")]
         //public int? SocialAreaID { get; set; }
@@ -35,7 +35,7 @@ namespace Cameo.API.ViewModels
         //[Display(Name = "Моё имя пользователя в соц. сети")]
         //public string SocialAreaHandle { get; set; }
 
-        public AttachmentDetailsVM Avatar { get; set; }
+        public AttachmentDetailsVM avatar { get; set; }
 
         public PersonEditVM() { }
 
@@ -44,21 +44,21 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            this.ID = model.ID;
-            this.FullName = model.FullName;
+            this.id = model.ID;
+            this.full_name = model.FullName;
             //this.FirstName = model.FirstName;
             //this.LastName = model.LastName;
-            this.Bio = model.Bio;
+            this.bio = model.Bio;
             //this.SocialAreaID = model.SocialAreaID;
             //this.SocialAreaHandle = model.SocialAreaHandle;
-            this.Avatar = new AttachmentDetailsVM(model.Avatar);
+            this.avatar = new AttachmentDetailsVM(model.Avatar);
         }
     }
 
     public class PersonShortInfoVM
     {
-        public int ID { get; set; }
-        public string FullName { get; set; }
+        public int id { get; set; }
+        public string full_name { get; set; }
         //public string FirstName { get; set; }
         //public string LastName { get; set; }
         //public string FullName
@@ -69,8 +69,9 @@ namespace Cameo.API.ViewModels
         //    }
         //    set { }
         //}
-        public string Username { get; set; }
-        public AttachmentDetailsVM Avatar { get; set; }
+        public string username { get; set; }
+        public string bio { get; set; }
+        public AttachmentDetailsVM avatar { get; set; }
 
         public PersonShortInfoVM() { }
 
@@ -79,12 +80,13 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            this.ID = model.ID;
-            this.FullName = model.FullName;
+            this.id = model.ID;
+            this.full_name = model.FullName;
             //this.FirstName = model.FirstName;
             //this.LastName = model.LastName;
-            this.Username = model.User?.UserName;
-            this.Avatar = new AttachmentDetailsVM(model.Avatar);
+            this.username = model.User?.UserName;
+            this.bio = model.Bio;
+            this.avatar = new AttachmentDetailsVM(model.Avatar);
         }
     }
 }

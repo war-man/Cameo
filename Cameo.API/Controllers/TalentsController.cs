@@ -80,8 +80,8 @@ namespace Cameo.API.Controllers
             {
                 foreach (var talent in categoryTalentsVM.Talents)
                 {
-                    if (talent.Avatar.ID == 0)
-                        talent.Avatar.Url = GetRandomPhotoUrl();
+                    if (talent.avatar.ID == 0)
+                        talent.avatar.Url = GetRandomPhotoUrl();
                 }
             }
 
@@ -216,8 +216,8 @@ namespace Cameo.API.Controllers
             {
                 foreach (var talent in categoryTalentsVM.Talents)
                 {
-                    if (talent.Avatar.ID == 0)
-                        talent.Avatar.Url = GetRandomPhotoUrl();
+                    if (talent.avatar.ID == 0)
+                        talent.avatar.Url = GetRandomPhotoUrl();
                 }
             }
 
@@ -233,8 +233,8 @@ namespace Cameo.API.Controllers
 
             foreach (var item in talents)
             {
-                if (item.Avatar.ID == 0)
-                    item.Avatar.Url = GetRandomPhotoUrl();
+                if (item.avatar.ID == 0)
+                    item.avatar.Url = GetRandomPhotoUrl();
             }
 
             return talents;
@@ -292,8 +292,8 @@ namespace Cameo.API.Controllers
 
             foreach (var talent in relatedTalents)
             {
-                if (talent.Avatar.ID == 0)
-                    talent.Avatar.Url = GetRandomPhotoUrl();
+                if (talent.avatar.ID == 0)
+                    talent.avatar.Url = GetRandomPhotoUrl();
             }
 
             return relatedTalents;
