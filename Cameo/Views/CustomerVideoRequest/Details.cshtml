@@ -1,121 +1,151 @@
 ﻿@model Cameo.ViewModels.VideoRequestDetailsVM
 
 @{
-    ViewData["Title"] = "Детали Запроса";
+    ViewData["Title"] = "Детали заказа";
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
-<br />
-<div class="row">
-    <div class="col-sm-6">
-        <h2>@ViewData["Title"]</h2>
-        <hr />
+<div class="row bg-color ptb_md--60 ptb_sm--60" data-bg-color="#ffffff">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mt--30">
+                <!-- Start Single Blog -->
+                <div class="blog blog_style--1">
+                    <div class="inner">
+                        <h3 class="fontWeight600 font-2 heading-divider heading-divider__themeColor  mb--15 mt--10 font--32">@ViewData["Title"]</h3>
+                        <dl class="dl-horizontal font--16 mb--35">
+                            @*<dt>
+                                @Html.DisplayNameFor(model => model.ID)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.ID)
+                            </dd>*@
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Talent)
+                            </dt>
+                            <dd>
+                                <a href="/talents/details/@Model.Talent.Username">@Model.Talent.FullName</a>
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.To)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.To)
+                            </dd>
+                            @if (!string.IsNullOrWhiteSpace(Model.From))
+                            {
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.From)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.From)
+                                </dd>
+                            }
+                            
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Instructions)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Instructions)
+                            </dd>
+                            @*<dt>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>*@
+                            <dt>
+                                @*@Html.DisplayNameFor(model => model.IsNotPublic)*@
+                            </dt>
+                            <dd>
+                                @if (Model.IsNotPublic)
+                                {
+                                    <small><i>Видео скрыто от других</i></small>
+                                }
+                                @*@Html.DisplayFor(model => model.IsNotPublic)*@
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Price)
+                            </dt>
+                            <dd>
+                                @Model.PriceStr сум<br />
+                                <small><i>Стоимость запроса: @Model.RequestPriceStr сум</i></small><br />
+                                <small><i>Осталось доплатить: @Model.RemainingPriceStr сум</i></small>
+                            </dd>
 
-        @if (Model.VideoIsPaid)
-        {
-            <div class="row">
-                <div class="col-sm-12">
-                    <p>Запрос завершен - <a href="/Video/Details/@Model.ID">Перейти к видео</a></p>
+                            @*<dt>
+                                @Html.DisplayNameFor(model => model.Status.ID)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Status.ID)
+                            </dd>*@
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Status.Name)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.VideoDeadline)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.VideoDeadline)
+                            </dd>
+                        </dl>
+                        @*<p class="font--16 mb--35">All the rumors have finally died down and many skeptics have tightened their lips, the iPod does support video format now on its fifth generation.</p>*@
+                        <div class="blog-btn">
+                            <a class="button-link button-size__lg button__transparent--border" href="blog-details.html"><span class="button-text__13">Read More</span> </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Single Blog -->
+
+                @if (Model.VideoIsPaid)
+                {
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>Запрос завершен - <a href="/Video/Details/@Model.ID">Перейти к видео</a></p>
+                        </div>
+                    </div>
+                    <br />
+                }
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if (Model.CancelBtnIsAvailable)
+                        {
+                            <button type="button" class="btn btn-danger btn-sm" onclick="CancelRequest(@Model.ID);">Отменить</button>
+                        }
+
+                        @if (Model.Payable)
+                        {
+                            <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
+                        }
+
+                        @if (Model.EditBtnIsAvailable)
+                        {
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editBookModal">
+                                Редактировать
+                            </button>
+                        }
+                    </div>
                 </div>
             </div>
-            <br />
-        }
+            <div class="col-lg-6 mt--30 mb--30">
 
-        <div>
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.ID)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.ID)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.To)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.To)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.From)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.From)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Instructions)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Instructions)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Email)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Email)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.IsNotPublic)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.IsNotPublic)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Price)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Price)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.VideoDeadline)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.VideoDeadline)
-                </dd>
+                Here will be some instructions like on cameo
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.Status.ID)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Status.ID)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Status.Name)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Status.Name)
-                </dd>
-            </dl>
+            </div>
         </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                @if (Model.CancelBtnIsAvailable)
-                {
-                    <button type="button" class="btn btn-danger btn-sm" onclick="CancelRequest(@Model.ID);">Отменить</button>
-                }
-
-                @if (Model.Payable)
-                {
-                    <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
-                }
-
-                @if (Model.EditBtnIsAvailable)
-                {
-                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editBookModal">
-                        Редактировать
-                    </button>
-                }
+        <div class="row mt--30">
+            <div class="col-12">
+                <a asp-action="Index">Back to List</a>
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        Here will be some instructions like on cameo
-    </div>
 </div>
 
-<div>
-    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @if (Model.EditBtnIsAvailable)
 {

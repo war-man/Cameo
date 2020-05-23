@@ -58,14 +58,14 @@ namespace Cameo.API.ViewModels
 
             Status = new VideoRequestStatusDetailsVM(model.RequestStatus);
 
-            if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo)
+            if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo)
             {
                 CancelBtnIsAvailable = UploadVideoBtnIsAvailable = EditBtnIsAvailable = true;
             }
 
             Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
 
-            VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid
+            VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.paid
                 && model.VideoID.HasValue;
 
             Video = new AttachmentDetailsVM(model.Video);

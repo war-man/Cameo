@@ -14,8 +14,16 @@
             Ваш запрос успешно отправлен!
         </div>
         <br />
-        <a href="/">На главную</a>
+        @*<a href="/">На главную</a>*@
     </div>
+
+    <script>
+        setTimeout(function ()
+        {
+            // Simulate an HTTP redirect:
+            window.location.replace("/CustomerVideoRequest/Details/" + @ViewBag.requestID);
+        }, 1000);
+    </script>
 }
 else
 {

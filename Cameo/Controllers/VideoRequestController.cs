@@ -100,21 +100,22 @@ namespace Cameo.Controllers
                                 {
                                     try
                                     {
-                                        CustomerBalanceService.TakeOffBalance(curCustomer, 100);
+                                        CustomerBalanceService.TakeOffBalance(curCustomer, requestPrice);
 
                                         VideoRequest model = modelVM.ToModel(curCustomer);
 
                                         //1. create model and send notification
                                         VideoRequestService.Add(model, curUser.ID);
 
-                                        ////2. create hangfire RequestAnswerJobID and save it
-                                        //model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
-                                        //create hangfire VideoJobID
-                                        model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
+                                        //2. create hangfire RequestAnswerJobID and save it
+                                        model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
+                                        ////create hangfire VideoJobID
+                                        //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
                                         VideoRequestService.Update(model, curUser.ID);
 
                                         ViewBag.success = true;
+                                        ViewBag.requestID = model.ID;
                                     }
                                     catch (Exception ex)
                                     {

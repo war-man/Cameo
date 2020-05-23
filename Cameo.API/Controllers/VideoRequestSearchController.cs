@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cameo.API.ViewModels;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
-using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cameo.Controllers
+namespace Cameo.API.Controllers
 {
     [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
     public class VideoRequestSearchController : BaseController
     {
         private readonly IVideoRequestSearchService SearchService;
@@ -22,7 +24,7 @@ namespace Cameo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(int draw, int? start = null, int? length = null, int? statusID = 0)
+        public ActionResult<object> Index(int draw, int? start = null, int? length = null, int? statusID = 0)
         {
             int recordsTotal = 0;
             int recordsFiltered = 0;
@@ -51,14 +53,14 @@ namespace Cameo.Controllers
                 .Select(m => new VideoRequestListItemVM(m, curUser.Type))
                 .ToList();
 
-            return Json(new
+            return new
             {
                 draw = draw,
-                recordsTotal = recordsTotal,
-                recordsFiltered = recordsFiltered,
+                records_total = recordsTotal,
+                //recordsFiltered = recordsFiltered,
                 data = data,
                 error = error
-            });
+            };
         }
     }
 }

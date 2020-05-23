@@ -58,16 +58,22 @@ namespace Cameo.Models
         public bool ViewedByTalent { get; set; }
 
         #region RequestStatus change dates
-        public DateTime? DateRequestCanceledByCustomer { get; set; }
-        public DateTime? DateRequestExpired { get; set; }
-        public DateTime? DateRequestCanceledByTalent { get; set; }
         public DateTime? DateRequestAccepted { get; set; }
-        public DateTime? DateVideoCanceledByCustomer { get; set; }
-        public DateTime? DateVideoCanceledByTalent { get; set; }
+        public DateTime? DateRequestExpired { get; set; }
+        public DateTime? DateCanceledByCustomer { get; set; }
+        public DateTime? DateCanceledByTalent { get; set; }
         public DateTime? DateVideoExpired { get; set; }
         public DateTime? DateVideoUploaded { get; set; }
         public DateTime? DateVideoCompleted { get; set; }
         public DateTime? DatePaid { get; set; }
+        public DateTime? DatePaymentConfirmed { get; set; }
+
+
+        //unused dates
+        public DateTime? DateRequestCanceledByCustomer { get; set; }
+        public DateTime? DateRequestCanceledByTalent { get; set; }
+        public DateTime? DateVideoCanceledByCustomer { get; set; }
+        public DateTime? DateVideoCanceledByTalent { get; set; }
         public DateTime? DatePaymentExpired { get; set; }
         #endregion
     }

@@ -33,8 +33,8 @@ namespace Cameo.Services
             string userID,
             string userType,
 
-            int start, 
-            int length, 
+            int? start, 
+            int? length, 
             
             out int recordsTotal, 
             out int recordsFiltered,
@@ -67,7 +67,7 @@ namespace Cameo.Services
                     {
                         videoRequests = videoRequests
                             .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-                                || m.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid);
+                                || m.RequestStatusID == (int)VideoRequestStatusEnum.paid);
                     }
                     else
                         videoRequests = videoRequests.Where(m => m.RequestStatusID == statusID);
@@ -76,9 +76,15 @@ namespace Cameo.Services
                 recordsTotal = videoRequests.Count();
                 recordsFiltered = videoRequests.Count();
 
-                IQueryable<VideoRequest> data = videoRequests.Skip(start).Take(length);
+                if (start.HasValue && start.Value > 0)
+                    videoRequests = videoRequests.Skip(start.Value);
 
-                return data;
+                if (length.HasValue && length.Value > 0)
+                    videoRequests = videoRequests.Take(length.Value);
+
+                //IQueryable<VideoRequest> data = videoRequests.Skip(start).Take(length.Value);
+
+                return videoRequests;
             }
             catch (Exception ex)
             {

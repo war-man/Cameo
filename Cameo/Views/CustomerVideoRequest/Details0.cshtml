@@ -1,6 +1,4 @@
-﻿@model Cameo.ViewModels.VideoRequestDetailsVM
-@using Cameo.Common
-@using Cameo.Utils
+﻿@*@model Cameo.ViewModels.VideoRequestDetailsVM
 
 @{
     ViewData["Title"] = "Детали Запроса";
@@ -48,12 +46,12 @@
                 <dd>
                     @Html.DisplayFor(model => model.Instructions)
                 </dd>
-                @*<dt>
+                <dt>
                     @Html.DisplayNameFor(model => model.Email)
                 </dt>
                 <dd>
                     @Html.DisplayFor(model => model.Email)
-                </dd>*@
+                </dd>
                 <dt>
                     @Html.DisplayNameFor(model => model.IsNotPublic)
                 </dt>
@@ -94,63 +92,70 @@
                 {
                     <button type="button" class="btn btn-danger btn-sm" onclick="CancelRequest(@Model.ID);">Отменить</button>
                 }
+
+                @if (Model.Payable)
+                {
+                    <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
+                }
+
+                @if (Model.EditBtnIsAvailable)
+                {
+                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editBookModal">
+                        Редактировать
+                    </button>
+                }
             </div>
         </div>
     </div>
     <div class="col-sm-6">
-        @if (Model.Video.ID > 0)
-        {
-            <video id="imgContainer_@Model.ID" width="240" height="320" controls><source src="/Video/GetIncompletedVideo/@Model.ID" type="video/mp4"></video>
-            if (!Model.VideoConfirmed && !Model.VideoIsPaid)
-            {
-                <button type="button" class="btn btn-danger btn-sm" id="deleteBtn_@Model.ID" onclick="DeleteVideo(@Model.Video.ID, @Model.ID);" title="Удалить Видео"><i class="glyphicon glyphicon-remove-sign"></i></button>
-            }
-        }
-
-        @if (Model.VideoConfirmed)
-        {
-            <div class="alert alert-success"><small>Видео подтверждено</small></div>
-        }
-        else
-        {
-            @*if (!Model.BalanceAllowsToConfirm && Model.CancelBtnIsAvailable)
-            {
-                <div class="alert alert-danger">
-                    <small><i>У Вас недостаточно средств, чтобы подтвердить запрос.</i></small>
-                </div>
-            }
-
-            if (Model.UploadVideoBtnIsAvailable)
-            {
-                if (Model.Video.ID > 0)
-                {
-                    if (Model.BalanceAllowsToConfirm)
-                    {
-                        <div class="alert alert-warning"><small>Видео еще не подтверждено. Для завершения запроса, пожалуйста, подтвердите</small></div>
-                        <button type="button" class="btn btn-success btn-sm" onclick="ConfirmVideo(@Model.ID);">Подтвердить</button>
-                    }
-                }
-
-                <img id="spinner_@Model.ID" src="@AppData.Configuration.SpinnerUrl" style="display: none; height:20px;" />
-                <input type="file" id="imgInp_@Model.ID" onchange="VideoAjaxUpload(this, @Model.ID, '@Constants.FileTypes.VIDEO_REQUEST_VIDEO', 'spinner_@Model.ID', 'imgContainer_@Model.ID');" />
-            }
-            else if (Model.CancelBtnIsAvailable)
-            {
-                <div class="alert alert-warning">
-                    <small><i>Текущий статус запроса не позволяет загрузить видео.</i></small>
-                </div>
-            }*@
-        }
+        Here will be some instructions like on cameo
     </div>
 </div>
 
 <div>
-    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@if (Model.EditBtnIsAvailable)
+{
+    <!-- Modal -->
+    <div id="editBookModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Редактировать запрос</h4>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="Edit" asp-controller="VideoRequest"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-mode="replace"
+                          data-ajax-update="#ajaxresult"
+                          data-ajax-success="EditBookSuccess"
+                          data-ajax-failure="EditBookFailure"
+                          data-ajax-complete="EditBookComplete">
+                        <div id="ajaxresult">
+                            @await Html.PartialAsync(
+                                "/Views/VideoRequest/_Edit.cshtml",
+                                ViewBag.editModelVM as Cameo.ViewModels.VideoRequestEditVM)
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
 @section Scripts {
-    <script src="~/js/FileAjaxUpload.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+
     <script>
         function CancelRequest(requestID)
         {
@@ -167,33 +172,31 @@
                 //}),
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
-                success: function (data) {
+                success: function (data)
+                {
                     //alert("success");
                     //alert(data);
                 },
-                error: function (data) {
+                error: function (data)
+                {
                     //alert("error");
                     console.log(data);
                 },
-                complete: function (data) {
+                complete: function (data)
+                {
                     //alert("completed");
                     $(".btn").removeAttr("disabled");
                 }
             });
         }
 
-        function DeleteVideo(videoID, requestID)
-        {
-            FileAjaxDelete(videoID, requestID, "@Constants.FileTypes.VIDEO_REQUEST_VIDEO", "spinner_" + requestID, "imgContainer_" + requestID, "deleteBtn_" + requestID);
-        }
-
-        function ConfirmVideo(requestID)
+        function MakePayment(requestID)
         {
             $(".btn").attr("disabled", "disabled");
 
             $.ajax({
                 type: "POST",
-                url: "/VideoRequest/ConfirmVideo?id=" + requestID,
+                url: "/VideoRequest/MakePayment?id=" + requestID,
                 //data: {
                 //    id: requestID
                 //},
@@ -202,19 +205,43 @@
                 //}),
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
-                success: function (data) {
+                success: function (data)
+                {
                     //alert("success");
                     //alert(data);
                 },
-                error: function (data) {
+                error: function (data)
+                {
                     //alert("error");
                     console.log(data);
                 },
-                complete: function (data) {
+                complete: function (data)
+                {
                     //alert("completed");
                     $(".btn").removeAttr("disabled");
                 }
             });
         }
     </script>
-}
+
+    <script>
+        function EditBookSuccess(data)
+        {
+            console.log("Success");
+            console.log(data);
+            location.reload();
+        }
+
+        function EditBookFailure(data)
+        {
+            console.log("Failure");
+            console.log(data);
+        }
+
+        function EditBookComplete(data)
+        {
+            console.log("Complete");
+            console.log(data);
+        }
+    </script>
+}*@

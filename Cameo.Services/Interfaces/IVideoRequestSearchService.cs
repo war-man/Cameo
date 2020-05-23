@@ -10,8 +10,8 @@ namespace Cameo.Services.Interfaces
             string userID,
             string userType,
 
-            int start,
-            int length,
+            int? start,
+            int? length,
 
             out int recordsTotal,
             out int recordsFiltered,

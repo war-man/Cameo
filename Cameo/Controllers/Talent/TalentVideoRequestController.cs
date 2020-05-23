@@ -55,8 +55,8 @@ namespace Cameo.Controllers
                 return NotFound();
 
             VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(videoRequest);
-            int balance = TalentBalanceService.GetBalance(videoRequest.Talent);
-            modelVM.BalanceAllowsToConfirm = balance > 0;
+            //int balance = TalentBalanceService.GetBalance(videoRequest.Talent);
+            //modelVM.BalanceAllowsToConfirm = balance > 0;
 
             return View(modelVM);
         }

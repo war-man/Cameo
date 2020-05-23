@@ -14,17 +14,20 @@ namespace Cameo.Services
     {
         private readonly IEmailService EmailService;
         private readonly ITalentBalanceService TalentBalanceService;
+        private readonly ICustomerBalanceService CustomerBalanceService;
 
         private int tmpPeriodMinutes = 2;
 
         public VideoRequestService(IVideoRequestRepository repository,
                            IUnitOfWork unitOfWork,
                            IEmailService emailService,
-                           ITalentBalanceService talentBalanceService)
+                           ITalentBalanceService talentBalanceService,
+                           ICustomerBalanceService customerBalanceService)
             : base(repository, unitOfWork)
         {
             EmailService = emailService;
             TalentBalanceService = talentBalanceService;
+            CustomerBalanceService = customerBalanceService;
         }
 
         public VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id)
@@ -43,29 +46,37 @@ namespace Cameo.Services
 
             entity.WebsiteCommission = commission;
 
-            //entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
-            entity.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
+            entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
+            //entity.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
 #if DEBUG
-            //entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
-            entity.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+            //tmpPeriodMinutes = 2880;
+            tmpPeriodMinutes = 1;
+            entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+            //entity.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
 #else
-            //entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2880); //2 days
-            entity.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
+            entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2880); //2 days
+            //entity.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
 #endif
             base.Add(entity, creatorID);
 
-            //send email to Customer and Talent
-            string toCustomer = "cortex91@inbox.ru";
-            string subjectCustomer = "Subject - Customer";
-            string bodyCustomer = "This is email for Customer";
+            //TO-DO: send firebase notification to Talent
+        }
 
-            EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+        public void AnswerDeadlineReaches(VideoRequest model, string userID)
+        {
+            //1. set status = expired
+            if (model.RequestStatusID != (int)VideoRequestStatusEnum.waitingForResponse)
+                return;
 
-            string toTalent = "xenon1991@inbox.ru";
-            string subjectTalent = "Subject - Talent";
-            string bodyTalent = "This is email for Talent";
+            model.RequestStatusID = (int)VideoRequestStatusEnum.requestExpired;
+            model.DateRequestExpired = DateTime.Now;
 
-            EmailService.Send(toTalent, subjectTalent, bodyTalent);
+            int requestPrice = CalculateRequestPrice(model);
+            CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
+
+            Update(model, userID);
+
+            //TO-DO: send firebase notification to Customer
         }
 
         public void Edit(VideoRequest model, string userID)
@@ -93,12 +104,12 @@ namespace Cameo.Services
             {
                 if (userType == UserTypesEnum.talent.ToString())
                 {
-                    model.RequestStatusID = (int)VideoRequestStatusEnum.videoCanceledByTalent;
+                    model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByTalent;
                     model.DateVideoCanceledByTalent = DateTime.Now;
                 }
                 else
                 {
-                    model.RequestStatusID = (int)VideoRequestStatusEnum.videoCanceledByCustomer;
+                    model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByCustomer;
                     model.DateVideoCanceledByCustomer = DateTime.Now;
                 }
             }
@@ -194,7 +205,7 @@ namespace Cameo.Services
             TalentBalanceService.TakeOffBalance(model.Talent, amountToBeTakenOff, userID);
 
             model.DatePaid = DateTime.Now;
-            model.RequestStatusID = (int)VideoRequestStatusEnum.videoPaid;
+            model.RequestStatusID = (int)VideoRequestStatusEnum.paid;
             Update(model, userID);
 
             //send emails to customer and talent
@@ -218,12 +229,12 @@ namespace Cameo.Services
 
         private bool RequestIsAcceptedAndWaitingForVideo(VideoRequest model)
         {
-            return model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
+            return model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
         }
         
         private bool RequestIsPaid(VideoRequest model)
         {
-            return model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid;
+            return model.RequestStatusID == (int)VideoRequestStatusEnum.paid;
         }
 
         private bool RequestIsNotPublic(VideoRequest model)
@@ -253,7 +264,7 @@ namespace Cameo.Services
         private bool VideoIsConfirmed(VideoRequest model)
         {
             return (model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-                || model.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid);
+                || model.RequestStatusID == (int)VideoRequestStatusEnum.paid);
         }
 
         public void SaveDetachedVideo(VideoRequest model, string userID)
@@ -358,7 +369,7 @@ namespace Cameo.Services
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
                     && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-                        || m.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid));
+                        || m.RequestStatusID == (int)VideoRequestStatusEnum.paid));
         }
 
         public int GetCompletenessPercentageByTalent(Talent talent)
@@ -373,14 +384,14 @@ namespace Cameo.Services
         {
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
-                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid));
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.paid));
         }
 
         public IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
         {
             return GetAllActiveAsIQueryable()
                 .Where(m => m.TalentID == talent.ID
-                    && m.RequestStatusID == (int)VideoRequestStatusEnum.videoPaid);
+                    && m.RequestStatusID == (int)VideoRequestStatusEnum.paid);
         }
 
         //later siteStavka and amount, that talent earns will be saved for each request
@@ -395,7 +406,7 @@ namespace Cameo.Services
         {
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
-                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo));
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo));
         }
 
         public VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID)
@@ -427,12 +438,39 @@ namespace Cameo.Services
             if (websiteCommission <= 0)
                 websiteCommission = 25;
 
+            return CalculateRequestPrice(talent.Price, websiteCommission);
+        }
+
+        public int CalculateRequestPrice(VideoRequest request)
+        {
+            return CalculateRequestPrice(request.Price, request.WebsiteCommission);
+        }
+
+        private int CalculateRequestPrice(int price, double websiteCommission)
+        {
             double requestPriceDouble = ((101 * websiteCommission - 100) / 10000) * price;
             double requestPriceDouble2 = (0.25 - (0.75 * 0.01)) * price;
 
             int requestPriceInt = ((int)(requestPriceDouble / 1000)) * 1000;
 
             return requestPriceInt;
+        }
+
+        public int CalculateRemainingPrice(int price)
+        {
+            double websiteCommission = 0;
+            double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out websiteCommission);
+            if (websiteCommission <= 0)
+                websiteCommission = 25;
+
+            return CalculateRemainingPrice(price, websiteCommission);
+        }
+
+        public int CalculateRemainingPrice(int price, double websiteCommission)
+        {
+            int remainingPrice = (int)(((100.0 - websiteCommission) / 100) * price);
+
+            return remainingPrice;
         }
     }
 }

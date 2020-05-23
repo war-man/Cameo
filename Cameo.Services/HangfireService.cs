@@ -23,25 +23,25 @@ namespace Cameo.Services
             AttachmentService = attachmentService;
         }
 
-        //public string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID)
-        //{
-        //    string jobID = BackgroundJob.Schedule(() => 
-        //        AnswerDeadlineReaches(request.ID, userID), 
-        //        new DateTimeOffset(request.RequestAnswerDeadline));
+        public string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID)
+        {
+            string jobID = BackgroundJob.Schedule(() =>
+                AnswerDeadlineReaches(request.ID, userID),
+                new DateTimeOffset(request.RequestAnswerDeadline));
 
-        //    return jobID;
-        //}
+            return jobID;
+        }
 
-        //public void AnswerDeadlineReaches(int videoRequestID, string userID)
-        //{
-        //    try
-        //    {
-        //        VideoRequest request = VideoRequestService.GetByID(videoRequestID);
-        //        VideoRequestService.AnswerDeadlineReaches(request, userID);
-        //    }
-        //    catch (Exception ex)
-        //    { }
-        //}
+        public void AnswerDeadlineReaches(int videoRequestID, string userID)
+        {
+            try
+            {
+                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
+                VideoRequestService.AnswerDeadlineReaches(request, userID);
+            }
+            catch (Exception ex)
+            { }
+        }
 
         public void CreateJobForPaymentReminder(VideoRequest request, string userID)
         {

@@ -40,14 +40,20 @@ namespace Cameo.Controllers
         public IActionResult Details(int id)
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            VideoRequest model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+            VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
 
-            if (model == null || !VideoRequestService.BelongsToCustomer(model, curUser.ID))
+            if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
                 return NotFound();
 
-            VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(model);
+            VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(request);
 
-            VideoRequestEditVM editModelVM = new VideoRequestEditVM(model);
+            modelVM.RequestPrice = VideoRequestService.CalculateRequestPrice(request);
+            modelVM.RequestPriceToStr();
+
+            modelVM.RemainingPrice = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+            modelVM.RemainingPriceToStr();
+
+            VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
             ViewBag.editModelVM = editModelVM;
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
