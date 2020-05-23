@@ -150,14 +150,43 @@ namespace Cameo.Controllers
             return PartialView("_Create", modelVM);
         }
 
+        public IActionResult Edit(int id)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+
+            VideoRequest request = VideoRequestService.GetActiveByID(id);
+            if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
+                return NotFound();
+
+            if (!VideoRequestService.RequestIsAllowedToBeEdited(request))
+                return BadRequest("Данный запрос нельзя редактировать");
+
+            VideoRequestEditVM editVM = new VideoRequestEditVM(request);
+
+            Talent talent = TalentService.GetActiveByID(request.TalentID);
+            if (talent == null)
+                return NotFound();
+
+            TalentDetailsVM talentVM = new TalentDetailsVM(talent);
+            //talentVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
+            //talentVM.RequestPriceToStr();
+            ViewData["talent"] = talentVM;
+            ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+            //ViewData["customerBalance"] = CustomerBalanceService.GetBalance(customer);
+
+            return View(editVM);
+        }
+
         [HttpPost]
         public IActionResult Edit(VideoRequestEditVM modelVM)
         {
-            VideoRequest model = VideoRequestService.GetActiveByID(modelVM.ID);
-            if (model == null)
+            var curUser = accountUtil.GetCurrentUser(User);
+
+            VideoRequest request = VideoRequestService.GetActiveByID(modelVM.ID);
+            if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
                 return NotFound();
 
-            if (!VideoRequestService.RequestIsAllowedToBeEdited(model))
+            if (!VideoRequestService.RequestIsAllowedToBeEdited(request))
                 return BadRequest("Данный запрос нельзя редактировать");
 
             if (ModelState.IsValid)
@@ -166,13 +195,12 @@ namespace Cameo.Controllers
                 {
                     try
                     {
-                        var curUser = accountUtil.GetCurrentUser(User);
-                        //var curCustomer = CustomerService.GetByUserID(curUser.ID);
-                        modelVM.UpdateModel(model);
+                        modelVM.UpdateModel(request);
 
-                        VideoRequestService.Edit(model, curUser.ID);
+                        VideoRequestService.Edit(request, curUser.ID);
 
-                        return Ok();
+                        ViewBag.success = true;
+                        ViewBag.requestID = request.ID;
                     }
                     catch (Exception ex)
                     {

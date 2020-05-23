@@ -227,6 +227,11 @@ namespace Cameo.Services
             return model.Customer.UserID == userID || model.Talent.UserID == userID;
         }
 
+        private bool RequestIsWaitingForResponse(VideoRequest model)
+        {
+            return model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse;
+        }
+
         private bool RequestIsAcceptedAndWaitingForVideo(VideoRequest model)
         {
             return model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
@@ -356,7 +361,8 @@ namespace Cameo.Services
 
         public bool RequestIsAllowedToBeEdited(VideoRequest model)
         {
-            return RequestIsAcceptedAndWaitingForVideo(model);
+            //return RequestIsAcceptedAndWaitingForVideo(model);
+            return RequestIsWaitingForResponse(model);
         }
 
         public int GetAllCountByTalent(Talent talent)

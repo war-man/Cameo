@@ -1,0 +1,42 @@
+﻿@model Cameo.ViewModels.VideoRequestEditVM
+@using Cameo.Models.Enums
+@using Cameo.Common
+
+@{
+    ViewData["Title"] = "Редактировать заказ";
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
+    //var talent = ViewData["talent"] as Cameo.ViewModels.TalentDetailsVM;
+    //int customerBalance = (int)ViewData["customerBalance"];
+}
+
+<div class="mt--30 mb--30">
+    <form asp-action="Edit" asp-controller="VideoRequest"
+            data-ajax="true"
+            data-ajax-method="POST"
+            data-ajax-mode="replace"
+            data-ajax-update="#ajaxresult">
+        <div id="ajaxresult">
+            @await Html.PartialAsync(
+                "/Views/VideoRequest/_Edit.cshtml")
+        </div>
+    </form>
+</div>
+
+<style>
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #d3d3d3;
+        opacity: 1; /* Firefox */
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #d3d3d3;
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #d3d3d3;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

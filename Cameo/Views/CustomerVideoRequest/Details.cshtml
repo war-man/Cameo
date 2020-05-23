@@ -95,7 +95,10 @@
                         </dl>
                         @*<p class="font--16 mb--35">All the rumors have finally died down and many skeptics have tightened their lips, the iPod does support video format now on its fifth generation.</p>*@
                         <div class="blog-btn">
-                            <a class="button-link button-size__lg button__transparent--border" href="blog-details.html"><span class="button-text__13">Read More</span> </a>
+                            @if (Model.EditBtnIsAvailable)
+                            {
+                                <a class="button-link button-size__lg button__transparent--border" href="/VideoRequest/Edit/@Model.ID"><span class="button-text__13">Редактировать</span> </a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -147,7 +150,7 @@
 </div>
 
 
-@if (Model.EditBtnIsAvailable)
+@*@if (Model.EditBtnIsAvailable)
 {
     <!-- Modal -->
     <div id="editBookModal" class="modal fade" role="dialog">
@@ -182,7 +185,7 @@
 
         </div>
     </div>
-}
+}*@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -44,9 +44,9 @@ namespace Cameo.ViewModels
         [Display(Name = "Статус заказа")]
         public VideoRequestStatusDetailsVM Status { get; set; }
 
-
         public string Deadline { get; set; }
 
+        public bool EditBtnIsAvailable { get; set; } = false;
 
 
 
@@ -56,7 +56,7 @@ namespace Cameo.ViewModels
         public bool Payable { get; set; } = false;
         public bool VideoIsPaid { get; set; } = false;
         public bool UploadVideoBtnIsAvailable { get; set; } = false;
-        public bool EditBtnIsAvailable { get; set; } = false;
+        
         public bool VideoConfirmed { get; set; }
         //public bool BalanceAllowsToConfirm { get; set; }
 
@@ -74,13 +74,19 @@ namespace Cameo.ViewModels
             Instructions = model.Instructions;
             //Email = model.Email;
             IsNotPublic = model.IsNotPublic;
-
             Price = model.Price;
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
             PriceStr = Price.ToString(numberFormat).Trim();
             Video = new AttachmentDetailsVM(model.Video);
-
             Status = new VideoRequestStatusDetailsVM(model.RequestStatus);
+
+            if (model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse)
+                EditBtnIsAvailable = true;
+
+
+
+
+
 
 
 
