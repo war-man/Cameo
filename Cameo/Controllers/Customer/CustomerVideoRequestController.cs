@@ -46,6 +46,8 @@ namespace Cameo.Controllers
                 return NotFound();
 
             VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(request);
+            modelVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
+            modelVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
 
             modelVM.RequestPrice = VideoRequestService.CalculateRequestPrice(request);
             modelVM.RequestPriceToStr();

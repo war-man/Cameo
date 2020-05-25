@@ -158,7 +158,7 @@ namespace Cameo.Controllers
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
                 return NotFound();
 
-            if (!VideoRequestService.RequestIsAllowedToBeEdited(request))
+            if (!VideoRequestService.IsEditable(request))
                 return BadRequest("Данный запрос нельзя редактировать");
 
             VideoRequestEditVM editVM = new VideoRequestEditVM(request);
@@ -186,7 +186,7 @@ namespace Cameo.Controllers
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
                 return NotFound();
 
-            if (!VideoRequestService.RequestIsAllowedToBeEdited(request))
+            if (!VideoRequestService.IsEditable(request))
                 return BadRequest("Данный запрос нельзя редактировать");
 
             if (ModelState.IsValid)
@@ -250,22 +250,25 @@ namespace Cameo.Controllers
             {
                 var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
                 if (model == null)
-                    return NotFound();
+                {
+                    //return NotFound();
+                    return CustomBadRequest("Заказ не найден");
+                }
 
                 var curUser = accountUtil.GetCurrentUser(User);
 
-                //cancel hangfire jobs
-                //HangfireService.CancelJob(model.RequestAnswerJobID);
-                HangfireService.CancelJob(model.VideoJobID);
-
                 //cancel request/video
                 VideoRequestService.Cancel(model, curUser.ID, curUser.Type);
+
+                //cancel hangfire jobs
+                HangfireService.CancelJob(model.RequestAnswerJobID);
+                HangfireService.CancelJob(model.VideoJobID);
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return CustomBadRequest(ex);
             }
         }
 

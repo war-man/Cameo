@@ -99,6 +99,11 @@
                             {
                                 <a class="button-link button-size__lg button__transparent--border" href="/VideoRequest/Edit/@Model.ID"><span class="button-text__13">Редактировать</span> </a>
                             }
+
+                            @if (Model.EditBtnIsAvailable)
+                            {
+                                <button type="button" class="btn btn-link" onclick="CancelRequest(@Model.ID);">Отменить</button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -116,22 +121,22 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        @if (Model.CancelBtnIsAvailable)
+                        @*@if (Model.CancelBtnIsAvailable)
                         {
                             <button type="button" class="btn btn-danger btn-sm" onclick="CancelRequest(@Model.ID);">Отменить</button>
-                        }
+                        }*@
 
                         @if (Model.Payable)
                         {
                             <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
                         }
 
-                        @if (Model.EditBtnIsAvailable)
+                        @*@if (Model.EditBtnIsAvailable)
                         {
                             <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editBookModal">
                                 Редактировать
                             </button>
-                        }
+                        }*@
                     </div>
                 </div>
             </div>
@@ -193,7 +198,8 @@
     <script>
         function CancelRequest(requestID)
         {
-            $(".btn").attr("disabled", "disabled");
+            if (!confirm("Вы уверены, что хотите отменить заказ?"))
+                return;
 
             $.ajax({
                 type: "POST",
@@ -206,15 +212,19 @@
                 //}),
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
+                beforeSend: function (data)
+                {
+                    $(".btn").attr("disabled", "disabled");
+                },
                 success: function (data)
                 {
                     //alert("success");
                     //alert(data);
+                    location.reload();
                 },
                 error: function (data)
                 {
-                    //alert("error");
-                    console.log(data);
+                    alert("Ajax error (status code = " + data.status + "): " + data.statusText);
                 },
                 complete: function (data)
                 {

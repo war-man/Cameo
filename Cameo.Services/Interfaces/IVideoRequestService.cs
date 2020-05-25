@@ -41,7 +41,8 @@ namespace Cameo.Services.Interfaces
         bool BelongsToCustomer(VideoRequest model, string userID);
         bool BelongsToTalent(VideoRequest model, string userID);
 
-        bool RequestIsAllowedToBeEdited(VideoRequest model);
+        bool IsEditable(VideoRequest model);
+        bool IsCancelable(VideoRequest model);
         int GetAllCountByTalent(Talent talent);
         int GetCompletedCountByTalent(Talent talent);
         int GetCompletenessPercentageByTalent(Talent talent);

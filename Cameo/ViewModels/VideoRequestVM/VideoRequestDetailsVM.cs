@@ -47,12 +47,13 @@ namespace Cameo.ViewModels
         public string Deadline { get; set; }
 
         public bool EditBtnIsAvailable { get; set; } = false;
+        public bool CancelBtnIsAvailable { get; set; } = false;
+
 
 
 
 
         public string VideoDeadline { get; set; }
-        public bool CancelBtnIsAvailable { get; set; } = false;
         public bool Payable { get; set; } = false;
         public bool VideoIsPaid { get; set; } = false;
         public bool UploadVideoBtnIsAvailable { get; set; } = false;
@@ -79,11 +80,6 @@ namespace Cameo.ViewModels
             PriceStr = Price.ToString(numberFormat).Trim();
             Video = new AttachmentDetailsVM(model.Video);
             Status = new VideoRequestStatusDetailsVM(model.RequestStatus);
-
-            if (model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse)
-                EditBtnIsAvailable = true;
-
-
 
 
 

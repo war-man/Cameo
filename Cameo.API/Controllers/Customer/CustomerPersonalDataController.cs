@@ -44,7 +44,6 @@ namespace Cameo.API.Controllers
         [HttpPost]
         public ActionResult Save(CustomerEditVM modelVM)
         {
-            int statusCode = 200;
             string errorMessage = null;
 
             var curUser = accountUtil.GetCurrentUser(User);
@@ -75,14 +74,7 @@ namespace Cameo.API.Controllers
             }
             catch (Exception ex)
             {
-                errorMessage = "Something went wrong while saving data.";
-                statusCode = 500;
-            }
-
-            if (!string.IsNullOrWhiteSpace(errorMessage)
-                && statusCode != 200)
-            {
-                Response.StatusCode = statusCode;
+                errorMessage = "Something went wrong while saving data";
             }
 
             return BadRequest(new { errorMessage });

@@ -49,8 +49,7 @@ namespace Cameo.Services
             entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
             //entity.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
 #if DEBUG
-            //tmpPeriodMinutes = 2880;
-            tmpPeriodMinutes = 1;
+            tmpPeriodMinutes = 2880;
             entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
             //entity.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
 #else
@@ -100,17 +99,19 @@ namespace Cameo.Services
             if (!RequestBelongsToUser(model, userID))
                 throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
 
-            if (RequestIsAcceptedAndWaitingForVideo(model))
+            if (IsCancelable(model))
             {
                 if (userType == UserTypesEnum.talent.ToString())
                 {
                     model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByTalent;
-                    model.DateVideoCanceledByTalent = DateTime.Now;
+                    //model.DateVideoCanceledByTalent = DateTime.Now;
+                    model.DateRequestCanceledByTalent = DateTime.Now;
                 }
                 else
                 {
                     model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByCustomer;
-                    model.DateVideoCanceledByCustomer = DateTime.Now;
+                    //model.DateVideoCanceledByCustomer = DateTime.Now;
+                    model.DateRequestCanceledByCustomer = DateTime.Now;
                 }
             }
             else
@@ -120,21 +121,11 @@ namespace Cameo.Services
 
             if (userType == UserTypesEnum.talent.ToString())
             {
-                //send email to Customer
-                string toCustomer = "cortex91@inbox.ru";
-                string subjectCustomer = "Subject - Customer";
-                string bodyCustomer = "This is email for Customer";
-
-                EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+                //TO-DO: send firebase notification to Customer
             }
             else
             {
-                //send email to Talent
-                string toTalent = "xenon1991@inbox.ru";
-                string subjectTalent = "Subject - Talent";
-                string bodyTalent = "This is email for Talent";
-
-                EmailService.Send(toTalent, subjectTalent, bodyTalent);
+                //TO-DO: send firebase notification to Talent
             }
         }
 
@@ -359,7 +350,13 @@ namespace Cameo.Services
             return model?.Talent?.UserID?.Equals(userID) ?? false;
         }
 
-        public bool RequestIsAllowedToBeEdited(VideoRequest model)
+        public bool IsCancelable(VideoRequest model)
+        {
+            //return RequestIsAcceptedAndWaitingForVideo(model);
+            return RequestIsWaitingForResponse(model);
+        }
+
+        public bool IsEditable(VideoRequest model)
         {
             //return RequestIsAcceptedAndWaitingForVideo(model);
             return RequestIsWaitingForResponse(model);
