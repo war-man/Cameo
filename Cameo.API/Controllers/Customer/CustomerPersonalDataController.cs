@@ -44,14 +44,12 @@ namespace Cameo.API.Controllers
         [HttpPost]
         public ActionResult Save(CustomerEditVM modelVM)
         {
-            string errorMessage = null;
-
             var curUser = accountUtil.GetCurrentUser(User);
             Customer model = CustomerService.GetByUserID(curUser.ID);
             if (model != null)
             {
-                errorMessage = "Данные клиента не найдены";
-                return NotFound(new { errorMessage });
+                //return NotFound(new { errorMessage });
+                return CustomBadRequest("Данные клиента не найдены");
             }
 
             try
@@ -70,14 +68,12 @@ namespace Cameo.API.Controllers
                     return Ok();
                 }
                 else
-                    errorMessage = "Неверные данные";
+                    return CustomBadRequest("Неверные данные");
             }
             catch (Exception ex)
             {
-                errorMessage = "Something went wrong while saving data";
+                return CustomBadRequest(ex);
             }
-
-            return BadRequest(new { errorMessage });
         }
     }
 }

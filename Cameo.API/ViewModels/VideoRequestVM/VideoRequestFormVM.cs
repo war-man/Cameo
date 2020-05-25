@@ -1,5 +1,7 @@
 ﻿using Cameo.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -9,23 +11,23 @@ namespace Cameo.API.ViewModels
     {
         [Required]
         [Display(Name = "Это видео:")]
-        [JsonPropertyName("typeid")]
-        public int TypeID { get; set; }
+        //[JsonPropertyName("typeid")]
+        public int type_id { get; set; }
 
         [Required]
         [Display(Name = "Для")]
-        [JsonPropertyName("to")]
-        public string To { get; set; }
+        //[JsonPropertyName("to")]
+        public string to { get; set; }
 
         //[Required] //if type == Someone else
         [Remote("ValidateFrom", "VideoRequest", ErrorMessage = "Укажите, от кого", AdditionalFields = "TypeID")]
         [Display(Name = "От")]
-        [JsonPropertyName("from")]
-        public string From { get; set; }
+        //[JsonPropertyName("from")]
+        public string from { get; set; }
 
         [Required]
-        [JsonPropertyName("instructions")]
-        public string Instructions { get; set; }
+        //[JsonPropertyName("instructions")]
+        public string instructions { get; set; }
 
         //[Required]
         //[EmailAddress]
@@ -33,16 +35,16 @@ namespace Cameo.API.ViewModels
         //[JsonPropertyName("email")]
         //public string Email { get; set; }
 
-        [JsonPropertyName("isnotpublic")]
-        public bool IsNotPublic { get; set; }
+        //[JsonPropertyName("isnotpublic")]
+        public bool is_not_public { get; set; }
 
         [Required]
         [JsonPropertyName("price")]
-        public int Price { get; set; }
+        public int price { get; set; }
 
         [Required]
-        [JsonPropertyName("talentid")]
-        public int TalentID { get; set; }
+        //[JsonPropertyName("talentid")]
+        public int talent_id { get; set; }
 
         public VideoRequest ToModel(Customer customer)
         {
@@ -50,13 +52,13 @@ namespace Cameo.API.ViewModels
             {
                 Customer = customer,
                 //Email = this.Email,
-                From = this.From,
-                Instructions = this.Instructions,
-                IsNotPublic = this.IsNotPublic,
-                Price = this.Price,
-                To = this.To,
-                TalentID = this.TalentID,
-                TypeID = this.TypeID
+                From = this.from,
+                Instructions = this.instructions,
+                IsNotPublic = this.is_not_public,
+                Price = this.price,
+                To = this.to,
+                TalentID = this.talent_id,
+                TypeID = this.type_id
             };
 
             return model;
@@ -65,8 +67,7 @@ namespace Cameo.API.ViewModels
 
     public class VideoRequestEditVM : VideoRequestCreateVM
     {
-        public int ID { get; set; }
-
+        public List<SelectListItem> videoRequestTypes { get; set; }
         public VideoRequestEditVM() { }
 
         public VideoRequestEditVM(VideoRequest model)
@@ -74,25 +75,24 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            ID = model.ID;
-            TypeID = model.TypeID;
-            To = model.To;
-            From = model.From;
-            Instructions = model.Instructions;
+            type_id = model.TypeID;
+            to = model.To;
+            from = model.From;
+            instructions = model.Instructions;
             //Email = model.Email;
-            IsNotPublic = model.IsNotPublic;
-            Price = model.Price;
-            TalentID = model.TalentID;
+            is_not_public = model.IsNotPublic;
+            price = model.Price;
+            talent_id = model.TalentID;
         }
 
         public void UpdateModel(VideoRequest model)
         {
-            model.TypeID = TypeID;
-            model.To = To;
-            model.From = From;
-            model.Instructions = Instructions;
+            model.TypeID = type_id;
+            model.To = to;
+            model.From = from;
+            model.Instructions = instructions;
             //model.Email = Email;
-            model.IsNotPublic = IsNotPublic;
+            model.IsNotPublic = is_not_public;
         }
     }
 }

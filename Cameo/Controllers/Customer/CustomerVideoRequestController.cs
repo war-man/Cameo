@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
     //[CustomerAuthorization] - must be implemented
+    [Authorize]
     public class CustomerVideoRequestController : BaseController
     {
         private readonly ICustomerService CustomerService;

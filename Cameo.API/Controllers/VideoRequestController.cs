@@ -66,136 +66,117 @@ namespace Cameo.API.Controllers
             return talentRequestInfoVM;
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public IActionResult Create([FromBody] VideoRequestCreateVM modelVM)
         {
-            int statusCode = 200;
             string errorMessage = null;
 
-            try
+            var curUser = accountUtil.GetCurrentUser(User);
+            var talent = TalentService.GetAvailableByID(modelVM.talent_id);
+
+            if (AccountUtil.IsUserCustomer(curUser))
             {
-                var curUser = accountUtil.GetCurrentUser(User);
-                var talent = TalentService.GetAvailableByID(modelVM.TalentID);
-
-                if (AccountUtil.IsUserCustomer(curUser))
+                if (ModelState.IsValid)
                 {
-                    if (ModelState.IsValid)
+                    if (ValidateFromProperty(modelVM.from, modelVM.type_id))
                     {
-                        if (ValidateFromProperty(modelVM.From, modelVM.TypeID))
+                        if (talent != null)
                         {
-                            if (talent != null)
+                            if (talent.Price == modelVM.price)
                             {
-                                if (talent.Price == modelVM.Price)
+                                var curCustomer = CustomerService.GetByUserID(curUser.ID);
+                                int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
+                                int requestPrice = VideoRequestService.CalculateRequestPrice(talent);
+
+                                if (customerBalance >= requestPrice)
                                 {
-                                    var curCustomer = CustomerService.GetByUserID(curUser.ID);
-                                    int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
-                                    int requestPrice = VideoRequestService.CalculateRequestPrice(talent);
-
-                                    if (customerBalance >= requestPrice)
+                                    try
                                     {
-                                        try
-                                        {
-                                            CustomerBalanceService.TakeOffBalance(curCustomer, 100);
+                                        CustomerBalanceService.TakeOffBalance(curCustomer, 100);
 
-                                            VideoRequest model = modelVM.ToModel(curCustomer);
+                                        VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                            //1. create model and send notification
-                                            VideoRequestService.Add(model, curUser.ID);
+                                        //1. create model and send notification
+                                        VideoRequestService.Add(model, curUser.ID);
 
-                                            ////2. create hangfire RequestAnswerJobID and save it
-                                            //model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
-                                            //create hangfire VideoJobID
-                                            model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
+                                        ////2. create hangfire RequestAnswerJobID and save it
+                                        model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
+                                        //create hangfire VideoJobID
+                                        //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
-                                            VideoRequestService.Update(model, curUser.ID);
+                                        VideoRequestService.Update(model, curUser.ID);
 
-                                            return Ok();
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            errorMessage = ex.Message;
-                                        }
+                                        return Ok();
                                     }
-                                    else
-                                        errorMessage = "У Вас недостаточно средств на балансе";
+                                    catch (Exception ex)
+                                    {
+                                        return CustomBadRequest(ex);
+                                    }
                                 }
                                 else
-                                    errorMessage = "Пока вы заполняли форму, Талант успел изменить цену";
+                                    errorMessage = "У Вас недостаточно средств на балансе";
                             }
                             else
-                                errorMessage = "Талант не существует либо временно недоступен";
+                                errorMessage = "Пока вы заполняли форму, Талант успел изменить цену";
                         }
                         else
-                            errorMessage = "Укажите от кого";
+                            errorMessage = "Талант не существует либо временно недоступен";
                     }
                     else
-                        errorMessage = "Указаны некорректные данные";
+                        errorMessage = "Укажите от кого";
                 }
                 else
-                    errorMessage = "Таланты не могут заказывать видео. Зайдите как клиент.";
-
-                if (!string.IsNullOrWhiteSpace(errorMessage))
-                    statusCode = 400;
+                    errorMessage = "Указаны некорректные данные";
             }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                statusCode = 500;
+            else
+                errorMessage = "Таланты не могут заказывать видео. Зайдите как клиент.";
 
-                Response.StatusCode = statusCode;
-            }
+            if (!string.IsNullOrWhiteSpace(errorMessage))
+                return CustomBadRequest(errorMessage);
 
-            return BadRequest(new { errorMessage });
+            errorMessage = "Что-то пошло не так";
+            return CustomBadRequest(errorMessage);
         }
 
-        //[HttpPost]
-        //public IActionResult Edit(VideoRequestEditVM modelVM)
-        //{
-        //    VideoRequest model = VideoRequestService.GetActiveByID(modelVM.ID);
-        //    if (model == null)
-        //        return NotFound();
+        [HttpPost("Edit/{id}")]
+        public IActionResult Edit(int id, [FromBody] VideoRequestEditVM modelVM)
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
 
-        //    if (!VideoRequestService.RequestIsAllowedToBeEdited(model))
-        //        return BadRequest("Данный запрос нельзя редактировать");
+            VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+            if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
+                //return NotFound();
+                return CustomBadRequest("Заказ не найден");
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (ValidateFromProperty(modelVM.From, modelVM.TypeID))
-        //        {
-        //            try
-        //            {
-        //                var curUser = accountUtil.GetCurrentUser(User);
-        //                //var curCustomer = CustomerService.GetByUserID(curUser.ID);
-        //                modelVM.UpdateModel(model);
+            if (!VideoRequestService.IsEditable(request))
+                return CustomBadRequest("Данный запрос нельзя редактировать");
 
-        //                VideoRequestService.Edit(model, curUser.ID);
+            if (ModelState.IsValid)
+            {
+                if (ValidateFromProperty(modelVM.from, modelVM.type_id))
+                {
+                    try
+                    {
+                        modelVM.UpdateModel(request);
 
-        //                return Ok();
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                ModelState.AddModelError("", ex.Message);
-        //            }
-        //        }
-        //        else
-        //            ModelState.AddModelError("From", "Укажите от кого");
-        //    }
-        //    else
-        //        ModelState.AddModelError("", "Указаны некорректные данные");
+                        VideoRequestService.Edit(request, curUser.ID);
 
-        //    ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
-
-        //    return PartialView("_Edit", modelVM);
-
-
-        //    ////---------
-        //    //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
-        //    //return Ok();
-
-        //    //return BadRequest();
-        //    ////return PartialView("_Edit", modelVM);
-
-        //}
+                        return Ok();
+                    }
+                    catch (Exception ex)
+                    {
+                        //ModelState.AddModelError("", ex.Message);
+                        return CustomBadRequest(ex);
+                    }
+                }
+                else
+                    //ModelState.AddModelError("From", "Укажите от кого");
+                    return CustomBadRequest("Укажите от кого");
+            }
+            else
+                //ModelState.AddModelError("", "Указаны некорректные данные");
+                return CustomBadRequest("Указаны некорректные данные");
+        }
 
         #region Remote validation while creating
         //public IActionResult ValidateFrom(string from, int typeID)
@@ -213,31 +194,32 @@ namespace Cameo.API.Controllers
         }
         #endregion
 
-        //[HttpPost]
-        //public IActionResult Cancel(int id)
-        //{
-        //    try
-        //    {
-        //        var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-        //        if (model == null)
-        //            return NotFound();
+        [HttpPost("Cancel/{id}")]
+        public IActionResult Cancel(int id)
+        {
+            try
+            {
+                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+                if (model == null)
+                    //return NotFound();
+                    return CustomBadRequest("Заказ не найден");
 
-        //        var curUser = accountUtil.GetCurrentUser(User);
+                var curUser = accountUtil.GetCurrentUser(User);
 
-        //        //cancel hangfire jobs
-        //        //HangfireService.CancelJob(model.RequestAnswerJobID);
-        //        HangfireService.CancelJob(model.VideoJobID);
+                //cancel request/video
+                VideoRequestService.Cancel(model, curUser.ID, curUser.Type);
 
-        //        //cancel request/video
-        //        VideoRequestService.Cancel(model, curUser.ID, curUser.Type);
+                //cancel hangfire jobs
+                HangfireService.CancelJob(model.RequestAnswerJobID);
+                HangfireService.CancelJob(model.VideoJobID);
 
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex);
-        //    }
-        //}
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
+        }
 
         ////[HttpPost]
         ////public IActionResult Accept(int id)

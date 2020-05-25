@@ -121,22 +121,10 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        @*@if (Model.CancelBtnIsAvailable)
-                        {
-                            <button type="button" class="btn btn-danger btn-sm" onclick="CancelRequest(@Model.ID);">Отменить</button>
-                        }*@
-
                         @if (Model.Payable)
                         {
                             <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
                         }
-
-                        @*@if (Model.EditBtnIsAvailable)
-                        {
-                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editBookModal">
-                                Редактировать
-                            </button>
-                        }*@
                     </div>
                 </div>
             </div>
@@ -153,44 +141,6 @@
         </div>
     </div>
 </div>
-
-
-@*@if (Model.EditBtnIsAvailable)
-{
-    <!-- Modal -->
-    <div id="editBookModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Редактировать запрос</h4>
-                </div>
-                <div class="modal-body">
-                    <form asp-action="Edit" asp-controller="VideoRequest"
-                          data-ajax="true"
-                          data-ajax-method="POST"
-                          data-ajax-mode="replace"
-                          data-ajax-update="#ajaxresult"
-                          data-ajax-success="EditBookSuccess"
-                          data-ajax-failure="EditBookFailure"
-                          data-ajax-complete="EditBookComplete">
-                        <div id="ajaxresult">
-                            @await Html.PartialAsync(
-                                "/Views/VideoRequest/_Edit.cshtml",
-                                ViewBag.editModelVM as Cameo.ViewModels.VideoRequestEditVM)
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-}*@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -265,27 +215,6 @@
                     $(".btn").removeAttr("disabled");
                 }
             });
-        }
-    </script>
-
-    <script>
-        function EditBookSuccess(data)
-        {
-            console.log("Success");
-            console.log(data);
-            location.reload();
-        }
-
-        function EditBookFailure(data)
-        {
-            console.log("Failure");
-            console.log(data);
-        }
-
-        function EditBookComplete(data)
-        {
-            console.log("Complete");
-            console.log(data);
         }
     </script>
 }

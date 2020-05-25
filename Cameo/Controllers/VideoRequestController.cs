@@ -154,7 +154,7 @@ namespace Cameo.Controllers
         {
             var curUser = accountUtil.GetCurrentUser(User);
 
-            VideoRequest request = VideoRequestService.GetActiveByID(id);
+            VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
                 return NotFound();
 
@@ -182,12 +182,13 @@ namespace Cameo.Controllers
         {
             var curUser = accountUtil.GetCurrentUser(User);
 
-            VideoRequest request = VideoRequestService.GetActiveByID(modelVM.ID);
+            VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(modelVM.ID);
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                return NotFound();
+                //return NotFound();
+                return CustomBadRequest("Заказ не найден");
 
             if (!VideoRequestService.IsEditable(request))
-                return BadRequest("Данный запрос нельзя редактировать");
+                return CustomBadRequest("Данный запрос нельзя редактировать");
 
             if (ModelState.IsValid)
             {

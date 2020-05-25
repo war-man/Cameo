@@ -12,5 +12,19 @@ namespace Cameo.API.Controllers
     public class BaseController : ControllerBase
     {
         public AccountUtil accountUtil = new AccountUtil();
+
+        internal ActionResult CustomBadRequest(string errorMessage)
+        {
+            return BadRequest(new { errorMessage });
+        }
+
+        internal ActionResult CustomBadRequest(Exception ex)
+        {
+            string errorMessage = ex.Message;
+            if (ex.InnerException != null)
+                errorMessage += ". " + ex.InnerException.Message;
+
+            return CustomBadRequest(errorMessage);
+        }
     }
 }
