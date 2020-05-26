@@ -40,7 +40,7 @@ namespace Cameo.API.Controllers
             VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
 
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                return NotFound();
+                return CustomBadRequest("Ваш заказ не найден");
 
             VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(request);
             modelVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
