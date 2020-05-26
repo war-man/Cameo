@@ -39,17 +39,36 @@ namespace Cameo.Controllers
         public IActionResult GetVideo(int id)
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
+            VideoRequest request = VideoRequestService.GetSinglePublished(id, curUser.ID);
 
-            if (model == null)
-                return NotFound();
+            if (request == null)
+                return CustomBadRequest("Видео не найдено");
 
-            string fileAbsolutePath = FileManagement.GetFileAbsolutePath(
-                model.Video.Path, 
-                model.Video.GUID + "." + model.Video.Extension);
+            AttachmentDetailsVM video = new AttachmentDetailsVM(request.Video);
 
-            return PhysicalFile(fileAbsolutePath, "video/mp4");
+            return Content(video.Url);
+
+            //string fileAbsolutePath = FileManagement.GetFileAbsolutePath(
+            //    request.Video.Path,
+            //    request.Video.GUID + "." + request.Video.Extension);
+
+            //return PhysicalFile(fileAbsolutePath, "video/mp4");
         }
+
+        //public IActionResult GetVideo(int id)
+        //{
+        //    var curUser = accountUtil.GetCurrentUser(User);
+        //    VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
+
+        //    if (model == null)
+        //        return NotFound();
+
+        //    string fileAbsolutePath = FileManagement.GetFileAbsolutePath(
+        //        model.Video.Path, 
+        //        model.Video.GUID + "." + model.Video.Extension);
+
+        //    return PhysicalFile(fileAbsolutePath, "video/mp4");
+        //}
 
         public IActionResult GetIncompletedVideo(int id)
         {

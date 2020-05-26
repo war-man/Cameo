@@ -35,6 +35,8 @@ namespace Cameo.Controllers
 
             CustomerEditVM modelVM = new CustomerEditVM(model);
 
+            ViewBag.firebaseUid = curUser.FirebaseUid;
+
             return View(modelVM);
         }
 

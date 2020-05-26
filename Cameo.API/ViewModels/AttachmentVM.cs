@@ -26,4 +26,22 @@ namespace Cameo.API.ViewModels
                 this.url = AppData.Configuration.NoPhotoUrl;
         }
     }
+
+    public class UploadFileVM
+    {
+        public string Filename { get; set; } //"file.ext"
+        public string Path { get; set; } //"path/to/file"
+        public long Size { get; set; } //byte
+        public string ContentType { get; set; } //"image/jpeg"
+        public string DownloadUrl { get; set; } //"https://gerlgnenr.com?param1=val1&param2=val2..."
+
+        public Attachment ToModel()
+        {
+            Attachment newAttachment = new Attachment();
+            //newAttachment
+
+
+            return newAttachment;
+        }
+    }
 }

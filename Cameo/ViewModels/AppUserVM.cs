@@ -11,6 +11,7 @@ namespace Cameo.ViewModels
     {
         public string ID { get; set; }
         public string Type { get; set; }
+        public string FirebaseUid { get; set; }
         //public bool EmailConfirmed { get; set; } = false;
         //public bool TalentApprovedByAdmin { get; set; }
 
@@ -24,6 +25,7 @@ namespace Cameo.ViewModels
             ID = user.FindFirst(ClaimTypes.NameIdentifier).Value;
             //Type = user.FindFirst(ClaimTypes.UserData)?.Value;
             Type = user.FindFirst(CustomClaimTypes.UserType)?.Value;
+            FirebaseUid = user.FindFirst(CustomClaimTypes.FirebaseUid)?.Value;
 
             //bool tmpBool = false;
             //bool.TryParse(user.FindFirst(CustomClaimTypes.EmailConfirmed)?.Value, out tmpBool);

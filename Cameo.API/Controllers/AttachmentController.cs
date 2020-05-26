@@ -4,8 +4,8 @@ using System.IO;
 using Cameo.Common;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
-using Cameo.Utils;
-using Cameo.ViewModels;
+using Cameo.API.Utils;
+using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Mvc;
 using NReco;
 using NReco.VideoConverter;
 
-namespace Cameo.Controllers
+namespace Cameo.API.Controllers
 {
     [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
     public class AttachmentController : BaseController
     {
         private readonly IAttachmentService AttachmentService;
@@ -43,30 +45,8 @@ namespace Cameo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save([FromBody] UploadFileVM uploadFileVM)
-        {
-            try
-            {
-                var curUser = accountUtil.GetCurrentUser(User);
-
-                Attachment attachment = uploadFileVM.ToModel();
-
-                AttachmentService.Add(attachment, curUser.ID);
-
-                if (uploadFileVM.ModelID.HasValue && uploadFileVM.ModelID.Value > 0)
-                    AttachFile(attachment, uploadFileVM.ModelID.Value, uploadFileVM.FileType, curUser.ID);
-
-                return Ok(new { id = attachment.ID });
-            }
-            catch (Exception ex)
-            {
-                return CustomBadRequest(ex);
-            }
-        }
-
-        [HttpPost]
-        [RequestSizeLimit(200000000)]
-        public IActionResult Upload(List<IFormFile> files, int? id, string fileType)
+        //[RequestSizeLimit(200000000)]
+        public IActionResult Save(List<IFormFile> files, int? id, string fileType)
         {
             var curUser = accountUtil.GetCurrentUser(User);
 

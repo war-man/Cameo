@@ -48,6 +48,7 @@ namespace Cameo.Utils
             {
                 ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
                     new Claim(CustomClaimTypes.UserType, user.UserType),
+                    new Claim(CustomClaimTypes.FirebaseUid, user.FirebaseUid),
                     //new Claim(CustomClaimTypes.EmailConfirmed, user.EmailConfirmed.ToString()),
                     //new Claim(CustomClaimTypes.TalentApprovedByAdmin, user.TalentApprovedByAdmin.ToString())
                 });
@@ -60,6 +61,7 @@ namespace Cameo.Utils
     public static class CustomClaimTypes
     {
         public const string UserType = "UserType";
+        public const string FirebaseUid = "FirebaseUid";
         //public const string EmailConfirmed = "EmailConfirmed";
         //public const string TalentApprovedByAdmin = "TalentApprovedByAdmin";
     }

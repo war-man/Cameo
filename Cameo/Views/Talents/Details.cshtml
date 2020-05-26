@@ -145,37 +145,6 @@
     </div>
 </div>
 
-@*<!-- Modal -->
-<div id="bookModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Заказать видео от @Model.FullName</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                
-                <form asp-action="Create" asp-controller="VideoRequest"
-                      data-ajax="true"
-                      data-ajax-method="POST"
-                      data-ajax-mode="replace"
-                      data-ajax-update="#ajaxresult">
-                    <div id="ajaxresult">
-                        @await Html.PartialAsync(
-                            "/Views/VideoRequest/_Create.cshtml",
-                            ViewData["VideoRequestCreateVM"] as Cameo.ViewModels.VideoRequestCreateVM)
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>*@
-
 <style>
     .single-product-inner
     {
