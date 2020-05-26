@@ -16,7 +16,7 @@ namespace Cameo.Services.Interfaces
         /// </summary>
         void Cancel(VideoRequest model, string userID, string userType);
 
-        //void Accept(VideoRequest model, string userID);
+        void Accept(VideoRequest model, string userID);
 
         void VideoDeadlineReaches(VideoRequest model, string userID);
 

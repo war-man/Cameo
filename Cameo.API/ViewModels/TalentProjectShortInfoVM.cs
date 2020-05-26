@@ -8,8 +8,8 @@ namespace Cameo.API.ViewModels
 {
     public class TalentProjectShortInfoVM
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
 
         public TalentProjectShortInfoVM() { }
 
@@ -18,8 +18,8 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            this.ID = model.ID;
-            this.Name = model.Name;
+            this.id = model.ID;
+            this.name = model.Name;
         }
     }
 }

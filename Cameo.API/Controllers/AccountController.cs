@@ -46,9 +46,6 @@ namespace Cameo.API.Controllers
         [HttpPost("Authenticate")]
         public async Task<ActionResult<AuthenticateResponseVM>> Authenticate([FromBody] LoginVM login)
         {
-            int statusCode = 200;
-            string errorMessage = null;
-
             bool registrationIsRequired = true;
             string authToken = null;
             string userType = null;
@@ -62,8 +59,7 @@ namespace Cameo.API.Controllers
                     if (existingUser.UserType == UserTypesEnum.talent.ToString()
                         && !existingUser.TalentApprovedByAdmin)
                     {
-                        errorMessage = "Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.";
-                        statusCode = 400;
+                        return CustomBadRequest("Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.");
                     }
                     else
                     {
@@ -76,18 +72,10 @@ namespace Cameo.API.Controllers
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
-                statusCode = 500;
-            }
-
-            if (!string.IsNullOrWhiteSpace(errorMessage)
-                && statusCode != 200)
-            {
-                Response.StatusCode = statusCode;
+                return CustomBadRequest(ex);
             }
 
             return new AuthenticateResponseVM(
-                errorMessage,
                 registrationIsRequired,
                 authToken,
                 userType);
@@ -128,9 +116,6 @@ namespace Cameo.API.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<RegisterResponseVM>> Register([FromBody] RegisterVM registerVM)
         {
-            int statusCode = 200;
-            string errorMessage = null;
-
             try
             {
                 if (ModelState.IsValid)
@@ -159,42 +144,35 @@ namespace Cameo.API.Controllers
                                     UserID = user.Id
                                 };
                                 CustomerService.Add(customer, user.Id);
+
+                                string authToken = GenerateAuthToken(user);
+
+                                return Ok(new RegisterResponseVM(customer, authToken));
                             }
-
-                            string authToken = GenerateAuthToken(user);
-                            string userType = user.UserType;
-
-                            return Ok(new RegisterResponseVM(authToken, userType));
+                            else
+                                return CustomBadRequest("Не удалось зарегистрировать пользователя");
                         }
                         else
-                            errorMessage = "Пользователь с таким именем уже зарегистрирован";
+                            //errorMessage = "Пользователь с таким именем уже зарегистрирован";
+                            return CustomBadRequest("Пользователь с таким именем уже зарегистрирован");
                     }
                     else
-                        errorMessage = "Пользователь с таким телефоном уже зарегистрирован";
+                        //errorMessage = "Пользователь с таким телефоном уже зарегистрирован";
+                        return CustomBadRequest("Пользователь с таким телефоном уже зарегистрирован");
                 }
                 else
-                    errorMessage = "Введены неверные данные";
-
-                if (!string.IsNullOrWhiteSpace(errorMessage))
-                    statusCode = 400;
+                    //errorMessage = "Введены неверные данные";
+                    return CustomBadRequest("Введены неверные данные");
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
-                statusCode = 500;
-
-                Response.StatusCode = statusCode;
+                return CustomBadRequest(ex);
             }
-
-            return BadRequest(new { errorMessage });
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteVM deleteVM)
         {
-            int statusCode = 200;
-            string errorMessage = null;
-
             try
             {
                 if (ModelState.IsValid)
@@ -221,71 +199,61 @@ namespace Cameo.API.Controllers
                         if (result.Succeeded)
                             return Ok();
                         else
-                            errorMessage = "Не удалсоь удалить пользователя";
+                            //errorMessage = "Не удалсоь удалить пользователя";
+                            return CustomBadRequest("Не удалось удалить пользователя");
                     }
                 }
                 else
-                    errorMessage = "Введены неверные данные";
-
-                if (!string.IsNullOrWhiteSpace(errorMessage))
-                    statusCode = 400;
+                    //errorMessage = "Введены неверные данные";
+                    return CustomBadRequest("Введены неверные данные");
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
-                statusCode = 500;
-
-                Response.StatusCode = statusCode;
+                return CustomBadRequest(ex);
             }
-
-            return BadRequest(new { errorMessage });
         }
 
-        [HttpPost("Authenticate0")]
-        public async Task<IActionResult> Authenticate0([FromBody] LoginVM0 login)
-        {
-            var user = await _userManager.FindByNameAsync(login.Username);
-            if (user == null)
-                return NotFound("User not found");
+//        [HttpPost("Authenticate0")]
+//        public async Task<IActionResult> Authenticate0([FromBody] LoginVM0 login)
+//        {
+//            var user = await _userManager.FindByNameAsync(login.Username);
+//            if (user == null)
+//                return NotFound("User not found");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, true);
-            //var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, lockoutOnFailure: true);
-            if (result.Succeeded)
-            {
-                string tokenSecurityKey = AppData.Configuration.TokenSecurityKey;
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSecurityKey));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, login.Username),
-                    new Claim(ClaimTypes.Role, "Administrator"),
-                };
-#if DEBUG
-                string validIssuer = AppData.Configuration.TokenValidIssuer;
-                string validAudience = AppData.Configuration.TokenValidAudience;
-#else
-                string validIssuer = AppData.Configuration.TokenValidIssuerServer;
-                string validAudience = AppData.Configuration.TokenValidAudienceServer;
-#endif
-                int tokenExpirationPeriodInDays = AppData.Configuration.TokenExpirationPeriodInDays;
-                var token = new JwtSecurityToken(validIssuer, validAudience, claims, expires: DateTime.Now.AddDays(tokenExpirationPeriodInDays), signingCredentials: creds);
+//            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, true);
+//            //var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, lockoutOnFailure: true);
+//            if (result.Succeeded)
+//            {
+//                string tokenSecurityKey = AppData.Configuration.TokenSecurityKey;
+//                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSecurityKey));
+//                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+//                var claims = new[]
+//                {
+//                    new Claim(ClaimTypes.Name, login.Username),
+//                    new Claim(ClaimTypes.Role, "Administrator"),
+//                };
+//#if DEBUG
+//                string validIssuer = AppData.Configuration.TokenValidIssuer;
+//                string validAudience = AppData.Configuration.TokenValidAudience;
+//#else
+//                string validIssuer = AppData.Configuration.TokenValidIssuerServer;
+//                string validAudience = AppData.Configuration.TokenValidAudienceServer;
+//#endif
+//                int tokenExpirationPeriodInDays = AppData.Configuration.TokenExpirationPeriodInDays;
+//                var token = new JwtSecurityToken(validIssuer, validAudience, claims, expires: DateTime.Now.AddDays(tokenExpirationPeriodInDays), signingCredentials: creds);
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                return new JsonResult(new { token = tokenString });
-            }
-            else
-                return BadRequest("Bad password");
-        }
+//                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+//                return new JsonResult(new { token = tokenString });
+//            }
+//            else
+//                return BadRequest("Bad password");
+//        }
     }
 
-    //public class LoginVM
+    //public class LoginVM0
     //{
-    //    public string uid { get; set; }
+    //    public string Username { get; set; }
+    //    public string Password { get; set; }
+    //    public bool RememberMe { get; set; }
     //}
-    public class LoginVM0
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public bool RememberMe { get; set; }
-    }
 }

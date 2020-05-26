@@ -48,19 +48,19 @@ namespace Cameo.API.Controllers
         {
             var curUser = accountUtil.GetCurrentUser(User);
             if (!AccountUtil.IsUserCustomer(curUser))
-                return NotFound();
+                return CustomBadRequest("Только клиенты могут смотреть эту информацию");
 
             var customer = CustomerService.GetByUserID(curUser.ID);
             if (customer == null)
-                return BadRequest("You are not a customer");
+                return CustomBadRequest("Вы не являетесь клиентом");
 
             Talent talent = TalentService.GetAvailableByID(talent_id);
             if (talent == null)
-                return NotFound();
+                return CustomBadRequest("Талант не найден");
 
             int customerBalance = CustomerBalanceService.GetBalance(customer);
             TalentRequestInfoVM talentRequestInfoVM = new TalentRequestInfoVM(talent, customerBalance);
-            talentRequestInfoVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
+            talentRequestInfoVM.request_price = VideoRequestService.CalculateRequestPrice(talent);
             talentRequestInfoVM.RequestPriceToStr();
 
             return talentRequestInfoVM;
@@ -92,21 +92,21 @@ namespace Cameo.API.Controllers
                                 {
                                     try
                                     {
-                                        CustomerBalanceService.TakeOffBalance(curCustomer, 100);
+                                        CustomerBalanceService.TakeOffBalance(curCustomer, requestPrice);
 
-                                        VideoRequest model = modelVM.ToModel(curCustomer);
+                                        VideoRequest newRequest = modelVM.ToModel(curCustomer);
 
                                         //1. create model and send notification
-                                        VideoRequestService.Add(model, curUser.ID);
+                                        VideoRequestService.Add(newRequest, curUser.ID);
 
                                         ////2. create hangfire RequestAnswerJobID and save it
-                                        model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
+                                        newRequest.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(newRequest, curUser.ID);
                                         //create hangfire VideoJobID
                                         //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
-                                        VideoRequestService.Update(model, curUser.ID);
+                                        VideoRequestService.Update(newRequest, curUser.ID);
 
-                                        return Ok();
+                                        return Ok(new { id = newRequest.ID });
                                     }
                                     catch (Exception ex)
                                     {
@@ -199,19 +199,19 @@ namespace Cameo.API.Controllers
         {
             try
             {
-                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-                if (model == null)
+                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+                if (request == null)
                     //return NotFound();
                     return CustomBadRequest("Заказ не найден");
 
                 var curUser = accountUtil.GetCurrentUser(User);
 
                 //cancel request/video
-                VideoRequestService.Cancel(model, curUser.ID, curUser.Type);
+                VideoRequestService.Cancel(request, curUser.ID, curUser.Type);
 
                 //cancel hangfire jobs
-                HangfireService.CancelJob(model.RequestAnswerJobID);
-                HangfireService.CancelJob(model.VideoJobID);
+                HangfireService.CancelJob(request.RequestAnswerJobID);
+                HangfireService.CancelJob(request.VideoJobID);
 
                 return Ok();
             }
@@ -221,36 +221,36 @@ namespace Cameo.API.Controllers
             }
         }
 
-        ////[HttpPost]
-        ////public IActionResult Accept(int id)
-        ////{
-        ////    try
-        ////    {
-        ////        var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-        ////        if (model == null)
-        ////            return NotFound();
+        [HttpPost("Accept/{id}")]
+        public IActionResult Accept(int id)
+        {
+            try
+            {
+                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+                if (request == null)
+                    throw new Exception("Заказ не найден");
 
-        ////        var curUser = accountUtil.GetCurrentUser(User);
-        ////        if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
-        ////            throw new Exception("Вы не являетесь талантом");
+                var curUser = accountUtil.GetCurrentUser(User);
+                if (!AccountUtil.IsUserTalent(curUser))
+                    throw new Exception("Вы не являетесь талантом");
 
-        ////        //accept request/video
-        ////        VideoRequestService.Accept(model, curUser.ID);
+                //accept request/video
+                VideoRequestService.Accept(request, curUser.ID);
 
-        ////        //cancel hangfire RequestAnswerJobID
-        ////        HangfireService.CancelJob(model.RequestAnswerJobID);
+                //cancel hangfire RequestAnswerJobID
+                HangfireService.CancelJob(request.RequestAnswerJobID);
 
-        ////        //create hangfire VideoJobID
-        ////        model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
-        ////        VideoRequestService.Update(model, curUser.ID);
+                //create hangfire VideoJobID
+                request.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(request, curUser.ID);
+                VideoRequestService.Update(request, curUser.ID);
 
-        ////        return Ok();
-        ////    }
-        ////    catch (Exception ex)
-        ////    {
-        ////        return BadRequest(ex);
-        ////    }
-        ////}
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
+        }
 
         //#region Video actions
         ////talent can upload and delete video any times before confirming (actions are in AttachmentController)

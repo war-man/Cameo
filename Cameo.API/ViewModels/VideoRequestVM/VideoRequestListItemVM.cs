@@ -6,19 +6,19 @@ namespace Cameo.API.ViewModels
 {
     public class VideoRequestListItemVM
     {
-        public int ID { get; set; }
+        public int id { get; set; }
 
-        public CustomerShortInfoVM Customer { get; set; }
-        public TalentShortInfoVM Talent { get; set; }
+        public CustomerShortInfoVM customer { get; set; }
+        public TalentShortInfoVM talent { get; set; }
         //if curUser.type == customer then person = talent
         //else person = customer
-        public PersonShortInfoVM Person { get; set; }
+        public PersonShortInfoVM person { get; set; }
         
-        public string Deadline { get; set; }
-        public string DeadlineText { get; set; }
-        public BaseDropdownableDetailsVM Status { get; set; }
+        public string deadline { get; set; }
+        public string deadline_text { get; set; }
+        public BaseDropdownableDetailsVM status { get; set; }
 
-        public bool ViewedByTalent { get; set; }
+        public bool viewed_by_talent { get; set; }
 
         public VideoRequestListItemVM() { }
 
@@ -27,38 +27,38 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            ID = model.ID;
-            Customer = new CustomerShortInfoVM(model.Customer);
-            Talent = new TalentShortInfoVM(model.Talent);
+            id = model.ID;
+            customer = new CustomerShortInfoVM(model.Customer);
+            talent = new TalentShortInfoVM(model.Talent);
 
             if (curUserType == UserTypesEnum.customer.ToString())
-                Person = Talent;
+                person = talent;
             else
-                Person = Customer;
+                person = customer;
 
             DateTime now = DateTime.Now;
             DateTime deadlineTmp = DateTime.MinValue;
             if (model.RequestAnswerDeadline >= now)
             {
                 deadlineTmp = model.RequestAnswerDeadline;
-                DeadlineText = "Ожидает ответа (до " + deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString() + ")";
+                deadline_text = "Ожидает ответа (до " + deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString() + ")";
             }
             else
-                DeadlineText = "Завершено";
+                deadline_text = "Завершено";
 
             if (model.VideoDeadline.HasValue && model.VideoDeadline.Value >= now)
             {
                 deadlineTmp = model.VideoDeadline.Value;
-                DeadlineText = "Ожидает видео";
+                deadline_text = "Ожидает видео";
             }
             else
-                DeadlineText = "Завершено";
+                deadline_text = "Завершено";
 
             if (deadlineTmp != DateTime.MinValue)
-                Deadline = deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString();
+                deadline = deadlineTmp.ToShortDateString() + " " + deadlineTmp.ToShortTimeString();
 
-            Status = new BaseDropdownableDetailsVM(model.RequestStatus);
-            ViewedByTalent = model.ViewedByTalent;
+            status = new BaseDropdownableDetailsVM(model.RequestStatus);
+            viewed_by_talent = model.ViewedByTalent;
         }
     }
 }

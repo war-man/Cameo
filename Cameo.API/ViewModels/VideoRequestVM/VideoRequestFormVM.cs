@@ -67,7 +67,7 @@ namespace Cameo.API.ViewModels
 
     public class VideoRequestEditVM : VideoRequestCreateVM
     {
-        public List<SelectListItem> videoRequestTypes { get; set; }
+        public List<SelectListItem> video_request_types { get; set; }
         public VideoRequestEditVM() { }
 
         public VideoRequestEditVM(VideoRequest model)

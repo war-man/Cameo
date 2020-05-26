@@ -6,26 +6,19 @@ using System.Threading.Tasks;
 
 namespace Cameo.API.ViewModels
 {
-    public class CategoryShortInfoVM
+    public class CategoryShortInfoVM : BaseDropdownableDetailsVM
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-
         public CategoryShortInfoVM() { }
 
         public CategoryShortInfoVM(Category model)
+            : base(model)
         {
-            if (model == null)
-                return;
-
-            this.ID = model.ID;
-            this.Name = model.Name;
         }
     }
 
     public class CategoryVM : CategoryShortInfoVM
     {
-        public bool Selected { get; set; }
-        public int NumberOfItems { get; set; }
+        public bool selected { get; set; }
+        public int number_of_items { get; set; }
     }
 }

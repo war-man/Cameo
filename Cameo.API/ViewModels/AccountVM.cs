@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cameo.Models;
+using Cameo.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,19 +15,16 @@ namespace Cameo.API.ViewModels
 
     public class AuthenticateResponseVM
     {
-        public string error_message { get; set; }
         public bool registration_is_required { get; set; }
         public string auth_token { get; set; }
         public string user_type { get; set; }
 
         public AuthenticateResponseVM() { }
         public AuthenticateResponseVM(
-            string errorMessage, 
             bool registrationIsRequired,
             string authToken,
             string userType)
         {
-            error_message = errorMessage;
             registration_is_required = registrationIsRequired;
             auth_token = authToken;
             user_type = userType;
@@ -51,7 +50,9 @@ namespace Cameo.API.ViewModels
     public class RegisterResponseVM
     {
         public string auth_token { get; set; }
+        public string user_id { get; set; }
         public string user_type { get; set; }
+        public int customer_id { get; set; }
 
         public RegisterResponseVM() { }
         public RegisterResponseVM(
@@ -61,6 +62,15 @@ namespace Cameo.API.ViewModels
             auth_token = authToken;
             user_type = userType;
         }
+
+        public RegisterResponseVM(Customer customer, string authToken)
+        {
+            auth_token = authToken;
+            user_id = customer.UserID;
+            user_type = UserTypesEnum.customer.ToString();
+            customer_id = customer.ID;
+        }
+        
     }
 
     public class DeleteVM

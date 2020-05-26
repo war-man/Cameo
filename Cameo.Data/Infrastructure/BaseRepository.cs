@@ -108,6 +108,11 @@ namespace Cameo.Data.Infrastructure
             return _dataContext.Set<T>().FirstOrDefault(m => m.ID == id);
         }
 
+        public virtual T GetActiveSingleDetailsWithRelatedDataByUserID(string userID)
+        {
+            return _dataContext.Set<T>().FirstOrDefault(m => m.CreatedBy == userID);
+        }
+
         #region potentially unused methods
         //public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where)
         //{

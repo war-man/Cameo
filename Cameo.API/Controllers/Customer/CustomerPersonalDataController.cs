@@ -30,7 +30,7 @@ namespace Cameo.API.Controllers
         public ActionResult<CustomerShortInfoVM> Details()
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetByUserID(curUser.ID);
+            Customer model = CustomerService.GetActiveSingleDetailsWithRelatedDataByUserID(curUser.ID);
             if (model == null)
                 return NotFound();
             if (model.AvatarID.HasValue)
@@ -46,7 +46,7 @@ namespace Cameo.API.Controllers
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Customer model = CustomerService.GetByUserID(curUser.ID);
-            if (model != null)
+            if (model == null)
             {
                 //return NotFound(new { errorMessage });
                 return CustomBadRequest("Данные клиента не найдены");

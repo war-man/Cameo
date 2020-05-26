@@ -24,7 +24,7 @@ namespace Cameo.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<object> Index(int draw, int? start = null, int? length = null, int? statusID = 0)
+        public ActionResult<object> Index(int draw, int? start = null, int? length = null, int? status_id = 0)
         {
             int recordsTotal = 0;
             int recordsFiltered = 0;
@@ -46,7 +46,7 @@ namespace Cameo.API.Controllers
                 out recordsFiltered,
                 out error,
 
-                statusID
+                status_id
             );
 
             data = dataIQueryable

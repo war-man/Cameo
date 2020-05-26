@@ -8,8 +8,8 @@ namespace Cameo.API.ViewModels
 {
     public class BaseDropdownableDetailsVM
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
 
         public BaseDropdownableDetailsVM() { }
 
@@ -18,8 +18,8 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            ID = model.ID;
-            Name = model.Name;
+            this.id = model.ID;
+            this.name = model.Name;
         }
     }
 }

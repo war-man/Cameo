@@ -15,7 +15,7 @@ namespace Cameo.API.Controllers
 
         internal ActionResult CustomBadRequest(string errorMessage)
         {
-            return BadRequest(new { errorMessage });
+            return BadRequest(new { error_message = errorMessage });
         }
 
         internal ActionResult CustomBadRequest(Exception ex)

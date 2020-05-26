@@ -43,21 +43,21 @@ namespace Cameo.API.Controllers
                 return NotFound();
 
             VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(request);
-            modelVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
-            modelVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
+            modelVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
+            modelVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
 
-            modelVM.RequestPrice = VideoRequestService.CalculateRequestPrice(request);
+            modelVM.request_price = VideoRequestService.CalculateRequestPrice(request);
             modelVM.RequestPriceToStr();
 
-            modelVM.RemainingPrice = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+            modelVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
             modelVM.RemainingPriceToStr();
 
             //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
 
-            if (modelVM.EditBtnIsAvailable)
+            if (modelVM.edit_btn_is_available)
             {
-                modelVM.videoRequestEditVM = new VideoRequestEditVM(request);
-                modelVM.videoRequestEditVM.videoRequestTypes = VideoRequestTypeService.GetAsSelectList();
+                modelVM.video_request_edit_vm = new VideoRequestEditVM(request);
+                modelVM.video_request_edit_vm.video_request_types = VideoRequestTypeService.GetAsSelectList();
             }
 
             return modelVM;

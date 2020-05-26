@@ -12,43 +12,43 @@ namespace Cameo.API.ViewModels
 {
     public class VideoRequestDetailsVM
     {
-        public int ID { get; set; }
+        public int id { get; set; }
 
         [Display(Name = "Имя таланта")]
-        public PersonShortInfoVM Talent { get; set; }
+        public PersonShortInfoVM talent { get; set; }
 
         [Display(Name = "Видео для")]
-        public string To { get; set; }
+        public string to { get; set; }
 
         [Display(Name = "Заказ от")]
-        public string From { get; set; }
+        public string from { get; set; }
 
         [Display(Name = "Инструкции")]
-        public string Instructions { get; set; }
+        public string instructions { get; set; }
 
         //public string Email { get; set; }
-        public bool IsNotPublic { get; set; }
+        public bool is_not_public { get; set; }
 
         [Display(Name = "Цена")]
-        public int Price { get; set; }
-        public string PriceStr { get; set; }
+        public int price { get; set; }
+        public string price_str { get; set; }
 
-        public int RequestPrice { get; set; }
-        public string RequestPriceStr { get; set; }
+        public int request_price { get; set; }
+        public string request_price_str { get; set; }
 
-        public int RemainingPrice { get; set; }
-        public string RemainingPriceStr { get; set; }
+        public int remaining_price { get; set; }
+        public string remaining_price_str { get; set; }
 
-        public AttachmentDetailsVM Video { get; set; }
+        public AttachmentDetailsVM video { get; set; }
 
         [Display(Name = "Статус заказа")]
-        public VideoRequestStatusDetailsVM Status { get; set; }
+        public VideoRequestStatusDetailsVM status { get; set; }
 
-        public string Deadline { get; set; }
+        public string deadline { get; set; }
 
-        public bool EditBtnIsAvailable { get; set; } = false;
-        public bool CancelBtnIsAvailable { get; set; } = false;
-        public VideoRequestEditVM videoRequestEditVM { get; set; }
+        public bool edit_btn_is_available { get; set; } = false;
+        public bool cancel_btn_is_available { get; set; } = false;
+        public VideoRequestEditVM video_request_edit_vm { get; set; }
 
 
 
@@ -69,18 +69,18 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            ID = model.ID;
-            Talent = new PersonShortInfoVM(model.Talent);
-            To = model.To;
-            From = model.From;
-            Instructions = model.Instructions;
+            id = model.ID;
+            talent = new PersonShortInfoVM(model.Talent);
+            to = model.To;
+            from = model.From;
+            instructions = model.Instructions;
             //Email = model.Email;
-            IsNotPublic = model.IsNotPublic;
-            Price = model.Price;
+            is_not_public = model.IsNotPublic;
+            price = model.Price;
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            PriceStr = Price.ToString(numberFormat).Trim();
-            Video = new AttachmentDetailsVM(model.Video);
-            Status = new VideoRequestStatusDetailsVM(model.RequestStatus);
+            price_str = price.ToString(numberFormat).Trim();
+            video = new AttachmentDetailsVM(model.Video);
+            status = new VideoRequestStatusDetailsVM(model.RequestStatus);
             //videoRequestEditVM = new VideoRequestEditVM(model);
 
 
@@ -94,7 +94,7 @@ namespace Cameo.API.ViewModels
 
             if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo)
             {
-                CancelBtnIsAvailable = UploadVideoBtnIsAvailable = EditBtnIsAvailable = true;
+                cancel_btn_is_available = UploadVideoBtnIsAvailable = edit_btn_is_available = true;
             }
 
             Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
@@ -109,23 +109,23 @@ namespace Cameo.API.ViewModels
         public void RequestPriceToStr()
         {
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
+            request_price_str = request_price.ToString(numberFormat).Trim();
         }
 
         public void RemainingPriceToStr()
         {
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            RemainingPriceStr = RemainingPrice.ToString(numberFormat).Trim();
+            remaining_price_str = remaining_price.ToString(numberFormat).Trim();
         }
     }
 
     public class VideoDetailsVM
     {
-        public int RequestID { get; set; }
-        public AttachmentDetailsVM Video { get; set; }
-        public string To { get; set; }
-        public string From { get; set; }
-        public TalentShortInfoForVideoPageVM Talent { get; set; }
+        public int request_id { get; set; }
+        public AttachmentDetailsVM video { get; set; }
+        public string to { get; set; }
+        public string from { get; set; }
+        public TalentShortInfoForVideoPageVM talent { get; set; }
 
         //TO-DO:
         //public bool Reviewable { get; set; } = false;
@@ -137,11 +137,11 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            RequestID = model.ID;
-            Video = new AttachmentDetailsVM(model.Video);
-            To = model.To;
-            From = model.From;
-            Talent = new TalentShortInfoForVideoPageVM(model.Talent);
+            request_id = model.ID;
+            video = new AttachmentDetailsVM(model.Video);
+            to = model.To;
+            from = model.From;
+            talent = new TalentShortInfoForVideoPageVM(model.Talent);
         }
     }
 

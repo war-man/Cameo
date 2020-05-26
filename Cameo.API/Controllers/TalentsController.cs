@@ -78,10 +78,10 @@ namespace Cameo.API.Controllers
 
             foreach (var categoryTalentsVM in talentsCategorizedVM)
             {
-                foreach (var talent in categoryTalentsVM.Talents)
+                foreach (var talent in categoryTalentsVM.talents)
                 {
-                    if (talent.avatar.ID == 0)
-                        talent.avatar.Url = GetRandomPhotoUrl();
+                    if (talent.avatar.id == 0)
+                        talent.avatar.url = GetRandomPhotoUrl();
                 }
             }
 
@@ -89,7 +89,7 @@ namespace Cameo.API.Controllers
         }
 
         [HttpGet("GetByCategory")]
-        public ActionResult<IEnumerable<TalentsCategorizedVM>> GetByCategory(int categoryID)
+        public ActionResult<IEnumerable<TalentsCategorizedVM>> GetByCategory(int category_id)
         {
             //1. if category = new then
             //  - all in new
@@ -104,7 +104,7 @@ namespace Cameo.API.Controllers
 
             List<TalentsCategorizedVM> talentsCategorizedVM = new List<TalentsCategorizedVM>();
 
-            if (categoryID == (int)CategoryEnum.neW)
+            if (category_id == (int)CategoryEnum.neW)
             {
                 var newTalents = TalentService.GetNew(null);
                 if (newTalents.Count() > 0)
@@ -119,7 +119,7 @@ namespace Cameo.API.Controllers
                     talentsCategorizedVM.Add(newTalentsVM);
                 }
             }
-            else if (categoryID == (int)CategoryEnum.featured)
+            else if (category_id == (int)CategoryEnum.featured)
             {
                 //DO NOT DELETE THIS CODE!!!
                 //must be uncommented later when number of telants will be large
@@ -165,7 +165,7 @@ namespace Cameo.API.Controllers
             }
             else
             {
-                var categoryDB = CategoryService.GetActiveByID(categoryID);
+                var categoryDB = CategoryService.GetActiveByID(category_id);
                 if (categoryDB == null)
                     return NotFound("Category not found");
 
@@ -198,7 +198,7 @@ namespace Cameo.API.Controllers
                 //    talentsCategorizedVM.Add(newTalentsVM);
                 //}
 
-                var allTalents = TalentService.Search(categoryID, SortTypeEnum.def);
+                var allTalents = TalentService.Search(category_id, SortTypeEnum.def);
                 if (allTalents.Count() > 0)
                 {
                     var allTalentsVM = new TalentsCategorizedVM(
@@ -214,10 +214,10 @@ namespace Cameo.API.Controllers
 
             foreach (var categoryTalentsVM in talentsCategorizedVM)
             {
-                foreach (var talent in categoryTalentsVM.Talents)
+                foreach (var talent in categoryTalentsVM.talents)
                 {
-                    if (talent.avatar.ID == 0)
-                        talent.avatar.Url = GetRandomPhotoUrl();
+                    if (talent.avatar.id == 0)
+                        talent.avatar.url = GetRandomPhotoUrl();
                 }
             }
 
@@ -225,16 +225,16 @@ namespace Cameo.API.Controllers
         }
 
         [HttpGet("GetBySearchText")]
-        public ActionResult<IEnumerable<TalentShortInfoVM>> GetBySearchText(string searchText)
+        public ActionResult<IEnumerable<TalentShortInfoVM>> GetBySearchText(string search_text)
         {
-            var talents = TalentService.SearchBySearchText(searchText)
+            var talents = TalentService.SearchBySearchText(search_text)
                 .Select(m => new TalentShortInfoVM(m))
                 .ToList();
 
             foreach (var item in talents)
             {
-                if (item.avatar.ID == 0)
-                    item.avatar.Url = GetRandomPhotoUrl();
+                if (item.avatar.id == 0)
+                    item.avatar.url = GetRandomPhotoUrl();
             }
 
             return talents;
@@ -265,7 +265,7 @@ namespace Cameo.API.Controllers
         {
             Talent talent = TalentService.GetActiveByID(id);
             if (talent == null)
-                return NotFound();
+                return CustomBadRequest("Талант не найден");
 
             List<VideoRequest> videos = VideoRequestService.GetPublicForTalent(talent, 0)
                 .ToList();
@@ -282,18 +282,18 @@ namespace Cameo.API.Controllers
         [HttpGet("GetRelated/{id}")]
         public ActionResult<IEnumerable<TalentGridViewItem>> GetRelated(int id, int? count = null)
         {
-            Talent model = TalentService.GetActiveByID(id);
-            if (model == null)
-                return NotFound();
+            Talent talent = TalentService.GetActiveByID(id);
+            if (talent == null)
+                return CustomBadRequest("Талант не найден");
 
-            List<TalentGridViewItem> relatedTalents = TalentService.GetRelated(model, count)
+            List<TalentGridViewItem> relatedTalents = TalentService.GetRelated(talent, count)
                 .Select(m => new TalentGridViewItem(m))
                 .ToList();
 
-            foreach (var talent in relatedTalents)
+            foreach (var talentItem in relatedTalents)
             {
-                if (talent.avatar.ID == 0)
-                    talent.avatar.Url = GetRandomPhotoUrl();
+                if (talentItem.avatar.id == 0)
+                    talentItem.avatar.url = GetRandomPhotoUrl();
             }
 
             return relatedTalents;

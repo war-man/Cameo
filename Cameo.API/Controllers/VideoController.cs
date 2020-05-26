@@ -26,15 +26,6 @@ namespace Cameo.API.Controllers
             FileManagement = fileManagement;
         }
 
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-
-            return new string[] { "value1", "value2" };
-        }
-
         // GET api/values/5
         [HttpGet("{request_id}")]
         public ActionResult<VideoDetailsVM> Get(int request_id)

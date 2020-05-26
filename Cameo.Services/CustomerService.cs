@@ -27,6 +27,16 @@ namespace Cameo.Services
             return GetAsIQueryable().FirstOrDefault(m => m.UserID == userID && !m.IsDeleted);
         }
 
+        public Customer GetActiveSingleDetailsWithRelatedDataByID(int id)
+        {
+            return _repository.GetActiveSingleDetailsWithRelatedDataByID(id);
+        }
+
+        public Customer GetActiveSingleDetailsWithRelatedDataByUserID(string userID)
+        {
+            return _repository.GetActiveSingleDetailsWithRelatedDataByUserID(userID);
+        }
+
         private void AssignAccountNumber(Customer model)
         {
             if (string.IsNullOrWhiteSpace(model.AccountNumber))

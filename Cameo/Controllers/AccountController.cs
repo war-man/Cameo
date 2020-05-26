@@ -223,9 +223,11 @@ namespace Cameo.Controllers
                                     IsAvailable = true
                                 };
                                 TalentService.Add(talent, user.Id);
-                            }
 
-                            return Ok();
+                                return Ok();
+                            }
+                            else
+                                ModelState.AddModelError("", "Не удалось зарегистрировать пользователя");
                         }
                         else
                             ModelState.AddModelError("", "Пользователь с таким именем уже зарегистрирован");

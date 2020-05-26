@@ -5,8 +5,8 @@ namespace Cameo.API.ViewModels
 {
     public class AttachmentDetailsVM
     {
-        public int ID { get; set; }
-        public string Url { get; set; }
+        public int id { get; set; }
+        public string url { get; set; }
 
         public AttachmentDetailsVM()
         { }
@@ -15,15 +15,15 @@ namespace Cameo.API.ViewModels
         {
             if (model == null)
             {
-                this.Url = AppData.Configuration.NoPhotoUrl;
+                this.url = AppData.Configuration.NoPhotoUrl;
                 return;
             }
 
-            this.ID = model.ID;
-            if (this.ID > 0)
-                this.Url = model.Path + "/" + model.GUID + "." + model.Extension;
+            this.id = model.ID;
+            if (this.id > 0)
+                this.url = model.Path + "/" + model.GUID + "." + model.Extension;
             else
-                this.Url = AppData.Configuration.NoPhotoUrl;
+                this.url = AppData.Configuration.NoPhotoUrl;
         }
     }
 }

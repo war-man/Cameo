@@ -96,26 +96,24 @@ namespace Cameo.Services
         /// </summary>
         public void Cancel(VideoRequest model, string userID, string userType)
         {
-            if (!RequestBelongsToUser(model, userID))
-                throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
+            if (!BelongsToUser(model, userID))
+                throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
 
-            if (IsCancelable(model))
+            if (!IsCancelable(model))
+                throw new Exception("Текущий статус заказа не позволяет отменить его");
+
+            if (userType == UserTypesEnum.talent.ToString())
             {
-                if (userType == UserTypesEnum.talent.ToString())
-                {
-                    model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByTalent;
-                    //model.DateVideoCanceledByTalent = DateTime.Now;
-                    model.DateRequestCanceledByTalent = DateTime.Now;
-                }
-                else
-                {
-                    model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByCustomer;
-                    //model.DateVideoCanceledByCustomer = DateTime.Now;
-                    model.DateRequestCanceledByCustomer = DateTime.Now;
-                }
+                model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByTalent;
+                //model.DateVideoCanceledByTalent = DateTime.Now;
+                model.DateRequestCanceledByTalent = DateTime.Now;
             }
             else
-                throw new Exception("Текущий статус запроса не позволяет отменить его");
+            {
+                model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByCustomer;
+                //model.DateVideoCanceledByCustomer = DateTime.Now;
+                model.DateRequestCanceledByCustomer = DateTime.Now;
+            }
 
             Update(model, userID);
 
@@ -130,35 +128,37 @@ namespace Cameo.Services
         }
 
 
-        //        public void Accept(VideoRequest model, string userID)
-        //        {
-        //            CheckIfRequestIsAcceptable(model, userID);
+        public void Accept(VideoRequest model, string userID)
+        {
+            if (!BelongsToTalent(model, userID))
+                throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
 
-        //            model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndwaitingForVideo;
-        //            model.DateRequestAccepted = DateTime.Now;
-        //#if DEBUG
-        //            model.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
-        //#else
-        //            model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
-        //#endif
+            if (!IsAcceptable(model, userID))
+                throw new Exception("Текущий статус заказа не позволяет принять его");
 
-        //            Update(model, userID);
-        //        }
+            model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
+            model.DateRequestAccepted = DateTime.Now;
+#if DEBUG
+            tmpPeriodMinutes = 2880;
+            model.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+#else
+            model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
+#endif
+            Update(model, userID);
 
-        //private void CheckIfRequestIsAcceptable(VideoRequest model, string userID)
-        //{
-        //    if (!RequestBelongsToUser(model, userID))
-        //        throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
+            //TO-DO: send firebase notification to Customer
+        }
 
-        //    //if (!TalentsCardPeriodIsValid(model.Talent))
-        //    //    throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
+        private bool IsAcceptable(VideoRequest model, string userID)
+        {
+            return IsWaitingForResponse(model);
 
-        //    if (!TalentBalanceService.BalanceAllowsToAcceptRequest(model.Talent.Balance, model.Price))
-        //        throw new Exception("Текущий баланс не позволяет принять запрос");
+            //if (!TalentsCardPeriodIsValid(model.Talent))
+            //    throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
 
-        //    if (!RequestIsWaitingForResponse(model))
-        //        throw new Exception("Текущий статус запроса не позволяет отменить его");
-        //}
+            //if (!TalentBalanceService.BalanceAllowsToAcceptRequest(model.Talent.Balance, model.Price))
+            //    throw new Exception("Текущий баланс не позволяет принять запрос");
+        }
 
 
         public void VideoDeadlineReaches(VideoRequest model, string userID)
@@ -187,7 +187,7 @@ namespace Cameo.Services
 
         public void MakePayment(VideoRequest model, string userID)
         {
-            if (!RequestBelongsToUser(model, userID))
+            if (!BelongsToUser(model, userID))
                 throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
 
             int amountToBeTakenOff = TalentBalanceService
@@ -213,12 +213,12 @@ namespace Cameo.Services
             EmailService.Send(toTalent, subjectTalent, bodyTalent);
         }
 
-        private bool RequestBelongsToUser(VideoRequest model, string userID)
+        private bool BelongsToUser(VideoRequest model, string userID)
         {
             return model.Customer.UserID == userID || model.Talent.UserID == userID;
         }
 
-        private bool RequestIsWaitingForResponse(VideoRequest model)
+        private bool IsWaitingForResponse(VideoRequest model)
         {
             return model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse;
         }
@@ -353,13 +353,13 @@ namespace Cameo.Services
         public bool IsCancelable(VideoRequest model)
         {
             //return RequestIsAcceptedAndWaitingForVideo(model);
-            return RequestIsWaitingForResponse(model);
+            return IsWaitingForResponse(model);
         }
 
         public bool IsEditable(VideoRequest model)
         {
             //return RequestIsAcceptedAndWaitingForVideo(model);
-            return RequestIsWaitingForResponse(model);
+            return IsWaitingForResponse(model);
         }
 
         public int GetAllCountByTalent(Talent talent)

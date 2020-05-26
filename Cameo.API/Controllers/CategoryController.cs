@@ -28,11 +28,5 @@ namespace Cameo.API.Controllers
             var username = User.Identity.Name;
             return CategoryService.GetAsSelectList(new int[1] { selected });
         }
-
-        //[HttpGet]
-        //public ActionResult<IEnumerable<string>> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
     }
 }
