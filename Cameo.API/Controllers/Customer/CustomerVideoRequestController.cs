@@ -34,7 +34,7 @@ namespace Cameo.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<VideoRequestDetailsVM> Details(int id)
+        public ActionResult<VideoRequestDetailsForCustomerVM> Details(int id)
         {
             var curUser = accountUtil.GetCurrentUser(User);
             VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
@@ -42,25 +42,29 @@ namespace Cameo.API.Controllers
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
                 return CustomBadRequest("Ваш заказ не найден");
 
-            VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(request);
-            modelVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
-            modelVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
+            VideoRequestDetailsForCustomerVM requestVM = new VideoRequestDetailsForCustomerVM(request);
+            requestVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
+            requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
 
-            modelVM.request_price = VideoRequestService.CalculateRequestPrice(request);
-            modelVM.RequestPriceToStr();
+            requestVM.request_price = VideoRequestService.CalculateRequestPrice(request);
+            requestVM.RequestPriceToStr();
 
-            modelVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
-            modelVM.RemainingPriceToStr();
+            requestVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+            requestVM.RemainingPriceToStr();
+
+            requestVM.payment_is_confirmed = VideoRequestService.IsPaymentConfirmed(request);
+            if (requestVM.payment_is_confirmed)
+                requestVM.video = new AttachmentDetailsVM(request.Video);
+
+            if (requestVM.edit_btn_is_available)
+            {
+                requestVM.video_request_edit_vm = new VideoRequestEditVM(request);
+                requestVM.video_request_edit_vm.video_request_types = VideoRequestTypeService.GetAsSelectList();
+            }
 
             //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
 
-            if (modelVM.edit_btn_is_available)
-            {
-                modelVM.video_request_edit_vm = new VideoRequestEditVM(request);
-                modelVM.video_request_edit_vm.video_request_types = VideoRequestTypeService.GetAsSelectList();
-            }
-
-            return modelVM;
+            return requestVM;
         }
     }
 }

@@ -240,5 +240,10 @@ namespace Cameo.Services
 
             return talents;
         }
+
+        public void SaveDetachedIntroVideo(Talent model, string userID)
+        {
+            Update(model, userID);
+        }
     }
 }

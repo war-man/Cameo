@@ -45,7 +45,7 @@ namespace Cameo.API.Controllers
         //}
 
         [HttpGet("{id}")]
-        public ActionResult<VideoRequestDetailsVM> Details(int id)
+        public ActionResult<VideoRequestDetailsForTalentVM> Details(int id)
         {
             try
             {
@@ -61,16 +61,16 @@ namespace Cameo.API.Controllers
                     VideoRequestService.Update(request, curUser.ID);
                 }
 
-                VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(request);
-                modelVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
+                VideoRequestDetailsForTalentVM requestVM = new VideoRequestDetailsForTalentVM(request);
+                requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
 
-                modelVM.request_price = VideoRequestService.CalculateRequestPrice(request);
-                modelVM.RequestPriceToStr();
+                requestVM.request_price = VideoRequestService.CalculateRequestPrice(request);
+                requestVM.RequestPriceToStr();
 
-                modelVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
-                modelVM.RemainingPriceToStr();
+                requestVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+                requestVM.RemainingPriceToStr();
 
-                return modelVM;
+                return requestVM;
             }
             catch (Exception ex)
             {

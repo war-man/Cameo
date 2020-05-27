@@ -50,6 +50,7 @@ namespace Cameo.API.ViewModels
         public bool cancel_btn_is_available { get; set; } = false;
         public VideoRequestEditVM video_request_edit_vm { get; set; }
 
+        public bool payment_is_confirmed { get; set; } = false;
 
 
 
@@ -79,18 +80,26 @@ namespace Cameo.API.ViewModels
             price = model.Price;
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
             price_str = price.ToString(numberFormat).Trim();
-            video = new AttachmentDetailsVM(model.Video);
+            //video = new AttachmentDetailsVM(model.Video);
             status = new VideoRequestStatusDetailsVM(model.RequestStatus);
             //videoRequestEditVM = new VideoRequestEditVM(model);
 
+            string dateTextViewStringFormat = AppData.Configuration.DateTextViewStringFormat;
+
+            /*if (model.PaymentConfirmationDeadline.HasValue)
+                deadline = model.PaymentConfirmationDeadline.Value.ToString(dateTextViewStringFormat);
+            else*/ if (model.VideoDeadline.HasValue)
+                deadline = model.VideoDeadline.Value.ToString(dateTextViewStringFormat);
+            else
+                deadline = model.RequestAnswerDeadline.ToString(dateTextViewStringFormat);
 
 
 
 
 
 
-            if (model.VideoDeadline.HasValue)
-                VideoDeadline = model.VideoDeadline.Value.ToString(AppData.Configuration.DateTextViewStringFormat);
+            //if (model.VideoDeadline.HasValue)
+            //    VideoDeadline = model.VideoDeadline.Value.ToString(AppData.Configuration.DateTextViewStringFormat);
 
             if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo)
             {
@@ -116,6 +125,32 @@ namespace Cameo.API.ViewModels
         {
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
             remaining_price_str = remaining_price.ToString(numberFormat).Trim();
+        }
+    }
+
+    public class VideoRequestDetailsForCustomerVM : VideoRequestDetailsVM
+    {
+        public VideoRequestDetailsForCustomerVM() { }
+
+        public VideoRequestDetailsForCustomerVM(VideoRequest model)
+            : base(model)
+        {
+            if (model == null)
+                return;
+        }
+    }
+
+    public class VideoRequestDetailsForTalentVM : VideoRequestDetailsVM
+    {
+        public VideoRequestDetailsForTalentVM() { }
+
+        public VideoRequestDetailsForTalentVM(VideoRequest model)
+            : base(model)
+        {
+            if (model == null)
+                return;
+
+            video = new AttachmentDetailsVM(model.Video);
         }
     }
 

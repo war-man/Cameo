@@ -21,5 +21,7 @@ namespace Cameo.Services.Interfaces
         IQueryable<Talent> GetRelated(Talent model, int? count = null);
         void AssignAccountNumber(Talent model);
         void SetAvailability(Talent model, bool availability, string userID);
+
+        void SaveDetachedIntroVideo(Talent model, string userID);
     }
 }

@@ -15,11 +15,11 @@
                         <h3 class="fontWeight600 font-2 heading-divider heading-divider__themeColor  mb--15 mt--10 font--32">@ViewData["Title"]</h3>
                         <dl class="dl-horizontal font--16 mb--35">
                             @*<dt>
-                                @Html.DisplayNameFor(model => model.ID)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.ID)
-                            </dd>*@
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>*@
                             <dt>
                                 @Html.DisplayNameFor(model => model.Talent)
                             </dt>
@@ -41,7 +41,7 @@
                                     @Html.DisplayFor(model => model.From)
                                 </dd>
                             }
-                            
+
                             <dt>
                                 @Html.DisplayNameFor(model => model.Instructions)
                             </dt>
@@ -49,11 +49,11 @@
                                 @Html.DisplayFor(model => model.Instructions)
                             </dd>
                             @*<dt>
-                                @Html.DisplayNameFor(model => model.Email)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.Email)
-                            </dd>*@
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>*@
                             <dt>
                                 @*@Html.DisplayNameFor(model => model.IsNotPublic)*@
                             </dt>
@@ -86,12 +86,15 @@
                                 @Html.DisplayFor(model => model.Status.Name)
                             </dd>
 
-                            <dt>
-                                @Html.DisplayNameFor(model => model.VideoDeadline)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.VideoDeadline)
-                            </dd>
+                            @if (!string.IsNullOrWhiteSpace(Model.Deadline))
+                            {
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Deadline)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Deadline)
+                                </dd>
+                            }
                         </dl>
                         @*<p class="font--16 mb--35">All the rumors have finally died down and many skeptics have tightened their lips, the iPod does support video format now on its fifth generation.</p>*@
                         <div class="blog-btn">

@@ -223,7 +223,7 @@ namespace Cameo.Services
             return model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse;
         }
 
-        private bool RequestIsAcceptedAndWaitingForVideo(VideoRequest model)
+        private bool IsRequestAcceptedAndWaitingForVideo(VideoRequest model)
         {
             return model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
         }
@@ -241,7 +241,7 @@ namespace Cameo.Services
         public bool VideoIsUploadable(VideoRequest model)
         {
             return (/*!model.DateVideoCompleted.HasValue &&*//*RequestIsWaitingForResponse(model) 
-                || */RequestIsAcceptedAndWaitingForVideo(model));
+                || */IsRequestAcceptedAndWaitingForVideo(model));
         }
 
         public void SaveUploadedVideo(VideoRequest model, string userID)
@@ -271,18 +271,30 @@ namespace Cameo.Services
 
         public void ConfirmVideo(VideoRequest model, string userID)
         {
+            if (!BelongsToTalent(model, userID))
+                throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
+
+            if (!IsVideoConfirmable(model))
+                throw new Exception("Текущий статус заказа не позволяет подтвердить видео");
+
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoCompleted;
             model.DateVideoCompleted = DateTime.Now;
 
-#if DEBUG
-            model.PaymentDeadline = DateTime.Now.AddMinutes(2);
-#else
-            model.PaymentDeadline = DateTime.Now.AddMinutes(10080); //7 days
-#endif
+//#if DEBUG
+//            model.PaymentDeadline = DateTime.Now.AddMinutes(2);
+//#else
+//            model.PaymentDeadline = DateTime.Now.AddMinutes(10080); //7 days
+//#endif
 
             Update(model, userID);
 
             SendEmailOnceVideoConfirmed(model);
+        }
+
+        private bool IsVideoConfirmable(VideoRequest model)
+        {
+            return (model.VideoID.HasValue
+                && model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo);
         }
 
         public void SendEmailOnceVideoConfirmed(VideoRequest model)
@@ -293,12 +305,11 @@ namespace Cameo.Services
             string bodyCustomer = "This is email for Customer";
 
             EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+        }
 
-            //string toTalent = "xenon1991@inbox.ru";
-            //string subjectTalent = "Subject - Talent";
-            //string bodyTalent = "This is email for Talent";
-
-            //EmailService.Send(toTalent, subjectTalent, bodyTalent);
+        public bool IsPaymentConfirmed(VideoRequest model)
+        {
+            return model.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed;
         }
 
         public VideoRequest GetSinglePublished(int id, string userID)

@@ -43,6 +43,7 @@ namespace Cameo.Services.Interfaces
 
         bool IsEditable(VideoRequest model);
         bool IsCancelable(VideoRequest model);
+        bool IsPaymentConfirmed(VideoRequest model);
         int GetAllCountByTalent(Talent talent);
         int GetCompletedCountByTalent(Talent talent);
         int GetCompletenessPercentageByTalent(Talent talent);

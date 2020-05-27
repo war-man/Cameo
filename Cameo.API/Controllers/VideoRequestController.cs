@@ -252,45 +252,45 @@ namespace Cameo.API.Controllers
             }
         }
 
-        //#region Video actions
-        ////talent can upload and delete video any times before confirming (actions are in AttachmentController)
-        ////however once confirmed, DateVideoConfirmed is set to DateTime.Now
-        ////and the request is considered as finished by talent when he/she confirms
+        #region Video actions
+        //talent can upload and delete video any times before confirming (actions are in AttachmentController)
+        //however once confirmed, DateVideoConfirmed is set to DateTime.Now
+        //and the request is considered as finished by talent when he/she confirms
 
-        //[HttpPost]
-        //public IActionResult ConfirmVideo(int id)
-        //{
-        //    try
-        //    {
-        //        var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-        //        if (model == null)
-        //            return NotFound();
+        [HttpPost("ConfirmVideo/{request_id}")]
+        public IActionResult ConfirmVideo(int request_id)
+        {
+            try
+            {
+                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(request_id);
+                if (request == null)
+                    throw new Exception("Заказ не найден");
 
-        //        var curUser = accountUtil.GetCurrentUser(User);
-        //        if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
-        //            throw new Exception("Вы не являетесь талантом");
+                var curUser = accountUtil.GetCurrentUser(User);
+                if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
+                    throw new Exception("Вы не являетесь талантом");
 
-        //        int balance = TalentBalanceService.GetBalance(model.Talent);
-        //        if (balance <= 0)
-        //            throw new Exception("У Вас недостаточно средств, чтобы подтвердить запрос");
+                //int balance = TalentBalanceService.GetBalance(request.Talent);
+                //if (balance <= 0)
+                //    throw new Exception("У Вас недостаточно средств, чтобы подтвердить запрос");
 
-        //        //cancel hangfire RequestAnswerJobID
-        //        //HangfireService.CancelJob(model.RequestAnswerJobID);
-        //        HangfireService.CancelJob(model.VideoJobID);
+                //confirm request/video
+                VideoRequestService.ConfirmVideo(request, curUser.ID);
+                
+                //cancel hangfire jobs
+                HangfireService.CancelJob(request.RequestAnswerJobID);
+                HangfireService.CancelJob(request.VideoJobID);
 
-        //        //confirm request/video
-        //        VideoRequestService.ConfirmVideo(model, curUser.ID);
+                ////create hangfire PaymentReminderJobID
+                //HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
 
-        //        //create hangfire PaymentReminderJobID
-        //        HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
-
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex);
-        //    }
-        //}
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
+        }
 
         //[HttpPost]
         //public IActionResult MakePayment(int id)
@@ -321,6 +321,6 @@ namespace Cameo.API.Controllers
         //        return BadRequest(ex);
         //    }
         //}
-        //#endregion
+        #endregion
     }
 }

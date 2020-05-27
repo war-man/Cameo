@@ -1,5 +1,6 @@
 ﻿using Cameo.Common;
 using Cameo.Models;
+using System;
 
 namespace Cameo.API.ViewModels
 {
@@ -29,19 +30,46 @@ namespace Cameo.API.ViewModels
 
     public class UploadFileVM
     {
-        public string Filename { get; set; } //"file.ext"
-        public string Path { get; set; } //"path/to/file"
-        public long Size { get; set; } //byte
-        public string ContentType { get; set; } //"image/jpeg"
-        public string DownloadUrl { get; set; } //"https://gerlgnenr.com?param1=val1&param2=val2..."
+        public string filename { get; set; } //"file.ext"
+        public string path { get; set; } //"path/to/file/file.txt"
+        public long size { get; set; } //byte
+        public string content_type { get; set; } //"image/jpeg"
+        public string download_url { get; set; } //"https://gerlgnenr.com?param1=val1&param2=val2..."
+        public string file_type { get; set; } //Constants.FileTypes.VIDEO_REQUEST_VIDEO
+        public int? model_id { get; set; }
 
         public Attachment ToModel()
         {
-            Attachment newAttachment = new Attachment();
-            //newAttachment
+            Attachment attachment = new Attachment()
+            {
+                GUID = Guid.NewGuid().ToString(),
+                Filename = this.filename,
+                Size = this.size,
+                MimeType = this.content_type
+            };
 
+            string path = "";
+            string[] tmp = this.path.Split('/');
+            for (int i = 0; i < tmp.Length - 1; i++)
+            {
+                path += tmp[i];
+                if (i < tmp.Length - 2)
+                    path += "/";
+            }
+            attachment.Path = path;
 
-            return newAttachment;
+            tmp = this.download_url.Split('?');
+            if (tmp.Length > 1)
+                attachment.UrlParameters = tmp[1];
+
+            return attachment;
         }
+    }
+
+    public class DeleteFileVM
+    {
+        public int file_id { get; set; }
+        public string file_type { get; set; } //Constants.FileTypes.VIDEO_REQUEST_VIDEO
+        public int? model_id { get; set; }
     }
 }

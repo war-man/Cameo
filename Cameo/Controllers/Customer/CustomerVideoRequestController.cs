@@ -45,23 +45,27 @@ namespace Cameo.Controllers
             VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
 
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                return NotFound();
+                return CustomBadRequest("Ваш заказ не найден");
 
-            VideoRequestDetailsVM modelVM = new VideoRequestDetailsVM(request);
-            modelVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
-            modelVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
+            VideoRequestDetailsForCustomerVM requestVM = new VideoRequestDetailsForCustomerVM(request);
+            requestVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
+            requestVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
 
-            modelVM.RequestPrice = VideoRequestService.CalculateRequestPrice(request);
-            modelVM.RequestPriceToStr();
+            requestVM.RequestPrice = VideoRequestService.CalculateRequestPrice(request);
+            requestVM.RequestPriceToStr();
 
-            modelVM.RemainingPrice = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
-            modelVM.RemainingPriceToStr();
+            requestVM.RemainingPrice = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+            requestVM.RemainingPriceToStr();
 
-            VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
-            ViewBag.editModelVM = editModelVM;
-            ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+            requestVM.PaymentIsConfirmed = VideoRequestService.IsPaymentConfirmed(request);
+            if (requestVM.PaymentIsConfirmed)
+                requestVM.Video = new AttachmentDetailsVM(request.Video);
 
-            return View(modelVM);
+            //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
+            //ViewBag.editModelVM = editModelVM;
+            //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+
+            return View(requestVM);
         }
     }
 }
