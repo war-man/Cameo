@@ -344,35 +344,35 @@ namespace Cameo.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult MakePayment(int id)
-        {
-            try
-            {
-                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-                if (model == null)
-                    return NotFound();
+        //[HttpPost]
+        //public IActionResult MakePayment(int id)
+        //{
+        //    try
+        //    {
+        //        var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+        //        if (model == null)
+        //            return NotFound();
 
-                var curUser = accountUtil.GetCurrentUser(User);
-                if (!curUser.Type.Equals(UserTypesEnum.customer.ToString()))
-                    throw new Exception("Вы не являетесь клиентом");
+        //        var curUser = accountUtil.GetCurrentUser(User);
+        //        if (!curUser.Type.Equals(UserTypesEnum.customer.ToString()))
+        //            throw new Exception("Вы не являетесь клиентом");
 
-                //cancel hangfire RequestAnswerJobID, VideoJobID, PaymentJobID
-                //HangfireService.CancelJob(model.RequestAnswerJobID);
-                //HangfireService.CancelJob(model.VideoJobID);
-                //HangfireService.CancelJob(model.PaymentJobID);
-                HangfireService.CancelJob(model.PaymentReminderJobID);
+        //        //cancel hangfire RequestAnswerJobID, VideoJobID, PaymentJobID
+        //        //HangfireService.CancelJob(model.RequestAnswerJobID);
+        //        //HangfireService.CancelJob(model.VideoJobID);
+        //        //HangfireService.CancelJob(model.PaymentJobID);
+        //        HangfireService.CancelJob(model.PaymentReminderJobID);
 
-                //confirm request/video
-                VideoRequestService.MakePayment(model, curUser.ID);
+        //        //confirm request/video
+        //        VideoRequestService.MakePayment(model, curUser.ID);
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex);
+        //    }
+        //}
         #endregion
     }
 }

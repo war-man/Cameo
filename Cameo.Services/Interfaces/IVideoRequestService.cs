@@ -20,11 +20,11 @@ namespace Cameo.Services.Interfaces
 
         void VideoDeadlineReaches(VideoRequest model, string userID);
 
-        void MakePayment(VideoRequest model, string userID);
+        //void MakePayment(VideoRequest model, string userID);
 
         //void PaymentDeadlineReaches(VideoRequest model, string userID);
 
-        bool VideoIsUploadable(VideoRequest model);
+        bool IsVideoUploadable(VideoRequest model);
 
         void SaveUploadedVideo(VideoRequest model, string userID);
 
@@ -59,5 +59,8 @@ namespace Cameo.Services.Interfaces
 
         int CalculateRemainingPrice(int price);
         int CalculateRemainingPrice(int price, double websiteCommission);
+        bool IsVideoConfirmed(VideoRequest model);
+        void SaveUploadedPaymentScreenshot(VideoRequest model, string userID);
+        void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID);
     }
 }

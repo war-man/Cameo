@@ -92,6 +92,26 @@ namespace Cameo.Services
             { }
         }
 
+        public string CreateJobForVideoRequestPaymentConfirmationDeadline(VideoRequest request, string userID)
+        {
+            string jobID = BackgroundJob.Schedule(() =>
+                PaymentConfirmationDeadlineReaches(request.ID, userID),
+                new DateTimeOffset(request.PaymentConfirmationDeadline.Value));
+
+            return jobID;
+        }
+
+        public void PaymentConfirmationDeadlineReaches(int videoRequestID, string userID)
+        {
+            try
+            {
+                VideoRequest request = VideoRequestService.GetByID(videoRequestID);
+                VideoRequestService.PaymentConfirmationDeadlineReaches(request, userID);
+            }
+            catch (Exception ex)
+            { }
+        }
+
         //public string CreateJobForVideoRequestPaymentDeadline(VideoRequest request, string userID)
         //{
         //    string jobID = BackgroundJob.Schedule(() =>

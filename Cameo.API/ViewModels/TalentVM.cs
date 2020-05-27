@@ -70,6 +70,24 @@ namespace Cameo.API.ViewModels
         }
     }
 
+    public class TalentWithCreditCardInfoVM : PersonShortInfoVM
+    {
+        public string CreditCardNumber { get; set; }
+        public string CreditCardHolder { get; set; }
+
+        public TalentWithCreditCardInfoVM() { }
+
+        public TalentWithCreditCardInfoVM(Talent model)
+            : base(model)
+        {
+            if (model == null)
+                return;
+
+            CreditCardNumber = model.CreditCardNumber;
+            CreditCardHolder = model.CreditCardHolder;
+        }
+    }
+
     public class TalentsCategorizedVM
     {
         public int priority { get; set; }

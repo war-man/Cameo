@@ -21,6 +21,7 @@ namespace Cameo.Models.Enums
         videoCompleted = 9, //video uploaded and confirmed by talent
         paid = 10,
         //videoPaymentExpired = 11,
-        paymentConfirmed = 14
+        paymentConfirmed = 14,
+        paymentConfirmationExpired = 15
     }
 }

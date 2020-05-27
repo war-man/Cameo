@@ -76,7 +76,8 @@ namespace Cameo.Controllers
 
             modelVM.Avatar = new AttachmentDetailsVM(model.Avatar);
 
-            ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
+            //ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
+            ViewBag.firebaseUid = curUser.FirebaseUid;
 
             return View(modelVM);
         }

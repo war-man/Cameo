@@ -15,7 +15,7 @@ namespace Cameo.API.ViewModels
         public int id { get; set; }
 
         [Display(Name = "Имя таланта")]
-        public PersonShortInfoVM talent { get; set; }
+        public TalentWithCreditCardInfoVM talent { get; set; }
 
         [Display(Name = "Видео для")]
         public string to { get; set; }
@@ -51,6 +51,10 @@ namespace Cameo.API.ViewModels
         public VideoRequestEditVM video_request_edit_vm { get; set; }
 
         public bool payment_is_confirmed { get; set; } = false;
+        public bool video_is_confirmed { get; set; }
+        public bool is_credit_card_info_visible { get; set; } = false;
+
+
 
 
 
@@ -60,7 +64,7 @@ namespace Cameo.API.ViewModels
         public bool VideoIsPaid { get; set; } = false;
         public bool UploadVideoBtnIsAvailable { get; set; } = false;
 
-        public bool VideoConfirmed { get; set; }
+        
         //public bool BalanceAllowsToConfirm { get; set; }
 
         public VideoRequestDetailsVM() { }
@@ -71,7 +75,7 @@ namespace Cameo.API.ViewModels
                 return;
 
             id = model.ID;
-            talent = new PersonShortInfoVM(model.Talent);
+            talent = new TalentWithCreditCardInfoVM(model.Talent);
             to = model.To;
             from = model.From;
             instructions = model.Instructions;
@@ -86,9 +90,9 @@ namespace Cameo.API.ViewModels
 
             string dateTextViewStringFormat = AppData.Configuration.DateTextViewStringFormat;
 
-            /*if (model.PaymentConfirmationDeadline.HasValue)
+            if (model.PaymentConfirmationDeadline.HasValue)
                 deadline = model.PaymentConfirmationDeadline.Value.ToString(dateTextViewStringFormat);
-            else*/ if (model.VideoDeadline.HasValue)
+            else if (model.VideoDeadline.HasValue)
                 deadline = model.VideoDeadline.Value.ToString(dateTextViewStringFormat);
             else
                 deadline = model.RequestAnswerDeadline.ToString(dateTextViewStringFormat);
@@ -112,7 +116,7 @@ namespace Cameo.API.ViewModels
                 && model.VideoID.HasValue;
 
 
-            VideoConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
+            //VideoIsConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
         }
 
         public void RequestPriceToStr()
@@ -137,6 +141,8 @@ namespace Cameo.API.ViewModels
         {
             if (model == null)
                 return;
+
+            is_credit_card_info_visible = true;
         }
     }
 

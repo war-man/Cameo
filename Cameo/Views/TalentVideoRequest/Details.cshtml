@@ -98,7 +98,7 @@
         </div>
     </div>
     <div class="col-sm-6">
-        @if (Model.Video.ID > 0)
+        @*@if (Model.Video.ID > 0)
         {
             <video id="imgContainer_@Model.ID" width="240" height="320" controls><source src="/Video/GetIncompletedVideo/@Model.ID" type="video/mp4"></video>
             if (!Model.VideoConfirmed && !Model.VideoIsPaid)
@@ -112,7 +112,7 @@
             <div class="alert alert-success"><small>Видео подтверждено</small></div>
         }
         else
-        {
+        {*@
             @*if (!Model.BalanceAllowsToConfirm && Model.CancelBtnIsAvailable)
             {
                 <div class="alert alert-danger">

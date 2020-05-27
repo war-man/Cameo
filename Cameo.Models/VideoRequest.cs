@@ -42,14 +42,18 @@ namespace Cameo.Models
         public DateTime? VideoDeadline { get; set; }
         public string VideoJobID { get; set; }
 
-        public string PaymentJobID { get; set; }
-        public DateTime? PaymentDeadline { get; set; }
+        public string PaymentConfirmationJobID { get; set; }
+        public DateTime? PaymentConfirmationDeadline { get; set; }
 
         public string PaymentReminderJobID { get; set; }
 
         [ForeignKey("RequestStatus")]
         public int RequestStatusID { get; set; }
         public VideoRequestStatus RequestStatus { get; set; }
+
+        [ForeignKey("PaymentScreenshot")]
+        public int? PaymentScreenshotID { get; set; }
+        public virtual Attachment PaymentScreenshot { get; set; }
 
         [ForeignKey("Video")]
         public int? VideoID { get; set; }
@@ -65,8 +69,9 @@ namespace Cameo.Models
         public DateTime? DateVideoExpired { get; set; }
         public DateTime? DateVideoUploaded { get; set; }
         public DateTime? DateVideoCompleted { get; set; }
-        public DateTime? DatePaid { get; set; }
+        public DateTime? DatePaymentScreenshotUploaded { get; set; }
         public DateTime? DatePaymentConfirmed { get; set; }
+        public DateTime? DatePaymentConfirmationExpired { get; set; }
 
 
         //unused dates
@@ -74,6 +79,7 @@ namespace Cameo.Models
         public DateTime? DateRequestCanceledByTalent { get; set; }
         public DateTime? DateVideoCanceledByCustomer { get; set; }
         public DateTime? DateVideoCanceledByTalent { get; set; }
+        public DateTime? DatePaid { get; set; }
         public DateTime? DatePaymentExpired { get; set; }
         #endregion
     }

@@ -1,4 +1,9 @@
 ﻿@model Cameo.ViewModels.VideoRequestDetailsVM
+@using Cameo.Common
+
+@using Microsoft.Extensions.Options;
+
+@inject IOptions<AppConfiguration> AppSettings
 
 @{
     ViewData["Title"] = "Детали заказа";
@@ -15,11 +20,11 @@
                         <h3 class="fontWeight600 font-2 heading-divider heading-divider__themeColor  mb--15 mt--10 font--32">@ViewData["Title"]</h3>
                         <dl class="dl-horizontal font--16 mb--35">
                             @*<dt>
-            @Html.DisplayNameFor(model => model.ID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ID)
-        </dd>*@
+                                    @Html.DisplayNameFor(model => model.ID)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.ID)
+                                </dd>*@
                             <dt>
                                 @Html.DisplayNameFor(model => model.Talent)
                             </dt>
@@ -49,11 +54,11 @@
                                 @Html.DisplayFor(model => model.Instructions)
                             </dd>
                             @*<dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>*@
+                                    @Html.DisplayNameFor(model => model.Email)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Email)
+                                </dd>*@
                             <dt>
                                 @*@Html.DisplayNameFor(model => model.IsNotPublic)*@
                             </dt>
@@ -74,16 +79,57 @@
                             </dd>
 
                             @*<dt>
-                                @Html.DisplayNameFor(model => model.Status.ID)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => model.Status.ID)
-                            </dd>*@
+                                    @Html.DisplayNameFor(model => model.Status.ID)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Status.ID)
+                                </dd>*@
                             <dt>
                                 @Html.DisplayNameFor(model => model.Status)
                             </dt>
                             <dd>
                                 @Html.DisplayFor(model => model.Status.Name)
+                                @if (Model.VideoIsConfirmed)
+                                {
+                                    <div class="alert alert-info">
+                                        <p>Данный номер карты Вы можете использовать для перевода оставшейся суммы заказа (@Model.RemainingPriceStr сум)</p>
+                                        <p><b>@Model.Talent.CreditCardNumber<br />@Model.Talent.CreditCardHolder</b></p>
+                                        <p>
+                                            Как только выполните оплату, загрузите скрин, подтверждающий успешный перевод
+                                            <br />
+
+                                            <!-- Start Single Team -->
+                                            <div class="col-lg-4 col-md-6 col-sm-6 p-0">
+                                                <div class="team team__style--1 text-center">
+                                                    <div class="thumbnail">
+                                                        @{ 
+                                                            string imgContainerDisplay = "none;";
+                                                            if (Model.PaymentScreenshot != null && Model.PaymentScreenshot.ID > 0)
+                                                            {
+                                                                imgContainerDisplay = "block;";
+                                                            }
+                                                        }
+                                                        <img id="imgContainer" src="@Model.PaymentScreenshot.Url" alt="Avatar" style="display:@imgContainerDisplay">
+                                                        <img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-6 col-sm-6 mt--10 p-0 text-center">
+                                                @*<a class="button-link button-size__8 button__transparent--border--dashed" href="javascript: void(0);"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span><span class="button-text">Редактировать фото</span></a>*@
+                                                @{ 
+                                                    string uploadText = "Загрузить скрин";
+                                                    if (Model.PaymentScreenshot != null && Model.PaymentScreenshot.ID > 0)
+                                                    {
+                                                        uploadText = "Загрузить другой скрин";
+                                                    }
+                                                }
+                                                <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span> <span class="button-text">@uploadText</span></label>
+                                                <input type='file' id="imgInp" style="display: none;" />
+                                            </div>
+                                            <!-- End Single Team -->
+                                        </p>
+                                    </div>
+                                }
                             </dd>
 
                             @if (!string.IsNullOrWhiteSpace(Model.Deadline))
@@ -122,14 +168,14 @@
                     <br />
                 }
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        @if (Model.Payable)
-                        {
-                            <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
-                        }
-                    </div>
-                </div>
+                @*<div class="row">
+                        <div class="col-sm-12">
+                            @if (Model.Payable)
+                            {
+                                <b>Видео готово!</b> <button type="button" class="btn btn-success btn-sm" onclick="MakePayment(@Model.ID);">Оплатить!</button>
+                            }
+                        </div>
+                    </div>*@
             </div>
             <div class="col-lg-6 mt--30 mb--30">
 
@@ -149,6 +195,139 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
+        $(document).ready(function () {
+            $("#imgInp").change(function ()
+            {
+                //FileAjaxUpload(this, @Model.ID, "@Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT", "spinner", "imgContainer");
+
+                var input = this;
+                var modelID = @Model.ID;
+                var fileType = "@Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT";
+                var spinnerTagID = "spinner";
+                var imgPreviewContainerTagID = "imgContainer";
+
+                if (!(input.files && input.files[0]))
+                    return;
+
+                var file = input.files[0];
+                //console.log(file);
+                var extension = file.name.split('.')[1];
+
+                // Create a root reference
+                var storageRef = firebase.storage().ref();
+                var uploadTask = storageRef.child('@ViewBag.firebaseUid' + '/requestPaymentConfirmation_' + modelID + '.' + extension).put(file);
+
+                // Listen for state changes, errors, and completion of the upload.
+                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+                    function (snapshot)
+                    {
+                        //// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                        //var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        //console.log('Upload is ' + progress + '% done');
+                        //switch (snapshot.state)
+                        //{
+                        //    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        //        console.log('Upload is paused');
+                        //        break;
+                        //    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        //        console.log('Upload is running');
+                        //        break;
+                        //}
+                    }, function (error)
+                    {
+                        console.log(error);
+
+                    }, function ()
+                    {
+                        // Upload completed successfully, now we can get the download URL
+                        var attachment = {
+                            Filename: "",
+                            Path: "",
+                            Size: 0,
+                            ContentType: "",
+                            DownloadUrl: "",
+                            FileType: fileType,
+                            ModelID: @Model.ID
+                        };
+                        //console.log(uploadTask.snapshot.ref);
+
+
+                        uploadTask.snapshot.ref.getMetadata().then(function (metaData)
+                        {
+                            //console.log(metaData);
+
+                            attachment.Filename = metaData.name;
+                            attachment.Path = metaData.fullPath;
+                            attachment.Size = metaData.size;
+                            attachment.ContentType = metaData.contentType;
+
+                            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL)
+                            {
+                                attachment.DownloadUrl = downloadURL;
+
+                                //console.log(attachment);
+                                FileAjaxUpload2(this, file, attachment, spinnerTagID, imgPreviewContainerTagID);
+                            });
+                        });
+                    });
+            });
+        });
+
+        function FileAjaxUpload2(input, file, attachment, spinnerTagID, imgPreviewContainerTagID)
+        {
+            if (file)
+            {
+                //console.log(attachment);
+                $.ajax({
+                    url: "/Attachment/Save",
+                    data: JSON.stringify(attachment),
+                    processData: false,
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    //dataType: "json",
+                    beforeSend: function ()
+                    {
+                        //alert("beforeSend");
+                        $("#" + spinnerTagID).show();
+                        //$("#imgInp").attr("disabled", "disabled");
+                        $(input).attr("disabled", "disabled");
+                    },
+                    success: function (data)
+                    {
+                        if (imgPreviewContainerTagID != undefined
+                            || imgPreviewContainerTagID != null
+                            || imgPreviewContainerTagID != "")
+                        {
+                            var reader = new FileReader();
+                            reader.onload = function (e)
+                            {
+                                $("#" + imgPreviewContainerTagID).attr('src', e.target.result);
+                                $("#" + imgPreviewContainerTagID).show();
+                            }
+                            reader.readAsDataURL(file);
+
+                            location.reload();
+                        }
+                        else
+                        {
+                            alert("File uploaded!");
+                        }
+                    },
+                    error: function (data)
+                    {
+                        alert("Error!");
+                    },
+                    complete: function ()
+                    {
+                        //alert("completed");
+                        $("#" + spinnerTagID).hide();
+                        //$("#imgInp").removeAttr("disabled");
+                        $(input).removeAttr("disabled");
+                    }
+                });
+            }
+        }
+
         function CancelRequest(requestID)
         {
             if (!confirm("Вы уверены, что хотите отменить заказ?"))
@@ -187,37 +366,37 @@
             });
         }
 
-        function MakePayment(requestID)
-        {
-            $(".btn").attr("disabled", "disabled");
+            //function MakePayment(requestID)
+            //{
+            //    $(".btn").attr("disabled", "disabled");
 
-            $.ajax({
-                type: "POST",
-                url: "/VideoRequest/MakePayment?id=" + requestID,
-                //data: {
-                //    id: requestID
-                //},
-                //data: JSON.stringify({
-                //    id: requestID
-                //}),
-                contentType: "application/json; charset=utf-8",
-                //dataType: "json",
-                success: function (data)
-                {
-                    //alert("success");
-                    //alert(data);
-                },
-                error: function (data)
-                {
-                    //alert("error");
-                    console.log(data);
-                },
-                complete: function (data)
-                {
-                    //alert("completed");
-                    $(".btn").removeAttr("disabled");
-                }
-            });
-        }
+            //    $.ajax({
+            //        type: "POST",
+            //        url: "/VideoRequest/MakePayment?id=" + requestID,
+            //        //data: {
+            //        //    id: requestID
+            //        //},
+            //        //data: JSON.stringify({
+            //        //    id: requestID
+            //        //}),
+            //        contentType: "application/json; charset=utf-8",
+            //        //dataType: "json",
+            //        success: function (data)
+            //        {
+            //            //alert("success");
+            //            //alert(data);
+            //        },
+            //        error: function (data)
+            //        {
+            //            //alert("error");
+            //            console.log(data);
+            //        },
+            //        complete: function (data)
+            //        {
+            //            //alert("completed");
+            //            $(".btn").removeAttr("disabled");
+            //        }
+            //    });
+            //}
     </script>
 }

@@ -57,6 +57,8 @@ namespace Cameo.Controllers
             requestVM.RemainingPrice = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
             requestVM.RemainingPriceToStr();
 
+            requestVM.VideoIsConfirmed = VideoRequestService.IsVideoConfirmed(request);
+
             requestVM.PaymentIsConfirmed = VideoRequestService.IsPaymentConfirmed(request);
             if (requestVM.PaymentIsConfirmed)
                 requestVM.Video = new AttachmentDetailsVM(request.Video);
@@ -64,6 +66,8 @@ namespace Cameo.Controllers
             //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
             //ViewBag.editModelVM = editModelVM;
             //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+
+            ViewBag.firebaseUid = curUser.FirebaseUid;
 
             return View(requestVM);
         }

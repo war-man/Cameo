@@ -171,47 +171,48 @@ namespace Cameo.Services
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoExpired;
             Update(model, userID);
 
-            //2. send emails to customer and talent
-            string toCustomer = "cortex91@inbox.ru";
-            string subjectCustomer = "Subject - Customer";
-            string bodyCustomer = "This is email for Customer";
-
-            EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
-
-            string toTalent = "xenon1991@inbox.ru";
-            string subjectTalent = "Subject - Talent";
-            string bodyTalent = "This is email for Talent";
-
-            EmailService.Send(toTalent, subjectTalent, bodyTalent);
+            //TO-DO: send firebase notification to Customer
+            //TO-DO: send firebase notification to Talent
         }
 
-        public void MakePayment(VideoRequest model, string userID)
+        public void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID)
         {
-            if (!BelongsToUser(model, userID))
-                throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
-
-            int amountToBeTakenOff = TalentBalanceService
-                .CalculateMoneyThatTalentPaysToSystemForCameo(model.Price, model.WebsiteCommission);
-
-            TalentBalanceService.TakeOffBalance(model.Talent, amountToBeTakenOff, userID);
-
-            model.DatePaid = DateTime.Now;
-            model.RequestStatusID = (int)VideoRequestStatusEnum.paid;
+            //1. set status = expired
+            model.DatePaymentConfirmationExpired = DateTime.Now;
+            model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmationExpired;
             Update(model, userID);
 
-            //send emails to customer and talent
-            string toCustomer = "cortex91@inbox.ru";
-            string subjectCustomer = "Subject - Customer";
-            string bodyCustomer = "This is email for Customer";
-
-            EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
-
-            string toTalent = "xenon1991@inbox.ru";
-            string subjectTalent = "Subject - Talent";
-            string bodyTalent = "This is email for Talent";
-
-            EmailService.Send(toTalent, subjectTalent, bodyTalent);
+            //TO-DO: send firebase notification to Customer
+            //TO-DO: send firebase notification to Talent
         }
+
+        //public void MakePayment(VideoRequest model, string userID)
+        //{
+        //    if (!BelongsToUser(model, userID))
+        //        throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
+
+        //    int amountToBeTakenOff = TalentBalanceService
+        //        .CalculateMoneyThatTalentPaysToSystemForCameo(model.Price, model.WebsiteCommission);
+
+        //    TalentBalanceService.TakeOffBalance(model.Talent, amountToBeTakenOff, userID);
+
+        //    model.DatePaid = DateTime.Now;
+        //    model.RequestStatusID = (int)VideoRequestStatusEnum.paid;
+        //    Update(model, userID);
+
+        //    //send emails to customer and talent
+        //    string toCustomer = "cortex91@inbox.ru";
+        //    string subjectCustomer = "Subject - Customer";
+        //    string bodyCustomer = "This is email for Customer";
+
+        //    EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+
+        //    string toTalent = "xenon1991@inbox.ru";
+        //    string subjectTalent = "Subject - Talent";
+        //    string bodyTalent = "This is email for Talent";
+
+        //    EmailService.Send(toTalent, subjectTalent, bodyTalent);
+        //}
 
         private bool BelongsToUser(VideoRequest model, string userID)
         {
@@ -238,7 +239,7 @@ namespace Cameo.Services
             return model.IsNotPublic;
         }
 
-        public bool VideoIsUploadable(VideoRequest model)
+        public bool IsVideoUploadable(VideoRequest model)
         {
             return (/*!model.DateVideoCompleted.HasValue &&*//*RequestIsWaitingForResponse(model) 
                 || */IsRequestAcceptedAndWaitingForVideo(model));
@@ -250,17 +251,30 @@ namespace Cameo.Services
             Update(model, userID);
         }
 
+        public void SaveUploadedPaymentScreenshot(VideoRequest model, string userID)
+        {
+            model.DatePaymentScreenshotUploaded = DateTime.Now;
+#if DEBUG
+            tmpPeriodMinutes = 2880;
+            model.PaymentConfirmationDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+#else
+            model.PaymentConfirmationDeadline = DateTime.Now.AddMinutes(2880); //2 days
+            //model.PaymentConfirmationDeadline = DateTime.Now.AddMinutes(10080); //7 days
+#endif
+            Update(model, userID);
+        }
+
         public bool VideoIsAllowedToBeDeleted(VideoRequest model)
         {
             //return RequestIsAcceptedAndWaitingForVideo(model);
             //return VideoIsUploadable(model);
-            return (model.VideoID.HasValue && !VideoIsConfirmed(model));
+            return (model.VideoID.HasValue && IsRequestAcceptedAndWaitingForVideo(model));
         }
 
-        private bool VideoIsConfirmed(VideoRequest model)
+        public bool IsVideoConfirmed(VideoRequest model)
         {
-            return (model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-                || model.RequestStatusID == (int)VideoRequestStatusEnum.paid);
+            return (model.VideoID.HasValue
+                && model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted);
         }
 
         public void SaveDetachedVideo(VideoRequest model, string userID)

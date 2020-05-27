@@ -15,7 +15,7 @@ namespace Cameo.ViewModels
         public int ID { get; set; }
 
         [Display(Name = "Имя таланта")]
-        public PersonShortInfoVM Talent { get; set; }
+        public TalentWithCreditCardInfoVM Talent { get; set; }
 
         [Display(Name = "Видео для")]
         public string To { get; set; }
@@ -49,8 +49,10 @@ namespace Cameo.ViewModels
 
         public bool EditBtnIsAvailable { get; set; } = false;
         public bool CancelBtnIsAvailable { get; set; } = false;
-
+        public bool VideoIsConfirmed { get; set; }
         public bool PaymentIsConfirmed { get; set; } = false;
+        //public bool IsCreditCardInfoVisible { get; set; } = false;
+        public AttachmentDetailsVM PaymentScreenshot { get; set; }
 
 
 
@@ -61,7 +63,7 @@ namespace Cameo.ViewModels
         public bool VideoIsPaid { get; set; } = false;
         public bool UploadVideoBtnIsAvailable { get; set; } = false;
         
-        public bool VideoConfirmed { get; set; }
+        
         //public bool BalanceAllowsToConfirm { get; set; }
 
         public VideoRequestDetailsVM() { }
@@ -72,7 +74,7 @@ namespace Cameo.ViewModels
                 return;
 
             ID = model.ID;
-            Talent = new PersonShortInfoVM(model.Talent);
+            Talent = new TalentWithCreditCardInfoVM(model.Talent);
             To = model.To;
             From = model.From;
             Instructions = model.Instructions;
@@ -86,13 +88,15 @@ namespace Cameo.ViewModels
 
             string dateTextViewStringFormat = AppData.Configuration.DateTextViewStringFormat;
 
-            /*if (model.PaymentConfirmationDeadline.HasValue)
-                deadline = model.PaymentConfirmationDeadline.Value.ToString(dateTextViewStringFormat);
-            else*/
+            if (model.PaymentConfirmationDeadline.HasValue)
+                Deadline = model.PaymentConfirmationDeadline.Value.ToString(dateTextViewStringFormat);
+            else
             if (model.VideoDeadline.HasValue)
                 Deadline = model.VideoDeadline.Value.ToString(dateTextViewStringFormat);
             else
                 Deadline = model.RequestAnswerDeadline.ToString(dateTextViewStringFormat);
+
+            PaymentScreenshot = new AttachmentDetailsVM(model.PaymentScreenshot);
 
 
 
@@ -112,7 +116,7 @@ namespace Cameo.ViewModels
                 && model.VideoID.HasValue;
 
             
-            VideoConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
+            //VideoIsConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
         }
 
         public void RequestPriceToStr()
@@ -137,6 +141,8 @@ namespace Cameo.ViewModels
         {
             if (model == null)
                 return;
+
+            //IsCreditCardInfoVisible = true;
         }
     }
 

@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200527102602_VideRequestModelAddedNewFieldDatePaymentScreenshotUploaded")]
+    partial class VideRequestModelAddedNewFieldDatePaymentScreenshotUploaded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -471,8 +473,6 @@ namespace Cameo.Data.Migrations
 
                     b.Property<DateTime?>("DatePaid");
 
-                    b.Property<DateTime?>("DatePaymentConfirmationExpired");
-
                     b.Property<DateTime?>("DatePaymentConfirmed");
 
                     b.Property<DateTime?>("DatePaymentExpired");
@@ -510,9 +510,9 @@ namespace Cameo.Data.Migrations
 
                     b.Property<string>("ModifiedBy");
 
-                    b.Property<DateTime?>("PaymentConfirmationDeadline");
+                    b.Property<DateTime?>("PaymentDeadline");
 
-                    b.Property<string>("PaymentConfirmationJobID");
+                    b.Property<string>("PaymentJobID");
 
                     b.Property<string>("PaymentReminderJobID");
 

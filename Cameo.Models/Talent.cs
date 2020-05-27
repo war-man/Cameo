@@ -15,6 +15,9 @@ namespace Cameo.Models
         [StringLength(32)]
         public string CreditCardNumber { get; set; }
 
+        [StringLength(128)]
+        public string CreditCardHolder { get; set; }
+
         public DateTime? CreditCardExpire { get; set; }
 
 

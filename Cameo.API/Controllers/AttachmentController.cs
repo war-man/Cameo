@@ -52,7 +52,6 @@ namespace Cameo.API.Controllers
                 var curUser = accountUtil.GetCurrentUser(User);
 
                 Attachment attachment = uploadFileVM.ToModel();
-
                 AttachmentService.Add(attachment, curUser.ID);
 
                 if (uploadFileVM.model_id.HasValue && uploadFileVM.model_id.Value > 0)
@@ -64,6 +63,71 @@ namespace Cameo.API.Controllers
             {
                 return CustomBadRequest(ex);
             }
+        }
+
+        private void AttachFile(Attachment attachment, int id, string fileType, string curUserID)
+        {
+            if (fileType.Equals(Constants.FileTypes.CUSTOMER_AVATAR))
+            {
+                var model = CustomerService.GetByID(id);
+                if (model != null)
+                {
+                    model.Avatar = attachment;
+                    CustomerService.Update(model, curUserID);
+                }
+            }
+            else if (fileType.Equals(Constants.FileTypes.TALENT_AVATAR))
+            {
+                var model = TalentService.GetByID(id);
+                if (model != null)
+                {
+                    model.Avatar = attachment;
+                    TalentService.Update(model, curUserID);
+                }
+            }
+            else if (fileType.Equals(Constants.FileTypes.TALENT_INTRO_VIDEO))
+            {
+                var model = TalentService.GetByID(id);
+                if (model != null)
+                {
+                    model.IntroVideo = attachment;
+                    TalentService.Update(model, curUserID);
+                }
+            }
+            else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
+            {
+                var model = VideoRequestService.GetByID(id);
+                if (model != null)
+                {
+                    if (VideoRequestService.IsVideoUploadable(model))
+                    {
+                        model.Video = attachment;
+                        VideoRequestService.SaveUploadedVideo(model, curUserID);
+
+                        //HangfireService.CreateTaskForConvertingVideo(attachment.ID, curUserID);
+                    }
+                }
+            }
+            else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
+            {
+                var request = VideoRequestService.GetByID(id);
+                if (request != null)
+                {
+                    if (request.PaymentScreenshot == null)
+                    {
+                        request.PaymentScreenshot = attachment;
+                        VideoRequestService.SaveUploadedPaymentScreenshot(request, curUserID);
+
+                        request.PaymentConfirmationJobID = HangfireService
+                            .CreateJobForVideoRequestPaymentConfirmationDeadline(request, curUserID);
+                    }
+                    else
+                        request.PaymentScreenshot = attachment;
+
+                    VideoRequestService.Update(request, curUserID);
+                }
+            }
+            //else if () ...
         }
 
         //[HttpPost]
@@ -94,7 +158,7 @@ namespace Cameo.API.Controllers
         //            path += videosRelativePath;
         //            attachment.Path += videosRelativePath;
         //        }
-                    
+
         //        path += "/" + attachment.GUID + "." + file.FileName.Split('.')[1];
         //        path = path.Replace('/', '\\');
 
@@ -115,52 +179,6 @@ namespace Cameo.API.Controllers
 
         //    return BadRequest();
         //}
-
-        private void AttachFile(Attachment attachment, int id, string fileType, string curUserID)
-        {
-            if (fileType.Equals(Constants.FileTypes.CUSTOMER_AVATAR))
-            {
-                var model = CustomerService.GetByID(id);
-                if (model != null)
-                {
-                    model.Avatar = attachment;
-                    CustomerService.Update(model, curUserID);
-                }
-            }
-            else if (fileType.Equals(Constants.FileTypes.TALENT_AVATAR))
-            {
-                var model = TalentService.GetByID(id);
-                if (model != null)
-                {
-                    model.Avatar = attachment;
-                    TalentService.Update(model, curUserID);
-                }
-            }
-            else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
-            {
-                var model = VideoRequestService.GetByID(id);
-                if (model != null)
-                {
-                    if (VideoRequestService.VideoIsUploadable(model))
-                    {
-                        model.Video = attachment;
-                        VideoRequestService.SaveUploadedVideo(model, curUserID);
-
-                        //HangfireService.CreateTaskForConvertingVideo(attachment.ID, curUserID);
-                    }
-                }
-            }
-            else if (fileType.Equals(Constants.FileTypes.TALENT_INTRO_VIDEO))
-            {
-                var model = TalentService.GetByID(id);
-                if (model != null)
-                {
-                    model.IntroVideo = attachment;
-                    TalentService.Update(model, curUserID);
-                }
-            }
-            //else if () ...
-        }
 
         [HttpPost]
         public IActionResult Delete([FromBody] DeleteFileVM deleteFileVM)

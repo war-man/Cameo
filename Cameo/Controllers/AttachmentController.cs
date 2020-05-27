@@ -50,7 +50,6 @@ namespace Cameo.Controllers
                 var curUser = accountUtil.GetCurrentUser(User);
 
                 Attachment attachment = uploadFileVM.ToModel();
-
                 AttachmentService.Add(attachment, curUser.ID);
 
                 if (uploadFileVM.ModelID.HasValue && uploadFileVM.ModelID.Value > 0)
@@ -62,56 +61,6 @@ namespace Cameo.Controllers
             {
                 return CustomBadRequest(ex);
             }
-        }
-
-        [HttpPost]
-        [RequestSizeLimit(200000000)]
-        public IActionResult Upload(List<IFormFile> files, int? id, string fileType)
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-
-            IFormFile file = files[0];
-            if (file != null)
-            {
-                Attachment attachment = new Attachment()
-                {
-                    GUID = Guid.NewGuid().ToString(),
-                    Filename = file.FileName,
-                    Path = AppData.Configuration.UploadsPath,
-                    Extension = file.FileName.Split('.')[1],
-                    Size = file.Length,
-                    MimeType = file.ContentType
-                };
-
-                string rootPath = _env.ContentRootPath;
-
-                string path = AppData.Configuration.UploadsPath;
-                if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
-                {
-                    string videosRelativePath = "/Videos";
-                    path += videosRelativePath;
-                    attachment.Path += videosRelativePath;
-                }
-                    
-                path += "/" + attachment.GUID + "." + file.FileName.Split('.')[1];
-                path = path.Replace('/', '\\');
-
-                string target = rootPath + path;
-
-                using (var stream = new FileStream(target, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-
-                    AttachmentService.Add(attachment, curUser.ID);
-
-                    if (id.HasValue && id.Value > 0)
-                        AttachFile(attachment, id.Value, fileType, curUser.ID);
-                }
-
-                return Ok(new AttachmentDetailsVM(attachment));
-            }
-
-            return BadRequest();
         }
 
         private void AttachFile(Attachment attachment, int id, string fileType, string curUserID)
@@ -139,7 +88,7 @@ namespace Cameo.Controllers
                 var model = VideoRequestService.GetByID(id);
                 if (model != null)
                 {
-                    if (VideoRequestService.VideoIsUploadable(model))
+                    if (VideoRequestService.IsVideoUploadable(model))
                     {
                         model.Video = attachment;
                         VideoRequestService.SaveUploadedVideo(model, curUserID);
@@ -148,8 +97,77 @@ namespace Cameo.Controllers
                     }
                 }
             }
+            else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
+            {
+                var request = VideoRequestService.GetByID(id);
+                if (request != null)
+                {
+                    if (!request.PaymentScreenshotID.HasValue)
+                    {
+                        request.PaymentScreenshot = attachment;
+                        VideoRequestService.SaveUploadedPaymentScreenshot(request, curUserID);
+
+                        request.PaymentConfirmationJobID = HangfireService
+                            .CreateJobForVideoRequestPaymentConfirmationDeadline(request, curUserID);
+                    }
+                    else
+                        request.PaymentScreenshot = attachment;
+
+                    VideoRequestService.Update(request, curUserID);
+                }
+            }
             //else if () ...
         }
+
+        //[HttpPost]
+        //[RequestSizeLimit(200000000)]
+        //public IActionResult Upload(List<IFormFile> files, int? id, string fileType)
+        //{
+        //    var curUser = accountUtil.GetCurrentUser(User);
+
+        //    IFormFile file = files[0];
+        //    if (file != null)
+        //    {
+        //        Attachment attachment = new Attachment()
+        //        {
+        //            GUID = Guid.NewGuid().ToString(),
+        //            Filename = file.FileName,
+        //            Path = AppData.Configuration.UploadsPath,
+        //            Extension = file.FileName.Split('.')[1],
+        //            Size = file.Length,
+        //            MimeType = file.ContentType
+        //        };
+
+        //        string rootPath = _env.ContentRootPath;
+
+        //        string path = AppData.Configuration.UploadsPath;
+        //        if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
+        //        {
+        //            string videosRelativePath = "/Videos";
+        //            path += videosRelativePath;
+        //            attachment.Path += videosRelativePath;
+        //        }
+                    
+        //        path += "/" + attachment.GUID + "." + file.FileName.Split('.')[1];
+        //        path = path.Replace('/', '\\');
+
+        //        string target = rootPath + path;
+
+        //        using (var stream = new FileStream(target, FileMode.Create))
+        //        {
+        //            file.CopyTo(stream);
+
+        //            AttachmentService.Add(attachment, curUser.ID);
+
+        //            if (id.HasValue && id.Value > 0)
+        //                AttachFile(attachment, id.Value, fileType, curUser.ID);
+        //        }
+
+        //        return Ok(new AttachmentDetailsVM(attachment));
+        //    }
+
+        //    return BadRequest();
+        //}
 
         [HttpPost]
         public IActionResult Delete(int fileID, int? objID, string fileType)

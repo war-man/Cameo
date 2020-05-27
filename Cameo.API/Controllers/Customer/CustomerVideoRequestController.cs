@@ -52,6 +52,8 @@ namespace Cameo.API.Controllers
             requestVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
             requestVM.RemainingPriceToStr();
 
+            requestVM.video_is_confirmed = VideoRequestService.IsVideoConfirmed(request);
+
             requestVM.payment_is_confirmed = VideoRequestService.IsPaymentConfirmed(request);
             if (requestVM.payment_is_confirmed)
                 requestVM.video = new AttachmentDetailsVM(request.Video);
