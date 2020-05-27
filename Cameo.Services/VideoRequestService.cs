@@ -312,6 +312,27 @@ namespace Cameo.Services
                 && model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo);
         }
 
+        public void ConfirmPayment(VideoRequest model, string userID)
+        {
+            if (!BelongsToTalent(model, userID))
+                throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
+
+            if (!IsPaymentConfirmable(model))
+                throw new Exception("Текущий статус заказа не позволяет подтвердить видео");
+
+            model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmed;
+            model.DatePaymentConfirmed = DateTime.Now;
+
+            Update(model, userID);
+
+            //TO-DO: send firebase notification to Customer
+        }
+
+        private bool IsPaymentConfirmable(VideoRequest model)
+        {
+            return model.VideoID.HasValue;
+        }
+
         public void SendEmailOnceVideoConfirmed(VideoRequest model)
         {
             //send email to Customer
@@ -333,23 +354,34 @@ namespace Cameo.Services
             if (model == null)
                 return null;
 
-            //if request belongs to current Talent
-            if (model.Talent.UserID == userID)
+            if (BelongsToTalent(model, userID))
                 return model;
-            else if (IsPaymentScreenshotUploaded(model))
+            else if (IsPaymentConfirmed(model))
             {
-                //if unauthorized
-                if (string.IsNullOrWhiteSpace(userID))
-                {
-                    if (!RequestIsNotPublic(model))
-                        return model;
-                }
-                //if request belongs to current Customer
-                else if (model.Customer.UserID == userID)
+                if (BelongsToCustomer(model, userID))
+                    return model;
+                else if (!RequestIsNotPublic(model))
                     return model;
             }
-            
+
             return null;
+
+            //if (model.Talent.UserID == userID)
+            //    return model;
+            //else if (IsPaymentConfirmed(model))
+            //{
+            //    //if unauthorized
+            //    if (string.IsNullOrWhiteSpace(userID))
+            //    {
+            //        if (!RequestIsNotPublic(model))
+            //            return model;
+            //    }
+            //    //if request belongs to current Customer
+            //    else if (model.Customer.UserID == userID)
+            //        return model;
+            //}
+            
+            //return null;
         }
 
         public VideoRequest GetIncompletedVideo(int id, string userID)

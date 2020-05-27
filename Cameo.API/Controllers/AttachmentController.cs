@@ -180,7 +180,7 @@ namespace Cameo.API.Controllers
         //    return BadRequest();
         //}
 
-        [HttpPost]
+        [HttpDelete]
         public IActionResult Delete([FromBody] DeleteFileVM deleteFileVM)
         {
             try

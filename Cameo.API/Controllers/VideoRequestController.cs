@@ -292,6 +292,42 @@ namespace Cameo.API.Controllers
             }
         }
 
+        [HttpPost("ConfirmPayment/{request_id}")]
+        public IActionResult ConfirmPayment(int request_id)
+        {
+            try
+            {
+                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(request_id);
+                if (request == null)
+                    throw new Exception("Заказ не найден");
+
+                var curUser = accountUtil.GetCurrentUser(User);
+                if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
+                    throw new Exception("Вы не являетесь талантом");
+
+                //int balance = TalentBalanceService.GetBalance(request.Talent);
+                //if (balance <= 0)
+                //    throw new Exception("У Вас недостаточно средств, чтобы подтвердить запрос");
+
+                //confirm request/video
+                VideoRequestService.ConfirmPayment(request, curUser.ID);
+
+                //cancel hangfire jobs
+                HangfireService.CancelJob(request.RequestAnswerJobID);
+                HangfireService.CancelJob(request.VideoJobID);
+                HangfireService.CancelJob(request.PaymentConfirmationJobID);
+
+                ////create hangfire PaymentReminderJobID
+                //HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
+        }
+
         //[HttpPost]
         //public IActionResult MakePayment(int id)
         //{

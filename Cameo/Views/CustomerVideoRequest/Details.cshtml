@@ -17,7 +17,24 @@
                 <!-- Start Single Blog -->
                 <div class="blog blog_style--1">
                     <div class="inner">
-                        <h3 class="fontWeight600 font-2 heading-divider heading-divider__themeColor  mb--15 mt--10 font--32">@ViewData["Title"]</h3>
+                        @if (Model.PaymentIsConfirmed)
+                        {
+                        <h3 class="fontWeight600 heading-bg__solid text-white">
+                            Ваше видео готово!
+                            <a href="/video/details/@Model.ID" >
+                                <span class="button-text"><u>Смотреть</u></span>
+                            </a>
+                        </h3>
+                            @*<h2>
+                                Ваше видео готово! 
+                                <a class="button-link button-size button__black" href="#">
+                                    <span class="button-text">Смотреть</span>
+                                    <span class="icon-right"><i class="dlicon objects_support-17"></i></span>
+                                </a>
+                            </h2>*@
+                        }
+                        
+                        <h4 class="fontWeight600 font-2 heading-divider heading-divider__themeColor  mb--15 mt--10 font--32">@ViewData["Title"]</h4>
                         <dl class="dl-horizontal font--16 mb--35">
                             @*<dt>
                                     @Html.DisplayNameFor(model => model.ID)
@@ -158,7 +175,7 @@
                 </div>
                 <!-- End Single Blog -->
 
-                @if (Model.VideoIsPaid)
+                @*@if (Model.VideoIsPaid)
                 {
                     <div class="row">
                         <div class="col-sm-12">
@@ -166,7 +183,7 @@
                         </div>
                     </div>
                     <br />
-                }
+                }*@
 
                 @*<div class="row">
                         <div class="col-sm-12">
@@ -185,7 +202,7 @@
         </div>
         <div class="row mt--30">
             <div class="col-12">
-                <a asp-action="Index">Back to List</a>
+                @*<a asp-action="Index">Back to List</a>*@
             </div>
         </div>
     </div>

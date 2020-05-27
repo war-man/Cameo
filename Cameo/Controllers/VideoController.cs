@@ -29,7 +29,7 @@ namespace Cameo.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
             VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
             if (model == null)
-                return NotFound();
+                return CustomBadRequest("Видео не найдено");
 
             VideoDetailsVM modelVM = new VideoDetailsVM(model);
 
