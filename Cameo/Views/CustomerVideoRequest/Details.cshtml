@@ -89,7 +89,7 @@
                             </dt>
                             <dd>
                                 @Html.DisplayFor(model => model.Status.Name)
-                                @if (Model.VideoIsConfirmed)
+                                @if (Model.VideoIsConfirmed || Model.PaymentScreenshotIsUploaded)
                                 {
                                     <div class="alert alert-info">
                                         <p>Данный номер карты Вы можете использовать для перевода оставшейся суммы заказа (@Model.RemainingPriceStr сум)</p>

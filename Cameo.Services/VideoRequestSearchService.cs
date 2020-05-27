@@ -67,7 +67,7 @@ namespace Cameo.Services
                     {
                         videoRequests = videoRequests
                             .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-                                || m.RequestStatusID == (int)VideoRequestStatusEnum.paid);
+                                || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded);
                     }
                     else
                         videoRequests = videoRequests.Where(m => m.RequestStatusID == statusID);

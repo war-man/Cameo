@@ -197,7 +197,7 @@ namespace Cameo.Services
         //    TalentBalanceService.TakeOffBalance(model.Talent, amountToBeTakenOff, userID);
 
         //    model.DatePaid = DateTime.Now;
-        //    model.RequestStatusID = (int)VideoRequestStatusEnum.paid;
+        //    model.RequestStatusID = (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
         //    Update(model, userID);
 
         //    //send emails to customer and talent
@@ -229,9 +229,9 @@ namespace Cameo.Services
             return model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
         }
         
-        private bool RequestIsPaid(VideoRequest model)
+        public bool IsPaymentScreenshotUploaded(VideoRequest model)
         {
-            return model.RequestStatusID == (int)VideoRequestStatusEnum.paid;
+            return model.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
         }
 
         private bool RequestIsNotPublic(VideoRequest model)
@@ -253,6 +253,7 @@ namespace Cameo.Services
 
         public void SaveUploadedPaymentScreenshot(VideoRequest model, string userID)
         {
+            model.RequestStatusID = (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
             model.DatePaymentScreenshotUploaded = DateTime.Now;
 #if DEBUG
             tmpPeriodMinutes = 2880;
@@ -335,7 +336,7 @@ namespace Cameo.Services
             //if request belongs to current Talent
             if (model.Talent.UserID == userID)
                 return model;
-            else if (RequestIsPaid(model))
+            else if (IsPaymentScreenshotUploaded(model))
             {
                 //if unauthorized
                 if (string.IsNullOrWhiteSpace(userID))
@@ -397,7 +398,7 @@ namespace Cameo.Services
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
                     && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-                        || m.RequestStatusID == (int)VideoRequestStatusEnum.paid));
+                        || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded));
         }
 
         public int GetCompletenessPercentageByTalent(Talent talent)
@@ -412,14 +413,14 @@ namespace Cameo.Services
         {
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
-                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.paid));
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded));
         }
 
         public IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
         {
             return GetAllActiveAsIQueryable()
                 .Where(m => m.TalentID == talent.ID
-                    && m.RequestStatusID == (int)VideoRequestStatusEnum.paid);
+                    && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded);
         }
 
         //later siteStavka and amount, that talent earns will be saved for each request

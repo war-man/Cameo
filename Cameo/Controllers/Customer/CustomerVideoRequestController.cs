@@ -58,6 +58,7 @@ namespace Cameo.Controllers
             requestVM.RemainingPriceToStr();
 
             requestVM.VideoIsConfirmed = VideoRequestService.IsVideoConfirmed(request);
+            requestVM.PaymentScreenshotIsUploaded = VideoRequestService.IsPaymentScreenshotUploaded(request);
 
             requestVM.PaymentIsConfirmed = VideoRequestService.IsPaymentConfirmed(request);
             if (requestVM.PaymentIsConfirmed)

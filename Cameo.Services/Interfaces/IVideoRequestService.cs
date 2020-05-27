@@ -62,5 +62,6 @@ namespace Cameo.Services.Interfaces
         bool IsVideoConfirmed(VideoRequest model);
         void SaveUploadedPaymentScreenshot(VideoRequest model, string userID);
         void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID);
+        bool IsPaymentScreenshotUploaded(VideoRequest model);
     }
 }

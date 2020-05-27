@@ -50,9 +50,15 @@ namespace Cameo.API.ViewModels
         public bool cancel_btn_is_available { get; set; } = false;
         public VideoRequestEditVM video_request_edit_vm { get; set; }
 
-        public bool payment_is_confirmed { get; set; } = false;
         public bool video_is_confirmed { get; set; }
-        public bool is_credit_card_info_visible { get; set; } = false;
+
+        //public bool is_credit_card_info_visible { get; set; } = false;
+        public AttachmentDetailsVM payment_screenshot { get; set; }
+        public bool payment_screenshot_is_uploaded { get; set; } = false;
+
+        public bool payment_is_confirmed { get; set; } = false;
+        
+        
 
 
 
@@ -97,6 +103,7 @@ namespace Cameo.API.ViewModels
             else
                 deadline = model.RequestAnswerDeadline.ToString(dateTextViewStringFormat);
 
+            payment_screenshot = new AttachmentDetailsVM(model.PaymentScreenshot);
 
 
 
@@ -112,7 +119,7 @@ namespace Cameo.API.ViewModels
 
             Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
 
-            VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.paid
+            VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded
                 && model.VideoID.HasValue;
 
 
@@ -142,7 +149,7 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            is_credit_card_info_visible = true;
+            //is_credit_card_info_visible = true;
         }
     }
 

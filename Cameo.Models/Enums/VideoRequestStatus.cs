@@ -19,7 +19,7 @@ namespace Cameo.Models.Enums
         canceledByTalent = 13,
 
         videoCompleted = 9, //video uploaded and confirmed by talent
-        paid = 10,
+        paymentScreenshotUploaded = 10,
         //videoPaymentExpired = 11,
         paymentConfirmed = 14,
         paymentConfirmationExpired = 15
