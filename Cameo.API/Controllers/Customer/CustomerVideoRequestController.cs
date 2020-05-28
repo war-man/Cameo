@@ -36,38 +36,51 @@ namespace Cameo.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<VideoRequestDetailsForCustomerVM> Details(int id)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-
-            if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                return CustomBadRequest("Ваш заказ не найден");
-
-            VideoRequestDetailsForCustomerVM requestVM = new VideoRequestDetailsForCustomerVM(request);
-            requestVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
-            requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
-
-            requestVM.request_price = VideoRequestService.CalculateRequestPrice(request);
-            requestVM.RequestPriceToStr();
-
-            requestVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
-            requestVM.RemainingPriceToStr();
-
-            requestVM.video_is_confirmed = VideoRequestService.IsVideoConfirmed(request);
-            requestVM.payment_screenshot_is_uploaded = VideoRequestService.IsPaymentScreenshotUploaded(request);
-
-            requestVM.payment_is_confirmed = VideoRequestService.IsPaymentConfirmed(request);
-            if (requestVM.payment_is_confirmed)
-                requestVM.video = new AttachmentDetailsVM(request.Video);
-
-            if (requestVM.edit_btn_is_available)
+            try
             {
-                requestVM.video_request_edit_vm = new VideoRequestEditVM(request);
-                requestVM.video_request_edit_vm.video_request_types = VideoRequestTypeService.GetAsSelectList();
+                var curUser = accountUtil.GetCurrentUser(User);
+                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+
+                if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
+                    throw new Exception("Ваш заказ не найден");
+
+                if (request.ViewedByCustomer == false)
+                {
+                    request.ViewedByCustomer = true;
+                    VideoRequestService.Update(request, curUser.ID);
+                }
+
+                VideoRequestDetailsForCustomerVM requestVM = new VideoRequestDetailsForCustomerVM(request);
+                requestVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
+                requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
+
+                requestVM.request_price = VideoRequestService.CalculateRequestPrice(request);
+                requestVM.RequestPriceToStr();
+
+                requestVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+                requestVM.RemainingPriceToStr();
+
+                requestVM.video_is_confirmed = VideoRequestService.IsVideoConfirmed(request);
+                requestVM.payment_screenshot_is_uploaded = VideoRequestService.IsPaymentScreenshotUploaded(request);
+
+                requestVM.payment_is_confirmed = VideoRequestService.IsPaymentConfirmed(request);
+                if (requestVM.payment_is_confirmed)
+                    requestVM.video = new AttachmentDetailsVM(request.Video);
+
+                if (requestVM.edit_btn_is_available)
+                {
+                    requestVM.video_request_edit_vm = new VideoRequestEditVM(request);
+                    requestVM.video_request_edit_vm.video_request_types = VideoRequestTypeService.GetAsSelectList();
+                }
+
+                //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
+
+                return requestVM;
             }
-
-            //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
-
-            return requestVM;
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
     }
 }

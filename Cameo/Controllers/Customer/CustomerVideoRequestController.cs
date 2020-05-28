@@ -41,36 +41,50 @@ namespace Cameo.Controllers
 
         public IActionResult Details(int id)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
 
-            if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                return CustomBadRequest("Ваш заказ не найден");
+                if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
+                    throw new Exception("Ваш заказ не найден");
 
-            VideoRequestDetailsForCustomerVM requestVM = new VideoRequestDetailsForCustomerVM(request);
-            requestVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
-            requestVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
+                if (request.ViewedByCustomer == false)
+                {
+                    request.ViewedByCustomer = true;
+                    VideoRequestService.Update(request, curUser.ID);
+                }
 
-            requestVM.RequestPrice = VideoRequestService.CalculateRequestPrice(request);
-            requestVM.RequestPriceToStr();
+                VideoRequestDetailsForCustomerVM requestVM = new VideoRequestDetailsForCustomerVM(request);
+                requestVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
+                requestVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
 
-            requestVM.RemainingPrice = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
-            requestVM.RemainingPriceToStr();
+                requestVM.RequestPrice = VideoRequestService.CalculateRequestPrice(request);
+                requestVM.RequestPriceToStr();
 
-            requestVM.VideoIsConfirmed = VideoRequestService.IsVideoConfirmed(request);
-            requestVM.PaymentScreenshotIsUploaded = VideoRequestService.IsPaymentScreenshotUploaded(request);
+                requestVM.RemainingPrice = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+                requestVM.RemainingPriceToStr();
 
-            requestVM.PaymentIsConfirmed = VideoRequestService.IsPaymentConfirmed(request);
-            if (requestVM.PaymentIsConfirmed)
-                requestVM.Video = new AttachmentDetailsVM(request.Video);
+                requestVM.VideoIsConfirmed = VideoRequestService.IsVideoConfirmed(request);
+                requestVM.PaymentScreenshotIsUploaded = VideoRequestService.IsPaymentScreenshotUploaded(request);
 
-            //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
-            //ViewBag.editModelVM = editModelVM;
-            //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+                requestVM.PaymentIsConfirmed = VideoRequestService.IsPaymentConfirmed(request);
+                if (requestVM.PaymentIsConfirmed)
+                    requestVM.Video = new AttachmentDetailsVM(request.Video);
 
-            ViewBag.firebaseUid = curUser.FirebaseUid;
+                //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
+                //ViewBag.editModelVM = editModelVM;
+                //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
-            return View(requestVM);
+                ViewBag.firebaseUid = curUser.FirebaseUid;
+
+                return View(requestVM);
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
+            
         }
     }
 }

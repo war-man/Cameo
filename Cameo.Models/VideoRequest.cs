@@ -60,6 +60,7 @@ namespace Cameo.Models
         public virtual Attachment Video { get; set; }
 
         public bool ViewedByTalent { get; set; }
+        public bool ViewedByCustomer { get; set; }
 
         #region RequestStatus change dates
         public DateTime? DateRequestAccepted { get; set; }

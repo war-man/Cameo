@@ -37,6 +37,7 @@ namespace Cameo.Services
 
         new public void Add(VideoRequest entity, string creatorID)
         {
+            entity.ViewedByCustomer = true;
             entity.ViewedByTalent = false;
 
             double commission = 0;
@@ -107,12 +108,18 @@ namespace Cameo.Services
                 model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByTalent;
                 //model.DateVideoCanceledByTalent = DateTime.Now;
                 model.DateRequestCanceledByTalent = DateTime.Now;
+
+                model.ViewedByCustomer = false;
+                model.ViewedByTalent = true;
             }
             else
             {
                 model.RequestStatusID = (int)VideoRequestStatusEnum.canceledByCustomer;
                 //model.DateVideoCanceledByCustomer = DateTime.Now;
                 model.DateRequestCanceledByCustomer = DateTime.Now;
+
+                model.ViewedByCustomer = true;
+                model.ViewedByTalent = false;
             }
 
             Update(model, userID);
@@ -135,6 +142,9 @@ namespace Cameo.Services
 
             if (!IsAcceptable(model, userID))
                 throw new Exception("Текущий статус заказа не позволяет принять его");
+
+            model.ViewedByCustomer = false;
+            model.ViewedByTalent = true;
 
             model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
             model.DateRequestAccepted = DateTime.Now;
@@ -253,6 +263,9 @@ namespace Cameo.Services
 
         public void SaveUploadedPaymentScreenshot(VideoRequest model, string userID)
         {
+            model.ViewedByCustomer = true;
+            model.ViewedByTalent = false;
+
             model.RequestStatusID = (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
             model.DatePaymentScreenshotUploaded = DateTime.Now;
 #if DEBUG
@@ -292,6 +305,9 @@ namespace Cameo.Services
             if (!IsVideoConfirmable(model))
                 throw new Exception("Текущий статус заказа не позволяет подтвердить видео");
 
+            model.ViewedByCustomer = false;
+            model.ViewedByTalent = true;
+
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoCompleted;
             model.DateVideoCompleted = DateTime.Now;
 
@@ -319,6 +335,9 @@ namespace Cameo.Services
 
             if (!IsPaymentConfirmable(model))
                 throw new Exception("Текущий статус заказа не позволяет подтвердить видео");
+
+            model.ViewedByCustomer = false;
+            model.ViewedByTalent = true;
 
             model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmed;
             model.DatePaymentConfirmed = DateTime.Now;

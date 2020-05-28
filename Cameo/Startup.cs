@@ -78,7 +78,7 @@ namespace Cameo
 #if DEBUG
             string connectionString = "Data Source=.;Initial Catalog=Cameo;User Id=sa;Password=490969;";
 #else
-            string connectionString = "Data Source=192.168.44.96;Initial Catalog=Cameo;User Id=sa;Password=cloudstack;";
+            string connectionString = "Data Source=192.168.44.96;Initial Catalog=Helloo;User Id=sa;Password=cloudstack;";
 #endif
             services.AddHangfire(config => 
                 config.UseSqlServerStorage(
