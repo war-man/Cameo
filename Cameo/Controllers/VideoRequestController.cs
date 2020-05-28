@@ -334,7 +334,7 @@ namespace Cameo.Controllers
                 VideoRequestService.ConfirmVideo(model, curUser.ID);
 
                 //create hangfire PaymentReminderJobID
-                HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
+                //HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
 
                 return Ok();
             }

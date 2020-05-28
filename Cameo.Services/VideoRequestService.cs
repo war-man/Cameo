@@ -65,8 +65,11 @@ namespace Cameo.Services
         public void AnswerDeadlineReaches(VideoRequest model, string userID)
         {
             //1. set status = expired
-            if (model.RequestStatusID != (int)VideoRequestStatusEnum.waitingForResponse)
+            if (!IsWaitingForResponse(model))
                 return;
+
+            //if (model.RequestStatusID != (int)VideoRequestStatusEnum.waitingForResponse)
+            //    return;
 
             model.RequestStatusID = (int)VideoRequestStatusEnum.requestExpired;
             model.DateRequestExpired = DateTime.Now;
@@ -176,9 +179,15 @@ namespace Cameo.Services
             //0. TO-DO: apply some disciplinary penalty that negatively affects talent's reputation
             //for example, вычесть с его счета долю компании.
 
-            //1. set status = expired
+            if (!IsRequestAcceptedAndWaitingForVideo(model))
+                return;
+
             model.DateVideoExpired = DateTime.Now;
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoExpired;
+
+            int requestPrice = CalculateRequestPrice(model);
+            CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
+
             Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
@@ -187,9 +196,15 @@ namespace Cameo.Services
 
         public void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID)
         {
-            //1. set status = expired
+            if (!IsPaymentScreenshotUploaded(model))
+                return;
+
             model.DatePaymentConfirmationExpired = DateTime.Now;
             model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmationExpired;
+
+            int requestPrice = CalculateRequestPrice(model);
+            CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
+
             Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
@@ -244,7 +259,7 @@ namespace Cameo.Services
             return model.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
         }
 
-        private bool RequestIsNotPublic(VideoRequest model)
+        private bool IsNotPublic(VideoRequest model)
         {
             return model.IsNotPublic;
         }
@@ -379,7 +394,7 @@ namespace Cameo.Services
             {
                 if (BelongsToCustomer(model, userID))
                     return model;
-                else if (!RequestIsNotPublic(model))
+                else if (!IsNotPublic(model))
                     return model;
             }
 

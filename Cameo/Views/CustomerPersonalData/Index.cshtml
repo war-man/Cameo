@@ -56,7 +56,7 @@
                                                     </div>
                                                     <div class="col-lg-4 col-md-6 col-sm-6 mt--10 p-0 text-center">
                                                         @*<a class="button-link button-size__8 button__transparent--border--dashed" href="javascript: void(0);"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span><span class="button-text">Редактировать фото</span></a>*@
-                                                        <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span> <span class="button-text">Редактировать фото</span></label>
+                                                        <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left">@*<i class="dlicon ui-1_zoom-split"></i>*@</span> <span class="button-text"><u>Редактировать фото</u></span></label>
                                                         <input type='file' id="imgInp" style="display: none;"/>
                                                     </div>
                                                     <!-- End Single Team -->
@@ -118,83 +118,138 @@
     <script src="~/js/FileAjaxUpload.js"></script>
 
     <script>
+        var input;
+        var modelID = @Model.ID;
+        var fileType = "@Constants.FileTypes.CUSTOMER_AVATAR";
+        var spinnerTagID = "spinner";
+        var imgPreviewContainerTagID = "imgContainer";
+
         $(document).ready(function () {
             $("#imgInp").change(function ()
             {
-                //FileAjaxUpload(this, @Model.ID, "@Constants.FileTypes.CUSTOMER_AVATAR", "spinner", "imgContainer");
-
                 var input = this;
-                var modelID = @Model.ID;
-                var fileType = "@Constants.FileTypes.CUSTOMER_AVATAR";
-                var spinnerTagID = "spinner";
-                var imgPreviewContainerTagID = "imgContainer";
-
                 if (!(input.files && input.files[0]))
                     return;
 
                 var file = input.files[0];
-                //console.log(file);
-                var extension = file.name.split('.')[1];
 
-                // Create a root reference
-                var storageRef = firebase.storage().ref();
-                var uploadTask = storageRef.child('@ViewBag.firebaseUid' + '/avatar.' + extension).put(file);
-
-                // Listen for state changes, errors, and completion of the upload.
-                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-                    function (snapshot)
-                    {
-                        //// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                        //var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        //console.log('Upload is ' + progress + '% done');
-                        //switch (snapshot.state)
-                        //{
-                        //    case firebase.storage.TaskState.PAUSED: // or 'paused'
-                        //        console.log('Upload is paused');
-                        //        break;
-                        //    case firebase.storage.TaskState.RUNNING: // or 'running'
-                        //        console.log('Upload is running');
-                        //        break;
-                        //}
-                    }, function (error)
-                    {
-                        console.log(error);
-
-                    }, function ()
-                    {
-                        // Upload completed successfully, now we can get the download URL
-                        var attachment = {
-                            Filename: "",
-                            Path: "",
-                            Size: 0,
-                            ContentType: "",
-                            DownloadUrl: "",
-                            FileType: fileType,
-                            ModelID: @Model.ID
-                        };
-                        //console.log(uploadTask.snapshot.ref);
-                        
-
-                        uploadTask.snapshot.ref.getMetadata().then(function (metaData)
-                        {
-                            //console.log(metaData);
-
-                            attachment.Filename = metaData.name;
-                            attachment.Path = metaData.fullPath;
-                            attachment.Size = metaData.size;
-                            attachment.ContentType = metaData.contentType;
-
-                            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL)
-                            {
-                                attachment.DownloadUrl = downloadURL;
-
-                                //console.log(attachment);
-                                FileAjaxUpload2(this, file, attachment, spinnerTagID, imgPreviewContainerTagID);
-                            });
-                        });
-                    });
+                resize(file);
             });
         });
+
+        function resize(file)
+        {
+            //define the width to resize e.g 400px
+            var resize_width = 400;//without px
+
+            //get the image selected
+            //var file = document.querySelector('#uploader').files[0];
+
+            //create a FileReader
+            var reader = new FileReader();
+
+            //image turned to base64-encoded Data URI.
+            reader.readAsDataURL(file);
+            reader.name = file.name;//get the image's name
+            reader.size = file.size; //get the image's size
+            reader.onload = function (event)
+            {
+                var img = new Image();//create a image
+                img.src = event.target.result;//result is base64-encoded Data URI
+                img.name = event.target.name;//set name (optional)
+                img.size = event.target.size;//set size (optional)
+                img.onload = function (el)
+                {
+                    var elem = document.createElement('canvas');//create a canvas
+
+                    //scale the image to 600 (width) and keep aspect ratio
+                    var scaleFactor = resize_width / el.target.width;
+                    elem.width = resize_width;
+                    elem.height = el.target.height * scaleFactor;
+
+                    //draw in canvas
+                    var ctx = elem.getContext('2d');
+                    ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
+
+                    //get the base64-encoded Data URI from the resize image
+                    var srcEncoded = ctx.canvas.toDataURL(el.target, 'image/jpeg', 0);
+
+                    //assign it to thumb src
+                    //document.querySelector('#image').src = srcEncoded;
+
+                    /*Now you can send "srcEncoded" to the server and
+                    convert it to a png o jpg. Also can send
+                    "el.target.name" that is the file's name.*/
+
+                    HandleUploadTask(file, srcEncoded);
+                }
+            }
+        }
+
+        function HandleUploadTask(file, srcEncoded)
+        {
+            var extension = file.name.split('.')[1];
+            extension = "jpg";
+
+            // Create a root reference
+            var storageRef = firebase.storage().ref();
+            //var uploadTask = storageRef.child('@ViewBag.firebaseUid' + '/avatar.' + extension).put(file);
+            var uploadTask = storageRef.child('@ViewBag.firebaseUid' + '/avatar.' + extension).putString(srcEncoded, 'data_url');
+
+            // Listen for state changes, errors, and completion of the upload.
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+                function (snapshot)
+                {
+                    //// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    //var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    //console.log('Upload is ' + progress + '% done');
+                    //switch (snapshot.state)
+                    //{
+                    //    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                    //        console.log('Upload is paused');
+                    //        break;
+                    //    case firebase.storage.TaskState.RUNNING: // or 'running'
+                    //        console.log('Upload is running');
+                    //        break;
+                    //}
+                }, function (error)
+                {
+                    console.log(error);
+
+                }, function ()
+                {
+                    // Upload completed successfully, now we can get the download URL
+                    var attachment = {
+                        Filename: "",
+                        Path: "",
+                        Size: 0,
+                        ContentType: "",
+                        DownloadUrl: "",
+                        FileType: fileType,
+                        ModelID: @Model.ID
+                    };
+                    //console.log(uploadTask.snapshot.ref);
+                        
+
+                    uploadTask.snapshot.ref.getMetadata().then(function (metaData)
+                    {
+                        //console.log(metaData);
+
+                        attachment.Filename = metaData.name;
+                        attachment.Path = metaData.fullPath;
+                        attachment.Size = metaData.size;
+                        attachment.ContentType = metaData.contentType;
+
+                        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL)
+                        {
+                            attachment.DownloadUrl = downloadURL;
+
+                            //console.log(attachment);
+                            FileAjaxUpload2(input, file, attachment, spinnerTagID, imgPreviewContainerTagID);
+                        });
+                    });
+                });
+        }
 
         function FileAjaxUpload2(input, file, attachment, spinnerTagID, imgPreviewContainerTagID)
         {
@@ -239,9 +294,7 @@
                     },
                     complete: function ()
                     {
-                        //alert("completed");
                         $("#" + spinnerTagID).hide();
-                        //$("#imgInp").removeAttr("disabled");
                         $(input).removeAttr("disabled");
                     }
                 });

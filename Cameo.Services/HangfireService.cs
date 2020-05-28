@@ -43,34 +43,32 @@ namespace Cameo.Services
             { }
         }
 
-        public void CreateJobForPaymentReminder(VideoRequest request, string userID)
-        {
+//        public void CreateJobForPaymentReminder(VideoRequest request, string userID)
+//        {
+//#if DEBUG
+//            DateTime reminderDeadline = DateTime.Now.AddMinutes(2);
+//#else
+//            DateTime reminderDeadline = DateTime.Now.AddDays(1);
+//#endif
+//            request.PaymentReminderJobID = BackgroundJob.Schedule(() =>
+//                PaymentReminderReaches(request.ID, userID),
+//                new DateTimeOffset(reminderDeadline));
 
-#if DEBUG
-            DateTime reminderDeadline = DateTime.Now.AddMinutes(2);
-#else
-            DateTime reminderDeadline = DateTime.Now.AddDays(1);
-#endif
+//            VideoRequestService.Update(request, userID);
+//        }
 
-            request.PaymentReminderJobID = BackgroundJob.Schedule(() =>
-                PaymentReminderReaches(request.ID, userID),
-                new DateTimeOffset(reminderDeadline));
+//        public void PaymentReminderReaches(int videoRequestID, string userID)
+//        {
+//            try
+//            {
+//                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
+//                VideoRequestService.SendEmailOnceVideoConfirmed(request);
 
-            VideoRequestService.Update(request, userID);
-        }
-
-        public void PaymentReminderReaches(int videoRequestID, string userID)
-        {
-            try
-            {
-                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
-                VideoRequestService.SendEmailOnceVideoConfirmed(request);
-
-                CreateJobForPaymentReminder(request, userID);
-            }
-            catch (Exception ex)
-            { }
-        }
+//                CreateJobForPaymentReminder(request, userID);
+//            }
+//            catch (Exception ex)
+//            { }
+//        }
 
         public string CreateJobForVideoRequestVideoDeadline(VideoRequest request, string userID)
         {
@@ -85,7 +83,7 @@ namespace Cameo.Services
         {
             try
             {
-                VideoRequest request = VideoRequestService.GetByID(videoRequestID);
+                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
                 VideoRequestService.VideoDeadlineReaches(request, userID);
             }
             catch (Exception ex)
@@ -105,7 +103,7 @@ namespace Cameo.Services
         {
             try
             {
-                VideoRequest request = VideoRequestService.GetByID(videoRequestID);
+                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
                 VideoRequestService.PaymentConfirmationDeadlineReaches(request, userID);
             }
             catch (Exception ex)
