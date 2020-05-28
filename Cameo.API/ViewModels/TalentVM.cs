@@ -25,7 +25,7 @@ namespace Cameo.API.ViewModels
             this.price = model.Price;
 
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            this.price_str = model.Price.ToString(numberFormat);
+            this.price_str = model.Price.ToString(numberFormat).Trim();
         }
     }
 

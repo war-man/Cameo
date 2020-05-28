@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
+using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,6 @@ namespace Cameo.Controllers
         {
             int recordsTotal = 0;
             int recordsFiltered = 0;
-            List<VideoRequestListItemVM> data = new List<VideoRequestListItemVM>();
             string error = "";
 
             AppUserVM curUser = accountUtil.GetCurrentUser(User);
@@ -47,9 +47,21 @@ namespace Cameo.Controllers
                 statusID
             );
 
-            data = dataIQueryable
-                .Select(m => new VideoRequestListItemVM(m, curUser.Type))
-                .ToList();
+            dynamic data = null;
+            if (AccountUtil.IsUserTalent(curUser))
+            {
+                //data = new List<VideoRequestListItemForTalentVM>();
+                data = dataIQueryable
+                    .Select(m => new VideoRequestListItemForTalentVM(m))
+                    .ToList();
+            }
+            else
+            {
+                //data = new List<VideoRequestListItemForTalentVM>();
+                data = dataIQueryable
+                    .Select(m => new VideoRequestListItemForCustomerVM(m))
+                    .ToList();
+            }
 
             return Json(new
             {

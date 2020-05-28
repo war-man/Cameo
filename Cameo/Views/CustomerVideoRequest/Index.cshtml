@@ -102,6 +102,10 @@
                         "data": "person", /*"name": "person",*/ /*"title": "Талант",*/ "autoWidth": true,
                         "render": function (data, type, full, meta)
                         {
+                            var fontWeight = "";
+                            if (full.viewed == false)
+                                fontWeight = "fontWeight600";
+
                             var html = '';
                             html += '       <div class="row" style="cursor: pointer;" onclick="ShowDetails(' + full.id + ')">';
                             html += '           <div class="col-2 p-0">';
@@ -111,10 +115,11 @@
                             html += '                   </div>';
                             html += '               </div>';
                             html += '           </div>';
-                            html += '           <div class="col-9">';
+                            html += '           <div class="col-9 ' + fontWeight + '">';
                             html += '               <span class="">';
                             html += '                   <span>' + full.person.fullName + '</span><br/>';
-                            html += '                   <span><b>Дедлайн</b>: ' + full.deadlineText + '</span>';
+                            html += '                   <span>' + full.status.name + '</span><br/>';
+                            html += '                   <span>Срок: ' + full.deadline + '</span>';
                             html += '               </span>';
                             html += '           </div>';
                             html += '           <div class="col-1">';

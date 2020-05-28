@@ -40,7 +40,7 @@ namespace Cameo.Services
             out int recordsFiltered,
             out string error,
 
-            int? statusID = 0)
+            int? statusID)
         {
             recordsTotal = 0;
             recordsFiltered = 0;
@@ -61,16 +61,30 @@ namespace Cameo.Services
                     videoRequests = videoRequests.Where(m => m.CustomerID == personID);
                 }
 
-                if (statusID.HasValue && statusID > 0)
+                if (statusID.HasValue)
                 {
-                    if (statusID.Value == (int)VideoRequestStatusEnum.videoCompleted)
+                    if (statusID.Value != (int)VideoRequestStatusEnum.all)
                     {
-                        videoRequests = videoRequests
-                            .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-                                || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded);
+                        if (statusID.Value == (int)VideoRequestStatusEnum.notCompleted)
+                        {
+                            videoRequests = videoRequests
+                                .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.requestExpired
+                                    || m.RequestStatusID == (int)VideoRequestStatusEnum.videoExpired
+                                    || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByCustomer
+                                    || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByTalent
+                                    || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmationExpired);
+                        }
+                        else
+                            videoRequests = videoRequests.Where(m => m.RequestStatusID == statusID);
                     }
-                    else
-                        videoRequests = videoRequests.Where(m => m.RequestStatusID == statusID);
+                    //if (statusID.Value == (int)VideoRequestStatusEnum.videoCompleted)
+                    //{
+                    //    videoRequests = videoRequests
+                    //        .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
+                    //            || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded);
+                    //}
+                    //else
+                    //    videoRequests = videoRequests.Where(m => m.RequestStatusID == statusID);
                 }
 
                 recordsTotal = videoRequests.Count();

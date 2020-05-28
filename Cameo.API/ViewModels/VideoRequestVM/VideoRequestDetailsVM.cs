@@ -65,10 +65,10 @@ namespace Cameo.API.ViewModels
 
 
 
-        public string VideoDeadline { get; set; }
-        public bool Payable { get; set; } = false;
-        public bool VideoIsPaid { get; set; } = false;
-        public bool UploadVideoBtnIsAvailable { get; set; } = false;
+        //public string VideoDeadline { get; set; }
+        //public bool Payable { get; set; } = false;
+        //public bool VideoIsPaid { get; set; } = false;
+        //public bool UploadVideoBtnIsAvailable { get; set; } = false;
 
         
         //public bool BalanceAllowsToConfirm { get; set; }
@@ -112,15 +112,15 @@ namespace Cameo.API.ViewModels
             //if (model.VideoDeadline.HasValue)
             //    VideoDeadline = model.VideoDeadline.Value.ToString(AppData.Configuration.DateTextViewStringFormat);
 
-            if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo)
-            {
-                cancel_btn_is_available = UploadVideoBtnIsAvailable = edit_btn_is_available = true;
-            }
+            //if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo)
+            //{
+            //    cancel_btn_is_available = UploadVideoBtnIsAvailable = edit_btn_is_available = true;
+            //}
 
-            Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
+            //Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
 
-            VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded
-                && model.VideoID.HasValue;
+            //VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded
+            //    && model.VideoID.HasValue;
 
 
             //VideoIsConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;

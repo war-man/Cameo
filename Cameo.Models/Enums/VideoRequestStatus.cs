@@ -22,6 +22,13 @@ namespace Cameo.Models.Enums
         paymentScreenshotUploaded = 10,
         //videoPaymentExpired = 11,
         paymentConfirmed = 14,
-        paymentConfirmationExpired = 15
+        paymentConfirmationExpired = 15,
+
+        //statuses that will be used as filter in list of requests:
+        //non db statuses:
+        all = 0,
+        notCompleted = 100, //all canceled and expired statuses
+        //db statuses:
+        //1, 5, 9, 10, 14
     }
 }

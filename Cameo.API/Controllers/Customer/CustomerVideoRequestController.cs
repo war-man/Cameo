@@ -50,7 +50,7 @@ namespace Cameo.API.Controllers
                     VideoRequestService.Update(request, curUser.ID);
                 }
 
-                VideoRequestDetailsForCustomerVM requestVM = new VideoRequestDetailsForCustomerVM(request);
+                var requestVM = new VideoRequestDetailsForCustomerVM(request);
                 requestVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
                 requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
 
