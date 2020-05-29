@@ -51,11 +51,11 @@ namespace Cameo.Services
             //entity.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
 #if DEBUG
             tmpPeriodMinutes = 2880;
-            entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
-            //entity.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+            entity.RequestAnswerDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
+            //entity.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
 #else
-            entity.RequestAnswerDeadline = DateTime.Now.AddMinutes(2880); //2 days
-            //entity.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
+            entity.RequestAnswerDeadline = RoundToUp(DateTime.Now.AddMinutes(2880)); //2 days
+            //entity.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
 #endif
             base.Add(entity, creatorID);
 
@@ -153,9 +153,9 @@ namespace Cameo.Services
             model.DateRequestAccepted = DateTime.Now;
 #if DEBUG
             tmpPeriodMinutes = 2880;
-            model.VideoDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+            model.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
 #else
-            model.VideoDeadline = DateTime.Now.AddMinutes(10080); //7 days
+            model.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
 #endif
             Update(model, userID);
 
@@ -285,10 +285,10 @@ namespace Cameo.Services
             model.DatePaymentScreenshotUploaded = DateTime.Now;
 #if DEBUG
             tmpPeriodMinutes = 2880;
-            model.PaymentConfirmationDeadline = DateTime.Now.AddMinutes(tmpPeriodMinutes);
+            model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
 #else
-            model.PaymentConfirmationDeadline = DateTime.Now.AddMinutes(2880); //2 days
-            //model.PaymentConfirmationDeadline = DateTime.Now.AddMinutes(10080); //7 days
+            model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(2880)); //2 days
+            //model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
 #endif
             Update(model, userID);
         }
@@ -326,15 +326,16 @@ namespace Cameo.Services
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoCompleted;
             model.DateVideoCompleted = DateTime.Now;
 
-//#if DEBUG
-//            model.PaymentDeadline = DateTime.Now.AddMinutes(2);
-//#else
-//            model.PaymentDeadline = DateTime.Now.AddMinutes(10080); //7 days
-//#endif
+            //#if DEBUG
+            //            model.PaymentDeadline = RoundToUp(DateTime.Now.AddMinutes(2));
+            //#else
+            //            model.PaymentDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
+            //#endif
 
             Update(model, userID);
 
-            SendEmailOnceVideoConfirmed(model);
+            //TO-DO: send firebase notification to Customer
+            //SendEmailOnceVideoConfirmed(model);
         }
 
         private bool IsVideoConfirmable(VideoRequest model)
@@ -572,6 +573,11 @@ namespace Cameo.Services
             int remainingPrice = (int)(((100.0 - websiteCommission) / 100) * price);
 
             return remainingPrice;
+        }
+
+        private DateTime RoundToUp(DateTime inputDateTime)
+        {
+            return inputDateTime.Date.AddDays(1).AddSeconds(-1);
         }
     }
 }
