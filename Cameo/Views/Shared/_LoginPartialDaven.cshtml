@@ -7,28 +7,29 @@
 {
     <div class="header-icon" style="margin-right: 15px;">
         <a asp-controller="Person" asp-action="Index" title="Account">
-            @*<i class="dlicon ui-1_zoom"></i>*@
+            <i class="fa fa-user-circle"></i>
             @UserManager.GetUserName(User)
         </a>
     </div>
-    <div class="header-icon" style="margin-right: 15px;">
+    @*<div class="header-icon" style="margin-right: 15px;">
         <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Talents", new { area = "" })" method="post" id="logoutForm">
+            <i class="fa fa-user-circle"></i>
             <button type="submit" class="btn btn-link">Выйти</button>
         </form>
-    </div>
+    </div>*@
 }
 else
 {
-    <div class="header-icon" style="margin-right: 15px;">
-        <a asp-controller="Account" asp-action="EnrollAsTalent">
-            @*<i class="dlicon ui-1_zoom"></i>*@
+    @*<div class="header-icon" style="margin-right: 15px;">
+        <a asp-controller="Account" asp-action="EnrollAsTalent" class="button-link button-size button__transparent--border">
+            <i class="fa fa-user-circle"></i>
             Стать талантом
         </a>
-    </div>
+    </div>*@
     <div class="header-icon" style="margin-right: 15px;">
-        <a asp-controller="Account" asp-action="Login">
-            @*<i class="dlicon ui-1_zoom"></i>*@
-            Войти
+        <a asp-controller="Account" asp-action="Login" class="button-link button-size__12 button__transparent--border">
+            <span class="button-text"><b>Войти</b></span>
+            @*<span class="icon-right"><i class="fa fa-sign-in"></i></span>*@
         </a>
     </div>
 }
