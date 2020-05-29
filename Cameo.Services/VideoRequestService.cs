@@ -479,14 +479,19 @@ namespace Cameo.Services
         {
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
-                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded));
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed));
         }
 
+        /// <summary>
+        /// Get all requests payment for which is cnfirmed
+        /// </summary>
+        /// <param name="talent"></param>
+        /// <returns></returns>
         public IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
         {
             return GetAllActiveAsIQueryable()
                 .Where(m => m.TalentID == talent.ID
-                    && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded);
+                    && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed);
         }
 
         //later siteStavka and amount, that talent earns will be saved for each request
@@ -504,24 +509,25 @@ namespace Cameo.Services
                     && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo));
         }
 
-        public VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID)
-        {
-            List<int> ids = GetPublicForTalent(talent)
-                .Select(m => m.ID)
-                .ToList();
+        //public VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID)
+        //{
+        //    List<int> ids = GetPublicForTalent(talent)
+        //        .Select(m => m.ID)
+        //        .ToList();
 
-            if (ids.Count == 0)
-                return null;
+        //    if (ids.Count == 0)
+        //        return null;
 
-            var rand = new Random();
-            int randomIndex = rand.Next(0, ids.Count);
-            return GetSinglePublished(ids[randomIndex], userID);
-        }
+        //    var rand = new Random();
+        //    int randomIndex = rand.Next(0, ids.Count);
+        //    return GetSinglePublished(ids[randomIndex], userID);
+        //}
 
-        public IQueryable<VideoRequest> GetPublicForTalent(Talent talent, int requestIDToBeExcluded = 0)
+        public IQueryable<VideoRequest> GetPublicByTalent(Talent talent, int requestIDToBeExcluded = 0)
         {
             return GetAllPaidByTalent(talent)
-                .Where(m => !m.IsNotPublic && m.ID != requestIDToBeExcluded);
+                .Where(m => !m.IsNotPublic && m.ID != requestIDToBeExcluded)
+                .OrderByDescending(m => m.ID);
         }
 
         public int CalculateRequestPrice(Talent talent)

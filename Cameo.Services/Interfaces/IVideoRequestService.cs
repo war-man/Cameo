@@ -51,8 +51,8 @@ namespace Cameo.Services.Interfaces
         IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent);
         int GetEarnedByTalent(Talent talent);
         int GetWaitingCountByTalent(Talent talent);
-        VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID);
-        IQueryable<VideoRequest> GetPublicForTalent(Talent talent, int requestIDToBeExcluded);
+        //VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID);
+        IQueryable<VideoRequest> GetPublicByTalent(Talent talent, int requestIDToBeExcluded);
 
         int CalculateRequestPrice(Talent talent);
         int CalculateRequestPrice(VideoRequest request);

@@ -275,7 +275,7 @@ namespace Cameo.Controllers
             if (talent == null)
                 return NotFound();
 
-            List<VideoRequest> videos = VideoRequestService.GetPublicForTalent(talent, 0)
+            List<VideoRequest> videos = VideoRequestService.GetPublicByTalent(talent, 0)
                 .ToList();
 
             List<VideoDetailsVM> videosVM = new List<VideoDetailsVM>();
