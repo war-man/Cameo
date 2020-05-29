@@ -40,7 +40,24 @@
             <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-arrow-circle-right"></i> Пополнить баланс <span class="badge">(45 000 сум)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="~/Home/SecurityAndPrivacy" style="border-bottom-width: 2px;"><i class="fa fa-arrow-circle-right"></i> Выйти</a>
+            <a class="nav-link" href="~/Home/SecurityAndPrivacy" style="border-bottom-width: 1px;"><i class="fa fa-arrow-circle-right"></i> Выйти</a>
         </li>
     </ul>
 </div>
+<style>
+    .tab-vertical-wrapper ul {
+        /*border-top-left-radius: 0.25rem !important;*/
+    }
+    .tab-vertical-wrapper ul > li:first-child > a {
+        border-top-left-radius: 0.25rem !important;
+        border-top-right-radius: 0.25rem !important;
+    }
+    .tab-vertical-wrapper ul > li:last-child > a {
+        border-bottom-left-radius: 0.25rem !important;
+        border-bottom-right-radius: 0.25rem !important;
+    }
+
+    .tab-vertical-wrapper .nav-tabs .nav-item {
+        margin-bottom: 0px;
+    }
+</style>

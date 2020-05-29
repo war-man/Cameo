@@ -6,8 +6,8 @@
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
-<div class="row bg-color ptb_md--60 ptb_sm--60" data-bg-color="#ffffff">
-    <div class="container">
+<div class="row bg-color ptb_md--60">
+    <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40">
         <div class="row">
             @*<div class="col-lg-2"></div>*@
             <div class="col-lg-4 mt--30">
@@ -16,7 +16,7 @@
             <div class="col-lg-8 mt--30 mb--30">
                 <h2>@ViewData["Title"]</h2>
 
-                <table id="videoRequests" class="table table-condensed table-hover" width="100%">
+                <table id="videoRequests" class="table table-condensed" width="100%">
                     <thead style="display: none;">
                         <tr>
                             <th>id</th>
@@ -103,11 +103,15 @@
                         "render": function (data, type, full, meta)
                         {
                             var fontWeight = "";
+                            var backgroundColor = "";
                             if (full.viewed == false)
+                            {
                                 fontWeight = "fontWeight600";
+                                backgroundColor = "background:#eff7ff;"
+                            }
 
                             var html = '';
-                            html += '       <div class="row" style="cursor: pointer;" onclick="ShowDetails(' + full.id + ')">';
+                            html += '       <div class="row" style="cursor: pointer; margin: 0px; ' + backgroundColor + '" onclick="ShowDetails(' + full.id + ')">';
                             html += '           <div class="col-2 p-0">';
                             html += '               <div class="team team__style--4 text-center p-1">';
                             html += '                   <div class="thumbnail paralax-image">';
@@ -198,5 +202,9 @@
 
     .team__style--4 .thumbnail {
         border-radius: 5px;
+    }
+    table td
+    {
+        padding: 0px !important;
     }
 </style>
