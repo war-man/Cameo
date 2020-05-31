@@ -34,7 +34,11 @@
                             </div>
                             <div class="col-lg-12 mt--20">
                                 <div id="recaptcha-container"></div>
-                                <input type="submit" value="Продолжить" onclick="SendVerificationCode()">
+                                <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="SendVerificationCode()">
+                                    <span class="button-text">Продолжить</span>
+                                    <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                </button>
+                                @*<input type="submit" value="Продолжить" onclick="SendVerificationCode()">*@
                             </div>
                         </div>
 
@@ -51,7 +55,11 @@
                                 <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToPhoneNumberForm()">Назад</button>
                             </div>
                             <div class="col-lg-6 mt--20 ">
-                                <input type="submit" value="Продолжить" onclick="VerifyCode()">
+                                <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="VerifyCode()">
+                                    <span class="button-text">Продолжить</span>
+                                    <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                </button>
+                                @*<input type="submit" value="Продолжить" onclick="VerifyCode()">*@
                             </div>
                         </div>
 
@@ -93,7 +101,11 @@
                                     <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">Назад</button>
                                 </div>
                                 <div class="col-lg-6 mt--20">
-                                    <input type="submit" value="Отправить">
+                                    <button type="submit" class="button-link button-size__xl button__black submitBtn">
+                                        <span class="button-text">Отправить</span>
+                                        <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                    </button>
+                                    @*<input type="submit" value="Отправить">*@
                                     @*<p class="form-messege">we fawe fwe we</p>*@
                                 </div>
                             </div>
@@ -189,11 +201,17 @@
         height: auto;
     }
 
-    .backBtn {
+    .backBtn, .submitBtn {
         width: 100%;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 14px !important;
+    }
+
+    input[disabled=disabled],
+    button[disabled=disabled] {
+        color: #a6a3a3 !important;
+        cursor: not-allowed;
     }
 </style>
 
@@ -215,6 +233,9 @@
         {
             $("#phoneNumberForm .form-messege").html("");
             $("#phoneNumberForm input").attr("disabled", "disabled");
+            $("#phoneNumberForm button").attr("disabled", "disabled");
+            $("#phoneNumberForm .spinner").show();
+
             var phoneNumber = "+998" + $("#phoneNumber").val();
             var appVerifier = window.recaptchaVerifier;
             firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
@@ -228,6 +249,8 @@
                     $("#codeForm").show("fast");
 
                     $("#phoneNumberForm input").removeAttr("disabled");
+                    $("#phoneNumberForm button").removeAttr("disabled");
+                    $("#phoneNumberForm .spinner").hide();
                 }).catch(function (error)
                 {
                     // Error; SMS not sent
@@ -237,7 +260,11 @@
                     {
                         grecaptcha.reset(widgetId);
                     });
+
                     $("#phoneNumberForm input").removeAttr("disabled");
+                    $("#phoneNumberForm button").removeAttr("disabled");
+                    $("#phoneNumberForm .spinner").hide();
+
                     $("#phoneNumberForm .form-messege").html("Не удалось отправить смс. Проверьте правильность номера")
                 });
         }
@@ -246,6 +273,9 @@
         {
             $("#codeForm .form-messege").html("");
             $("#codeForm input").attr("disabled", "disabled");
+            $("#codeForm button").attr("disabled", "disabled");
+            $("#codeForm .spinner").show();
+
             var code = $("#code").val();
             confirmationResult.confirm(code).then(function (result)
             {
@@ -262,6 +292,8 @@
                 // ...
                 $("#codeForm input").removeAttr("disabled");
                 $("#codeForm .form-messege").html("Неверный код");
+                $("#codeForm button").removeAttr("disabled");
+                $("#codeForm .spinner").hide();
             });
         }
 
@@ -274,8 +306,8 @@
                 //dataType: "json",
                 beforeSend: function ()
                 {
-                    $("#codeForm .form-messege").html("");
-                    $("#codeForm input").attr("disabled", "disabled");
+                    //$("#codeForm .form-messege").html("");
+                    //$("#codeForm input").attr("disabled", "disabled");
                 },
                 success: function (data)
                 {
@@ -292,6 +324,8 @@
                 complete: function (data)
                 {
                     $("#codeForm input").removeAttr("disabled");
+                    $("#codeForm button").removeAttr("disabled");
+                    $("#codeForm .spinner").hide();
                 }
             });
         }
@@ -317,6 +351,9 @@
             //console.log(data);
             //console.log("begin");
             $("#enrollmentForm input").attr("disabled", "disabled");
+            $("#enrollmentForm button").attr("disabled", "disabled");
+            $("#enrollmentForm .spinner").show();
+
             $("#enrollmentForm .form-messege").last().html("");
         }
 
@@ -348,6 +385,8 @@
             //console.log(data);
             //console.log("completed!");
             $("#enrollmentForm input").removeAttr("disabled");
+            $("#enrollmentForm button").removeAttr("disabled");
+            $("#enrollmentForm .spinner").hide();
         }
     </script>
 }
