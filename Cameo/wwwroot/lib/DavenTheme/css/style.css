@@ -128,7 +128,7 @@
 /**************************************
     Default Styles
 ***************************************/
-@import url("https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,900|Playfair+Display:400,400i,700,700i,900|Inconsolata:400,700|BioRhyme:400,700,800|Archivo+Black|Space+Mono:400,400i,700|Abel");
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,900|Playfair+Display:400,400i,700,700i,900|Inconsolata:400,700|BioRhyme:400,700,800|Archivo+Black|Space+Mono:400,400i,700|Abel|Fira+Sans");
 .heading-color {
   color: #2f2f2f !important;
 }
@@ -207,7 +207,7 @@ input,
 .contact__form--7 textarea,
 select,
 textarea {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 a {
@@ -634,7 +634,7 @@ body {
   line-height: 1.71429;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
   color: #555555;
   font-weight: 400;
 }
@@ -683,7 +683,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
   line-height: 1.4074;
   color: #2f2f2f;
 }
@@ -2803,7 +2803,7 @@ p:last-child {
 }
 
 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 .font-2 {
@@ -2829,7 +2829,7 @@ p:last-child {
 }
 
 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 .font-6 {
@@ -9716,7 +9716,7 @@ body.loaded .la-image-loading {
   background: #f53e6a;
   color: #ffffff;
   border: 1px solid #f53e6a;
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
   padding: 23px;
   font-size: 14px;
   font-weight: 700;
@@ -10733,7 +10733,7 @@ Shape Area
   padding: 0;
   font-weight: 600;
   border: 0 none;
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
   -webkit-appearance: none;
   display: block;
   background: #f7f7f7;
@@ -10771,7 +10771,7 @@ Shape Area
   letter-spacing: 0em;
   line-height: 1.58;
   font-size: 14px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
   border: 0 none;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.07);
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -10890,7 +10890,7 @@ Shape Area
 }
 
 .toggle_style--2 .card-header h5 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 .toggle_style--2 .card-header h5 a.acc-btn {
@@ -11728,7 +11728,7 @@ Shape Area
   color: #313131;
   font-size: 15px;
   line-height: 25px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 .ht-ver-timeline--2:hover .timeline-content h6 {
@@ -16787,7 +16787,7 @@ Case Sudies
 }
 
 .product-details-right .product-title {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
   font-weight: 400;
   margin-bottom: 5px;
   font-size: 24px;
@@ -21782,11 +21782,11 @@ body.template-font-1 h3,
 body.template-font-1 h4,
 body.template-font-1 h5,
 body.template-font-1 h6 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body.template-font-1 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body.template-font-1 .font-6 {
@@ -21803,7 +21803,7 @@ body.template-font-2 h6 {
 }
 
 body.template-font-2 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body.template-font-2 .font-6 {
@@ -21820,7 +21820,7 @@ body.template-font-3 h6 {
 }
 
 body.template-font-3 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body.template-font-3 .font-6 {
@@ -21837,7 +21837,7 @@ body.template-font-4 h6 {
 }
 
 body.template-font-4 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body.template-font-4 .font-6 {
@@ -21854,7 +21854,7 @@ body.template-font-5 h6 {
 }
 
 body.template-font-5 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body.template-font-5 .font-6 {
@@ -21871,7 +21871,7 @@ body.template-font-6 h6 {
 }
 
 body.template-font-6 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body.template-font-6 .font-6 {
@@ -21888,7 +21888,7 @@ body.template-font-7 h6 {
 }
 
 body.template-font-7 .font-1 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body.template-font-7 .font-6 {
