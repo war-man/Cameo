@@ -389,17 +389,25 @@ namespace Cameo.Services
             if (model == null)
                 return null;
 
-            if (BelongsToTalent(model, userID))
-                return model;
-            else if (IsPaymentConfirmed(model))
+            if (IsPaymentConfirmed(model))
             {
-                if (BelongsToCustomer(model, userID))
+                if (BelongsToTalent(model, userID))
+                    return model;
+                else if (BelongsToCustomer(model, userID))
                     return model;
                 else if (!IsNotPublic(model))
                     return model;
             }
 
-            return null;
+            //if (BelongsToTalent(model, userID))
+            //    return model;
+            //else if (IsPaymentConfirmed(model))
+            //{
+            //    if (BelongsToCustomer(model, userID))
+            //        return model;
+            //    else if (!IsNotPublic(model))
+            //        return model;
+            //}
 
             //if (model.Talent.UserID == userID)
             //    return model;
@@ -416,7 +424,7 @@ namespace Cameo.Services
             //        return model;
             //}
             
-            //return null;
+            return null;
         }
 
         public VideoRequest GetIncompletedVideo(int id, string userID)
