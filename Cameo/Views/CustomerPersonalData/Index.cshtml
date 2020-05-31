@@ -50,7 +50,8 @@
                                                         <div class="team team__style--1 text-center">
                                                             <div class="thumbnail">
                                                                 <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar">
-                                                                <img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />
+                                                                <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw" style="display: none;"></i>
+                                                                @*<img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />*@
                                                             </div>
                                                         </div>
                                                     </div>
@@ -127,9 +128,13 @@
         $(document).ready(function () {
             $("#imgInp").change(function ()
             {
+                $("#" + spinnerTagID).show();
                 var input = this;
                 if (!(input.files && input.files[0]))
+                {
+                    $("#" + spinnerTagID).hide();
                     return;
+                }
 
                 var file = input.files[0];
 
@@ -214,6 +219,7 @@
                     //}
                 }, function (error)
                 {
+                    $("#" + spinnerTagID).hide();
                     console.log(error);
 
                 }, function ()
@@ -266,7 +272,7 @@
                     beforeSend: function ()
                     {
                         //alert("beforeSend");
-                        $("#" + spinnerTagID).show();
+                        //$("#" + spinnerTagID).show();
                         //$("#imgInp").attr("disabled", "disabled");
                         $(input).attr("disabled", "disabled");
                     },

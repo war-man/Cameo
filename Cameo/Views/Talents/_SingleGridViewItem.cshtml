@@ -4,6 +4,7 @@
     <a href="/talents/details/@Model.Username">
         <div class="team team__style--4 text-center mb--15">
             <div class="thumbnail paralax-image">
+                @*<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>*@
                 <img class="lozad" data-src="@Model.Avatar.Url" src="~/lib/DavenTheme/img/ajax-loader.gif" alt="@Model.FullName">
                 <div class="team-badge badge--right">
                     <span>@Model.PriceStr сум</span>
@@ -19,3 +20,10 @@
         </div>
     </a>
 </div>
+
+<style>
+    /*img.lozad
+    {
+        min-height: 100px;
+    }*/
+</style>
