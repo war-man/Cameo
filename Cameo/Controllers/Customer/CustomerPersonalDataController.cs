@@ -13,15 +13,18 @@ namespace Cameo.Controllers
         private readonly ICustomerService CustomerService;
         private readonly ISocialAreaService SocialAreaService;
         private readonly IAttachmentService AttachmentService;
+        private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
 
         public CustomerPersonalDataController(
             ICustomerService customerService,
             ISocialAreaService socialAreaService,
-            IAttachmentService attachmentService)
+            IAttachmentService attachmentService,
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
         {
             CustomerService = customerService;
             SocialAreaService = socialAreaService;
             AttachmentService = attachmentService;
+            FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
         }
 
         public IActionResult Index()
@@ -36,6 +39,7 @@ namespace Cameo.Controllers
             CustomerEditVM modelVM = new CustomerEditVM(model);
 
             ViewBag.firebaseUid = curUser.FirebaseUid;
+            ViewBag.firebaseToken = FirebaseRegistrationTokenService.GetForWebByUserID(curUser.ID);
 
             return View(modelVM);
         }
@@ -78,6 +82,7 @@ namespace Cameo.Controllers
 
             //ViewData["socialAreas"] = SocialAreaService.GetAsSelectList(/*modelVM.SocialAreaID ?? 0*/);
             ViewBag.firebaseUid = curUser.FirebaseUid;
+            ViewBag.firebaseToken = FirebaseRegistrationTokenService.GetForWebByUserID(curUser.ID);
 
             return View(modelVM);
         }

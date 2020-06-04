@@ -5,7 +5,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-<div class="header-icon" style="margin-right: 15px;">
+<div class="header-icon">
     <a asp-controller="Person" asp-action="Index" title="Account">
         <i class="fa fa-user-circle"></i>
         @UserManager.GetUserName(User)

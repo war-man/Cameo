@@ -4,15 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Cameo.API.Controllers
+namespace Cameo.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
     public class FirebaseController : BaseController
     {
         private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
@@ -22,14 +18,14 @@ namespace Cameo.API.Controllers
             FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
         }
 
-        [HttpPost("SaveToken/{token}")]
+        [HttpPost]
         public IActionResult SaveToken(string token)
         {
             try
             {
                 var curUser = accountUtil.GetCurrentUser(User);
 
-                FirebaseRegistrationTokenService.SaveToken(token, curUser.ID, "mob");
+                FirebaseRegistrationTokenService.SaveToken(token, curUser.ID, "web");
 
                 return Ok();
             }

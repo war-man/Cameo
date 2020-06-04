@@ -14,5 +14,31 @@ namespace Cameo.Services
             : base(repository, unitOfWork)
         {
         }
+
+        public void SaveToken(string token, string userID, string frontType)
+        {
+            FirebaseRegistrationToken tokenObj = new FirebaseRegistrationToken()
+            {
+                UserID = userID,
+                Token = token,
+                FrontType = frontType
+            };
+
+            Add(tokenObj, userID);
+        }
+
+        public string GetByUserID(string userID)
+        {
+            var tokenObj = GetAsIQueryable().Where(m => m.UserID == userID).FirstOrDefault();
+
+            return tokenObj?.Token;
+        }
+
+        public string GetForWebByUserID(string userID)
+        {
+            var tokenObj = GetAsIQueryable().Where(m => m.FrontType == "web" && m.UserID == userID).FirstOrDefault();
+
+            return tokenObj?.Token;
+        }
     }
 }

@@ -153,6 +153,8 @@
 
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
 
+        var firebaseToken;
+
         function SendVerificationCode()
         {
             $("#phoneNumberForm .form-messege").html("");
@@ -205,10 +207,22 @@
             {
                 // User signed in successfully.
                 var user = result.user;
+                firebaseToken = user.xa;
                 //console.log(user);
                 //console.log(user.uid);
+
                 Authenticate(user.uid);
                 // ...
+
+                //firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken)
+                //{
+                //    // Send token to your backend via HTTPS
+                //    // ...
+                //    console.log(idToken);
+                //}).catch(function (error)
+                //{
+                //    // Handle error
+                //});
             }).catch(function (error)
             {
                 //console.log(error);
@@ -242,7 +256,9 @@
                         $("#FirebaseUid").val(firebaseUid);
                     }
                     else
-                        window.location.replace("/");
+                    {
+                        SaveFirebaseTokenInDB();
+                    }
                 },
                 error: function (data)
                 {
@@ -255,6 +271,37 @@
                     $("#codeForm input").removeAttr("disabled");
                     $("#codeForm button").removeAttr("disabled");
                     $("#codeForm .spinner").hide();
+                }
+            });
+        }
+
+        function SaveFirebaseTokenInDB()
+        {
+            $.ajax({
+                type: "POST",
+                url: "/Firebase/SaveToken?token=" + firebaseToken,
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                beforeSend: function ()
+                {
+                    //$("#codeForm .form-messege").html("");
+                    //$("#codeForm input").attr("disabled", "disabled");
+                },
+                success: function (data)
+                {
+                    window.location.replace("/");
+                },
+                error: function (data)
+                {
+                    //console.log(data);
+                    //$("#codeForm .form-messege").html(data.responseJSON.errorMessage);
+                    alert("Ajax error (status code = " + data.status + "): " + data.responseJSON.errorMessage);
+                },
+                complete: function (data)
+                {
+                    //$("#codeForm input").removeAttr("disabled");
+                    //$("#codeForm button").removeAttr("disabled");
+                    //$("#codeForm .spinner").hide();
                 }
             });
         }
@@ -303,7 +350,9 @@
         {
             //console.log(data);
             //console.log("success!");
-            window.location.replace("/");
+            //window.location.replace("/");
+
+            SaveFirebaseTokenInDB();
         }
 
         function RegistrationCompleted(data)

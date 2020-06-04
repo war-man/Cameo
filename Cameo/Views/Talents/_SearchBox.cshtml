@@ -1,6 +1,5 @@
-﻿<div class="frmSearch">
+﻿@*<div class="frmSearch">
     <div class="input-group">
-        @*<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>*@
         <div class="input-group-prepend">
             <span class="input-group-text "><i class="fa fa-search"></i></span>
         </div>
@@ -8,6 +7,16 @@
         <div class="input-group-append">
             <span class="input-group-text" onclick="ClearSearchInput();"><i class="fa fa-times" style="visibility:hidden;"></i></span>
         </div>
+    </div>
+    <div id="suggesstion-box"></div>
+</div>*@
+
+<div class="frmSearch">
+    <div class="" style="position: relative;">
+        <span class="left-icon"><i class="fa fa-search"></i></span>
+        <input type="text" id="search-box" class="" onkeyup="Search(this.value)" placeholder="Поиск. Попробуйте 'Abduvali' или 'Абдували'" />
+        <span class="spinnerContainer"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="visibility:hidden;"></i></span>
+        <span class="right-icon" onclick="ClearSearchInput();"><i class="fa fa-times" style="visibility:hidden;"></i></span>
     </div>
     <div id="suggesstion-box"></div>
 </div>
@@ -18,9 +27,9 @@
     function Search(searchText)
     {
         if (searchText != "")
-            $(".frmSearch .input-group-append .dlicon").css("visibility", "visible");
+            $(".frmSearch .right-icon i").css("visibility", "visible");
         else
-            $(".frmSearch .input-group-append .dlicon").css("visibility", "hidden");
+            $(".frmSearch .right-icon i").css("visibility", "hidden");
 
         $("#suggesstion-box").html("");
 
@@ -36,8 +45,9 @@
             contentType: "application/json; charset=utf-8",
             //dataType: "json",
             beforeSend: function () {
-                $("#search-box").css("background", "#FFF url(/lib/DavenTheme/img/ajax-loader.gif) no-repeat right");
-                $("#search-box").css("background-size", "contain");
+                //$("#search-box").css("background", "#FFF url(/lib/DavenTheme/img/ajax-loader.gif) no-repeat right");
+                //$("#search-box").css("background-size", "contain");
+                $(".frmSearch .spinnerContainer i").css("visibility", "visible");
 
                 if (currentRequest != null)
                     currentRequest.abort();
@@ -45,13 +55,14 @@
             success: function (data) {
                 $("#suggesstion-box").show();
                 $("#suggesstion-box").html(data);
-                $("#search-box").css("background", "#FFF");
+                //$("#search-box").css("background", "#FFF");
+                $(".frmSearch .spinnerContainer i").css("visibility", "hidden");
             },
             error: function (data) {
-                console.log(data);
+                //console.log(data);
             },
             complete: function (data) {
-
+                //$(".frmSearch .spinnerContainer i").css("visibility", "hidden");
             }
         });
     }
@@ -63,7 +74,7 @@
 
         $("#search-box").val("").focus();
         $("#suggesstion-box").html("");
-        $(".frmSearch .input-group-append .dlicon").css("visibility", "hidden");
+        $(".frmSearch .right-icon i").css("visibility", "hidden");
     }
 
     function SelectTalent(id) {
@@ -72,7 +83,7 @@
 </script>
 
 <style>
-    .frmSearch .input-group-text {
+    /*.frmSearch .input-group-text {
         background-color: inherit;
     }
 
@@ -91,17 +102,79 @@
     .frmSearch .input-group-append
     {
         cursor: pointer;
+    }*/
+
+    .frmSearch input {
+        width: 100%;
+        /*background-color: transparent;*/
+        /*border: 0;*/
+        /*border-bottom: 2px solid #fff;*/
+        font-size: 18px;
+        padding: 10px 45px;
+        transition: all .3s ease-out;
+        font-weight: 300;
+        max-width: 100%;
+        background: rgb(255, 255, 255);
+        -webkit-appearance: none;
+        /*border-radius: 0;*/
+        margin-bottom: 0;
+        height: auto;
+    }
+
+    .frmSearch .left-icon {
+        font-size: 23px;
+        height: 20px;
+        display: block;
+        left: 12px;
+        border: none;
+        background: 0 0;
+        padding: 0;
+        position: absolute;
+        top: 27%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-weight: 100;
+    }
+
+    .frmSearch .right-icon {
+        font-size: 23px;
+        height: 18px;
+        display: block;
+        right: 5px;
+        border: none;
+        background: 0 0;
+        padding: 0;
+        position: absolute;
+        top: 27%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-weight: 100;
+    }
+
+    .frmSearch .spinnerContainer {
+        font-size: 23px;
+        height: 18px;
+        display: block;
+        right: 23px;
+        border: none;
+        background: 0 0;
+        padding: 0;
+        position: absolute;
+        top: 27%;
+        transform: translateY(-50%);
+        font-weight: 100;
     }
 
     #talentsSearchList {
         float: left;
         list-style: none;
         padding: 0;
-        width: 300px;
+        width: 194px;
         position: absolute;
         z-index: 20;
         max-height: 300px;
         overflow-y: auto;
+        border-radius: 0.25rem;
     }
 
     #talentsSearchList li {
@@ -116,7 +189,7 @@
 
     #talentsSearchList > li > a {
         display: block;
-        padding: 3px 20px;
+        /*padding: 3px 20px;*/
         clear: both;
         font-weight: 400;
         line-height: 1.5;

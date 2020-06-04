@@ -12,5 +12,7 @@ namespace Cameo.Models
         public virtual ApplicationUser User { get; set; }
 
         public string Token { get; set; }
+
+        public string FrontType { get; set; } //"web", "mob"
     }
 }

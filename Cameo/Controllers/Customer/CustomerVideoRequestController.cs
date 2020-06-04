@@ -18,17 +18,20 @@ namespace Cameo.Controllers
         private readonly IVideoRequestSearchService SearchService;
         private readonly IVideoRequestService VideoRequestService;
         private readonly IVideoRequestTypeService VideoRequestTypeService;
+        private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
 
         public CustomerVideoRequestController(
             ICustomerService customerService,
             IVideoRequestSearchService searchService,
             IVideoRequestService videoRequestService,
-            IVideoRequestTypeService videoRequestTypeService)
+            IVideoRequestTypeService videoRequestTypeService,
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
         {
             CustomerService = customerService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
+            FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
         }
 
         public IActionResult Index()
@@ -77,6 +80,7 @@ namespace Cameo.Controllers
                 //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
                 ViewBag.firebaseUid = curUser.FirebaseUid;
+                ViewBag.firebaseToken = FirebaseRegistrationTokenService.GetForWebByUserID(curUser.ID);
 
                 return View(requestVM);
             }
