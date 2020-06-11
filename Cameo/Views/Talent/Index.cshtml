@@ -2,78 +2,72 @@
 @using Cameo.Models.Enums
 
 @{
-    ViewData["Title"] = "Моя страница";
+    ViewData["Title"] = "Мои данные";
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
-<br />
-<div class="row">
-    <div class="col-sm-3">
-        <partial name="_TalentSidebar" />
-    </div>
-    <div class="col-sm-9">
+<div class="row bg-color ptb_md--60 ptb_sm--60" data-bg-color="#ffffff">
+    <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40">
         <div class="row">
-            <div class="col-sm-4">
-                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-thumbnail img-responsive" height="150" width="150" />
+            <div class="col-lg-4 mt--30">
+                <partial name="_TalentSidebarDaven" />
             </div>
-            <div class="col-sm-4">
-                <div>
-                    <i class="glyphicon glyphicon-star text-warning"></i> 5.0
-                </div>
-                <div>
-                    Rating
-                </div>
-            </div>
-            <div class="col-sm-4">
-                Доступность: @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-control", @onchange = "ToogleAvailability(this);" })
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-xs-6 col-sm-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <a href="/TalentVideoRequest">
-                            <p id="requestsTotal"></p>
-                            <p>Всего запросов</p>
+            <div class="col-lg-8 mt--30 mb--30">
+                <h2>@ViewData["Title"]</h2>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <!-- Start Single Team -->
+                        <div class="team team__style--3 text-center">
+                            <div class="thumbnail">
+                                <img src="@Model.Avatar.Url" alt="Draven Images">
+                            </div>
+                            <div class="hover-action pt--20">
+                                <div class="info mb--15">
+                                    <h6 class="title mb--0">@Model.FullName</h6>
+                                    @*<span class="desc font--12">CEO/ Founder</span>*@
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Team -->
+                        @*<img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-thumbnail img-responsive" height="150" width="150" />*@
+                    </div>
+                    @*<div class="col-sm-4">
+                        <div>
+                            <i class="glyphicon glyphicon-star text-warning"></i> 5.0
+                        </div>
+                        <div>
+                            Rating
+                        </div>
+                    </div>*@
+                    <div class="col-sm-4">
+                        <a id="aviabilityBtn" class="button-link button-size button__transparent--border--four" href="javascript: ToogleAvailability();" style="border-radius: 0.25rem;">
+                            <span class="button-text" style="font-size: 20px;">Доступность</span>
+                            @{ 
+                                string faIcon = "fa-square-o";
+                                if (Model.IsAvailable)
+                                {
+                                    faIcon = "fa-check-square-o";
+                                }
+                            }
+                            <span class="icon-right"><i class="fa fa-2x @faIcon"></i></span>
                         </a>
+
+                        @*<div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-control", @onchange = "ToogleAvailability(this);" })
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Some text">
+                        </div>*@
+                        @*Доступность: @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-control", @onchange = "ToogleAvailability(this);" })*@
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-6 col-sm-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo)">
-                            <p id="requestsWaiting"></p>
-                            <p>Ожидающие</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.videoCompleted)">
-                            <p id="requestsCompleted"></p>
-                            <p>Завершено</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.paymentConfirmed)">
-                            <p id="requestsPaid"></p>
-                            <p>Оплачено</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <p id="earned"></p>
-                        <p>Заработано</p>
+                <br />
+                <div id="statisticsContainer">
+                    <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw mt--30 mb--30" style="margin-left: 49%;"></i>
+                    <div class="row">
+                        <div class="innerContainer"></div>
                     </div>
                 </div>
             </div>
@@ -83,58 +77,55 @@
 
 @section Scripts {
     <script>
+        var isAvailable = "@Model.IsAvailable";
+        var availability = true;
+
+        if (isAvailable != "True")
+            availability = false;
+
         $(document).ready(function ()
         {
             $.ajax({
                 type: "GET",
                 url: "/Talent/GetDashboardInfo",
-                //data: JSON.stringify({
-                //    selected: categoryID
-                //}),
-                //data: {
-                //    selected: categoryID
-                //},
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function (data)
                 {
-                    $("#requestsTotal").html(data.requestsTotal);
-                    $("#requestsWaiting").html(data.requestsWaiting);
-                    $("#requestsCompleted").html(data.requestsCompleted);
-                    $("#requestsPaid").html(data.requestsPaid);
-                    $("#earned").html(data.earned);
+                    $("#statisticsContainer .innerContainer").html(data);
                 },
                 error: function (data)
                 {
                     console.log(data);
+                    alert("Ajax error (status code = " + data.status + "): " + data.statusText);
+                },
+                complete: function (data)
+                {
+                    $("#statisticsContainer .spinner").hide();
                 }
             });
         });
 
-        function ToogleAvailability(checkbox)
+        function ToogleAvailability()
         {
-            var availability = $(checkbox).prop("checked");
-
-            var confirmQuestion = "Вы уверены, что хотите стать недоступным(ой)?";
-            if (availability)
-                confirmQuestion = "Вы уверены, что хотите стать доступным(ой)?";
+            var confirmQuestion = "Вы уверены, что хотите стать доступным(ой)?";
+            if (availability == true)
+                confirmQuestion = "Вы уверены, что хотите стать недоступным(ой)?";
             if (!confirm(confirmQuestion))
                 return;
+
+            availability = !availability;
 
             $.ajax({
                 type: "POST",
                 url: "/Talent/SetAvailability?availability=" + availability,
-                //data: JSON.stringify({
-                //    availability: availability
-                //}),
-                //data: {
-                //    availability: availability
-                //},
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 success: function (data)
                 {
                     alert("Статус успешно изменен!");
+                    $("#aviabilityBtn i").toggleClass("fa-check-square-o");
+                    $("#aviabilityBtn i").toggleClass("fa-square-o");
                 },
                 error: function (data)
                 {

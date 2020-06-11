@@ -1,0 +1,153 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["Controller"];
+    string active = "";
+    string ariaSelected = "false";
+}
+
+<div class="tab-vertical-wrapper">
+    <ul class="nav nav-tabs tab-default tab_style--3" role="tablist">
+        <li class="nav-item">
+            @{
+                active = "";
+
+                if (controller.Equals("Talent"))
+                {
+                    active = "active";
+                    ariaSelected = "true";
+                }
+            }
+            <a class="nav-link @active" href="~/Talent" aria-selected="@ariaSelected"><i class="fa fa-bar-chart"></i> Мои данные</a>
+        </li>
+        <li class="nav-item">
+            @{
+                active = "";
+
+                if (controller.Equals("TalentPersonalData"))
+                {
+                    active = "active";
+                    ariaSelected = "true";
+                }
+            }
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-user"></i> Персональные данные</a>
+        </li>
+        <li class="nav-item">
+            @{
+                active = "";
+
+                if (controller.Equals("TalentVideoRequest"))
+                {
+                    active = "active";
+                    ariaSelected = "true";
+                }
+            }
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-video-camera"></i> История заказов</a>
+        </li>
+        <li class="nav-item">
+            @{
+                active = "";
+
+                if (controller.Equals("TalentProjectsAndCategories"))
+                {
+                    active = "active";
+                    ariaSelected = "true";
+                }
+            }
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-suitcase"></i> Мои проекты. Категории</a>
+        </li>
+        <li class="nav-item">
+            @{
+                active = "";
+
+                if (controller.Equals("TalentPrice"))
+                {
+                    active = "active";
+                    ariaSelected = "true";
+                }
+            }
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-usd"></i> Изменить цену <span class="badge" id="talentPrice">(...)</span></a>
+        </li>
+        <li class="nav-item">
+            @{
+                active = "";
+
+                if (controller.Equals("TalentCreditCard"))
+                {
+                    active = "active";
+                    ariaSelected = "true";
+                }
+            }
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-credit-card-alt"></i> Управление картой (UZCARD)</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-shield"></i> Security and privacy</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Home/TermsOfService"><i class="fa fa-file-text"></i> Terms of service</a>
+        </li>
+        <li class="nav-item">
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Talents", new { area = "" })" method="post" id="logoutForm" style="display: none;">
+                <i class="fa fa-user-circle"></i>
+                <button type="submit" class="btn btn-link">Выйти</button>
+            </form>
+            <a class="nav-link" href="javascript: Logout();" style="border-bottom-width: 1px;"><i class="fa fa-sign-out"></i> Выйти</a>
+        </li>
+    </ul>
+</div>
+<style>
+    .tab-vertical-wrapper ul {
+        /*border-top-left-radius: 0.25rem !important;*/
+    }
+
+        .tab-vertical-wrapper ul > li:first-child > a {
+            border-top-left-radius: 0.25rem !important;
+            border-top-right-radius: 0.25rem !important;
+        }
+
+        .tab-vertical-wrapper ul > li:last-child > a {
+            border-bottom-left-radius: 0.25rem !important;
+            border-bottom-right-radius: 0.25rem !important;
+        }
+
+    .tab-vertical-wrapper .nav-tabs .nav-item {
+        margin-bottom: 0px;
+    }
+
+    .tab-vertical-wrapper .tab_style--3 .nav-item .nav-link {
+        font-size: 18px;
+    }
+
+    .tab-vertical-wrapper .fa {
+        margin-right: 20px;
+        font-size: 22px;
+        width: 10px;
+    }
+</style>
+
+<script>
+    function Logout()
+    {
+        if (!confirm("Вы уверены, что хотите выйти"))
+            return;
+
+        $("form#logoutForm").submit();
+    }
+</script>
+
+<script>
+    //get price
+    getFoo("/Talent/GetPrice", "talentPrice");
+
+    //get balance
+    function getFoo(url, elementID)
+    {
+        const Http = new XMLHttpRequest();
+        //const url = '/Talent/GetPrice';
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e) =>
+        {
+            //console.log(Http.responseText)
+            document.getElementById(elementID).innerText = "(" + Http.responseText + ")";
+        }
+    }
+</script>

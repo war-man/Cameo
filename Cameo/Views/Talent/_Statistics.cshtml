@@ -1,0 +1,101 @@
+﻿@model Cameo.ViewModels.TalentStatisticsVM
+
+<!-- Start Icon Box -->
+<div class="funfact-area ptb_md--80 ptb_sm--60 bg-color" data-bg-color="#f9f9f9">
+    <div class="container">
+        <div class="row">
+            <!-- Start Single Count -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt_md--40 mt_sm--40 mt--40">
+                <div class="single-counter counter__style--1 text-center">
+                    <div class="icon">
+                        <i class="dlicon users_multiple-11"></i>
+                    </div>
+                    <div class="content mt--25">
+                        <h3 class="title count font--32" id="total">@Model.Total</h3>
+                        <h6 class="mb--0">Всего заказов</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- End Single Count -->
+            <!-- Start Single Count -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt_md--40 mt_sm--40 mt--40">
+                <div class="single-counter counter__style--1 text-center">
+                    <div class="icon">
+                        <i class="dlicon ui-2_settings-90"></i>
+                    </div>
+                    <div class="content mt--25">
+                        <h3 class="title count font--32" id="waitingForAnswer">@Model.WaitingForAnswer</h3>
+                        <h6 class="mb--0">Ожидают ответа</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- End Single Count -->
+            <!-- Start Single Count -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt_md--40 mt_sm--40 mt--40">
+                <div class="single-counter counter__style--1 text-center">
+                    <div class="icon">
+                        <i class="dlicon food_coffe-long"></i>
+                    </div>
+                    <div class="content mt--25">
+                        <h3 class="title count font--32" id="waitingForVideo">@Model.WaitingForVideo</h3>
+                        <h6 class="mb--0">Ожидают видео</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- End Single Count -->
+            <!-- Start Single Count -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt_md--40 mt_sm--40 mt--40">
+                <div class="single-counter counter__style--1 text-center">
+                    <div class="icon">
+                        <i class="dlicon users-2_b-meeting"></i>
+                    </div>
+                    <div class="content mt--25">
+                        <h3 class="title count font--32" id="waitingForPayment">@Model.WaitingForPayment</h3>
+                        <h6 class="mb--0">Ожидается оплата</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- End Single Count -->
+            <!-- Start Single Count -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt_md--40 mt_sm--40 mt--40">
+                <div class="single-counter counter__style--1 text-center">
+                    <div class="icon">
+                        <i class="dlicon users-2_b-meeting"></i>
+                    </div>
+                    <div class="content mt--25">
+                        <h3 class="title count font--32" id="waitingForPaymentConfirmation">@Model.WaitingForPaymentConfirmation</h3>
+                        <h6 class="mb--0">Ожидают подтверждение оплаты</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- End Single Count -->
+            <!-- Start Single Count -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt_md--40 mt_sm--40 mt--40">
+                <div class="single-counter counter__style--1 text-center">
+                    <div class="icon">
+                        <i class="dlicon users-2_b-meeting"></i>
+                    </div>
+                    <div class="content mt--25">
+                        <h3 class="title count font--32" id="paymentConfirmed">@Model.PaymentConfirmed</h3>
+                        <h6 class="mb--0">Оплата подтверждена</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- End Single Count -->
+            <!-- Start Single Count -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt_md--40 mt_sm--40 mt--40">
+                <div class="single-counter counter__style--1 text-center">
+                    <div class="icon">
+                        <i class="dlicon users-2_b-meeting"></i>
+                    </div>
+                    <div class="content mt--25">
+                        <h3 class="title count font--32" id="earned">@Model.Earned</h3>
+                        <h6 class="mb--0">Заработано</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- End Single Count -->
+        </div>
+    </div>
+</div>
+<!-- End Icon Box -->

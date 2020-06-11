@@ -90,15 +90,15 @@ namespace Cameo.Controllers
         //    return Ok(TalentBalanceService.CalculateMaxNumberOfPossibleRequests(balance, price, commission));
         //}
 
-        public string GetPrice()
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
-            if (model == null)
-                return "0";
-            else
-                return model.Price.ToString(AppData.Configuration.NumberViewStringFormat);
-        }
+        //public string GetPrice()
+        //{
+        //    var curUser = accountUtil.GetCurrentUser(User);
+        //    Talent model = TalentService.GetByUserID(curUser.ID);
+        //    if (model == null)
+        //        return "0";
+        //    else
+        //        return model.Price.ToString(AppData.Configuration.NumberViewStringFormat);
+        //}
 
         public string GetBalance()
         {

@@ -44,13 +44,13 @@ namespace Cameo.Services.Interfaces
         bool IsEditable(VideoRequest model);
         bool IsCancelable(VideoRequest model);
         bool IsPaymentConfirmed(VideoRequest model);
-        int GetAllCountByTalent(Talent talent);
-        int GetCompletedCountByTalent(Talent talent);
-        int GetCompletenessPercentageByTalent(Talent talent);
-        int GetPaidCountByTalent(Talent talent);
-        IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent);
-        int GetEarnedByTalent(Talent talent);
-        int GetWaitingCountByTalent(Talent talent);
+        //int GetAllCountByTalent(Talent talent);
+        //int GetCompletedCountByTalent(Talent talent);
+        //int GetCompletenessPercentageByTalent(Talent talent);
+        //int GetPaidCountByTalent(Talent talent);
+        //IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent);
+        //int GetEarnedByTalent(Talent talent);
+        //int GetWaitingCountByTalent(Talent talent);
         //VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID);
         IQueryable<VideoRequest> GetPublicByTalent(Talent talent, int requestIDToBeExcluded);
 

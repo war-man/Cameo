@@ -55,6 +55,7 @@ namespace Cameo.DependencyInjections
             services.AddTransient<IVideoRequestStatusService, VideoRequestStatusService>();
             services.AddTransient<IFirebaseRegistrationTokenService, FirebaseRegistrationTokenService>();
             services.AddTransient<ICustomerBalanceService, CustomerBalanceService>();
+            services.AddTransient<IVideoRequestStatisticsService, VideoRequestStatisticsService>();
         }
     }
 }

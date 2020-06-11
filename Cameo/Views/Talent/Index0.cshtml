@@ -1,0 +1,146 @@
+﻿@model Cameo.ViewModels.TalentShortInfoVM
+@using Cameo.Models.Enums
+
+@{
+    ViewData["Title"] = "Моя страница";
+}
+
+<br />
+<div class="row">
+    <div class="col-sm-3">
+        <partial name="_TalentSidebar" />
+    </div>
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-sm-4">
+                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-thumbnail img-responsive" height="150" width="150" />
+            </div>
+            <div class="col-sm-4">
+                <div>
+                    <i class="glyphicon glyphicon-star text-warning"></i> 5.0
+                </div>
+                <div>
+                    Rating
+                </div>
+            </div>
+            <div class="col-sm-4">
+                Доступность: @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-control", @onchange = "ToogleAvailability(this);" })
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a href="/TalentVideoRequest">
+                            <p id="requestsTotal"></p>
+                            <p>Всего запросов</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo)">
+                            <p id="requestsWaiting"></p>
+                            <p>Ожидающие</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.videoCompleted)">
+                            <p id="requestsCompleted"></p>
+                            <p>Завершено</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a href="/TalentVideoRequest?status=@((int)VideoRequestStatusEnum.paymentConfirmed)">
+                            <p id="requestsPaid"></p>
+                            <p>Оплачено</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p id="earned"></p>
+                        <p>Заработано</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function ()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Talent/GetDashboardInfo",
+                //data: JSON.stringify({
+                //    selected: categoryID
+                //}),
+                //data: {
+                //    selected: categoryID
+                //},
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    $("#requestsTotal").html(data.requestsTotal);
+                    $("#requestsWaiting").html(data.requestsWaiting);
+                    $("#requestsCompleted").html(data.requestsCompleted);
+                    $("#requestsPaid").html(data.requestsPaid);
+                    $("#earned").html(data.earned);
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                }
+            });
+        });
+
+        function ToogleAvailability(checkbox)
+        {
+            var availability = $(checkbox).prop("checked");
+
+            var confirmQuestion = "Вы уверены, что хотите стать недоступным(ой)?";
+            if (availability)
+                confirmQuestion = "Вы уверены, что хотите стать доступным(ой)?";
+            if (!confirm(confirmQuestion))
+                return;
+
+            $.ajax({
+                type: "POST",
+                url: "/Talent/SetAvailability?availability=" + availability,
+                //data: JSON.stringify({
+                //    availability: availability
+                //}),
+                //data: {
+                //    availability: availability
+                //},
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    alert("Статус успешно изменен!");
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                }
+            });
+        }
+    </script>
+}
