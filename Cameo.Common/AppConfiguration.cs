@@ -30,5 +30,9 @@ namespace Cameo.Common
         public string TokenValidIssuerServer { get; set; }
         public string TokenSecurityKey { get; set; }
         public int TokenExpirationPeriodInDays { get; set; }
+
+        public int PriceMin { get; set; }
+        public int PriceMax { get; set; }
+        public int PriceStep { get; set; }
     }
 }

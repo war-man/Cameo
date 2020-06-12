@@ -1,67 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Cameo.Common;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace Cameo.API.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class TalentPersonalDataController : BaseController
+    public class TalentPriceController : BaseController
     {
         private readonly ITalentService TalentService;
-        private readonly ISocialAreaService SocialAreaService;
-        private IAttachmentService AttachmentService;
+        //private readonly ITalentBalanceService TalentBalanceService;
 
-        public TalentPersonalDataController(
+        public TalentPriceController(
             ITalentService talentService,
-            ISocialAreaService socialAreaService,
-            IAttachmentService attachmentService)
+            ITalentBalanceService talentBalanceService)
         {
             TalentService = talentService;
-            SocialAreaService = socialAreaService;
-            AttachmentService = attachmentService;
+            //TalentBalanceService = talentBalanceService;
         }
 
         [HttpGet]
-        public ActionResult<TalentPersonalDataEditVM> Index()
+        public ActionResult<TalentPriceEditVM> Index()
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetByUserID(curUser.ID);
             if (model == null)
                 return CustomBadRequest("Талант не найден");
-            if (model.AvatarID.HasValue)
-                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
-            TalentPersonalDataEditVM modelVM = new TalentPersonalDataEditVM(model);
+            TalentPriceEditVM modelVM = new TalentPriceEditVM(model);
 
             return Ok(modelVM);
         }
 
         [HttpPost]
-        public ActionResult Index([FromBody] TalentPersonalDataEditVM modelVM)
+        public ActionResult Index([FromBody] TalentPriceEditVM modelVM)
         {
             var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetByID(modelVM.id);
             if (model == null || !model.UserID.Equals(curUser.ID))
                 return CustomBadRequest("Талант не найден");
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && IsCorrectPriceProvided(modelVM.price))
             {
                 try
                 {
-                    model.FullName = modelVM.full_name;
-                    //model.FirstName = modelVM.FirstName;
-                    //model.LastName = modelVM.LastName;
-                    model.Bio = modelVM.bio;
-                    model.SocialAreaID = modelVM.social_area_id;
-                    model.SocialAreaHandle = modelVM.social_area_handle;
-                    model.FollowersCount = modelVM.followers_count;
+                    model.Price = modelVM.price;
 
                     TalentService.Update(model, curUser.ID);
 
@@ -74,6 +65,15 @@ namespace Cameo.API.Controllers
             }
             else
                 return CustomBadRequest("Указаны некорректные данные");
+        }
+
+        private bool IsCorrectPriceProvided(int price)
+        {
+            int priceMin = AppData.Configuration.PriceMin;
+            int priceMax = AppData.Configuration.PriceMax;
+            int priceStep = AppData.Configuration.PriceStep;
+
+            return (price >= priceMin && price <= priceMax && price % priceStep == 0);
         }
     }
 }
