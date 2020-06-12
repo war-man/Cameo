@@ -39,7 +39,7 @@ namespace Cameo.API.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetByUserID(curUser.ID);
             if (model == null)
-                return CustomBadRequest("Талан не найден");
+                return CustomBadRequest("Талант не найден");
 
             if (model.AvatarID.HasValue)
                 model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
