@@ -53,17 +53,22 @@ namespace Cameo.API.ViewModels
 
     public class TalentCreditCardEditVM
     {
-        public int ID { get; set; }
+        public int id { get; set; }
 
         [Required]
         [Display(Name = "Номер Вашей карты Uzcard")]
         [StringLength(16 + 3)] // 16 - card numer digits + 3 - whitespaces
-        public string CreditCardNumber { get; set; }
+        public string credit_card_number { get; set; }
+
+        [Required]
+        [Display(Name = "Имя владельца карты Uzcard")]
+        [StringLength(128)]
+        public string credit_card_holder { get; set; }
 
         [Required]
         [Display(Name = "Срок действия (мм/гг)")]
         [StringLength(5)]
-        public string CreditCardExpire { get; set; }
+        public string credit_card_expire { get; set; }
 
         public TalentCreditCardEditVM() { }
 
@@ -72,12 +77,14 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            this.ID = model.ID;
-            this.CreditCardNumber = model.CreditCardNumber;
+            this.id = model.ID;
+            this.credit_card_number = model.CreditCardNumber;
+            this.credit_card_holder = model.CreditCardHolder;
+
             if (model.CreditCardExpire.HasValue)
             {
-                this.CreditCardExpire = model.CreditCardExpire.Value.ToString("MM");
-                this.CreditCardExpire += "/" + (model.CreditCardExpire.Value.Year - 2000);
+                this.credit_card_expire = model.CreditCardExpire.Value.ToString("MM");
+                this.credit_card_expire += "/" + (model.CreditCardExpire.Value.Year - 2000);
             }
         }
     }
