@@ -33,6 +33,17 @@ namespace Cameo.Services
             return GetAllActiveAsIQueryable().Count(m => m.TalentID == talent.ID);
         }
 
+        public int GetNotCompletedCountByTalent(Talent talent)
+        {
+            return GetAllActiveAsIQueryable()
+                .Count(m => m.TalentID == talent.ID
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestExpired
+                        || m.RequestStatusID == (int)VideoRequestStatusEnum.videoExpired
+                        || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByCustomer
+                        || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByTalent
+                        || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmationExpired));
+        }
+
         public int GetWaitingForAnswerCountByTalent(Talent talent)
         {
             return GetAllActiveAsIQueryable()

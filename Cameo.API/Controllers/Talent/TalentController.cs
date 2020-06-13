@@ -64,6 +64,7 @@ namespace Cameo.API.Controllers
                 TalentStatisticsVM statisticsInfo = new TalentStatisticsVM()
                 {
                     total = VideoRequestStatisticsService.GetAllCountByTalent(talent).ToString(numberFormat).Trim(),
+                    not_completed = VideoRequestStatisticsService.GetNotCompletedCountByTalent(talent).ToString(numberFormat).Trim(),
                     waiting_for_answer = VideoRequestStatisticsService.GetWaitingForAnswerCountByTalent(talent).ToString(numberFormat).Trim(),
                     waiting_for_video = VideoRequestStatisticsService.GetWaitingForVideoCountByTalent(talent).ToString(numberFormat).Trim(),
                     waiting_for_payment = VideoRequestStatisticsService.GetWaitingForPaymentCountByTalent(talent).ToString(numberFormat).Trim(),

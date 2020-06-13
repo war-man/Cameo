@@ -8,6 +8,7 @@ namespace Cameo.ViewModels
     public class TalentStatisticsVM
     {
         public string Total { get; set; }
+        public string NotCompleted { get; set; }
         public string WaitingForAnswer { get; set; }
         public string WaitingForVideo { get; set; }
         public string WaitingForPayment { get; set; }

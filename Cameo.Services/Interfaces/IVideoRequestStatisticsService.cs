@@ -47,6 +47,8 @@ namespace Cameo.Services.Interfaces
 
         int GetAllCountByTalent(Talent talent);
 
+        int GetNotCompletedCountByTalent(Talent talent);
+
         int GetWaitingForAnswerCountByTalent(Talent talent);
 
         int GetWaitingForVideoCountByTalent(Talent talent);
