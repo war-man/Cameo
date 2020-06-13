@@ -114,6 +114,12 @@ namespace Cameo
                 Path.Combine(webRoot, "Uploads")));
 
             ConfigureFirebase();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CustomerOnly", policy => policy.RequireClaim("UserType", "customer"));
+                options.AddPolicy("TalentOnly", policy => policy.RequireClaim("UserType", "talent"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -41,13 +41,14 @@ namespace Cameo.Controllers
             SocialAreaService = socialAreaService;
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl)
         {
+            ViewBag.returnUrl = ReturnUrl;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Authenticate(string firebaseUid)
+        public async Task<IActionResult> Authenticate(string firebaseUid, string returnUrl)
         {
             int statusCode = 200;
             string errorMessage = null;
@@ -86,7 +87,15 @@ namespace Cameo.Controllers
                 Response.StatusCode = statusCode;
             }
 
-            return Json(new { errorMessage, registration_is_required });
+            return Json(new { errorMessage, registration_is_required, returnUrl = CorrectifyReturnUrl(returnUrl) });
+        }
+
+        private string CorrectifyReturnUrl(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+                return returnUrl;
+            else
+                return "/";
         }
 
         private ApplicationUser GetUserByPhoneNumber(string phoneNumber)
@@ -147,6 +156,11 @@ namespace Cameo.Controllers
             
 
             return BadRequest(ModelState);
+        }
+
+        public IActionResult AccessDenied()
+        {
+            throw new UnauthorizedAccessException("У Вас недостаточно прав для перехода по данной ссылке");
         }
 
         //Enrollment actions

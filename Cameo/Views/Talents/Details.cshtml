@@ -57,10 +57,10 @@
 
                     @if (Model.IsAvailable)
                     {
-                        if (User.Identity.IsAuthenticated)
+                        if (!User.Identity.IsAuthenticated || (bool)ViewData["isUserCustomer"] == true)
                         {
-                            if ((bool)ViewData["isUserCustomer"] == true)
-                            {
+                            //if ((bool)ViewData["isUserCustomer"] == true)
+                            //{
                                 <div class="product-action">
                                     <div class="product-action-btn">
                                         <a class="button-link button-size__xl button__black" href="/VideoRequest/Create?username=@Model.Username">
@@ -73,15 +73,16 @@
                                         </button>*@
                                     </div>
                                 </div>
-                            }
+                            @*}
                             else
                             {
                                 <div class="alert alert-danger">Таланты не могут заказывать видео. Зайдите как клиент.</div>
-                            }
+                            }*@
                         }
                         else
                         {
-                            <div class="alert alert-danger"><a href="/Account/Login">Войдите</a>, чтобы отправить запрос</div>
+                            <div class="alert alert-danger">Таланты не могут заказывать видео. Зайдите как клиент.</div>
+                            @*<div class="alert alert-danger"><a href="/Account/Login"><u>Войдите</u></a>, чтобы отправить запрос</div>*@
                         }
                     }
 

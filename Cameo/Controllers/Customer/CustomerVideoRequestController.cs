@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
-    //[CustomerAuthorization] - must be implemented
-    [Authorize]
+    [Authorize(Policy = "CustomerOnly")]
     public class CustomerVideoRequestController : BaseController
     {
         private readonly ICustomerService CustomerService;

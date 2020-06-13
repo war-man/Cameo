@@ -72,6 +72,7 @@
                             <div class="row">
                                 <div class="col-lg-12 mt--20">
                                     <input asp-for="FirebaseUid" type="hidden" />
+
                                     <input asp-for="FullName" type="text" placeholder="Полное имя *">
                                     <span asp-validation-for="FullName" class="text-danger"></span>
                                 </div>
@@ -123,6 +124,8 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
 
     <script>
+        var returnUrl = "@ViewBag.returnUrl";
+
         firebase.auth().languageCode = 'ru';
 
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
@@ -213,7 +216,7 @@
         {
             $.ajax({
                 type: "POST",
-                url: "/Account/Authenticate?firebaseUid=" + firebaseUid,
+                url: "/Account/Authenticate?firebaseUid=" + firebaseUid + "&returnUrl=" + returnUrl,
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
                 beforeSend: function ()
@@ -223,6 +226,8 @@
                 },
                 success: function (data)
                 {
+                    returnUrl = data.returnUrl;
+
                     if (data.registration_is_required == true)
                     {
                         $("#codeForm").hide("fast");
@@ -263,7 +268,8 @@
                 },
                 success: function (data)
                 {
-                    window.location.replace("/");
+                    //window.location.replace("/");
+                    window.location.replace(returnUrl);
                 },
                 error: function (data)
                 {
