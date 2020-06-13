@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "CustomerOnly")]
     public class CustomerPersonalDataController : BaseController
     {
         private readonly ICustomerService CustomerService;

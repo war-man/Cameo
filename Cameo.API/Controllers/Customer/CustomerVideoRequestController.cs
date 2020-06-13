@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Cameo.API.Controllers
 {
-    //[CustomerAuthorization] - must be implemented
-    [Authorize]
+    [Authorize(Policy = "CustomerOnly")]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerVideoRequestController : BaseController

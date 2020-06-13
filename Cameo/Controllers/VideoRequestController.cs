@@ -46,6 +46,7 @@ namespace Cameo.Controllers
             return View();
         }
 
+        [Authorize(Policy = "CustomerOnly")]
         public IActionResult Create(string username)
         {
             var curUser = accountUtil.GetCurrentUser(User);
@@ -76,6 +77,7 @@ namespace Cameo.Controllers
             return View(createVM);
         }
 
+        [Authorize(Policy = "CustomerOnly")]
         [HttpPost]
         public IActionResult Create(VideoRequestCreateVM modelVM)
         {
@@ -150,6 +152,7 @@ namespace Cameo.Controllers
             return PartialView("_Create", modelVM);
         }
 
+        [Authorize(Policy = "CustomerOnly")]
         public IActionResult Edit(int id)
         {
             var curUser = accountUtil.GetCurrentUser(User);
@@ -177,6 +180,7 @@ namespace Cameo.Controllers
             return View(editVM);
         }
 
+        [Authorize(Policy = "CustomerOnly")]
         [HttpPost]
         public IActionResult Edit(VideoRequestEditVM modelVM)
         {
@@ -309,6 +313,7 @@ namespace Cameo.Controllers
         //however once confirmed, DateVideoConfirmed is set to DateTime.Now
         //and the request is considered as finished by talent when he/she confirms
 
+        [Authorize(Policy = "TalentOnly")]
         [HttpPost]
         public IActionResult ConfirmVideo(int id)
         {

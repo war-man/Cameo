@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
+    [Authorize(Policy = "TalentOnly")]
     public class TalentCreditCardController : BaseController
     {
         private readonly ITalentService TalentService;

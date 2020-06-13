@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Cameo.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "TalentOnly")]
     public class TalentPersonalDataController : BaseController
     {
         private readonly ITalentService TalentService;

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Cameo.API.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "CustomerOnly")]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerPersonalDataController : BaseController

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "TalentOnly")]
     public class TalentProjectsAndCategoriesController 
         : BaseController
     {

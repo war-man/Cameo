@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Cameo.API.Controllers
 {
-    //[TalentAuthorization] - must be implemented
-    [Authorize]
+    [Authorize(Policy = "TalentOnly")]
     [Route("api/[controller]")]
     [ApiController]
     public class TalentVideoRequestController : BaseController

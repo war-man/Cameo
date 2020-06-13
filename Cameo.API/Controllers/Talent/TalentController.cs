@@ -11,7 +11,7 @@ using Cameo.Common;
 
 namespace Cameo.API.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "TalentOnly")]
     [Route("api/[controller]")]
     [ApiController]
     public class TalentController : BaseController

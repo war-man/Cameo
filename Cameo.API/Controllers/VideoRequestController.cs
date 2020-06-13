@@ -66,6 +66,7 @@ namespace Cameo.API.Controllers
             return talentRequestInfoVM;
         }
 
+        [Authorize(Policy = "CustomerOnly")]
         [HttpPost("Create")]
         public IActionResult Create([FromBody] VideoRequestCreateVM modelVM)
         {
@@ -138,6 +139,7 @@ namespace Cameo.API.Controllers
             return CustomBadRequest(errorMessage);
         }
 
+        [Authorize(Policy = "CustomerOnly")]
         [HttpPost("Edit/{id}")]
         public IActionResult Edit(int id, [FromBody] VideoRequestEditVM modelVM)
         {
@@ -221,6 +223,7 @@ namespace Cameo.API.Controllers
             }
         }
 
+        [Authorize(Policy = "TalentOnly")]
         [HttpPost("Accept/{id}")]
         public IActionResult Accept(int id)
         {
@@ -257,6 +260,7 @@ namespace Cameo.API.Controllers
         //however once confirmed, DateVideoConfirmed is set to DateTime.Now
         //and the request is considered as finished by talent when he/she confirms
 
+        [Authorize(Policy = "TalentOnly")]
         [HttpPost("ConfirmVideo/{request_id}")]
         public IActionResult ConfirmVideo(int request_id)
         {
@@ -292,6 +296,7 @@ namespace Cameo.API.Controllers
             }
         }
 
+        [Authorize(Policy = "TalentOnly")]
         [HttpPost("ConfirmPayment/{request_id}")]
         public IActionResult ConfirmPayment(int request_id)
         {

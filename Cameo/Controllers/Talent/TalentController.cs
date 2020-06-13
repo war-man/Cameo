@@ -8,7 +8,7 @@ using Cameo.Common;
 
 namespace Cameo.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "TalentOnly")]
     public class TalentController : BaseController
     {
         private readonly ITalentService TalentService;

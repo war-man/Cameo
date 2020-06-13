@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cameo.API.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "TalentOnly")]
     [Route("api/[controller]")]
     [ApiController]
     public class TalentPriceController : BaseController

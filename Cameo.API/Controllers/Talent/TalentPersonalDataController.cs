@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Cameo.API.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "TalentOnly")]
     [Route("api/[controller]")]
     [ApiController]
     public class TalentPersonalDataController : BaseController
