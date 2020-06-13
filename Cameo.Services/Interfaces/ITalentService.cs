@@ -23,5 +23,7 @@ namespace Cameo.Services.Interfaces
         void SetAvailability(Talent model, bool availability, string userID);
 
         void SaveDetachedIntroVideo(Talent model, string userID);
+
+        string GetRandomPhotoUrl();
     }
 }

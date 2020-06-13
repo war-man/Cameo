@@ -87,7 +87,7 @@ namespace Cameo.Controllers
                 foreach (var talent in categoryTalentsVM.Talents)
                 {
                     if (talent.Avatar.ID == 0)
-                        talent.Avatar.Url = GetRandomPhotoUrl();
+                        talent.Avatar.Url = TalentService.GetRandomPhotoUrl();
                 }
             }
 
@@ -227,7 +227,7 @@ namespace Cameo.Controllers
                 foreach (var talent in categoryTalentsVM.Talents)
                 {
                     if (talent.Avatar.ID == 0)
-                        talent.Avatar.Url = GetRandomPhotoUrl();
+                        talent.Avatar.Url = TalentService.GetRandomPhotoUrl();
                 }
             }
 
@@ -257,6 +257,9 @@ namespace Cameo.Controllers
             TalentDetailsVM modelVM = new TalentDetailsVM(talent);
             modelVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
             modelVM.RequestPriceToStr();
+
+            if (modelVM.Avatar.ID == 0)
+                modelVM.Avatar.Url = TalentService.GetRandomPhotoUrl();
 
             //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
             ViewData["isUserCustomer"] = AccountUtil.IsUserCustomer(curUser);
@@ -300,7 +303,7 @@ namespace Cameo.Controllers
             foreach (var talent in relatedTalents)
             {
                 if (talent.Avatar.ID == 0)
-                    talent.Avatar.Url = GetRandomPhotoUrl();
+                    talent.Avatar.Url = TalentService.GetRandomPhotoUrl();
             }
 
             return PartialView(relatedTalents);
@@ -315,7 +318,7 @@ namespace Cameo.Controllers
             foreach (var item in talents)
             {
                 if (item.Avatar.ID == 0)
-                    item.Avatar.Url = GetRandomPhotoUrl();
+                    item.Avatar.Url = TalentService.GetRandomPhotoUrl();
             }
 
             //ViewData["categories"] = CategoryService.GetAllActive()
@@ -333,7 +336,7 @@ namespace Cameo.Controllers
             foreach (var item in talents)
             {
                 if (item.Avatar.ID == 0)
-                    item.Avatar.Url = GetRandomPhotoUrl();
+                    item.Avatar.Url = TalentService.GetRandomPhotoUrl();
             }
 
             return PartialView("_SearchBoxResult", talents);
@@ -373,45 +376,6 @@ namespace Cameo.Controllers
 
             ViewData["sortingItems"] = sortingItems;
             ViewData["cat"] = cat;
-        }
-
-        private string GetRandomPhotoUrl()
-        {
-            List<string> urls = new List<string>()
-            {
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190322_175932/1076641576_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190323_144715/1131788095_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181230_125854/1151881448_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20191022_141609/1244742035_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20191022_161444/1273827994_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190512_221439/1302255751_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190903_231857/1345976596_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190512_221439/1392034683_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190112_230823/1412651936_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20160119_083125/1422806958_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20161218_000047/1530027694_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190112_221337/1598193086_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190903_231857/1629236964_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190712_234617/1645652980_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181103_151515/1246139023_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190321_090716/1260185104_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181230_125854/1303631832_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190330_170418/1338675767_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181104_121932/1420110925_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190704_214009/1446278688_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20191120_082123/1465143706_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181104_121932/1420110925_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20191022_141609/1489216552_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20170415_163011/1498801167_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190928_125853/1506653934_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181230_125854/1656540307_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190903_231857/1663342103_medium.jpg",
-                "https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20191022_122027/1751005141_medium.jpg"
-            };
-
-            Random random = new Random();
-            int randomIndex = random.Next(0, urls.Count);
-            return urls[randomIndex];
         }
     }
 }

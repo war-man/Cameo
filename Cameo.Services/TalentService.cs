@@ -239,5 +239,44 @@ namespace Cameo.Services
         {
             Update(model, userID);
         }
+
+        public string GetRandomPhotoUrl()
+        {
+            List<string> urls = new List<string>()
+            {
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/91398121_215459056226319_8001052095025359483_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=103&_nc_ohc=QpeHWpBfxQkAX-6jU-G&oh=6f16e7b8f15f7e75995bc7fcf868d260&oe=5F102AF3",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/103153847_750012662410713_6877097469987565377_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=109&_nc_ohc=Gne7ZskJj8oAX_2MT-B&oh=d4fcd145399d4ff1b2933fbe85a657a2&oe=5F0DBCA9",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/101262175_555147018708603_1746131759704050091_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=103&_nc_ohc=6fbPSck9fAYAX9s1N8w&oh=b83dfa5c9a309cb0c953db6dae4471c3&oe=5F0FAE68",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/90092291_116938873258760_8678810733341604697_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=108&_nc_ohc=3hOC9TinfxoAX9yupXL&oh=cf2e9aca779d1e649c6021f7ec66113d&oe=5F0E87F9",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/97295700_245561270085098_7286852456392262312_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=102&_nc_ohc=3LUqEZhWjgwAX9o3nBE&oh=bf893e87e6a88fb2fb8578c4f8617b83&oe=5F0CE9B1",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/102568125_711003819648614_2158210147199228765_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=102&_nc_ohc=xKqnIRshkz0AX9Xy0dp&oh=665e78d45ec0fe7fbaaaf24140f37fbe&oe=5F0E8FD2",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/96080393_1550101548498450_8529596848555704881_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=106&_nc_ohc=GHSU1mldvesAX9shnhz&oh=d700741e51725024ddb47dfef346c66b&oe=5F0D284A",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/100973892_547336785922438_8235285155480417369_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=110&_nc_ohc=zBSJXNOymyIAX9VHG6X&oh=a66f6e444815c462df774bbe992a9aa2&oe=5F0DBD68",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/s1080x1080/102388337_277091243479776_8527135892369297103_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=100&_nc_ohc=K1bZArl32EAAX8fRqsV&oh=757ad5ec99c2c710615417412f96ba58&oe=5F0DC969",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/s1080x1080/100671865_242458866982318_952037497740762328_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=110&_nc_ohc=4R3JXX959dwAX_Q0ssm&oh=f202f830fa81c2f3615f08201b45f99d&oe=5F0DB03F",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/100900977_1968437766623570_5399434634819320545_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=102&_nc_ohc=Pwk1-c_1UjkAX_jL5e1&oh=99269a2727e0e88a803a6a0db19ee934&oe=5F0FA385",
+                "https://scontent-waw1-1.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/98458357_106739267627088_9010794419742870590_n.jpg?_nc_ht=scontent-waw1-1.cdninstagram.com&_nc_cat=100&_nc_ohc=gWujcUdqSocAX8zIFUY&oh=c590a788a30045362099828c2119ed30&oe=5F0F5659",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190903_231857/1629236964_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190712_234617/1645652980_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181103_151515/1246139023_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190321_090716/1260185104_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181230_125854/1303631832_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190330_170418/1338675767_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181104_121932/1420110925_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190704_214009/1446278688_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20191120_082123/1465143706_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181104_121932/1420110925_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20191022_141609/1489216552_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20170415_163011/1498801167_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190928_125853/1506653934_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20181230_125854/1656540307_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20190903_231857/1663342103_medium.jpg",
+                //"https://imagefreeblob.blob.core.windows.net/imagepreviews/hakon/20191022_122027/1751005141_medium.jpg"
+            };
+
+            Random random = new Random();
+            int randomIndex = random.Next(0, urls.Count);
+            return urls[randomIndex];
+        }
     }
 }
