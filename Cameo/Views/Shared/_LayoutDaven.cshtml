@@ -8,7 +8,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="~/lib/DavenTheme/img/favicon.ico" type="image/x-icon">
+    @*<link rel="shortcut icon" href="~/lib/DavenTheme/img/favicon.ico" type="image/x-icon">*@
+    <link rel="shortcut icon" href="~/images/favicon.PNG">
 
     <link href="~/lib/DavenTheme/css/plugins.css" rel="stylesheet" />
     <link href="~/lib/DavenTheme/css/style.css" rel="stylesheet" />
@@ -24,7 +25,7 @@
             <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         </environment>*@
 </head>
-<body class="template-color-1 template-font-1">
+<body class="template-color-3 template-font-1"><!--template-color-3,4-->
     <partial name="_CookieConsentPartial" />
 
     <!-- Wrapper -->
@@ -107,12 +108,12 @@
 </script>
 
 <style>
-    a.button-link.button__black,
+    /*a.button-link.button__black,*/
+    a.button-link,
     button.button-link.button__black,
     input[type=submit],
     input[type=text],
-    textarea
-    {
+    textarea {
         border-radius: 0.25rem !important;
     }
 
@@ -125,5 +126,38 @@
         border-top-right-radius: 0.25rem !important;
         border-bottom-left-radius: 0rem !important;
         border-top-left-radius: 0rem !important;
+    }
+
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #d3d3d3;
+        opacity: 1; /* Firefox */
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #d3d3d3;
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #d3d3d3;
+    }
+
+    .backBtn, .submitBtn {
+        width: 100%;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    input[disabled=disabled],
+    button[disabled=disabled] {
+        color: #a6a3a3 !important;
+        cursor: not-allowed;
+    }
+
+    .singleTalentImg {
+        object-fit: cover; /* Scale the image so it covers whole area, thus will likely crop */
+        object-position: center; /* Center the image within the element */
+        height: 250px;
+        width: 100%;
     }
 </style>

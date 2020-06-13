@@ -30,7 +30,7 @@
                         }
                         else
                         {
-                            <img class="w-100" src="@Model.Avatar.Url" alt="@Model.FullName">
+                            <img class="w-100 talentProfileImg" src="@Model.Avatar.Url" alt="@Model.FullName">
                         }
                     </div>
                 </div>
@@ -167,6 +167,14 @@
     .video-js {
         width: 100%;
         height: 100%;
+        border-radius: 0.25rem;
+    }
+
+    .talentProfileImg {
+        object-fit: cover; /* Scale the image so it covers whole area, thus will likely crop */
+        object-position: center; /* Center the image within the element */
+        height: 500px;
+        width: 100%;
         border-radius: 0.25rem;
     }
 </style>
