@@ -18,17 +18,20 @@ namespace Cameo.Controllers
         private readonly ICategoryService CategoryService;
         private readonly IVideoRequestTypeService VideoRequestTypeService;
         private readonly IVideoRequestService VideoRequestService;
+        private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
 
         public TalentsController(
             ITalentService talentService,
             ICategoryService categoryService,
             IVideoRequestTypeService videoRequestTypeService,
-            IVideoRequestService videoRequestService)
+            IVideoRequestService videoRequestService,
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
         {
             TalentService = talentService;
             CategoryService = categoryService;
             VideoRequestTypeService = videoRequestTypeService;
             VideoRequestService = videoRequestService;
+            VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
         }
 
         public IActionResult Index(int? cat)
@@ -255,7 +258,7 @@ namespace Cameo.Controllers
                 return NotFound();
 
             TalentDetailsVM modelVM = new TalentDetailsVM(talent);
-            modelVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
+            modelVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
             modelVM.RequestPriceToStr();
 
             if (modelVM.Avatar.ID == 0)

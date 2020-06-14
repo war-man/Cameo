@@ -60,7 +60,7 @@ namespace Cameo
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString(connectionStringName),
-                   b => b.MigrationsAssembly("Cameo")));
+                   b => b.MigrationsAssembly("Cameo").UseRowNumberForPaging()));
 
             //services.AddDefaultIdentity<ApplicationUser>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -76,7 +76,7 @@ namespace Cameo
 
             //Hangfire
 #if DEBUG
-            string connectionString = "Data Source=.;Initial Catalog=Cameo;User Id=sa;Password=490969;";
+            string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
 #else
             string connectionString = "Data Source=192.168.44.96;Initial Catalog=Helloo;User Id=sa;Password=cloudstack;";
 #endif
@@ -134,11 +134,11 @@ namespace Cameo
 
             if (env.IsDevelopment())
             {
-                //app.UseStatusCodePagesWithReExecute("/Error/Status/{0}");
-                //app.UseExceptionHandler("/Error/Index");
+                app.UseStatusCodePagesWithReExecute("/Error/Status/{0}");
+                app.UseExceptionHandler("/Error/Index");
 
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDeveloperExceptionPage();
+                //app.UseDatabaseErrorPage();
             }
             else
             {

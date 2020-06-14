@@ -19,17 +19,20 @@ namespace Cameo.API.Controllers
         private readonly IVideoRequestSearchService SearchService;
         private readonly IVideoRequestService VideoRequestService;
         private readonly IVideoRequestTypeService VideoRequestTypeService;
+        private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
 
         public CustomerVideoRequestController(
             ICustomerService customerService,
             IVideoRequestSearchService searchService,
             IVideoRequestService videoRequestService,
-            IVideoRequestTypeService videoRequestTypeService)
+            IVideoRequestTypeService videoRequestTypeService,
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
         {
             CustomerService = customerService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
+            VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
         }
 
         [HttpGet("{id}")]
@@ -53,10 +56,10 @@ namespace Cameo.API.Controllers
                 requestVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
                 requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
 
-                requestVM.request_price = VideoRequestService.CalculateRequestPrice(request);
+                requestVM.request_price = VideoRequestPriceCalculationsService.CalculateRequestPrice(request);
                 requestVM.RequestPriceToStr();
 
-                requestVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+                requestVM.remaining_price = VideoRequestPriceCalculationsService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
                 requestVM.RemainingPriceToStr();
 
                 requestVM.video_is_confirmed = VideoRequestService.IsVideoConfirmed(request);

@@ -22,6 +22,7 @@ namespace Cameo.Controllers
         private readonly IHangfireService HangfireService;
         private readonly ITalentBalanceService TalentBalanceService;
         private readonly ICustomerBalanceService CustomerBalanceService;
+        private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
 
         public VideoRequestController(
             IVideoRequestService videoRequestService,
@@ -30,7 +31,8 @@ namespace Cameo.Controllers
             ICustomerService customerService,
             IHangfireService hangfireService,
             ITalentBalanceService talentBalanceService,
-            ICustomerBalanceService customerBalanceService)
+            ICustomerBalanceService customerBalanceService,
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
         {
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
@@ -39,6 +41,7 @@ namespace Cameo.Controllers
             HangfireService = hangfireService;
             TalentBalanceService = talentBalanceService;
             CustomerBalanceService = customerBalanceService;
+            VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
         }
 
         public IActionResult Index()
@@ -62,7 +65,7 @@ namespace Cameo.Controllers
                 return NotFound();
 
             TalentDetailsVM talentVM = new TalentDetailsVM(talent);
-            talentVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
+            talentVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
             talentVM.RequestPriceToStr();
             ViewData["talent"] = talentVM;
 
@@ -96,7 +99,7 @@ namespace Cameo.Controllers
                             {
                                 var curCustomer = CustomerService.GetByUserID(curUser.ID);
                                 int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
-                                int requestPrice = VideoRequestService.CalculateRequestPrice(talent);
+                                int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
 
                                 if (customerBalance >= requestPrice)
                                 {
@@ -145,7 +148,7 @@ namespace Cameo.Controllers
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
             TalentDetailsVM talentVM = new TalentDetailsVM(talent);
-            talentVM.RequestPrice = VideoRequestService.CalculateRequestPrice(talent);
+            talentVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
             talentVM.RequestPriceToStr();
             ViewData["talent"] = talentVM;
 

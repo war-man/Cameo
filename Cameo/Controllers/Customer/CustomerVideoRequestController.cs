@@ -18,19 +18,22 @@ namespace Cameo.Controllers
         private readonly IVideoRequestService VideoRequestService;
         private readonly IVideoRequestTypeService VideoRequestTypeService;
         private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
+        private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
 
         public CustomerVideoRequestController(
             ICustomerService customerService,
             IVideoRequestSearchService searchService,
             IVideoRequestService videoRequestService,
             IVideoRequestTypeService videoRequestTypeService,
-            IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService,
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
         {
             CustomerService = customerService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
             FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
+            VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
         }
 
         public IActionResult Index()
@@ -61,10 +64,10 @@ namespace Cameo.Controllers
                 requestVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
                 requestVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
 
-                requestVM.RequestPrice = VideoRequestService.CalculateRequestPrice(request);
+                requestVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(request);
                 requestVM.RequestPriceToStr();
 
-                requestVM.RemainingPrice = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+                requestVM.RemainingPrice = VideoRequestPriceCalculationsService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
                 requestVM.RemainingPriceToStr();
 
                 requestVM.VideoIsConfirmed = VideoRequestService.IsVideoConfirmed(request);

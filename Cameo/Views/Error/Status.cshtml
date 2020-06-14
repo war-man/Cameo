@@ -1,8 +1,30 @@
 ﻿
 @{
     ViewData["Title"] = "Error";
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
 <h2>@ViewData["Title"]</h2>
 
 <p>Status = @ViewBag.code</p>
+
+<!-- Start Error Area -->
+<div class="error-area fullscreen bg_image bg_image--8 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="error-content text-center pt_sm--60">
+                    <h1 class="theme-color font--250 mb--0">@ViewBag.code</h1>
+                    <h3 class="font--36 fontWeight400 mb--5">Ошибка на сайте!</h3>
+                    @*<p class="font--16">It looks like nothing was found at this locations.</p>*@
+                    <div class="back-button mt--45">
+                        <a class="button-link button-size__lg button__black" href="/">
+                            <span class="button-text button-text__14">На главную</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Error Area -->

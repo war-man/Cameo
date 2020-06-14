@@ -19,17 +19,20 @@ namespace Cameo.API.Controllers
         private readonly IVideoRequestSearchService SearchService;
         private readonly IVideoRequestService VideoRequestService;
         private readonly ITalentBalanceService TalentBalanceService;
+        private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
 
         public TalentVideoRequestController(
             ITalentService talentService,
             IVideoRequestSearchService searchService,
             IVideoRequestService videoRequestService,
-            ITalentBalanceService talentBalanceService)
+            ITalentBalanceService talentBalanceService,
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
         {
             TalentService = talentService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
             TalentBalanceService = talentBalanceService;
+            VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
         }
 
         //public IActionResult Index(int? status = 0)
@@ -63,10 +66,10 @@ namespace Cameo.API.Controllers
                 VideoRequestDetailsForTalentVM requestVM = new VideoRequestDetailsForTalentVM(request);
                 requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
 
-                requestVM.request_price = VideoRequestService.CalculateRequestPrice(request);
+                requestVM.request_price = VideoRequestPriceCalculationsService.CalculateRequestPrice(request);
                 requestVM.RequestPriceToStr();
 
-                requestVM.remaining_price = VideoRequestService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+                requestVM.remaining_price = VideoRequestPriceCalculationsService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
                 requestVM.RemainingPriceToStr();
 
                 return requestVM;

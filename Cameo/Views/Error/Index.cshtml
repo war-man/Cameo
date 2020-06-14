@@ -1,9 +1,31 @@
 ﻿@model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
+    Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
-<h1 class="text-danger">Error.</h1>
+<!-- Start Error Area -->
+<div class="error-area fullscreen bg_image bg_image--8 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="error-content text-center pt_sm--60">
+                    @*<h1 class="theme-color font--250 mb--0">404</h1>*@
+                    <h3 class="font--36 fontWeight400 mb--5">Ошибка на сайте!</h3>
+                    @*<p class="font--16">It looks like nothing was found at this locations.</p>*@
+                    <div class="back-button mt--45">
+                        <a class="button-link button-size__lg button__black" href="/">
+                            <span class="button-text button-text__14">На главную</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Error Area -->
+
+@*<h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 
 @if (Model.ShowRequestId)
@@ -19,4 +41,4 @@
 </p>
 <p>
     <strong>Development environment should not be enabled in deployed applications</strong>, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>, and restarting the application.
-</p>
+</p>*@

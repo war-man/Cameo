@@ -12,22 +12,23 @@ namespace Cameo.Services
 {
     public class VideoRequestService : BaseCRUDService<VideoRequest>, IVideoRequestService
     {
-        private readonly IEmailService EmailService;
+        //private readonly IEmailService EmailService;
         private readonly ITalentBalanceService TalentBalanceService;
         private readonly ICustomerBalanceService CustomerBalanceService;
+        private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
 
         private int tmpPeriodMinutes = 2;
 
         public VideoRequestService(IVideoRequestRepository repository,
-                           IUnitOfWork unitOfWork,
-                           IEmailService emailService,
-                           ITalentBalanceService talentBalanceService,
-                           ICustomerBalanceService customerBalanceService)
+            IUnitOfWork unitOfWork,
+            ITalentBalanceService talentBalanceService,
+            ICustomerBalanceService customerBalanceService,
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
             : base(repository, unitOfWork)
         {
-            EmailService = emailService;
             TalentBalanceService = talentBalanceService;
             CustomerBalanceService = customerBalanceService;
+            VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
         }
 
         public VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id)
@@ -74,7 +75,7 @@ namespace Cameo.Services
             model.RequestStatusID = (int)VideoRequestStatusEnum.requestExpired;
             model.DateRequestExpired = DateTime.Now;
 
-            int requestPrice = CalculateRequestPrice(model);
+            int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
             CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
 
             Update(model, userID);
@@ -91,7 +92,7 @@ namespace Cameo.Services
             string subjectTalent = "Subject - Talent";
             string bodyTalent = "This is email for Talent";
 
-            EmailService.Send(toTalent, subjectTalent, bodyTalent);
+            //EmailService.Send(toTalent, subjectTalent, bodyTalent);
         }
         
         /// <summary>
@@ -137,7 +138,6 @@ namespace Cameo.Services
             }
         }
 
-
         public void Accept(VideoRequest model, string userID)
         {
             if (!BelongsToTalent(model, userID))
@@ -173,7 +173,6 @@ namespace Cameo.Services
             //    throw new Exception("Текущий баланс не позволяет принять запрос");
         }
 
-
         public void VideoDeadlineReaches(VideoRequest model, string userID)
         {
             //0. TO-DO: apply some disciplinary penalty that negatively affects talent's reputation
@@ -185,7 +184,7 @@ namespace Cameo.Services
             model.DateVideoExpired = DateTime.Now;
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoExpired;
 
-            int requestPrice = CalculateRequestPrice(model);
+            int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
             CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
 
             Update(model, userID);
@@ -202,7 +201,7 @@ namespace Cameo.Services
             model.DatePaymentConfirmationExpired = DateTime.Now;
             model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmationExpired;
 
-            int requestPrice = CalculateRequestPrice(model);
+            int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
             CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
 
             Update(model, userID);
@@ -210,34 +209,6 @@ namespace Cameo.Services
             //TO-DO: send firebase notification to Customer
             //TO-DO: send firebase notification to Talent
         }
-
-        //public void MakePayment(VideoRequest model, string userID)
-        //{
-        //    if (!BelongsToUser(model, userID))
-        //        throw new Exception("Вы обрабатываете не принадлежащий Вам запрос");
-
-        //    int amountToBeTakenOff = TalentBalanceService
-        //        .CalculateMoneyThatTalentPaysToSystemForCameo(model.Price, model.WebsiteCommission);
-
-        //    TalentBalanceService.TakeOffBalance(model.Talent, amountToBeTakenOff, userID);
-
-        //    model.DatePaid = DateTime.Now;
-        //    model.RequestStatusID = (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
-        //    Update(model, userID);
-
-        //    //send emails to customer and talent
-        //    string toCustomer = "cortex91@inbox.ru";
-        //    string subjectCustomer = "Subject - Customer";
-        //    string bodyCustomer = "This is email for Customer";
-
-        //    EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
-
-        //    string toTalent = "xenon1991@inbox.ru";
-        //    string subjectTalent = "Subject - Talent";
-        //    string bodyTalent = "This is email for Talent";
-
-        //    EmailService.Send(toTalent, subjectTalent, bodyTalent);
-        //}
 
         private bool BelongsToUser(VideoRequest model, string userID)
         {
@@ -368,15 +339,15 @@ namespace Cameo.Services
             return model.VideoID.HasValue;
         }
 
-        public void SendEmailOnceVideoConfirmed(VideoRequest model)
-        {
-            //send email to Customer
-            string toCustomer = "cortex91@inbox.ru";
-            string subjectCustomer = "Subject - Customer";
-            string bodyCustomer = "This is email for Customer";
+        //public void SendEmailOnceVideoConfirmed(VideoRequest model)
+        //{
+        //    //send email to Customer
+        //    string toCustomer = "cortex91@inbox.ru";
+        //    string subjectCustomer = "Subject - Customer";
+        //    string bodyCustomer = "This is email for Customer";
 
-            EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
-        }
+        //    EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
+        //}
 
         public bool IsPaymentConfirmed(VideoRequest model)
         {
@@ -398,31 +369,6 @@ namespace Cameo.Services
                 else if (!IsNotPublic(model))
                     return model;
             }
-
-            //if (BelongsToTalent(model, userID))
-            //    return model;
-            //else if (IsPaymentConfirmed(model))
-            //{
-            //    if (BelongsToCustomer(model, userID))
-            //        return model;
-            //    else if (!IsNotPublic(model))
-            //        return model;
-            //}
-
-            //if (model.Talent.UserID == userID)
-            //    return model;
-            //else if (IsPaymentConfirmed(model))
-            //{
-            //    //if unauthorized
-            //    if (string.IsNullOrWhiteSpace(userID))
-            //    {
-            //        if (!RequestIsNotPublic(model))
-            //            return model;
-            //    }
-            //    //if request belongs to current Customer
-            //    else if (model.Customer.UserID == userID)
-            //        return model;
-            //}
             
             return null;
         }
@@ -463,124 +409,23 @@ namespace Cameo.Services
             return IsWaitingForResponse(model);
         }
 
-        //public int GetAllCountByTalent(Talent talent)
-        //{
-        //    return GetAllActiveAsIQueryable().Count(m => m.TalentID == talent.ID);
-        //}
-
-        //public int GetCompletedCountByTalent(Talent talent)
-        //{
-        //    return GetAllActiveAsIQueryable()
-        //        .Count(m => m.TalentID == talent.ID
-        //            && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-        //                || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded));
-        //}
-
-        //public int GetCompletenessPercentageByTalent(Talent talent)
-        //{
-        //    int requestsTotal = GetAllCountByTalent(talent);
-        //    int requestsCompleted = GetCompletedCountByTalent(talent);
-
-        //    return (requestsCompleted * 100) / requestsTotal;
-        //}
-
-        //public int GetPaidCountByTalent(Talent talent)
-        //{
-        //    return GetAllActiveAsIQueryable()
-        //        .Count(m => m.TalentID == talent.ID
-        //            && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed));
-        //}
-
         /// <summary>
         /// Get all requests payment for which is cnfirmed
         /// </summary>
         /// <param name="talent"></param>
         /// <returns></returns>
-        public IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
+        private IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
         {
             return GetAllActiveAsIQueryable()
                 .Where(m => m.TalentID == talent.ID
                     && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed);
         }
 
-        ////later siteStavka and amount, that talent earns will be saved for each request
-        //public int GetEarnedByTalent(Talent talent)
-        //{
-        //    int totalPaid = GetAllPaidByTalent(talent).Sum(m => m.Price);
-        //    int siteStavka = 25; //25%
-        //    return totalPaid * (100 - siteStavka) / 100;
-        //}
-
-        //public int GetWaitingCountByTalent(Talent talent)
-        //{
-        //    return GetAllActiveAsIQueryable()
-        //        .Count(m => m.TalentID == talent.ID
-        //            && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo));
-        //}
-
-        //public VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID)
-        //{
-        //    List<int> ids = GetPublicForTalent(talent)
-        //        .Select(m => m.ID)
-        //        .ToList();
-
-        //    if (ids.Count == 0)
-        //        return null;
-
-        //    var rand = new Random();
-        //    int randomIndex = rand.Next(0, ids.Count);
-        //    return GetSinglePublished(ids[randomIndex], userID);
-        //}
-
         public IQueryable<VideoRequest> GetPublicByTalent(Talent talent, int requestIDToBeExcluded = 0)
         {
             return GetAllPaidByTalent(talent)
                 .Where(m => !m.IsNotPublic && m.ID != requestIDToBeExcluded)
                 .OrderByDescending(m => m.ID);
-        }
-
-        public int CalculateRequestPrice(Talent talent)
-        {
-            int price = talent.Price;
-
-            double websiteCommission = 0;
-            double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out websiteCommission);
-            if (websiteCommission <= 0)
-                websiteCommission = 25;
-
-            return CalculateRequestPrice(talent.Price, websiteCommission);
-        }
-
-        public int CalculateRequestPrice(VideoRequest request)
-        {
-            return CalculateRequestPrice(request.Price, request.WebsiteCommission);
-        }
-
-        private int CalculateRequestPrice(int price, double websiteCommission)
-        {
-            double requestPriceDouble = ((101 * websiteCommission - 100) / 10000) * price;
-            double requestPriceDouble2 = (0.25 - (0.75 * 0.01)) * price;
-
-            int requestPriceInt = ((int)(requestPriceDouble / 1000)) * 1000;
-
-            return requestPriceInt;
-        }
-
-        public int CalculateRemainingPrice(int price)
-        {
-            double websiteCommission = 0;
-            double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out websiteCommission);
-            if (websiteCommission <= 0)
-                websiteCommission = 25;
-
-            return CalculateRemainingPrice(price, websiteCommission);
-        }
-
-        public int CalculateRemainingPrice(int price, double websiteCommission)
-        {
-            int remainingPrice = (int)(((100.0 - websiteCommission) / 100) * price);
-
-            return remainingPrice;
         }
 
         private DateTime RoundToUp(DateTime inputDateTime)

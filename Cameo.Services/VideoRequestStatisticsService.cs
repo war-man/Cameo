@@ -16,9 +16,7 @@ namespace Cameo.Services
 
         public VideoRequestStatisticsService(IVideoRequestRepository repository,
             IUnitOfWork unitOfWork,
-            IEmailService emailService,
-            IVideoRequestService videoRequestService,
-            ICustomerBalanceService customerBalanceService)
+            IVideoRequestService videoRequestService)
         {
             VideoRequestService = videoRequestService;
         }
@@ -96,42 +94,5 @@ namespace Cameo.Services
             //int siteStavka = 25; //25%
             //return totalPaid * (100 - siteStavka) / 100;
         }
-
-        //public int GetCompletedCountByTalent(Talent talent)
-        //{
-        //    return GetAllActiveAsIQueryable()
-        //        .Count(m => m.TalentID == talent.ID
-        //            && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted
-        //                || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded));
-        //}
-
-        //public int GetCompletenessPercentageByTalent(Talent talent)
-        //{
-        //    int requestsTotal = GetAllCountByTalent(talent);
-        //    int requestsCompleted = GetCompletedCountByTalent(talent);
-
-        //    return (requestsCompleted * 100) / requestsTotal;
-        //}
-
-        //public int GetPaidCountByTalent(Talent talent)
-        //{
-        //    return GetAllActiveAsIQueryable()
-        //        .Count(m => m.TalentID == talent.ID
-        //            && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed));
-        //}
-
-        /// <summary>
-        /// Get all requests payment for which is cnfirmed
-        /// </summary>
-        /// <param name="talent"></param>
-        /// <returns></returns>
-        //public IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
-        //{
-        //    return GetAllActiveAsIQueryable()
-        //        .Where(m => m.TalentID == talent.ID
-        //            && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed);
-        //}
-
-
     }
 }

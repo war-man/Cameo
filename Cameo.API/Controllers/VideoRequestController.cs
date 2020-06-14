@@ -24,6 +24,7 @@ namespace Cameo.API.Controllers
         private readonly IHangfireService HangfireService;
         private readonly ITalentBalanceService TalentBalanceService;
         private readonly ICustomerBalanceService CustomerBalanceService;
+        private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
 
         public VideoRequestController(
             IVideoRequestService videoRequestService,
@@ -32,7 +33,8 @@ namespace Cameo.API.Controllers
             ICustomerService customerService,
             IHangfireService hangfireService,
             ITalentBalanceService talentBalanceService,
-            ICustomerBalanceService customerBalanceService)
+            ICustomerBalanceService customerBalanceService,
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
         {
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
@@ -41,6 +43,7 @@ namespace Cameo.API.Controllers
             HangfireService = hangfireService;
             TalentBalanceService = talentBalanceService;
             CustomerBalanceService = customerBalanceService;
+            VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
         }
 
         [HttpGet("GetTalentRequestInfo/{talent_id}")]
@@ -60,7 +63,7 @@ namespace Cameo.API.Controllers
 
             int customerBalance = CustomerBalanceService.GetBalance(customer);
             TalentRequestInfoVM talentRequestInfoVM = new TalentRequestInfoVM(talent, customerBalance);
-            talentRequestInfoVM.request_price = VideoRequestService.CalculateRequestPrice(talent);
+            talentRequestInfoVM.request_price = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
             talentRequestInfoVM.RequestPriceToStr();
 
             return talentRequestInfoVM;
@@ -87,7 +90,7 @@ namespace Cameo.API.Controllers
                             {
                                 var curCustomer = CustomerService.GetByUserID(curUser.ID);
                                 int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
-                                int requestPrice = VideoRequestService.CalculateRequestPrice(talent);
+                                int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
 
                                 if (customerBalance >= requestPrice)
                                 {

@@ -33,7 +33,7 @@ namespace Cameo.Services.Interfaces
         void SaveDetachedVideo(VideoRequest model, string userID);
 
         void ConfirmVideo(VideoRequest model, string userID);
-        void SendEmailOnceVideoConfirmed(VideoRequest model);
+        //void SendEmailOnceVideoConfirmed(VideoRequest model);
 
         VideoRequest GetSinglePublished(int id, string userID);
         VideoRequest GetIncompletedVideo(int id, string userID);
@@ -44,21 +44,11 @@ namespace Cameo.Services.Interfaces
         bool IsEditable(VideoRequest model);
         bool IsCancelable(VideoRequest model);
         bool IsPaymentConfirmed(VideoRequest model);
-        //int GetAllCountByTalent(Talent talent);
-        //int GetCompletedCountByTalent(Talent talent);
-        //int GetCompletenessPercentageByTalent(Talent talent);
-        //int GetPaidCountByTalent(Talent talent);
-        //IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent);
-        //int GetEarnedByTalent(Talent talent);
-        //int GetWaitingCountByTalent(Talent talent);
-        //VideoRequest GetRandomSinglePublishedByTalent(Talent talent, string userID);
         IQueryable<VideoRequest> GetPublicByTalent(Talent talent, int requestIDToBeExcluded);
 
-        int CalculateRequestPrice(Talent talent);
-        int CalculateRequestPrice(VideoRequest request);
-
-        int CalculateRemainingPrice(int price);
-        int CalculateRemainingPrice(int price, double websiteCommission);
+        //int CalculateRequestPrice(Talent talent);
+        //int CalculateRequestPrice(VideoRequest request);
+        //int CalculateRemainingPrice(int price, double websiteCommission);
         bool IsVideoConfirmed(VideoRequest model);
         void SaveUploadedPaymentScreenshot(VideoRequest model, string userID);
         void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID);
