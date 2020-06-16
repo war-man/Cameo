@@ -42,5 +42,10 @@ namespace Cameo.Services
             if (string.IsNullOrWhiteSpace(model.AccountNumber))
                 model.AccountNumber = model.ID.ToString().PadLeft(8, '0');
         }
+
+        public Customer GetByAccountNumber(string accountNumber)
+        {
+            return GetAsIQueryable().FirstOrDefault(m => m.AccountNumber.Equals(accountNumber));
+        }
     }
 }

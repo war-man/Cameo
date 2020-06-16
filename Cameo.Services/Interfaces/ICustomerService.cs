@@ -7,5 +7,6 @@ namespace Cameo.Services.Interfaces
         Customer GetByUserID(string userID);
         Customer GetActiveSingleDetailsWithRelatedDataByID(int id);
         Customer GetActiveSingleDetailsWithRelatedDataByUserID(string userID);
+        Customer GetByAccountNumber(string accountNumber);
     }
 }

@@ -169,7 +169,7 @@ namespace Cameo.API
 
             app.UseAuthentication();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             //app.UseMvc();
             app.UseMvc(routes =>
             {
