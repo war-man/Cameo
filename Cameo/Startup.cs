@@ -54,7 +54,7 @@ namespace Cameo
 #if DEBUG
             string connectionStringName = "DefaultConnection";
 #else
-            string connectionStringName = "ServerConnection";
+            string connectionStringName = "USAServerConnection";
 #endif
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -78,7 +78,7 @@ namespace Cameo
 #if DEBUG
             string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
 #else
-            string connectionString = "Data Source=192.168.44.96;Initial Catalog=Helloo;User Id=sa;Password=cloudstack;";
+            string connectionString = "Data Source=209.159.151.3;Initial Catalog=Helloo;User Id=sa;Password=MCGR4ZD4Thnr93V4;";
 #endif
             services.AddHangfire(config => 
                 config.UseSqlServerStorage(
@@ -160,12 +160,12 @@ namespace Cameo
             //        Path.Combine(Directory.GetCurrentDirectory(), "Content")),
             //    RequestPath = "/Content"
             //});
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
-                RequestPath = "/Uploads"
-            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+            //    RequestPath = "/Uploads"
+            //});
 
             app.UseCookiePolicy();
 

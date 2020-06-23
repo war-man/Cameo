@@ -13,6 +13,28 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
+//firebase.auth().onAuthStateChanged(function (user)
+//{
+//    if (user)
+//    {
+//        console.log(user);
+//        //// User is signed in.
+//        //var displayName = user.displayName;
+//        //var email = user.email;
+//        //var emailVerified = user.emailVerified;
+//        //var photoURL = user.photoURL;
+//        //var isAnonymous = user.isAnonymous;
+//        //var uid = user.uid;
+//        //var providerData = user.providerData;
+//        //// ...
+//    } else
+//    {
+//        console.log("user is not authenticated");
+//        // User is signed out.
+//        // ...
+//    }
+//});
+
 //// Retrieve Firebase Messaging object.
 //const messaging = firebase.messaging();
 //// Handle incoming messages. Called when:
