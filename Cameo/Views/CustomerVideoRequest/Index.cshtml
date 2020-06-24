@@ -7,7 +7,7 @@
 }
 
 <div class="row bg-color ptb_md--60">
-    <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40">
+    <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40" style="width: 100%;">
         <div class="row">
             @*<div class="col-lg-2"></div>*@
             <div class="col-lg-4 mt--30">
@@ -16,23 +16,18 @@
             <div class="col-lg-8 mt--30 mb--30">
                 <h2>@ViewData["Title"]</h2>
 
-                <table id="videoRequests" class="table table-condensed" width="100%">
-                    <thead style="display: none;">
-                        <tr>
-                            <th>id</th>
-                            @*<th>toFrom</th>*@
-                            <th></th>@*person*@
-                            <th>statusId</th>
-                            @*<th>statusName</th>*@
-                            @*<th>dateCreated</th>*@
-                            @*<th>deadline</th>*@
-                            @*<th>video</th>*@
-                            @*<th>actions</th>*@
-                        </tr>
-                    </thead>
-                </table>
+                <div>
+                    <table id="videoRequests" class="table table-condensed" width="100%">
+                        <thead style="display: none;">
+                            <tr>
+                                <th>id</th>
+                                <th></th>
+                                <th>statusId</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
-            @*<div class="col-lg-2"></div>*@
         </div>
     </div>
 </div>

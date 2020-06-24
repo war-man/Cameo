@@ -131,7 +131,6 @@
 
         firebase.auth().signOut().then(() =>
         {
-            alert("firebase signed out");
             //navigator.pop();
             $("form#logoutForm").submit();
         }, function (error)

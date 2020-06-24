@@ -11,8 +11,8 @@
 }
 
 @*<br />*@
-<div class="row bg-color ptb_md--60 ptb_sm--60" data-bg-color="#ffffff">
-    <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40">
+<div class="row bg-color ptb_md--60">
+    <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40" style="width: 100%;">
         <div class="row">
             @*<div class="col-lg-2"></div>*@
             <div class="col-lg-4 mt--30">
@@ -46,8 +46,8 @@
 
                                                     <!-- Start Single Team -->
                                                     <div class="col-lg-4 col-md-6 col-sm-6 p-0">
-                                                        <div class="team team__style--1 text-center">
-                                                            <div class="thumbnail">
+                                                        <div class="team team__style--4 text-center">
+                                                            <div class="thumbnail2">
                                                                 <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar">
                                                                 <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw" style="display: none;"></i>
                                                                 @*<img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />*@
@@ -70,7 +70,9 @@
                                                     <span asp-validation-for="Bio" class="text-danger"></span>
                                                 </div>
                                                 <div class="col-lg-12 mt--20">
-                                                    <input type="submit" value="Сохранить">
+                                                    <button type="submit" class="button-link button-size__xl button__black" style="width: 100%">
+                                                        <span class="button-text">Сохранить</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </form>
