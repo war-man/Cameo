@@ -129,7 +129,15 @@
         if (!confirm("Вы уверены, что хотите выйти"))
             return;
 
-        $("form#logoutForm").submit();
+        firebase.auth().signOut().then(() =>
+        {
+            alert("firebase signed out");
+            //navigator.pop();
+            $("form#logoutForm").submit();
+        }, function (error)
+        {
+            console.log(error);
+        });
     }
 </script>
 
