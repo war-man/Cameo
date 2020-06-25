@@ -101,7 +101,12 @@ namespace Cameo.Controllers
 
         public IActionResult ByCategory(int cat)
         {
+            var category = CategoryService.GetByID(cat);
+            if (category == null)
+                return CustomBadRequest("");
+
             ViewBag.categoryID = cat;
+            ViewBag.categoryName = category.Name;
 
             return View();
         }
@@ -181,7 +186,7 @@ namespace Cameo.Controllers
             {
                 var categoryDB = CategoryService.GetActiveByID(categoryID);
                 if (categoryDB == null)
-                    return NotFound("Category not found");
+                    return CustomBadRequest("Категория не найдена");
 
                 var featuredTalents = TalentService.GetFeatured(categoryID, 6);
                 if (featuredTalents.Count() > 0)

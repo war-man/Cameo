@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Cameo.ViewModels.VideoDetailsVM>
 
-<h3 class="heading-divider heading-divider__themeColor">Последние видео</h3>
+<h3 class="heading-divider heading-divider__themeColor">@localizer["LatestVideos"]</h3>
 <hr />
 
 <div class="row">
     @foreach (var item in Model)
     {
         <div class="col-xl-4 col-lg-4 col-md-6 col-12  pb--40">
-            <span><a href="/Video/Details/@item.RequestID">От @item.From для @item.To</a></span>
+            <span><a href="/Video/Details/@item.RequestID">@localizer["From"] @item.From @localizer["To"] @item.To</a></span>
             <video class="video-js requestVideo" id="request_@item.RequestID" controls preload="true">
                 <source src="@item.Video.Url" type="video/mp4">
                 @*<source src="/Video/GetVideo/@item.RequestID" type="video/mp4">*@

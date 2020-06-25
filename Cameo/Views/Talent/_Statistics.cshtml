@@ -12,7 +12,7 @@
                     </div>
                     <div class="content mt--25">
                         <h3 class="title count font--32" id="total">@Model.Total</h3>
-                        <h6 class="mb--0">Всего заказов</h6>
+                        <h6 class="mb--0">@localizer["OrdersTotal"]</h6>
                     </div>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="content mt--25">
                         <h3 class="title count font--32" id="notCompleted">@Model.NotCompleted</h3>
-                        <h6 class="mb--0">Не выполненные</h6>
+                        <h6 class="mb--0">@localizer["OrdersNotCompleted"]</h6>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="content mt--25">
                         <h3 class="title count font--32" id="waitingForAnswer">@Model.WaitingForAnswer</h3>
-                        <h6 class="mb--0">Ожидают ответа</h6>
+                        <h6 class="mb--0">@localizer["OrdersWaitingForResponse"]</h6>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="content mt--25">
                         <h3 class="title count font--32" id="waitingForVideo">@Model.WaitingForVideo</h3>
-                        <h6 class="mb--0">Ожидают видео</h6>
+                        <h6 class="mb--0">@localizer["OrdersWaitingForVideo"]</h6>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="content mt--25">
                         <h3 class="title count font--32" id="waitingForPayment">@Model.WaitingForPayment</h3>
-                        <h6 class="mb--0">Ожидается оплата</h6>
+                        <h6 class="mb--0">@localizer["OrdersWaitingForPayment"]</h6>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="content mt--25">
                         <h3 class="title count font--32" id="waitingForPaymentConfirmation">@Model.WaitingForPaymentConfirmation</h3>
-                        <h6 class="mb--0">Ожидают подтверждение оплаты</h6>
+                        <h6 class="mb--0">@localizer["OrdersWaitingForPaymentConfirmation"]</h6>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="content mt--25">
                         <h3 class="title count font--32" id="paymentConfirmed">@Model.PaymentConfirmed</h3>
-                        <h6 class="mb--0">Оплата подтверждена</h6>
+                        <h6 class="mb--0">@localizer["OrdersPaymentConfirmed"]</h6>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="content mt--25">
                         <h3 class="title count font--32" id="earned">@Model.Earned</h3>
-                        <h6 class="mb--0">Заработано</h6>
+                        <h6 class="mb--0">@localizer["OrdersEarned"]</h6>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@
 @inject IOptions<AppConfiguration> AppSettings
 
 @{
-    ViewData["Title"] = "Персональные данные";
+    ViewData["Title"] = localizer["PersonalData"];
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
@@ -24,7 +24,7 @@
                 @if (ViewData["successfullySaved"] != null)
                 {
                     <div class="alert alert-success">
-                        Данные успешно сохранены
+                        @localizer["SuccessDataSaved"]
                     </div>
                 }
 
@@ -56,22 +56,22 @@
                                                     </div>
                                                     <div class="col-lg-4 col-md-6 col-sm-6 mt--10 p-0 text-center">
                                                         @*<a class="button-link button-size__8 button__transparent--border--dashed" href="javascript: void(0);"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span><span class="button-text">Редактировать фото</span></a>*@
-                                                        <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left">@*<i class="dlicon ui-1_zoom-split"></i>*@</span> <span class="button-text"><u>Редактировать фото</u></span></label>
+                                                        <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left">@*<i class="dlicon ui-1_zoom-split"></i>*@</span> <span class="button-text"><u>@localizer["EditPhoto"]</u></span></label>
                                                         <input type='file' id="imgInp" style="display: none;"/>
                                                     </div>
                                                     <!-- End Single Team -->
                                                 </div>
                                                 <div class="col-lg-12 mt--20">
-                                                    <input asp-for="FullName" type="text" placeholder="Имя *">
+                                                    <input asp-for="FullName" type="text" placeholder="@Html.DisplayNameFor(m => m.FullName) *">
                                                     <span asp-validation-for="FullName" class="text-danger"></span>
                                                 </div>
                                                 <div class="col-lg-12 mt--20">
-                                                    <textarea asp-for="Bio" type="text" placeholder="О себе"></textarea>
+                                                    <textarea asp-for="Bio" type="text" placeholder="@Html.DisplayNameFor(m => m.Bio)"></textarea>
                                                     <span asp-validation-for="Bio" class="text-danger"></span>
                                                 </div>
                                                 <div class="col-lg-12 mt--20">
                                                     <button type="submit" class="button-link button-size__xl button__black" style="width: 100%">
-                                                        <span class="button-text">Сохранить</span>
+                                                        <span class="button-text">@localizer["Save"]</span>
                                                     </button>
                                                 </div>
                                             </div>

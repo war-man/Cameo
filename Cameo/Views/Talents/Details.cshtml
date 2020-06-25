@@ -7,7 +7,7 @@
 @inject IOptions<AppConfiguration> AppSettings
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.FullName;
     ViewData["talent"] = Model;
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 
@@ -38,7 +38,7 @@
             <div class="col-lg-5 col-md-6 col-sm-5 col-12 mt_md--40 mt_sm--40">
                 <div class="single-product-inner">
                     <h2 class="title">@Model.FullName <br /></h2>
-                    <span class="prize">@Model.PriceStr сум</span>
+                    <span class="prize">@Model.PriceStr @localizer["UZS"]</span>
                     @{
                         string projects = "";
                         foreach (var item in Model.Projects)
@@ -65,7 +65,7 @@
                                     <div class="product-action-btn">
                                         <a class="button-link button-size__xl button__black" href="/VideoRequest/Create?username=@Model.Username">
                                             <span class="button-text button-text__14">
-                                                Заказать видео (@Model.RequestPriceStr сум)
+                                                @localizer["OrderVideo"] (@Model.RequestPriceStr @localizer["UZS"])
                                             </span>
                                         </a>
                                         @*<button type="button" class="button-link button__black" data-toggle="modal" data-target="#bookModal">
@@ -81,7 +81,7 @@
                         }
                         else
                         {
-                            <div class="alert alert-danger">Таланты не могут заказывать видео. Зайдите как клиент.</div>
+                            <div class="alert alert-danger">@localizer["TalentsCannotOrder"]</div>
                             @*<div class="alert alert-danger"><a href="/Account/Login"><u>Войдите</u></a>, чтобы отправить запрос</div>*@
                         }
                     }

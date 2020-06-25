@@ -88,14 +88,21 @@ namespace Cameo.Controllers
         [HttpPost]
         public IActionResult SetAvailability(bool availability)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent talent = TalentService.GetByUserID(curUser.ID);
-            if (talent == null)
-                return NotFound("Talent not found");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent talent = TalentService.GetByUserID(curUser.ID);
+                if (talent == null)
+                    throw new Exception("Талант не найден");
 
-            TalentService.SetAvailability(talent, availability, curUser.ID);
+                TalentService.SetAvailability(talent, availability, curUser.ID);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
     }
 }

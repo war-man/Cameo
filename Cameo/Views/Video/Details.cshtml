@@ -1,6 +1,6 @@
 ﻿@model Cameo.ViewModels.VideoDetailsVM
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = localizer["Video"];
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
@@ -13,7 +13,7 @@
                 <div class="product__details__container">
                     <div class="big_img">
                         <video class="video-js" controls preload="true" autoplay>
-                            <source src="/Video/GetVideo/@Model.RequestID" type="video/mp4">
+                            <source src="/video/getVideo/@Model.RequestID" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -21,16 +21,16 @@
             <div class="col-lg-5 col-md-6 col-sm-5 col-12 mt_md--40 mt_sm--40">
                 <div class="single-product-inner">
                     @{
-                        string fromTo = "Для " + Model.To;
+                        string fromTo = localizer["To"] + " " + Model.To;
                         if (!string.IsNullOrWhiteSpace(Model.From))
                         {
-                            fromTo += " От " + Model.From;
+                            fromTo += " " + localizer["From"] + " " + Model.From;
                         }
                     }
                     <h3 class="title">@fromTo <br /></h3>
 
                     <span class="prize">
-                        <a class="button-link button-size__12 button__transparent--border mt--10" href="#">
+                        @*<a class="button-link button-size__12 button__transparent--border mt--10" href="#">
                             <span class="icon-right"><i class="fa fa-instagram"></i></span>
                             <span class="button-text button-text__15">
                                 Поделиться на Instagram
@@ -47,11 +47,11 @@
                             <span class="button-text button-text__15">
                                 Поделиться на Facebook
                             </span>
-                        </a>
+                        </a>*@
                         <a class="button-link button-size__12 button__transparent--border mt--10" href="/Video/GetVideo/@Model.RequestID">
                             <span class="icon-right"><i class="fa fa-download"></i></span>
                             <span class="button-text button-text__15">
-                                Загрузить видео
+                                @localizer["DownloadVideo"]
                             </span>
                         </a>
                     </span>
@@ -68,7 +68,7 @@
                                                     <!-- Start Single Team -->
                                                     <div class="team team__style--3 text-center">
                                                         <div class="thumbnail paralax-image">
-                                                            <img src="@Model.Talent.Avatar.Url" alt="Draven Images">
+                                                            <img src="@Model.Talent.Avatar.Url" alt="">
                                                         </div>
                                                         
                                                     </div>
@@ -85,7 +85,7 @@
                                                     </div>
                                                 </div>
                                                 <a class="button-link button-size button__color--3" href="/talents/details/@Model.Talent.Username">
-                                                    <span class="button-text">Заказать видео</span>
+                                                    <span class="button-text">@localizer["OrderVideo"]</span>
                                                     <span class="icon-right"><i class="dlicon shopping_gift"></i></span>
                                                 </a>
                                             </div>
@@ -130,6 +130,6 @@
 <link href="https://vjs.zencdn.net/7.7.6/video-js.css" rel="stylesheet" />
 
 @section Scripts
-    {
+{
     <script src="https://vjs.zencdn.net/7.7.6/video.js"></script>
 }

@@ -41,7 +41,7 @@ namespace Cameo.API.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetByID(modelVM.id);
             if (model == null || !model.UserID.Equals(curUser.ID))
-                return NotFound();
+                return CustomBadRequest("Талант не найден");
 
             if (ModelState.IsValid)
             {

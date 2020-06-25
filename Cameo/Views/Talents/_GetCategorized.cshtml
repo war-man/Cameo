@@ -12,7 +12,7 @@
             @if (ViewBag.isHomePage != null)
             {
                 <a href="/talents/bycategory?cat=@item.Category.ID">@item.Category.Name</a>
-                <small class="pull-right"><a href="/talents/bycategory?cat=@item.Category.ID" class="btn btn-link">Все</a></small>
+                <small class="pull-right"><a href="/talents/bycategory?cat=@item.Category.ID" class="btn btn-link">@localizer["All"]</a></small>
             }
             else
             {

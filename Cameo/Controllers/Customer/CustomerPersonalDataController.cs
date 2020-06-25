@@ -1,6 +1,7 @@
 ﻿using System;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
+using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +70,7 @@ namespace Cameo.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Something went wrong while saving data");
+                    ModelState.AddModelError("", "Что-то пошло не так");
                 }
             }
             else

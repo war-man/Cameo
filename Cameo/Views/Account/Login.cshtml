@@ -12,10 +12,10 @@
             <div class="col-xl-6 col-lg-8 col-10">
                 <div class="contact-form-wrapper">
                     <div class="section-title mb--30">
-                        <h1 class="fontWeight400">Войти с помощью номера телефона</h1>
-                        <p class="font--18">
-                            If you have fans and want to join Cameo as talent, you can enroll here and we'll be in touch.
-                        </p>
+                        <h1 class="fontWeight400">@localizer["LogInUsingPhoneNumber"]</h1>
+                        @*<p class="font--18">
+                            @localizer["LogInTip"]
+                        </p>*@
                     </div>
                     <!-- Start Contact Wrapper -->
                     <div class="contact__form--1">
@@ -27,7 +27,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" style="font-size: 18px">+998</span>
                                     </div>
-                                    <input id="phoneNumber" type="text" placeholder="Номер телефона *" style="margin: 0px;">
+                                    <input id="phoneNumber" type="text" placeholder="901234567" style="margin: 0px;">
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -36,7 +36,7 @@
                             <div class="col-lg-12 mt--20">
                                 <div id="recaptcha-container"></div>
                                 <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="SendVerificationCode()">
-                                    <span class="button-text">Продолжить</span>
+                                    <span class="button-text">@localizer["Continue"]</span>
                                     <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
                                 </button>
                             </div>
@@ -45,18 +45,18 @@
                         <!-- Code input -->
                         <div class="row" id="codeForm" style="display: none;">
                             <div class="col-lg-12">
-                                <input id="code" type="text" placeholder="Код из смс">
+                                <input id="code" type="text" placeholder="@localizer["CodeFromSMS"]">
                             </div>
                             <div class="col-lg-12 mt--20">
                                 <p class="form-messege text-danger"></p>
                             </div>
                             <div class="col-lg-6 mt--20">
                                 @*<button type="button" onclick="BackToPhoneNumberForm()">Назад</button>*@
-                                <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToPhoneNumberForm()">Назад</button>
+                                <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToPhoneNumberForm()">@localizer["Back"]</button>
                             </div>
                             <div class="col-lg-6 mt--20">
                                 <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="VerifyCode()">
-                                    <span class="button-text">Продолжить</span>
+                                    <span class="button-text">@localizer["Continue"]</span>
                                     <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
                                 </button>
                                 @*<input type="submit" value="Продолжить" onclick="VerifyCode()">*@
@@ -73,23 +73,23 @@
                                 <div class="col-lg-12 mt--20">
                                     <input asp-for="FirebaseUid" type="hidden" />
 
-                                    <input asp-for="FullName" type="text" placeholder="Полное имя *">
+                                    <input asp-for="FullName" type="text" placeholder=@Html.DisplayNameFor(m => m.FullName) *">
                                     <span asp-validation-for="FullName" class="text-danger"></span>
                                 </div>
                                 <div class="col-lg-12 mt--20">
-                                    <input asp-for="UserName" type="text" placeholder="Имя пользователя *">
+                                    <input asp-for="UserName" type="text" placeholder="@Html.DisplayNameFor(m => m.UserName) *">
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                                 <div class="col-lg-12 mt--20">
                                     <p class="form-messege text-danger"></p>
                                 </div>
                                 <div class="col-lg-6 mt--20">
-                                    <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">Назад</button>
+                                    <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">@localizer["Back"]</button>
                                     @*<input type="submit" value="Назад" onclick="BackToCodeForm()">*@
                                 </div>
                                 <div class="col-lg-6 mt--20">
                                     <button type="submit" class="button-link button-size__xl button__black submitBtn">
-                                        <span class="button-text">Отправить</span>
+                                        <span class="button-text">@localizer["Submit"]</span>
                                         <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
                                     </button>
                                     @*<input type="submit" value="Отправить">*@
@@ -168,7 +168,7 @@
                     $("#phoneNumberForm button").removeAttr("disabled");
                     $("#phoneNumberForm .spinner").hide();
 
-                    $("#phoneNumberForm .form-messege").html("Не удалось отправить смс. Проверьте правильность номера")
+                    $("#phoneNumberForm .form-messege").html("@localizer["ErrorUnableToSendSMS"]")
                 });
         }
 
@@ -205,7 +205,7 @@
                 //console.log(error);
                 // User couldn't sign in (bad verification code?)
                 // ...
-                $("#codeForm .form-messege").html("Неверный код");
+                $("#codeForm .form-messege").html("@localizer["ErrorInvalidCode"]");
                 $("#codeForm input").removeAttr("disabled");
                 $("#codeForm button").removeAttr("disabled");
                 $("#codeForm .spinner").hide();
@@ -256,34 +256,35 @@
 
         function SaveFirebaseTokenInDB()
         {
-            $.ajax({
-                type: "POST",
-                url: "/Firebase/SaveToken?token=" + firebaseToken,
-                contentType: "application/json; charset=utf-8",
-                //dataType: "json",
-                beforeSend: function ()
-                {
-                    //$("#codeForm .form-messege").html("");
-                    //$("#codeForm input").attr("disabled", "disabled");
-                },
-                success: function (data)
-                {
-                    //window.location.replace("/");
-                    window.location.replace(returnUrl);
-                },
-                error: function (data)
-                {
-                    //console.log(data);
-                    //$("#codeForm .form-messege").html(data.responseJSON.errorMessage);
-                    alert("Ajax error (status code = " + data.status + "): " + data.responseJSON.errorMessage);
-                },
-                complete: function (data)
-                {
-                    //$("#codeForm input").removeAttr("disabled");
-                    //$("#codeForm button").removeAttr("disabled");
-                    //$("#codeForm .spinner").hide();
-                }
-            });
+            window.location.replace(returnUrl);
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/Firebase/SaveToken?token=" + firebaseToken,
+            //    contentType: "application/json; charset=utf-8",
+            //    //dataType: "json",
+            //    beforeSend: function ()
+            //    {
+            //        //$("#codeForm .form-messege").html("");
+            //        //$("#codeForm input").attr("disabled", "disabled");
+            //    },
+            //    success: function (data)
+            //    {
+            //        //window.location.replace("/");
+            //        window.location.replace(returnUrl);
+            //    },
+            //    error: function (data)
+            //    {
+            //        //console.log(data);
+            //        //$("#codeForm .form-messege").html(data.responseJSON.errorMessage);
+            //        alert("Ajax error (status code = " + data.status + "): " + data.responseJSON.errorMessage);
+            //    },
+            //    complete: function (data)
+            //    {
+            //        //$("#codeForm input").removeAttr("disabled");
+            //        //$("#codeForm button").removeAttr("disabled");
+            //        //$("#codeForm .spinner").hide();
+            //    }
+            //});
         }
 
         function BackToPhoneNumberForm()

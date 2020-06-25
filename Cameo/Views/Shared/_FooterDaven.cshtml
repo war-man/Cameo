@@ -1,98 +1,99 @@
-﻿<footer class="footer-default bg-color" data-bg-color="#151515">
+﻿
+
+<footer class="footer-default bg-color" data-bg-color="#151515">
     <!-- Start Footer Top -->
     <div class="footer-top-area">
         <div class="row">
             <!-- Start Single Widget -->
             <div class="footer-widget footer-column footer-column__a col-lg-6 col-sm-6 col-12 col-xl-auto">
                 <div class="inner">
-                    <div class="logo">
-                        <a href="index.html">
-                            <img src="~/lib/DavenTheme/img/logo/logo-white.png" alt="logo white">
-                        </a>
-                    </div>
+                    @*<div class="logo">
+                            <a href="index.html">
+                                <img src="~/lib/DavenTheme/img/logo/logo-white.png" alt="logo white">
+                            </a>
+                        </div>*@
                     <div class="footer-content">
                         <p class="pra">
-                            Fusce ut elit aliquet, fermentum leo vel, tempus nunc. Fusce eu rhoncus augue.
-                            Fusce vel metus pharetra, fermentum
+                            @localizer["WishToBecomeTalent"]<br />
                             <a asp-controller="Account" asp-action="EnrollAsTalent" class="button-link button-size__12 button__transparent--border">
-                                <span class="button-text"><b>Стать талантом</b></span>
+                                <span class="button-text"><b>@localizer["BecomeTalent"]</b></span>
                             </a>
                         </p>
                         <div class="footer-social-icon">
-                            <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
-                            <a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
-                            <a href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
-                            <a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
-                            <a href="https://www.linkedin.com/" target="_blank"><i class="fa fa-linkedin"></i></a>
+                            <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-telegram"></i></a>
+                            <a href="https://twitter.com/" target="_blank"><i class="fa fa-instagram"></i></a>
+                            @*<a href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
+                                <a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
+                                <a href="https://www.linkedin.com/" target="_blank"><i class="fa fa-linkedin"></i></a>*@
                         </div>
                     </div>
                 </div>
             </div>
             <!-- End Single Widget -->
-            <!-- Start Single Widget -->
-            <div class="footer-widget footer-column footer-column__b col-lg-6 col-sm-6 col-12 col-xl-auto mt_mobile--40">
-                <div class="inner">
-                    <h4 class="fontWeight400 text-white ft-title">Company Links</h4>
-                    <div class="footer-content">
-                        <ul class="quick-link">
-                            <li><a href="about-me.html"><span>About Us</span></a></li>
-                            <li><a href="service-classic.html"><span>Our Services</span></a></li>
-                            <li><a href="portfolio-fullwidth.html"><span>Portfolio</span></a></li>
-                            <li><a href="blog-left-sidebar-01.html"><span>Blog</span></a></li>
-                            <li><a href="contact-us-01.html"><span>Contact Us</span></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single Widget -->
-            <!-- Start Single Widget -->
-            <div class="footer-widget footer-column footer-column__b col-lg-3 col-sm-6 col-12 mt_lg--40 mt_md--40 mt_sm--40 col-xl-auto">
-                <div class="inner">
-                    <h4 class="fontWeight400 text-white ft-title">User Helpful</h4>
-                    <div class="footer-content">
-                        <ul class="quick-link">
-                            <li><a href="team-02.html"><span>Community</span></a></li>
-                            <li><a href="faqs.html"><span>Forums</span></a></li>
-                            <li><a href="team-03.html"><span>Meetups</span></a></li>
-                            <li><a href="contact-us-02.html"><span>Help Center</span></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single Widget -->
-            <!-- Start Single Widget -->
-            <div class="footer-widget footer-column footer-column__b col-lg-4 col-sm-6 col-12 mt_lg--40 mt_md--40 mt_sm--40 col-xl-auto">
-                <div class="inner">
-                    <h4 class="fontWeight400 text-white ft-title">Contact Us</h4>
-                    <div class="footer-content">
-                        <div class="address">
-                            <p class="mb--0"><a href="tel:123344556">(+55) 254. 254. 254</a></p>
-                            <p class="mb--0"><a href="mailto:yourmailexample@gmail.com">Info@la-example.com</a></p>
-                            <p>Helios Tower 75 Tam Trinh Hoang Mai Ha Noi Viet Nam</p>
+            @*<!-- Start Single Widget -->
+                <div class="footer-widget footer-column footer-column__b col-lg-6 col-sm-6 col-12 col-xl-auto mt_mobile--40">
+                    <div class="inner">
+                        <h4 class="fontWeight400 text-white ft-title">Company Links</h4>
+                        <div class="footer-content">
+                            <ul class="quick-link">
+                                <li><a href="about-me.html"><span>About Us</span></a></li>
+                                <li><a href="service-classic.html"><span>Our Services</span></a></li>
+                                <li><a href="portfolio-fullwidth.html"><span>Portfolio</span></a></li>
+                                <li><a href="blog-left-sidebar-01.html"><span>Blog</span></a></li>
+                                <li><a href="contact-us-01.html"><span>Contact Us</span></a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- End Single Widget -->
-            <!-- Start Single Widget -->
-            <div class="footer-widget footer-column footer-column__c col-lg-5 col-sm-6 col-12 mt_lg--40 mt_md--40 mt_sm--40 col-xl-auto">
-                <div class="inner">
-                    <h4 class="fontWeight400 text-white ft-title">Draven Instagram</h4>
-                    <div class="footer-content">
-                        <ul class="instagram-list">
-                            <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-1.jpg" alt="Draven"></a></li>
-                            <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-2.jpg" alt="Draven"></a></li>
-                            <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-3.jpg" alt="Draven"></a></li>
-                            <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-4.jpg" alt="Draven"></a></li>
-                            <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-5.jpg" alt="Draven"></a></li>
-                            <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-6.jpg" alt="Draven"></a></li>
-                            <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-7.jpg" alt="Draven"></a></li>
-                            <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-8.jpg" alt="Draven"></a></li>
-                        </ul>
+                <!-- End Single Widget -->
+                <!-- Start Single Widget -->
+                <div class="footer-widget footer-column footer-column__b col-lg-3 col-sm-6 col-12 mt_lg--40 mt_md--40 mt_sm--40 col-xl-auto">
+                    <div class="inner">
+                        <h4 class="fontWeight400 text-white ft-title">User Helpful</h4>
+                        <div class="footer-content">
+                            <ul class="quick-link">
+                                <li><a href="team-02.html"><span>Community</span></a></li>
+                                <li><a href="faqs.html"><span>Forums</span></a></li>
+                                <li><a href="team-03.html"><span>Meetups</span></a></li>
+                                <li><a href="contact-us-02.html"><span>Help Center</span></a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- End Single Widget -->
+                <!-- End Single Widget -->
+                <!-- Start Single Widget -->
+                <div class="footer-widget footer-column footer-column__b col-lg-4 col-sm-6 col-12 mt_lg--40 mt_md--40 mt_sm--40 col-xl-auto">
+                    <div class="inner">
+                        <h4 class="fontWeight400 text-white ft-title">Contact Us</h4>
+                        <div class="footer-content">
+                            <div class="address">
+                                <p class="mb--0"><a href="tel:123344556">(+55) 254. 254. 254</a></p>
+                                <p class="mb--0"><a href="mailto:yourmailexample@gmail.com">Info@la-example.com</a></p>
+                                <p>Helios Tower 75 Tam Trinh Hoang Mai Ha Noi Viet Nam</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Single Widget -->
+                <!-- Start Single Widget -->
+                <div class="footer-widget footer-column footer-column__c col-lg-5 col-sm-6 col-12 mt_lg--40 mt_md--40 mt_sm--40 col-xl-auto">
+                    <div class="inner">
+                        <h4 class="fontWeight400 text-white ft-title">Draven Instagram</h4>
+                        <div class="footer-content">
+                            <ul class="instagram-list">
+                                <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-1.jpg" alt="Draven"></a></li>
+                                <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-2.jpg" alt="Draven"></a></li>
+                                <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-3.jpg" alt="Draven"></a></li>
+                                <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-4.jpg" alt="Draven"></a></li>
+                                <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-5.jpg" alt="Draven"></a></li>
+                                <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-6.jpg" alt="Draven"></a></li>
+                                <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-7.jpg" alt="Draven"></a></li>
+                                <li><a href="#"><img src="~/lib/DavenTheme/img/instagram/sm-img/instagram-8.jpg" alt="Draven"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Single Widget -->*@
         </div>
     </div>
     <!-- End Footer Top -->
@@ -101,16 +102,19 @@
         <div class="row align-items-center">
             <div class="col-lg-6 col-md-5 col-12">
                 <div class="content text-center text-md-left">
-                    <p>© 2019 Draven. <a href="https://hasthemes.com/">All Rights Reserved.</a></p>
+                    @{
+                        DateTime now = DateTime.Now;
+                    }
+                    <p>© @now.Year Helloo. <a href="#">@localizer["AllRightsReserved"]</a></p>
                 </div>
             </div>
             <div class="col-lg-6 col-md-7 col-12 mt_sm--20">
                 <div class="content">
                     <ul class="cp-link d-flex flex-wrap justify-content-center justify-content-md-end">
-                        <li><a href="contact-us-02.html">Site Map</a></li>
-                        <li><a href="contact-us-01.html">Apply Works</a></li>
-                        <li><a href="career.html">Carrers</a></li>
-                        <li><a href="faqs.html">Term & Policy</a></li>
+                        @*<li><a href="contact-us-02.html">Site Map</a></li>
+                            <li><a href="contact-us-01.html">Apply Works</a></li>*@
+                        <li><a href="~/Home/SecurityAndPrivacy">@localizer["Oferta"]</a></li>
+                        <li><a href="~/Home/TermsOfService">@localizer["TermsOfUsage"]</a></li>
                     </ul>
                 </div>
             </div>
@@ -118,3 +122,9 @@
     </div>
     <!-- End Copyright Area -->
 </footer>
+
+<style>
+    .footer-default .footer-top-area {
+        padding: 30px 0px 0;
+    }
+</style>

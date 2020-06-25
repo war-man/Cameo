@@ -9,13 +9,13 @@ namespace Cameo.ViewModels
 {
     public class TalentPersonalDataEditVM : PersonEditVM
     {
-        [Display(Name = "Меня можно найти в")]
+        [Display(Name = "MySocialArea", ResourceType = typeof(Resources.ResourceTexts))]
         public int? SocialAreaID { get; set; }
 
-        [Display(Name = "Моё имя пользователя в соц. сети")]
+        [Display(Name = "MySocialAreaHandle", ResourceType = typeof(Resources.ResourceTexts))]
         public string SocialAreaHandle { get; set; }
 
-        [Display(Name = "Количество подписчиков")]
+        [Display(Name = "MyNumberOfFollowers", ResourceType = typeof(Resources.ResourceTexts))]
         public string FollowersCount { get; set; }
 
         public TalentPersonalDataEditVM() { }
@@ -35,7 +35,7 @@ namespace Cameo.ViewModels
     {
         public int ID { get; set; }
 
-        [Display(Name = "Цена Вашего видео")]
+        [Display(Name = "MyVideoPrice", ResourceType = typeof(Resources.ResourceTexts))]
         [Range(1000, int.MaxValue)]
         public int Price { get; set; }
 
@@ -55,13 +55,13 @@ namespace Cameo.ViewModels
     {
         public int ID { get; set; }
 
-        [Required]
-        [Display(Name = "Номер Вашей карты Uzcard")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        [Display(Name = "MyUzcardNumber", ResourceType = typeof(Resources.ResourceTexts))]
         [StringLength(16 + 3)] // 16 - card numer digits + 3 - whitespaces
         public string CreditCardNumber { get; set; }
 
-        [Required]
-        [Display(Name = "Срок действия (мм/гг)")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        [Display(Name = "MyUzcardExpire", ResourceType = typeof(Resources.ResourceTexts))]
         [StringLength(5)]
         public string CreditCardExpire { get; set; }
 
@@ -86,10 +86,10 @@ namespace Cameo.ViewModels
     {
         public int TalentID { get; set; }
 
-        [Display(Name = "Мои проекты")]
+        [Display(Name = "MyProjects", ResourceType = typeof(Resources.ResourceTexts))]
         public List<string> Projects { get; set; }
 
-        [Display(Name = "Категории")]
+        [Display(Name = "MyCategories", ResourceType = typeof(Resources.ResourceTexts))]
         public List<int> Categories { get; set; }
 
         public TalentProjectsAndCategoriesEditVM() { }

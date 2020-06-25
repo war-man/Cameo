@@ -38,5 +38,22 @@ namespace Cameo.API.Controllers
                 return CustomBadRequest(ex);
             }
         }
+
+        [HttpPost("RefreshToken/{oldToken}/{newToken}")]
+        public IActionResult RefreshToken(string oldToken, string newToken)
+        {
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+
+                FirebaseRegistrationTokenService.RefreshToken(curUser.ID, oldToken, newToken, "mob");
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
+        }
     }
 }

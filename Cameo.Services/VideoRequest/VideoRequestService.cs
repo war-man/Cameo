@@ -16,6 +16,7 @@ namespace Cameo.Services
         private readonly ITalentBalanceService TalentBalanceService;
         private readonly ICustomerBalanceService CustomerBalanceService;
         private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
+        private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
 
         private int tmpPeriodMinutes = 2;
 
@@ -23,12 +24,14 @@ namespace Cameo.Services
             IUnitOfWork unitOfWork,
             ITalentBalanceService talentBalanceService,
             ICustomerBalanceService customerBalanceService,
-            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
             : base(repository, unitOfWork)
         {
             TalentBalanceService = talentBalanceService;
             CustomerBalanceService = customerBalanceService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
+            FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
         }
 
         public VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id)
@@ -61,6 +64,9 @@ namespace Cameo.Services
             base.Add(entity, creatorID);
 
             //TO-DO: send firebase notification to Talent
+            string title = "Новый заказ";
+            string body = entity.Instructions;
+            FirebaseRegistrationTokenService.SendNotification(entity.Talent.UserID, title, body);
         }
 
         public void AnswerDeadlineReaches(VideoRequest model, string userID)
@@ -86,6 +92,8 @@ namespace Cameo.Services
         public void Edit(VideoRequest model, string userID)
         {
             Update(model, userID);
+
+            //TO-DO: send firebase notification to Talent
 
             //send email to Talent
             string toTalent = "xenon1991@inbox.ru";

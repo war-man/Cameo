@@ -4,7 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Helloo - @ViewData["Title"]</title>
+    @{ 
+        string title = "Helloo";
+        if (ViewData["Title"] != null)
+        {
+            title += " - " + ViewData["Title"];
+        }
+    }
+    <title>@title</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
@@ -26,7 +33,7 @@
         </environment>*@
 </head>
 <body class="template-color-3 template-font-1"><!--template-color-3,4-->
-    <partial name="_CookieConsentPartial" />
+    @*<partial name="_CookieConsentPartial" />*@
 
     <!-- Wrapper -->
     <div id="wrapper" class="wrapper">

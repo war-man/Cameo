@@ -16,7 +16,7 @@
                     ariaSelected = "true";
                 }
             }
-            <a class="nav-link @active" href="~/Talent" aria-selected="@ariaSelected"><i class="fa fa-bar-chart"></i> Мои данные</a>
+            <a class="nav-link @active" href="~/Talent" aria-selected="@ariaSelected"><i class="fa fa-bar-chart"></i> @localizer["MyData"]</a>
         </li>
         <li class="nav-item">
             @{
@@ -28,7 +28,7 @@
                     ariaSelected = "true";
                 }
             }
-            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-user"></i> Персональные данные</a>
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-user"></i> @localizer["PersonalData"]</a>
         </li>
         <li class="nav-item">
             @{
@@ -40,7 +40,7 @@
                     ariaSelected = "true";
                 }
             }
-            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-video-camera"></i> История заказов</a>
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-video-camera"></i> @localizer["BookingHistory"]</a>
         </li>
         <li class="nav-item">
             @{
@@ -52,7 +52,7 @@
                     ariaSelected = "true";
                 }
             }
-            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-suitcase"></i> Мои проекты. Категории</a>
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-suitcase"></i> @localizer["MyProjectsCategories"]Мои проекты. Категории</a>
         </li>
         <li class="nav-item">
             @{
@@ -64,7 +64,7 @@
                     ariaSelected = "true";
                 }
             }
-            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-usd"></i> Изменить цену <span class="badge" id="talentPrice">(...)</span></a>
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-usd"></i> @localizer["ChangePrize"] <span class="badge" id="talentPrice">(...)</span></a>
         </li>
         <li class="nav-item">
             @{
@@ -76,20 +76,20 @@
                     ariaSelected = "true";
                 }
             }
-            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-credit-card-alt"></i> Управление картой (UZCARD)</a>
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-credit-card-alt"></i> @localizer["ManageCard"] (UZCARD)</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-shield"></i> Security and privacy</a>
+            <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-shield"></i> @localizer["Oferta"]</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="~/Home/TermsOfService"><i class="fa fa-file-text"></i> Terms of service</a>
+            <a class="nav-link" href="~/Home/TermsOfService"><i class="fa fa-file-text"></i> @localizer["TermsOfUsage"]</a>
         </li>
         <li class="nav-item">
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Talents", new { area = "" })" method="post" id="logoutForm" style="display: none;">
                 <i class="fa fa-user-circle"></i>
-                <button type="submit" class="btn btn-link">Выйти</button>
+                <button type="submit" class="btn btn-link">@localizer["LogOut"]</button>
             </form>
-            <a class="nav-link" href="javascript: Logout();" style="border-bottom-width: 1px;"><i class="fa fa-sign-out"></i> Выйти</a>
+            <a class="nav-link" href="javascript: Logout();" style="border-bottom-width: 1px;"><i class="fa fa-sign-out"></i> @localizer["LogOut"]</a>
         </li>
     </ul>
 </div>
@@ -126,7 +126,7 @@
 <script>
     function Logout()
     {
-        if (!confirm("Вы уверены, что хотите выйти"))
+        if (!confirm("@localizer["LogoutConfirmationText"]"))
             return;
 
         firebase.auth().signOut().then(() =>

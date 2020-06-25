@@ -11,8 +11,9 @@ namespace Cameo.ViewModels
     {
         public int ID { get; set; }
 
-        [Required]
-        [Display(Name = "Имя")]
+        //[Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        [Display(Name = "Name", ResourceType = typeof(Resources.ResourceTexts))]
         [StringLength(256)]
         public string FullName { get; set; }
 
@@ -26,7 +27,7 @@ namespace Cameo.ViewModels
         //[StringLength(256)]
         //public string LastName { get; set; }
 
-        [Display(Name = "О себе")]
+        [Display(Name = "Bio", ResourceType = typeof(Resources.ResourceTexts))]
         public string Bio { get; set; }
 
         public AttachmentDetailsVM Avatar { get; set; }

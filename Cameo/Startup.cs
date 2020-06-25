@@ -120,6 +120,8 @@ namespace Cameo
                 options.AddPolicy("CustomerOnly", policy => policy.RequireClaim("UserType", "customer"));
                 options.AddPolicy("TalentOnly", policy => policy.RequireClaim("UserType", "talent"));
             });
+
+            services.AddMvc().AddViewLocalization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

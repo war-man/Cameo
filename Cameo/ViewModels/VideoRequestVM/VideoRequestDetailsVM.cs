@@ -14,22 +14,22 @@ namespace Cameo.ViewModels
     {
         public int ID { get; set; }
 
-        [Display(Name = "Имя таланта")]
+        [Display(Name = "TalentsName", ResourceType = typeof(Resources.ResourceTexts))]
         public TalentWithCreditCardInfoVM Talent { get; set; }
 
-        [Display(Name = "Видео для")]
+        [Display(Name = "VideoTo", ResourceType = typeof(Resources.ResourceTexts))]
         public string To { get; set; }
 
-        [Display(Name = "Заказ от")]
+        [Display(Name = "OrderFrom", ResourceType = typeof(Resources.ResourceTexts))]
         public string From { get; set; }
 
-        [Display(Name = "Инструкции")]
+        [Display(Name = "Instructions", ResourceType = typeof(Resources.ResourceTexts))]
         public string Instructions { get; set; }
 
         //public string Email { get; set; }
         public bool IsNotPublic { get; set; }
 
-        [Display(Name = "Цена")]
+        [Display(Name = "Price", ResourceType = typeof(Resources.ResourceTexts))]
         public int Price { get; set; }
         public string PriceStr { get; set; }
 
@@ -41,10 +41,10 @@ namespace Cameo.ViewModels
 
         public AttachmentDetailsVM Video { get; set; }
 
-        [Display(Name = "Статус заказа")]
+        [Display(Name = "OrderStatus", ResourceType = typeof(Resources.ResourceTexts))]
         public VideoRequestStatusDetailsVM Status { get; set; }
 
-        [Display(Name = "Срок")]
+        [Display(Name = "Deadline", ResourceType = typeof(Resources.ResourceTexts))]
         public string Deadline { get; set; }
 
         public bool EditBtnIsAvailable { get; set; } = false;

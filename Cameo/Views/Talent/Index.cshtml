@@ -2,7 +2,7 @@
 @using Cameo.Models.Enums
 
 @{
-    ViewData["Title"] = "Мои данные";
+    ViewData["Title"] = localizer["MyData"];
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
@@ -41,7 +41,7 @@
                     </div>*@
                     <div class="col-sm-4">
                         <a id="aviabilityBtn" class="button-link button-size button__transparent--border--four" href="javascript: ToogleAvailability();" style="border-radius: 0.25rem;">
-                            <span class="button-text" style="font-size: 20px;">Доступность</span>
+                            <span class="button-text" style="font-size: 20px;">@localizer["Availability"]</span>
                             @{ 
                                 string faIcon = "fa-square-o";
                                 if (Model.IsAvailable)
@@ -108,9 +108,9 @@
 
         function ToogleAvailability()
         {
-            var confirmQuestion = "Вы уверены, что хотите стать доступным(ой)?";
+            var confirmQuestion = "@localizer["AvailabilityConfirmationText"]";
             if (availability == true)
-                confirmQuestion = "Вы уверены, что хотите стать недоступным(ой)?";
+                confirmQuestion = "@localizer["UnavailabilityConfirmationText"]";
             if (!confirm(confirmQuestion))
                 return;
 
@@ -123,7 +123,7 @@
                 //dataType: "json",
                 success: function (data)
                 {
-                    alert("Статус успешно изменен!");
+                    //alert("Статус успешно изменен!");
                     $("#aviabilityBtn i").toggleClass("fa-check-square-o");
                     $("#aviabilityBtn i").toggleClass("fa-square-o");
                 },

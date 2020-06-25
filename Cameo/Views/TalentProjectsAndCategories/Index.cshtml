@@ -1,7 +1,7 @@
 ﻿@model Cameo.ViewModels.TalentProjectsAndCategoriesEditVM
 
 @{
-    ViewData["Title"] = "Мои проекты. Категории.";
+    ViewData["Title"] = localizer["MyProjectsCategories"];
 }
 
 <br />
@@ -16,7 +16,7 @@
         @if (ViewData["successfullySaved"] != null)
         {
             <div class="alert alert-success">
-                Данные успешно сохранены
+                @localizer["SuccessDataSaved"]
             </div>
         }
 
@@ -49,7 +49,7 @@
                 </select>
                 <span asp-validation-for="Categories" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Сохранить</button>
+            <button type="submit" class="btn btn-default">@localizer["Save"]</button>
         </form>
     </div>
 </div>

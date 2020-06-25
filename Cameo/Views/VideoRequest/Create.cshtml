@@ -3,7 +3,7 @@
 @using Cameo.Common
 
 @{
-    ViewData["Title"] = "Заказать Видео";
+    ViewData["Title"] = localizer["OrderVideo"];
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
     var talent = ViewData["talent"] as Cameo.ViewModels.TalentDetailsVM;
     int customerBalance = (int)ViewData["customerBalance"];
@@ -14,18 +14,18 @@
     {
         <div class="container">
             <div class="alert alert-danger">
-                Недостаточно средств на балансе, чтобы заказать видео. Пожалуйста, пополните баланс.
+                @localizer["InsufficientFunds"]
             </div>
             <div>
                 <a class="button-link button-size button__color--4 grow-animation" href="#">
-                    <span class="button-text">Пополнить баланс на <b>@talent.RequestPriceStr сум</b></span>
+                    <span class="button-text">@localizer["ReplenishBalanceOn"] <b>@talent.RequestPriceStr @localizer["UZS"]</b></span>
                 </a>
             </div>
         
             <br />
             <div class="alert alert-info">
-                Ваш баланс: <b>@customerBalance сум</b><br />
-                Стоимость заказа: <b>@talent.RequestPriceStr сум</b>
+                @localizer["YourBalance"]: <b>@customerBalance @localizer["UZS"]</b><br />
+                @localizer["OrderPrice"]: <b>@talent.RequestPriceStr @localizer["UZS"]</b>
             </div>
         </div>
         

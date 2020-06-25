@@ -2,6 +2,8 @@
 using Cameo.Data.Repository.Interfaces;
 using Cameo.Models;
 using Cameo.Services.Interfaces;
+using FirebaseAdmin.Messaging;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -27,6 +29,20 @@ namespace Cameo.Services
             Add(tokenObj, userID);
         }
 
+        public void RefreshToken(string userID, string oldToken, string newToken, string frontType)
+        {
+            var oldTokenObj = GetAsIQueryable()
+                .Where(m => m.UserID == userID
+                    && m.Token.Equals(oldToken)
+                    && m.FrontType.Equals(frontType))
+                .FirstOrDefault();
+
+            if (oldTokenObj != null)
+                DeletePermanently(oldTokenObj, userID);
+
+            SaveToken(newToken, userID, frontType);
+        }
+
         public string GetByUserID(string userID)
         {
             var tokenObj = GetAsIQueryable().Where(m => m.UserID == userID).FirstOrDefault();
@@ -39,6 +55,37 @@ namespace Cameo.Services
             var tokenObj = GetAsIQueryable().Where(m => m.FrontType == "web" && m.UserID == userID).FirstOrDefault();
 
             return tokenObj?.Token;
+        }
+
+        public void SendNotification(string userID, string title, string body)
+        {
+            var registrationTokens = GetManyByUserID(userID)
+                .Select(m => m.Token)
+                .ToList();
+
+            if (registrationTokens.Count == 0)
+                return;
+
+            var message = new MulticastMessage()
+            {
+                Tokens = registrationTokens,
+                Data = new Dictionary<string, string>()
+                {
+                    ["title"] = title,
+                    ["body"] = body,
+                },
+            };
+
+            var response = FirebaseMessaging.DefaultInstance.SendMulticastAsync(message).ConfigureAwait(true);
+        }
+
+        public IQueryable<FirebaseRegistrationToken> GetManyByUserID(string userID, string frontType = null)
+        {
+            var userTokens = GetAsIQueryable().Where(m => m.UserID.Equals(userID));
+            if (!string.IsNullOrWhiteSpace(frontType))
+                userTokens = userTokens.Where(m => m.FrontType.Equals(frontType));
+
+            return userTokens;
         }
     }
 }

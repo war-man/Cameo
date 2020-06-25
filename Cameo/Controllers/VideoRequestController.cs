@@ -58,7 +58,7 @@ namespace Cameo.Controllers
 
             var customer = CustomerService.GetByUserID(curUser.ID);
             if (customer == null)
-                return BadRequest("You are not a customer");
+                return CustomBadRequest("Вы не являетесь клиентом");
 
             Talent talent = TalentService.GetActiveByUsername(username);
             if (talent == null)
@@ -165,7 +165,7 @@ namespace Cameo.Controllers
                 return NotFound();
 
             if (!VideoRequestService.IsEditable(request))
-                return BadRequest("Данный запрос нельзя редактировать");
+                return CustomBadRequest("Данный запрос нельзя редактировать");
 
             VideoRequestEditVM editVM = new VideoRequestEditVM(request);
 
@@ -191,7 +191,6 @@ namespace Cameo.Controllers
 
             VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(modelVM.ID);
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                //return NotFound();
                 return CustomBadRequest("Заказ не найден");
 
             if (!VideoRequestService.IsEditable(request))
@@ -258,10 +257,7 @@ namespace Cameo.Controllers
             {
                 var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
                 if (model == null)
-                {
-                    //return NotFound();
                     return CustomBadRequest("Заказ не найден");
-                }
 
                 var curUser = accountUtil.GetCurrentUser(User);
 

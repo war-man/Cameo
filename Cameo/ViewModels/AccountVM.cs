@@ -9,28 +9,28 @@ namespace Cameo.ViewModels
     //public class AccountCreateVM
     public class RegisterVM
     {
-        [Required]
-        [Display(Name = "Полное имя")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        [Display(Name = "FullName", ResourceType = typeof(Resources.ResourceTexts))]
         public string FullName { get; set; }
 
-        [Required]
-        [Display(Name = "Имя пользователя")]
-        [RegularExpression("^[a-z0-9]*$", ErrorMessage = "Only lowercase Alphabets and Numbers allowed.")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        [Display(Name = "Username", ResourceType = typeof(Resources.ResourceTexts))]
+        [RegularExpression("^[a-z0-9]*$", ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorUsernameValidationMessage")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
         public string FirebaseUid { get; set; }
     }
 
     public class EnrollAsTalentVM : RegisterVM
     {
-        [Display(Name = "Where can we find you?")]
+        [Display(Name = "SocialAreaDisplayName", ResourceType = typeof(Resources.ResourceTexts))]
         public int? SocialAreaID { get; set; }
 
-        [Display(Name = "Your handle")]
+        [Display(Name = "SocialAreaHandleDisplayName", ResourceType = typeof(Resources.ResourceTexts))]
         public string SocialAreaHandle { get; set; }
 
-        [Display(Name = "How many followers do you have?")]
+        [Display(Name = "FollowersCountDisplayName", ResourceType = typeof(Resources.ResourceTexts))]
         public string FollowersCount { get; set; }
     }
 }

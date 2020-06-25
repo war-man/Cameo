@@ -6,20 +6,20 @@ namespace Cameo.ViewModels
 {
     public class VideoRequestCreateVM
     {
-        [Required]
-        [Display(Name = "Это видео:")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        [Display(Name = "VideoType", ResourceType = typeof(Resources.ResourceTexts))]
         public int TypeID { get; set; }
 
-        [Required]
-        [Display(Name = "Для")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        [Display(Name = "ToBig", ResourceType = typeof(Resources.ResourceTexts))]
         public string To { get; set; }
 
         //[Required] //if type == Someone else
-        [Remote("ValidateFrom", "VideoRequest", ErrorMessage = "Укажите, от кого", AdditionalFields = "TypeID")]
-        [Display(Name = "От")]
+        [Remote("ValidateFrom", "VideoRequest", ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ProvideFromWhom", AdditionalFields = "TypeID")]
+        [Display(Name = "From", ResourceType = typeof(Resources.ResourceTexts))]
         public string From { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
         public string Instructions { get; set; }
 
         //[Required]
@@ -29,10 +29,10 @@ namespace Cameo.ViewModels
 
         public bool IsNotPublic { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
         public int Price { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
         public int TalentID { get; set; }
 
         public VideoRequest ToModel(Customer customer)

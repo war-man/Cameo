@@ -257,7 +257,7 @@ namespace Cameo.API.Controllers
                     return "Объект не найден";
 
                 if (!VideoRequestService.VideoIsAllowedToBeDeleted(obj))
-                    return "Video is not allowed to be deleted";
+                    return "У Вас недостаточно прав для удаления этого видео";
 
                 obj.Video = null;
                 VideoRequestService.SaveDetachedVideo(obj, curUserID);
