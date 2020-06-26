@@ -7,205 +7,208 @@
 <!-- Start Contact Form -->
 <div class="draven-contact-form ptb--60 bg-color ptb_md--60 ptb_sm--60">
     <div class="plr_lp--100 plr_lg--100 plr_md--100 plr_sm--20 plr--100">
-        <div class="row">
-            <div class="col-xl-6 col-lg-8 col-12">
-                <div class="contact-form-wrapper">
-                    <div class="section-title mb--30">
-                        <h1 class="fontWeight400">@localizer["BecomeTalent"]</h1>
-                        <p class="font--18">
-                            @localizer["EnrollTip"]
-                        </p>
+        <div class="blog blog_style--1">
+            <div class="inner">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-8 col-12">
+                        <div class="contact-form-wrapper">
+                            <div class="section-title mb--30">
+                                <h1 class="fontWeight400">@localizer["BecomeTalent"]</h1>
+                                <p class="font--18">
+                                    @localizer["EnrollTip"]
+                                </p>
+                            </div>
+                            <!-- Start Contact Wrapper -->
+                            <div class="contact__form--1">
+                                <!-- Phone number input -->
+                                <div class="row" id="phoneNumberForm">
+                                    <div class="col-lg-12">
+                                        <div class="input-group" style="margin-bottom: 20px">
+                                            @*<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>*@
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" style=font-size: 18px">+998</span>
+                                            </div>
+                                            <input id="phoneNumber" type="text" placeholder="901234567" style="margin: 0px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <p class="form-messege text-danger"></p>
+                                    </div>
+                                    <div class="col-lg-12 mt--20">
+                                        <div id="recaptcha-container"></div>
+                                        <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="SendVerificationCode()">
+                                            <span class="button-text">@localizer["Continue"]</span>
+                                            <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                        </button>
+                                        @*<input type="submit" value="Продолжить" onclick="SendVerificationCode()">*@
+                                    </div>
+                                </div>
+
+                                <!-- Code input -->
+                                <div class="row" id="codeForm" style="display: none;">
+                                    <div class="col-lg-12">
+                                        <input id="code" type="text" placeholder="@localizer["CodeFromSMS"]">
+                                    </div>
+                                    <div class="col-lg-12 mt--20">
+                                        <p class="form-messege text-danger"></p>
+                                    </div>
+                                    <div class="col-lg-6 mt--20">
+                                        @*<input type="submit" value="Назад" onclick="BackToPhoneNumberForm()">*@
+                                        <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToPhoneNumberForm()">@localizer["Back"]</button>
+                                    </div>
+                                    <div class="col-lg-6 mt--20 ">
+                                        <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="VerifyCode()">
+                                            <span class="button-text">@localizer["Continue"]</span>
+                                            <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                        </button>
+                                        @*<input type="submit" value="Продолжить" onclick="VerifyCode()">*@
+                                    </div>
+                                </div>
+
+                                <!-- Enrolment form -->
+                                <form asp-controller="Account" asp-action="EnrollAsTalent" method="post" id="enrollmentForm" style="display: none;" data-ajax="true" data-ajax-method="post"
+                                      data-ajax-begin="RegistrationBegin"
+                                      data-ajax-failure="RegistrationError"
+                                      data-ajax-success="RegistrationSucceeded"
+                                      data-ajax-complete="RegistrationCompleted">
+                                    <div class="row">
+                                        <div class="col-lg-12 mt--20">
+                                            <input asp-for="FirebaseUid" type="hidden" />
+                                            <input asp-for="FullName" type="text" placeholder="@Html.DisplayNameFor(m => m.FullName) *">
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-12 mt--20">
+                                            <input asp-for="UserName" type="text" placeholder=@Html.DisplayNameFor(m => m.UserName) *">
+                                            <span asp-validation-for="UserName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-12 mt--20">
+                                            <p class="form-messege forError text-danger"></p>
+                                        </div>
+                                        <div class="col-lg-12 mt--20">
+                                            <select asp-for="SocialAreaID"
+                                                    asp-items="@ViewData["socialAreas"] as IEnumerable<SelectListItem>">
+                                                <option>@Html.DisplayNameFor(m => m.SocialAreaID)</option>
+                                            </select>
+                                            <span asp-validation-for="SocialAreaID" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-12 mt--20">
+                                            <input asp-for="SocialAreaHandle" type="text" placeholder="@Html.DisplayNameFor(m => m.SocialAreaHandle)">
+                                            <span asp-validation-for="SocialAreaHandle" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-12 mt--20">
+                                            <input asp-for="FollowersCount" type="text" placeholder="@Html.DisplayNameFor(m => m.FollowersCount)">
+                                            <span asp-validation-for="FollowersCount" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-6 mt--20">
+                                            <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">@localizer["CoBackntinue"]</button>
+                                        </div>
+                                        <div class="col-lg-6 mt--20">
+                                            <button type="submit" class="button-link button-size__xl button__black submitBtn">
+                                                <span class="button-text">@localizer["Submit"]</span>
+                                                <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                            </button>
+                                            @*<input type="submit" value="Отправить">*@
+                                            @*<p class="form-messege">we fawe fwe we</p>*@
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- Start Box Style -->
+                                <div class="col-lg-12 mt_sm--40" id="thanksBox" style="display: none;">
+                                    <div class="icon-box icon__style--1 text-center">
+                                        <div class="inner">
+                                            <div class="thumbnail">
+                                                <img src="~/lib/DavenTheme/img/icon-box/icon-handshake.svg" alt="Draven">
+                                            </div>
+                                            <div class="content mt--35">
+                                                <h3 class="title mb--10">@localizer["EnrollCompleteHeaderText"]</h3>
+                                                <p>@localizer["EnrollCompleteBodyText"]</p>
+                                                <a class="button-link" href="/"><span>@localizer["GoHome"]</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Box Style -->
+                            </div>
+                        </div>
                     </div>
-                    <!-- Start Contact Wrapper -->
-                    <div class="contact__form--1">
-                        <!-- Phone number input -->
-                        <div class="row" id="phoneNumberForm">
-                            <div class="col-lg-12">
-                                <div class="input-group" style="margin-bottom: 20px">
-                                    @*<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>*@
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" style=font-size: 18px">+998</span>
-                                    </div>
-                                    <input id="phoneNumber" type="text" placeholder="901234567" style="margin: 0px;">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <p class="form-messege text-danger"></p>
-                            </div>
-                            <div class="col-lg-12 mt--20">
-                                <div id="recaptcha-container"></div>
-                                <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="SendVerificationCode()">
-                                    <span class="button-text">@localizer["Continue"]</span>
-                                    <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
-                                </button>
-                                @*<input type="submit" value="Продолжить" onclick="SendVerificationCode()">*@
+                    <div class="col-xl-6 col-lg-4 col-12">
+                        <div class="contact-container adress__style--1">
+                            <ul class="contact-address">
+                                <li>
+                                    <span class="address-icon"><i class="dlicon ui-3_phone-call"></i></span>
+                                    <span class="address-text">+55 858 5858 68</span>
+                                </li>
+                                <li>
+                                    <span class="address-icon"><i class="dlicon ui-1_email-85"></i></span>
+                                    <span class="address-text">info@la-studioweb.com</span>
+                                </li>
+
+                                <li>
+                                    <span class="address-icon"><i class="dlicon ui-3_chat-33"></i></span>
+                                    <span class="address-text">Live chat with us</span>
+                                </li>
+
+                                <li>
+                                    <span class="address-icon"><i class="dlicon location_pin"></i></span>
+                                    <span class="address-text">
+                                        PO Box 16122 Collins Street West Victoria 8007
+                                        Australia
+                                    </span>
+                                </li>
+                            </ul>
+                            <div class="social-icons bg-white text-left mt--70">
+                                <a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
+                                <a class="twitter" href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
+                                <a class="pinterest" href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
+                                <a class="youtube" href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
+                                <a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a>
                             </div>
                         </div>
-
-                        <!-- Code input -->
-                        <div class="row" id="codeForm" style="display: none;">
-                            <div class="col-lg-12">
-                                <input id="code" type="text" placeholder="@localizer["CodeFromSMS"]">
-                            </div>
-                            <div class="col-lg-12 mt--20">
-                                <p class="form-messege text-danger"></p>
-                            </div>
-                            <div class="col-lg-6 mt--20">
-                                @*<input type="submit" value="Назад" onclick="BackToPhoneNumberForm()">*@
-                                <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToPhoneNumberForm()">@localizer["Back"]</button>
-                            </div>
-                            <div class="col-lg-6 mt--20 ">
-                                <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="VerifyCode()">
-                                    <span class="button-text">@localizer["Continue"]</span>
-                                    <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
-                                </button>
-                                @*<input type="submit" value="Продолжить" onclick="VerifyCode()">*@
-                            </div>
-                        </div>
-
-                        <!-- Enrolment form -->
-                        <form asp-controller="Account" asp-action="EnrollAsTalent" method="post" id="enrollmentForm" style="display: none;" data-ajax="true" data-ajax-method="post"
-                              data-ajax-begin="RegistrationBegin"
-                              data-ajax-failure="RegistrationError"
-                              data-ajax-success="RegistrationSucceeded"
-                              data-ajax-complete="RegistrationCompleted">
-                            <div class="row">
-                                <div class="col-lg-12 mt--20">
-                                    <input asp-for="FirebaseUid" type="hidden" />
-                                    <input asp-for="FullName" type="text" placeholder="@Html.DisplayNameFor(m => m.FullName) *">
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                </div>
-                                <div class="col-lg-12 mt--20">
-                                    <input asp-for="UserName" type="text" placeholder=@Html.DisplayNameFor(m => m.UserName) *">
-                                    <span asp-validation-for="UserName" class="text-danger"></span>
-                                </div>
-                                <div class="col-lg-12 mt--20">
-                                    <p class="form-messege forError text-danger"></p>
-                                </div>
-                                <div class="col-lg-12 mt--20">
-                                    <select asp-for="SocialAreaID"
-                                            asp-items="@ViewData["socialAreas"] as IEnumerable<SelectListItem>">
-                                        <option>@Html.DisplayNameFor(m => m.SocialAreaID)</option>
-                                    </select>
-                                    <span asp-validation-for="SocialAreaID" class="text-danger"></span>
-                                </div>
-                                <div class="col-lg-12 mt--20">
-                                    <input asp-for="SocialAreaHandle" type="text" placeholder="@Html.DisplayNameFor(m => m.SocialAreaHandle)">
-                                    <span asp-validation-for="SocialAreaHandle" class="text-danger"></span>
-                                </div>
-                                <div class="col-lg-12 mt--20">
-                                    <input asp-for="FollowersCount" type="text" placeholder="@Html.DisplayNameFor(m => m.FollowersCount)">
-                                    <span asp-validation-for="FollowersCount" class="text-danger"></span>
-                                </div>
-                                <div class="col-lg-6 mt--20">
-                                    <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">@localizer["CoBackntinue"]</button>
-                                </div>
-                                <div class="col-lg-6 mt--20">
-                                    <button type="submit" class="button-link button-size__xl button__black submitBtn">
-                                        <span class="button-text">@localizer["Submit"]</span>
-                                        <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
-                                    </button>
-                                    @*<input type="submit" value="Отправить">*@
-                                    @*<p class="form-messege">we fawe fwe we</p>*@
-                                </div>
-                            </div>
-                        </form>
-
-                        <!-- Start Box Style -->
-                        <div class="col-lg-12 mt_sm--40" id="thanksBox" style="display: none;">
-                            <div class="icon-box icon__style--1 text-center">
-                                <div class="inner">
-                                    <div class="thumbnail">
-                                        <img src="~/lib/DavenTheme/img/icon-box/icon-handshake.svg" alt="Draven">
-                                    </div>
-                                    <div class="content mt--35">
-                                        <h3 class="title mb--10">@localizer["EnrollCompleteHeaderText"]</h3>
-                                        <p>@localizer["EnrollCompleteBodyText"]</p>
-                                        <a class="button-link" href="/"><span>@localizer["GoHome"]</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Box Style -->
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-4 col-12">
-                <div class="contact-container adress__style--1">
-                    <ul class="contact-address">
-                        <li>
-                            <span class="address-icon"><i class="dlicon ui-3_phone-call"></i></span>
-                            <span class="address-text">+55 858 5858 68</span>
-                        </li>
-                        <li>
-                            <span class="address-icon"><i class="dlicon ui-1_email-85"></i></span>
-                            <span class="address-text">info@la-studioweb.com</span>
-                        </li>
-
-                        <li>
-                            <span class="address-icon"><i class="dlicon ui-3_chat-33"></i></span>
-                            <span class="address-text">Live chat with us</span>
-                        </li>
-
-                        <li>
-                            <span class="address-icon"><i class="dlicon location_pin"></i></span>
-                            <span class="address-text">
-                                PO Box 16122 Collins Street West Victoria 8007
-                                Australia
-                            </span>
-                        </li>
-                    </ul>
-                    <div class="social-icons bg-white text-left mt--70">
-                        <a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
-                        <a class="twitter" href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
-                        <a class="pinterest" href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
-                        <a class="youtube" href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
-                        <a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- End Contact Form -->
     </div>
 </div>
-<!-- End Contact Form -->
 
+        <style>
+            #phoneNumber {
+                position: relative;
+                flex: 1 1 auto;
+                width: 1%;
+            }
 
-<style>
-    #phoneNumber {
-        position: relative;
-        flex: 1 1 auto;
-        width: 1%;
-    }
+            select {
+                font-size: 18px;
+                padding: 25px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #d4d4d4;
+                width: 100%;
+                line-height: inherit;
+                height: auto;
+            }
 
-    select {
-        font-size: 18px;
-        padding: 25px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #d4d4d4;
-        width: 100%;
-        line-height: inherit;
-        height: auto;
-    }
+            .backBtn, .submitBtn {
+                width: 100%;
+                text-transform: uppercase;
+                font-weight: 700;
+                font-size: 14px !important;
+            }
+        </style>
 
-    .backBtn, .submitBtn {
-        width: 100%;
-        text-transform: uppercase;
-        font-weight: 700;
-        font-size: 14px !important;
-    }
-</style>
+        @section Scripts {
+            @*<partial name="_ValidationScriptsPartial" />*@
 
-@section Scripts {
-    @*<partial name="_ValidationScriptsPartial" />*@
+            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+            <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
 
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
-
-    <script>
+            <script>
         firebase.auth().languageCode = 'ru';
 
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
@@ -369,5 +372,5 @@
             $("#enrollmentForm button").removeAttr("disabled");
             $("#enrollmentForm .spinner").hide();
         }
-    </script>
-}
+            </script>
+        }

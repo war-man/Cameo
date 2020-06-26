@@ -10,39 +10,52 @@
 }
 
 <div class="mt--30 mb--30">
-    @if (customerBalance < talent.RequestPrice)
-    {
-        <div class="container">
-            <div class="alert alert-danger">
-                @localizer["InsufficientFunds"]
+    <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40" style="width: 100%;">
+        @if (customerBalance < talent.RequestPrice)
+        {
+            <div class="container">
+                <div class="alert alert-danger">
+                    @localizer["InsufficientFunds"]
+                </div>
+                <div>
+                    <a class="button-link button-size button__color--4 grow-animation" href="#">
+                        <span class="button-text">@localizer["ReplenishBalanceOn"] <b>@talent.RequestPriceStr @localizer["UZS"]</b></span>
+                    </a>
+                </div>
+
+                <br />
+                <div class="alert alert-info">
+                    @localizer["YourBalance"]: <b>@ViewData["customerBalanceStr"] @localizer["UZS"]</b><br />
+                    @localizer["OrderPrice"]: <b>@talent.RequestPriceStr @localizer["UZS"]</b>
+                </div>
             </div>
-            <div>
-                <a class="button-link button-size button__color--4 grow-animation" href="#">
-                    <span class="button-text">@localizer["ReplenishBalanceOn"] <b>@talent.RequestPriceStr @localizer["UZS"]</b></span>
-                </a>
+
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-sm-6 col-12">
+                    <div class="blog blog_style--1">
+                        <div class="inner">
+                            <form asp-action="Create" asp-controller="VideoRequest"
+                                    data-ajax="true"
+                                    data-ajax-method="POST"
+                                    data-ajax-mode="replace"
+                                    data-ajax-update="#ajaxresult">
+                                <div id="ajaxresult">
+                                    @await Html.PartialAsync(
+                                        "/Views/VideoRequest/_Create.cshtml")
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-12">
+                    <partial name="_OrderStepsClarification" />
+                </div>
             </div>
-        
-            <br />
-            <div class="alert alert-info">
-                @localizer["YourBalance"]: <b>@customerBalance @localizer["UZS"]</b><br />
-                @localizer["OrderPrice"]: <b>@talent.RequestPriceStr @localizer["UZS"]</b>
-            </div>
-        </div>
-        
-    }
-    else
-    {
-        <form asp-action="Create" asp-controller="VideoRequest"
-              data-ajax="true"
-              data-ajax-method="POST"
-              data-ajax-mode="replace"
-              data-ajax-update="#ajaxresult">
-            <div id="ajaxresult">
-                @await Html.PartialAsync(
-                    "/Views/VideoRequest/_Create.cshtml")
-            </div>
-        </form>
-    }
+        }
+    </div>
 </div>
 
 <style>

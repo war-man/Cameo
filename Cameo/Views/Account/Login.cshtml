@@ -4,107 +4,112 @@
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
-<!-- Start Contact Form -->
+
+        <!-- Start Contact Form -->
 <div class="draven-contact-form ptb--60 bg-color ptb_md--60 ptb_sm--60">
     <div class="plr_lp--100 plr_lg--100 plr_md--100 plr_sm--5 plr--100">
         <div class="row">
             <div class="col-xl-3 col-lg-2 col-1"></div>
             <div class="col-xl-6 col-lg-8 col-10">
-                <div class="contact-form-wrapper">
-                    <div class="section-title mb--30">
-                        <h1 class="fontWeight400">@localizer["LogInUsingPhoneNumber"]</h1>
-                        @*<p class="font--18">
-                            @localizer["LogInTip"]
-                        </p>*@
-                    </div>
-                    <!-- Start Contact Wrapper -->
-                    <div class="contact__form--1">
-                        <!-- Phone number input -->
-                        <div class="row" id="phoneNumberForm">
-                            <div class="col-lg-12">
-                                <div class="input-group" style="margin-bottom: 20px">
-                                    @*<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>*@
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" style="font-size: 18px">+998</span>
+                <div class="blog blog_style--1">
+                    <div class="inner">
+                        <div class="contact-form-wrapper">
+                            <div class="section-title mb--30">
+                                <h1 class="fontWeight400">@localizer["LogInUsingPhoneNumber"]</h1>
+                                @*<p class="font--18">
+            @localizer["LogInTip"]
+        </p>*@
+                            </div>
+                            <!-- Start Contact Wrapper -->
+                            <div class="contact__form--1">
+                                <!-- Phone number input -->
+                                <div class="row" id="phoneNumberForm">
+                                    <div class="col-lg-12">
+                                        <div class="input-group" style="margin-bottom: 20px">
+                                            @*<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>*@
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" style="font-size: 18px">+998</span>
+                                            </div>
+                                            <input id="phoneNumber" type="text" placeholder="901234567" style="margin: 0px;">
+                                        </div>
                                     </div>
-                                    <input id="phoneNumber" type="text" placeholder="901234567" style="margin: 0px;">
+                                    <div class="col-lg-12">
+                                        <p class="form-messege text-danger"></p>
+                                    </div>
+                                    <div class="col-lg-12 mt--20">
+                                        <div id="recaptcha-container"></div>
+                                        <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="SendVerificationCode()">
+                                            <span class="button-text">@localizer["Continue"]</span>
+                                            <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <p class="form-messege text-danger"></p>
-                            </div>
-                            <div class="col-lg-12 mt--20">
-                                <div id="recaptcha-container"></div>
-                                <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="SendVerificationCode()">
-                                    <span class="button-text">@localizer["Continue"]</span>
-                                    <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
-                                </button>
+
+                                <!-- Code input -->
+                                <div class="row" id="codeForm" style="display: none;">
+                                    <div class="col-lg-12">
+                                        <input id="code" type="text" placeholder="@localizer["CodeFromSMS"]">
+                                    </div>
+                                    <div class="col-lg-12 mt--20">
+                                        <p class="form-messege text-danger"></p>
+                                    </div>
+                                    <div class="col-lg-6 mt--20">
+                                        @*<button type="button" onclick="BackToPhoneNumberForm()">Назад</button>*@
+                                        <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToPhoneNumberForm()">@localizer["Back"]</button>
+                                    </div>
+                                    <div class="col-lg-6 mt--20">
+                                        <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="VerifyCode()">
+                                            <span class="button-text">@localizer["Continue"]</span>
+                                            <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                        </button>
+                                        @*<input type="submit" value="Продолжить" onclick="VerifyCode()">*@
+                                    </div>
+                                </div>
+
+                                <!-- Full name and username inputs form -->
+                                <form asp-controller="Account" asp-action="Register" method="post" id="registrationForm" data-ajax="true" data-ajax-method="post" style="display: none;"
+                                        data-ajax-begin="RegistrationBegin"
+                                        data-ajax-failure="RegistrationError"
+                                        data-ajax-success="RegistrationSucceeded"
+                                        data-ajax-complete="RegistrationCompleted">
+                                    <div class="row">
+                                        <div class="col-lg-12 mt--20">
+                                            <input asp-for="FirebaseUid" type="hidden" />
+
+                                            <input asp-for="FullName" type="text" placeholder=@Html.DisplayNameFor(m => m.FullName) *">
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-12 mt--20">
+                                            <input asp-for="UserName" type="text" placeholder="@Html.DisplayNameFor(m => m.UserName) *">
+                                            <span asp-validation-for="UserName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-lg-12 mt--20">
+                                            <p class="form-messege text-danger"></p>
+                                        </div>
+                                        <div class="col-lg-6 mt--20">
+                                            <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">@localizer["Back"]</button>
+                                            @*<input type="submit" value="Назад" onclick="BackToCodeForm()">*@
+                                        </div>
+                                        <div class="col-lg-6 mt--20">
+                                            <button type="submit" class="button-link button-size__xl button__black submitBtn">
+                                                <span class="button-text">@localizer["Submit"]</span>
+                                                <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                            </button>
+                                            @*<input type="submit" value="Отправить">*@
+                                            @*<p class="form-messege">we fawe fwe we</p>*@
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
-                        <!-- Code input -->
-                        <div class="row" id="codeForm" style="display: none;">
-                            <div class="col-lg-12">
-                                <input id="code" type="text" placeholder="@localizer["CodeFromSMS"]">
-                            </div>
-                            <div class="col-lg-12 mt--20">
-                                <p class="form-messege text-danger"></p>
-                            </div>
-                            <div class="col-lg-6 mt--20">
-                                @*<button type="button" onclick="BackToPhoneNumberForm()">Назад</button>*@
-                                <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToPhoneNumberForm()">@localizer["Back"]</button>
-                            </div>
-                            <div class="col-lg-6 mt--20">
-                                <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="VerifyCode()">
-                                    <span class="button-text">@localizer["Continue"]</span>
-                                    <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
-                                </button>
-                                @*<input type="submit" value="Продолжить" onclick="VerifyCode()">*@
-                            </div>
-                        </div>
-
-                        <!-- Full name and username inputs form -->
-                        <form asp-controller="Account" asp-action="Register" method="post" id="registrationForm" data-ajax="true" data-ajax-method="post" style="display: none;"
-                              data-ajax-begin="RegistrationBegin"
-                              data-ajax-failure="RegistrationError"
-                              data-ajax-success="RegistrationSucceeded"
-                              data-ajax-complete="RegistrationCompleted">
-                            <div class="row">
-                                <div class="col-lg-12 mt--20">
-                                    <input asp-for="FirebaseUid" type="hidden" />
-
-                                    <input asp-for="FullName" type="text" placeholder=@Html.DisplayNameFor(m => m.FullName) *">
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                </div>
-                                <div class="col-lg-12 mt--20">
-                                    <input asp-for="UserName" type="text" placeholder="@Html.DisplayNameFor(m => m.UserName) *">
-                                    <span asp-validation-for="UserName" class="text-danger"></span>
-                                </div>
-                                <div class="col-lg-12 mt--20">
-                                    <p class="form-messege text-danger"></p>
-                                </div>
-                                <div class="col-lg-6 mt--20">
-                                    <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">@localizer["Back"]</button>
-                                    @*<input type="submit" value="Назад" onclick="BackToCodeForm()">*@
-                                </div>
-                                <div class="col-lg-6 mt--20">
-                                    <button type="submit" class="button-link button-size__xl button__black submitBtn">
-                                        <span class="button-text">@localizer["Submit"]</span>
-                                        <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
-                                    </button>
-                                    @*<input type="submit" value="Отправить">*@
-                                    @*<p class="form-messege">we fawe fwe we</p>*@
-                                </div>
-                            </div>
-                        </form>
                     </div>
+                    <div class="col-xl-3 col-lg-2 col-1"></div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-2 col-1"></div>
         </div>
+        <!-- End Contact Form -->
     </div>
 </div>
-<!-- End Contact Form -->
 
 <style>
     #phoneNumber {

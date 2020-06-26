@@ -10,16 +10,29 @@
 }
 
 <div class="mt--30 mb--30">
-    <form asp-action="Edit" asp-controller="VideoRequest"
-            data-ajax="true"
-            data-ajax-method="POST"
-            data-ajax-mode="replace"
-            data-ajax-update="#ajaxresult">
-        <div id="ajaxresult">
-            @await Html.PartialAsync(
-                "/Views/VideoRequest/_Edit.cshtml")
+    <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40" style="width: 100%;">
+        <div class="row">
+            <div class="col-sm-6 col-12">
+                <div class="blog blog_style--1">
+                    <div class="inner">
+                        <form asp-action="Edit" asp-controller="VideoRequest"
+                                data-ajax="true"
+                                data-ajax-method="POST"
+                                data-ajax-mode="replace"
+                                data-ajax-update="#ajaxresult">
+                            <div id="ajaxresult">
+                                @await Html.PartialAsync(
+                                    "/Views/VideoRequest/_Edit.cshtml")
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-12">
+                <partial name="_OrderStepsClarification" />
+            </div>
         </div>
-    </form>
+    </div>
 </div>
 
 <style>

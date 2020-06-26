@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cameo.Common;
 using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
@@ -75,7 +76,13 @@ namespace Cameo.Controllers
             };
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
-            ViewData["customerBalance"] = CustomerBalanceService.GetBalance(customer);
+
+            int customerBalance = CustomerBalanceService.GetBalance(customer);
+            ViewData["customerBalance"] = customerBalance;
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            ViewData["customerBalanceStr"] = customerBalance
+                .ToString(numberFormat)
+                .Trim();
 
             return View(createVM);
         }

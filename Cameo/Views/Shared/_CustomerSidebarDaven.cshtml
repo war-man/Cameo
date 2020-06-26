@@ -37,7 +37,7 @@
             <a class="nav-link" href="~/Home/TermsOfService"><i class="fa fa-file-text"></i> @localizer["TermsOfUsage"]</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-credit-card-alt"></i> @localizer["ReplenishBalance"] <span class="badge">(45 000 @localizer["UZS"])</span></a>
+            <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-credit-card-alt"></i> @localizer["ReplenishBalance"] <span class="badge" id="customerBalance">(...)</span></a>
         </li>
         <li class="nav-item">
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Talents", new { area = "" })" method="post" id="logoutForm" style="display: none;">
@@ -79,7 +79,7 @@
 <script>
     function Logout()
     {
-        if (!confirm("@localizer["LogoutConfirmationText"]"))
+        if (!confirm("@Html.Raw(localizer["LogoutConfirmationText"])"))
             return;
 
         firebase.auth().signOut().then(() =>
@@ -90,5 +90,24 @@
         {
             console.log(error);
         });
+    }
+</script>
+
+<script>
+    //get price
+    getFoo("/Customer/GetBalance", "customerBalance");
+
+    //get balance
+    function getFoo(url, elementID)
+    {
+        const Http = new XMLHttpRequest();
+        //const url = '/Talent/GetPrice';
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e) =>
+        {
+            //console.log(Http.responseText)
+            document.getElementById(elementID).innerText = "(" + Http.responseText + " " + "@Html.Raw(localizer["UZS"])" + ")";
+        }
     }
 </script>

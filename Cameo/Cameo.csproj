@@ -347,6 +347,9 @@
     <Content Update="Views\Error\Status.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\_OrderStepsClarification.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_CustomerSidebarDaven.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

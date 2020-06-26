@@ -20,6 +20,7 @@ namespace Cameo.ViewModels
         public string From { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        [Display(Name = "Instructions", ResourceType = typeof(Resources.ResourceTexts))]
         public string Instructions { get; set; }
 
         //[Required]

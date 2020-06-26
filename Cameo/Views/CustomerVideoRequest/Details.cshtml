@@ -10,7 +10,7 @@
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 
-<div class="row bg-color ptb_md--60 ptb_sm--60" data-bg-color="#ffffff">
+<div class="row bg-color ptb_md--60 ptb_sm--60">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mt--30">
@@ -196,9 +196,7 @@
                     </div>*@
             </div>
             <div class="col-lg-6 mt--30 mb--30">
-
-                Here will be some instructions like on cameo
-
+                <partial name="_OrderStepsClarification" />
             </div>
         </div>
         <div class="row mt--30">
@@ -465,7 +463,7 @@
 
         function CancelRequest(requestID)
         {
-            if (!confirm("@localizer["CancelOrderConfirmationText"]"))
+            if (!confirm("@Html.Raw(localizer["CancelOrderConfirmationText"])"))
                 return;
 
             $.ajax({

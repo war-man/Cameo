@@ -11,12 +11,15 @@
 }
 
 <!-- Start Beadcaump Area -->
-<div class="dn-breadcaump-area breadcrumb-default bg_image ptb--120">
+<div class="dn-breadcaump-area breadcrumb-default bg_image ptb--40">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="breadcrumb-content__title text-white fontWeight400">@localizer["HomeHeaderText"]</h1>
+                    @*<video id="homeHeaderVideo" autoplay>
+                        <source src="https://d3el26csp1xekx.cloudfront.net/miscellaneous/videos/useCaseOverlayWebApple.m4v" type="video/mp4" />
+                    </video>*@
+                    <h1 class="breadcrumb-content__title text-white fontWeight400" id="homeHeaderText">@localizer["HomeHeaderText"]</h1>
                 </div>
             </div>
         </div>
@@ -80,4 +83,17 @@
     {
         background-image: url(/images/home-jumbotron.jpg);
     }
+    /*video#homeHeaderVideo {
+        max-height: 425px;
+        height: 100%;
+        display: inline-block;
+        vertical-align: baseline;
+        width: 100%;
+        border-radius: 0.25rem;
+    }
+
+    #homeHeaderText {
+        position: absolute;
+        top: 40px;
+    }*/
 </style>

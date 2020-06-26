@@ -19,70 +19,74 @@
                 <partial name="_CustomerSidebarDaven" />
             </div>
             <div class="col-lg-8 mt--30 mb--30">
-                <h2>@ViewData["Title"]</h2>
+                <div class="blog blog_style--1">
+                    <div class="inner">
+                        <h2>@ViewData["Title"]</h2>
 
-                @if (ViewData["successfullySaved"] != null)
-                {
-                    <div class="alert alert-success">
-                        @localizer["SuccessDataSaved"]
-                    </div>
-                }
+                        @if (ViewData["successfullySaved"] != null)
+                        {
+                            <div class="alert alert-success">
+                                @localizer["SuccessDataSaved"]
+                            </div>
+                        }
 
-                <!-- Start Contact Form -->
-                <div class="draven-contact-form">
-                    <div class="container p-0">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="contact-form-wrapper">
-                                    <!-- Start Contact Wrapper -->
-                                    <div class="contact__form--1">
-                                        <!-- Enrolment form -->
-                                        <form method="post">
-                                            <div asp-validation-summary="All" class="text-danger"></div>
-                                            <div class="row">
-                                                <div class="col-lg-12 mt--20">
-                                                    <input asp-for="ID" type="hidden" />
-                                                    <input type="hidden" id="fileID" name="fileID" />
+                        <!-- Start Contact Form -->
+                        <div class="draven-contact-form">
+                            <div class="container p-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="contact-form-wrapper">
+                                            <!-- Start Contact Wrapper -->
+                                            <div class="contact__form--1">
+                                                <!-- Enrolment form -->
+                                                <form method="post">
+                                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 mt--20">
+                                                            <input asp-for="ID" type="hidden" />
+                                                            <input type="hidden" id="fileID" name="fileID" />
 
-                                                    <!-- Start Single Team -->
-                                                    <div class="col-lg-4 col-md-6 col-sm-6 p-0">
-                                                        <div class="team team__style--4 text-center">
-                                                            <div class="thumbnail2">
-                                                                <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar">
-                                                                <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw" style="display: none;"></i>
-                                                                @*<img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />*@
+                                                            <!-- Start Single Team -->
+                                                            <div class="col-lg-4 col-md-6 col-sm-6 p-0">
+                                                                <div class="team team__style--4 text-center">
+                                                                    <div class="thumbnail2">
+                                                                        <img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar">
+                                                                        <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw" style="display: none;"></i>
+                                                                        @*<img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />*@
+                                                                    </div>
+                                                                </div>
                                                             </div>
+                                                            <div class="col-lg-4 col-md-6 col-sm-6 mt--10 p-0 text-center">
+                                                                @*<a class="button-link button-size__8 button__transparent--border--dashed" href="javascript: void(0);"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span><span class="button-text">Редактировать фото</span></a>*@
+                                                                <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left">@*<i class="dlicon ui-1_zoom-split"></i>*@</span> <span class="button-text"><u>@localizer["EditPhoto"]</u></span></label>
+                                                                <input type='file' id="imgInp" style="display: none;" />
+                                                            </div>
+                                                            <!-- End Single Team -->
+                                                        </div>
+                                                        <div class="col-lg-12 mt--20">
+                                                            <input asp-for="FullName" type="text" placeholder="@Html.DisplayNameFor(m => m.FullName) *">
+                                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="col-lg-12 mt--20">
+                                                            <textarea asp-for="Bio" type="text" placeholder="@Html.DisplayNameFor(m => m.Bio)"></textarea>
+                                                            <span asp-validation-for="Bio" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="col-lg-12 mt--20">
+                                                            <button type="submit" class="button-link button-size__xl button__black" style="width: 100%">
+                                                                <span class="button-text">@localizer["Save"]</span>
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4 col-md-6 col-sm-6 mt--10 p-0 text-center">
-                                                        @*<a class="button-link button-size__8 button__transparent--border--dashed" href="javascript: void(0);"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span><span class="button-text">Редактировать фото</span></a>*@
-                                                        <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left">@*<i class="dlicon ui-1_zoom-split"></i>*@</span> <span class="button-text"><u>@localizer["EditPhoto"]</u></span></label>
-                                                        <input type='file' id="imgInp" style="display: none;"/>
-                                                    </div>
-                                                    <!-- End Single Team -->
-                                                </div>
-                                                <div class="col-lg-12 mt--20">
-                                                    <input asp-for="FullName" type="text" placeholder="@Html.DisplayNameFor(m => m.FullName) *">
-                                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                                </div>
-                                                <div class="col-lg-12 mt--20">
-                                                    <textarea asp-for="Bio" type="text" placeholder="@Html.DisplayNameFor(m => m.Bio)"></textarea>
-                                                    <span asp-validation-for="Bio" class="text-danger"></span>
-                                                </div>
-                                                <div class="col-lg-12 mt--20">
-                                                    <button type="submit" class="button-link button-size__xl button__black" style="width: 100%">
-                                                        <span class="button-text">@localizer["Save"]</span>
-                                                    </button>
-                                                </div>
+                                                </form>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- End Contact Form -->
                     </div>
                 </div>
-                <!-- End Contact Form -->
             </div>
             @*<div class="col-lg-2"></div>*@
         </div>

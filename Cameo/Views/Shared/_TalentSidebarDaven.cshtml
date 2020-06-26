@@ -52,7 +52,7 @@
                     ariaSelected = "true";
                 }
             }
-            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-suitcase"></i> @localizer["MyProjectsCategories"]Мои проекты. Категории</a>
+            <a class="nav-link @active" href="playMarket" aria-selected="@ariaSelected"><i class="fa fa-suitcase"></i> @localizer["MyProjectsCategories"]</a>
         </li>
         <li class="nav-item">
             @{
@@ -126,7 +126,7 @@
 <script>
     function Logout()
     {
-        if (!confirm("@localizer["LogoutConfirmationText"]"))
+        if (!confirm("@Html.Raw(localizer["LogoutConfirmationText"])"))
             return;
 
         firebase.auth().signOut().then(() =>

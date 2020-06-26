@@ -28,8 +28,8 @@
 else
 {
     <!-- Start Contact Form -->
-    <div class="draven-contact-form bg-color mb--40" data-bg-color="#ffffff">
-        <div class="container">
+    <div class="draven-contact-form bg-color mb--40">
+        <div class="">
             <h3>@localizer["OrderVideoFrom"] @talent.FullName <small>(@talent.PriceStr @localizer["UZS"])</small></h3>
             <div class="row">
                 <div class="col-12">
@@ -38,7 +38,7 @@ else
                         <div class="contact__form--1">
                             @*<form asp-controller="Account" asp-action="Register" method="post" id="registrationForm" data-ajax="true" data-ajax-method="post">*@
                                 <div class="row">
-                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                    @*<div asp-validation-summary="All" class="text-danger"></div>*@
                                     <div class="col-lg-12">
                                         <input asp-for="TalentID" type="hidden" value="@talent.ID" />
                                         <input asp-for="Price" type="hidden" value="@talent.Price" />
@@ -86,8 +86,11 @@ else
                                         <p class="form-messege text-danger"></p>
                                     </div>
                                     <div class="col-lg-12 mt--20">
-                                        <input type="submit" value="@localizer["OrderVideo"] (@talent.RequestPriceStr @localizer["UZS"])">
-                                        @*<p class="form-messege">we fawe fwe we</p>*@
+                                        @*<input type="submit" value="@localizer["OrderVideo"] (@talent.RequestPriceStr @localizer["UZS"])">*@
+                                        <button type="submit" class="button-link button-size__xl button__black" style="width: 100%">
+                                            <span class="button-text">@localizer["OrderVideo"] (@talent.RequestPriceStr @localizer["UZS"]*)</span>
+                                        </button>
+                                        <p class="form-messege">* Авансовый платеж</p>
                                     </div>
                                 </div>
                             @*</form>*@
