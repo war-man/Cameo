@@ -89,6 +89,7 @@ namespace Cameo.Controllers
                 int paymentAmount = talentVM.RequestPrice - customerBalance;
                 string returnUrl = "https://helloo.uz/VideoRequest/Create?username=" + username;
 
+                ViewData["PaymentAmount"] = paymentAmount;
                 ViewData["ClickPaymentButtonUrl"] = CustomerBalanceService
                     .GenerateClickPaymentButtonUrl(customer.AccountNumber, paymentAmount, returnUrl);
             }

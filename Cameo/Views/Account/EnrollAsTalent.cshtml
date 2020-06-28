@@ -64,7 +64,8 @@
                                     <div class="col-lg-6 mt--20 ">
                                         <button type="button" class="button-link button-size__xl button__black submitBtn" onclick="VerifyCode()">
                                             <span class="button-text">@localizer["Continue"]</span>
-                                            <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                            @*<span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>*@
+                                            <span class="icon-right spinner" style="display: none;"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
                                         </button>
                                         @*<input type="submit" value="Продолжить" onclick="VerifyCode()">*@
                                     </div>
@@ -105,7 +106,7 @@
                                             <span asp-validation-for="FollowersCount" class="text-danger"></span>
                                         </div>
                                         <div class="col-lg-6 mt--20">
-                                            <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">@localizer["CoBackntinue"]</button>
+                                            <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToCodeForm()">@localizer["Back"]</button>
                                         </div>
                                         <div class="col-lg-6 mt--20">
                                             <button type="submit" class="button-link button-size__xl button__black submitBtn">
@@ -127,7 +128,28 @@
                                             </div>
                                             <div class="content mt--35">
                                                 <h3 class="title mb--10">@localizer["EnrollCompleteHeaderText"]</h3>
-                                                <p>@localizer["EnrollCompleteBodyText"]</p>
+                                                @*<p>@localizer["EnrollCompleteBodyText"]</p>*@
+                                                <p>Отправьте нам сообщение с текстом "Helloo" от указанного при регистрации аккаунта на один из наших адресов:</p>
+                                                <p>
+                                                    <a class="button-link button-size__12 mt--10" href="#">
+                                                        <span class="icon-right"><i class="fa fa-instagram"></i></span>
+                                                        <span class="button-text button-text__15">
+                                                            Instagram
+                                                        </span>
+                                                    </a>
+                                                    <a class="button-link button-size__12 mt--10" href="#">
+                                                        <span class="icon-right"><i class="fa fa-facebook-square"></i></span>
+                                                        <span class="button-text button-text__15">
+                                                            Facebook
+                                                        </span>
+                                                    </a>
+                                                    <a class="button-link button-size__12 mt--10" href="#">
+                                                        <span class="icon-right"><i class="fa fa-twitter"></i></span>
+                                                        <span class="button-text button-text__15">
+                                                            Twitter
+                                                        </span>
+                                                    </a>
+                                                </p>
                                                 <a class="button-link" href="/"><span>@localizer["GoHome"]</span></a>
                                             </div>
                                         </div>
@@ -141,6 +163,14 @@
                         <div class="contact-container adress__style--1">
                             <ul class="contact-address">
                                 <li>
+                                    <span class="address-icon"><i class="fa fa-telegram"></i></span>
+                                    <span class="address-text">+998 90 123 45 56</span>
+                                </li>
+                                <li>
+                                    <span class="address-icon"><i class="fa fa-envelope"></i></span>
+                                    <span class="address-text">info@helloo.uz</span>
+                                </li>
+                                @*<li>
                                     <span class="address-icon"><i class="dlicon ui-3_phone-call"></i></span>
                                     <span class="address-text">+55 858 5858 68</span>
                                 </li>
@@ -160,15 +190,15 @@
                                         PO Box 16122 Collins Street West Victoria 8007
                                         Australia
                                     </span>
-                                </li>
+                                </li>*@
                             </ul>
-                            <div class="social-icons bg-white text-left mt--70">
+                            @*<div class="social-icons bg-white text-left mt--70">
                                 <a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
                                 <a class="twitter" href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
                                 <a class="pinterest" href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
                                 <a class="youtube" href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
                                 <a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -178,42 +208,46 @@
     </div>
 </div>
 
-        <style>
-            #phoneNumber {
-                position: relative;
-                flex: 1 1 auto;
-                width: 1%;
-            }
+<style>
+    #phoneNumber {
+        position: relative;
+        flex: 1 1 auto;
+        width: 1%;
+    }
 
-            select {
-                font-size: 18px;
-                padding: 25px;
-                border-style: solid;
-                border-width: 1px;
-                border-color: #d4d4d4;
-                width: 100%;
-                line-height: inherit;
-                height: auto;
-            }
+    select {
+        font-size: 18px;
+        padding: 25px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #d4d4d4;
+        width: 100%;
+        line-height: inherit;
+        height: auto;
+    }
 
-            .backBtn, .submitBtn {
-                width: 100%;
-                text-transform: uppercase;
-                font-weight: 700;
-                font-size: 14px !important;
-            }
-        </style>
+    .backBtn, .submitBtn {
+        width: 100%;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 14px !important;
+    }
 
-        @section Scripts {
-            @*<partial name="_ValidationScriptsPartial" />*@
+    .icon__style--1 .inner .content .button-link {
+        font-size: 20px;
+    }
+</style>
 
-            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-            <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+@section Scripts {
+    @*<partial name="_ValidationScriptsPartial" />*@
 
-            <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
 
-            <script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+
+    <script>
         firebase.auth().languageCode = 'ru';
 
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
@@ -377,5 +411,5 @@
             $("#enrollmentForm button").removeAttr("disabled");
             $("#enrollmentForm .spinner").hide();
         }
-            </script>
-        }
+    </script>
+}

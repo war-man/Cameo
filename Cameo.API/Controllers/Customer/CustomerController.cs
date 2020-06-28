@@ -4,37 +4,45 @@ using Cameo.Services.Interfaces;
 using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Cameo.API.Utils;
+using Cameo.Common;
 
 namespace Cameo.API.Controllers
 {
     [Authorize(Policy = "CustomerOnly")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class CustomerController : BaseController
     {
         private readonly ICustomerService CustomerService;
         private readonly IAttachmentService AttachmentService;
+        private readonly ICustomerBalanceService CustomerBalanceService;
 
         public CustomerController(
             ICustomerService customerService,
-            IAttachmentService attachmentService)
+            IAttachmentService attachmentService,
+            ICustomerBalanceService customerBalanceService)
         {
             CustomerService = customerService;
             AttachmentService = attachmentService;
+            CustomerBalanceService = customerBalanceService;
         }
 
-        public IActionResult Index()
+        [HttpGet("GenerateClickPaymentButtonUrl")]
+        public IActionResult GenerateClickPaymentButtonUrl(int amount, string returnUrl)
         {
-            //var curUser = accountUtil.GetCurrentUser(User);
-            //Customer model = CustomerService.GetByUserID(curUser.ID);
-            //if (model == null)
-            //    return NotFound();
+            var curUser = accountUtil.GetCurrentUser(User);
+            if (!AccountUtil.IsUserCustomer(curUser))
+                return CustomBadRequest("Вы не являетесь клиентом");
 
-            //if (model.AvatarID.HasValue)
-            //    model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+            var customer = CustomerService.GetByUserID(curUser.ID);
+            if (customer == null)
+                return CustomBadRequest("Вы не являетесь клиентом");
 
-            //CustomerShortInfoVM modelVM = new CustomerShortInfoVM(model);
+            string url = CustomerBalanceService
+                .GenerateClickPaymentButtonUrl(customer.AccountNumber, amount, returnUrl);
 
-            //return View(modelVM);
-            return RedirectToAction("Index", "CustomerPersonalData");
+            return Ok(url);
         }
     }
 }
