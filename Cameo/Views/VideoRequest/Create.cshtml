@@ -18,10 +18,20 @@
                     @localizer["InsufficientFunds"]
                 </div>
                 <div>
-                    <a class="button-link button-size button__color--4 grow-animation" href="#">
-                        <span class="button-text">@localizer["ReplenishBalanceOn"] <b>@talent.RequestPriceStr @localizer["UZS"]</b></span>
+                    <a class="button-link button-size button__color--4 grow-animation" href="@ViewData["ClickPaymentButtonUrl"]">
+                        <i></i>
+                        <span class="button-text">@localizer["ReplenishBalanceOn"] <b>@talent.RequestPriceStr @localizer["UZS"] (CLICK)</b></span>
                     </a>
                 </div>
+
+                @*<div>
+                    <p>@localizer["ReplenishBalanceOn"] <b>@talent.RequestPriceStr @localizer["UZS"]</p>
+                </div>
+                <div>
+                    <a class="click_logo" href="@ViewData["ClickPaymentButtonUrl"]">
+                        <i></i>
+                    </a>
+                </div>*@
 
                 <br />
                 <div class="alert alert-info">

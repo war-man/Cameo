@@ -84,6 +84,15 @@ namespace Cameo.Controllers
                 .ToString(numberFormat)
                 .Trim();
 
+            if (customerBalance < talentVM.RequestPrice)
+            {
+                int paymentAmount = talentVM.RequestPrice - customerBalance;
+                string returnUrl = "https://helloo.uz/VideoRequest/Create?username=" + username;
+
+                ViewData["ClickPaymentButtonUrl"] = CustomerBalanceService
+                    .GenerateClickPaymentButtonUrl(customer.AccountNumber, paymentAmount, returnUrl);
+            }
+
             return View(createVM);
         }
 
