@@ -20,17 +20,20 @@ namespace Cameo.API.Controllers
         private readonly IAttachmentService AttachmentService;
         private readonly IVideoRequestService VideoRequestService;
         private readonly IVideoRequestStatisticsService VideoRequestStatisticsService;
+        private readonly ITalentVisibilityService TalentVisibilityService;
 
         public TalentController(
             ITalentService talentService,
             IAttachmentService attachmentService,
             IVideoRequestService videoRequestService,
-            IVideoRequestStatisticsService videoRequestStatisticsService)
+            IVideoRequestStatisticsService videoRequestStatisticsService,
+            ITalentVisibilityService talentVisibilityService)
         {
             TalentService = talentService;
             AttachmentService = attachmentService;
             VideoRequestService = videoRequestService;
             VideoRequestStatisticsService = videoRequestStatisticsService;
+            TalentVisibilityService = talentVisibilityService;
         }
 
         [HttpGet]
@@ -74,6 +77,28 @@ namespace Cameo.API.Controllers
                 };
 
                 return Ok(statisticsInfo);
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
+        }
+
+        [HttpGet("GetVisibilityWarningInfo")]
+        public ActionResult<List<string>> GetVisibilityWarningInfo()
+        {
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent talent = TalentService.GetByUserID(curUser.ID);
+                if (talent == null)
+                    throw new Exception("Талант не найден");
+
+                Talent talentDetailed = TalentService.GetActiveSingleDetailsWithRelatedDataByID(talent.ID);
+
+                List<string> warningTexts = TalentVisibilityService.BuildWarningTexts(talentDetailed);
+
+                return Ok(warningTexts);
             }
             catch (Exception ex)
             {

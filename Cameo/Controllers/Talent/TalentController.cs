@@ -5,6 +5,7 @@ using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Cameo.Common;
+using System.Collections.Generic;
 
 namespace Cameo.Controllers
 {
@@ -15,17 +16,20 @@ namespace Cameo.Controllers
         private readonly IAttachmentService AttachmentService;
         private readonly IVideoRequestService VideoRequestService;
         private readonly IVideoRequestStatisticsService VideoRequestStatisticsService;
+        private readonly ITalentVisibilityService TalentVisibilityService;
 
         public TalentController(
             ITalentService talentService,
             IAttachmentService attachmentService,
             IVideoRequestService videoRequestService,
-            IVideoRequestStatisticsService videoRequestStatisticsService)
+            IVideoRequestStatisticsService videoRequestStatisticsService,
+            ITalentVisibilityService talentVisibilityService)
         {
             TalentService = talentService;
             AttachmentService = attachmentService;
             VideoRequestService = videoRequestService;
             VideoRequestStatisticsService = videoRequestStatisticsService;
+            TalentVisibilityService = talentVisibilityService;
         }
 
         public IActionResult Index()
@@ -73,6 +77,20 @@ namespace Cameo.Controllers
             {
                 return CustomBadRequest(ex);
             }
+        }
+
+        public IActionResult GetVisibilityWarningInfo()
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            Talent talent = TalentService.GetByUserID(curUser.ID);
+            if (talent == null)
+                throw new Exception("Талант не найден");
+
+            Talent talentDetailed = TalentService.GetActiveSingleDetailsWithRelatedDataByID(talent.ID);
+
+            List<string> warningTexts = TalentVisibilityService.BuildWarningTexts(talentDetailed);
+
+            return PartialView("_VisibilityInfo", warningTexts);
         }
 
         public string GetPrice()

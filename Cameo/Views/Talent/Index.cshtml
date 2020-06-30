@@ -16,12 +16,18 @@
                 <div class="blog blog_style--1">
                     <div class="inner">
                         <h2>@ViewData["Title"]</h2>
+                        <div id="visibilityInfoContainer">
+                            <i class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw mt--30 mb--30" style="margin-left: 49%;"></i>
+                            <div class="row">
+                                <div class="innerContainer"></div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-4">
                                 <!-- Start Single Team -->
                                 <div class="team team__style--3 text-center">
                                     <div class="thumbnail">
-                                        <img src="@Model.Avatar.Url" alt="Draven Images">
+                                        <img src="@Model.Avatar.Url" alt="You">
                                     </div>
                                     <div class="hover-action pt--20">
                                         <div class="info mb--15">
@@ -34,13 +40,13 @@
                                 @*<img id="imgContainer" src="@Model.Avatar.Url" alt="Avatar" class="img-thumbnail img-responsive" height="150" width="150" />*@
                             </div>
                             @*<div class="col-sm-4">
-                                    <div>
-                                        <i class="glyphicon glyphicon-star text-warning"></i> 5.0
-                                    </div>
-                                    <div>
-                                        Rating
-                                    </div>
-                                </div>*@
+                <div>
+                    <i class="glyphicon glyphicon-star text-warning"></i> 5.0
+                </div>
+                <div>
+                    Rating
+                </div>
+            </div>*@
                             <div class="col-sm-4">
                                 <a id="aviabilityBtn" class="button-link button-size button__transparent--border--four" href="javascript: ToogleAvailability();" style="border-radius: 0.25rem;">
                                     <span class="button-text" style="font-size: 20px;">@localizer["Availability"]</span>
@@ -55,19 +61,19 @@
                                 </a>
 
                                 @*<div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-control", @onchange = "ToogleAvailability(this);" })
-                                            </div>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Some text">
-                                    </div>*@
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-control", @onchange = "ToogleAvailability(this);" })
+                        </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Some text">
+                </div>*@
                                 @*Доступность: @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-control", @onchange = "ToogleAvailability(this);" })*@
                             </div>
                         </div>
                         <br />
                         <div id="statisticsContainer">
-                            <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw mt--30 mb--30" style="margin-left: 49%;"></i>
+                            <i class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw mt--30 mb--30" style="margin-left: 49%;"></i>
                             <div class="row">
                                 <div class="innerContainer"></div>
                             </div>
@@ -89,6 +95,12 @@
 
         $(document).ready(function ()
         {
+            GetDashboardInfo();
+            GetVisibilityWarningInfo();
+        });
+
+        function GetDashboardInfo()
+        {
             $.ajax({
                 type: "GET",
                 url: "/Talent/GetDashboardInfo",
@@ -108,7 +120,30 @@
                     $("#statisticsContainer .spinner").hide();
                 }
             });
-        });
+        }
+
+        function GetVisibilityWarningInfo()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Talent/GetVisibilityWarningInfo",
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data)
+                {
+                    $("#visibilityInfoContainer .innerContainer").html(data);
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                    alert("Ajax error (status code = " + data.status + "): " + data.statusText);
+                },
+                complete: function (data)
+                {
+                    $("#visibilityInfoContainer .spinner").hide();
+                }
+            });
+        }
 
         function ToogleAvailability()
         {
