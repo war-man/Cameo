@@ -66,7 +66,11 @@ namespace Cameo.Services
             //TO-DO: send firebase notification to Talent
             string title = "Новый заказ";
             string body = entity.Instructions;
-            FirebaseRegistrationTokenService.SendNotification(entity.Talent.UserID, title, body);
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = entity.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(entity.Talent.UserID, title, body, data);
         }
 
         public void AnswerDeadlineReaches(VideoRequest model, string userID)
@@ -87,6 +91,13 @@ namespace Cameo.Services
             Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
+            string title = model.Talent.FullName;
+            string body = "Срок ожидания ответа истёк";
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
         }
 
         public void Edit(VideoRequest model, string userID)
@@ -94,13 +105,13 @@ namespace Cameo.Services
             Update(model, userID);
 
             //TO-DO: send firebase notification to Talent
-
-            //send email to Talent
-            string toTalent = "xenon1991@inbox.ru";
-            string subjectTalent = "Subject - Talent";
-            string bodyTalent = "This is email for Talent";
-
-            //EmailService.Send(toTalent, subjectTalent, bodyTalent);
+            string title = model.Customer.FullName;
+            string body = "Клиент внес изменения в заказ";
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
         }
         
         /// <summary>
@@ -136,14 +147,29 @@ namespace Cameo.Services
 
             Update(model, userID);
 
+            string title = "";
+            string body = "";
+            string adresatUserID = "";
             if (userType == UserTypesEnum.talent.ToString())
             {
                 //TO-DO: send firebase notification to Customer
+                title = model.Talent.FullName;
+                body = "Талант отменил Ваш заказ";
+                adresatUserID = model.Customer.UserID;
             }
             else
             {
                 //TO-DO: send firebase notification to Talent
+                title = model.Customer.FullName;
+                body = "Клиент отменил Ваш заказ";
+                adresatUserID = model.Talent.UserID;
             }
+
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(adresatUserID, title, body, data);
         }
 
         public void Accept(VideoRequest model, string userID)
@@ -168,6 +194,13 @@ namespace Cameo.Services
             Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
+            string title = model.Talent.FullName;
+            string body = "Талант принял Ваш заказ";
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
         }
 
         private bool IsAcceptable(VideoRequest model, string userID)
@@ -198,7 +231,19 @@ namespace Cameo.Services
             Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
+            string title = model.Talent.FullName;
+            string body = "Срок ожидания видео истёк";
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
+
             //TO-DO: send firebase notification to Talent
+            title = model.Customer.FullName;
+            body = "Срок ожидания видео истёк";
+            //body += "Убедительно просим больше так не поступать";
+            FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
         }
 
         public void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID)
@@ -215,7 +260,19 @@ namespace Cameo.Services
             Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
+            string title = model.Talent.FullName;
+            string body = "Срок ожидания подтверждения оплаты истёк";
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
+
             //TO-DO: send firebase notification to Talent
+            title = model.Customer.FullName;
+            body = "Срок ожидания подтверждения оплаты истёк";
+            //body += "Убедительно просим больше так не поступать";
+            FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
         }
 
         private bool BelongsToUser(VideoRequest model, string userID)
@@ -270,6 +327,15 @@ namespace Cameo.Services
             //model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
 #endif
             Update(model, userID);
+
+            //TO-DO: send firebase notification to Talent
+            string title = model.Customer.FullName;
+            string body = "Клиент загрузил скрин, подтверждающий оплату. Пожалуйста, подтвердите.";
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
         }
 
         public bool VideoIsAllowedToBeDeleted(VideoRequest model)
@@ -314,7 +380,13 @@ namespace Cameo.Services
             Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
-            //SendEmailOnceVideoConfirmed(model);
+            string title = model.Talent.FullName;
+            string body = "Талант загрузил видео! Пожалуйсте, переведите оставшуюся сумму на карту " + model.Talent.CreditCardNumber + " " + model.Talent.CreditCardHolder +" и загрузите скрин оплаты.";
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
         }
 
         private bool IsVideoConfirmable(VideoRequest model)
@@ -340,6 +412,13 @@ namespace Cameo.Services
             Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
+            string title = model.Talent.FullName;
+            string body = "Видео ГОТОВО!";
+            Dictionary<string, string> data = new Dictionary<string, string>()
+            {
+                ["request_id"] = model.ID.ToString()
+            };
+            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
         }
 
         private bool IsPaymentConfirmable(VideoRequest model)

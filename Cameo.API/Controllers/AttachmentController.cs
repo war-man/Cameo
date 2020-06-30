@@ -110,7 +110,7 @@ namespace Cameo.API.Controllers
             }
             else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
             {
-                var request = VideoRequestService.GetByID(id);
+                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
                 if (request != null)
                 {
                     if (request.PaymentScreenshot == null)

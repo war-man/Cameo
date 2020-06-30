@@ -57,7 +57,7 @@ namespace Cameo.Services
             return tokenObj?.Token;
         }
 
-        public void SendNotification(string userID, string title, string body)
+        public void SendNotification(string userID, string title, string body, Dictionary<string, string> data = null)
         {
             var registrationTokens = GetManyByUserID(userID)
                 .Select(m => m.Token)
@@ -75,6 +75,15 @@ namespace Cameo.Services
                     ["body"] = body,
                 },
             };
+
+            if (data != null && data.Count > 0)
+            {
+                foreach (var item in data)
+                {
+                    if (!message.Data.ContainsKey(item.Key))
+                        message.Data.Append(item);
+                }
+            }
 
             var response = FirebaseMessaging.DefaultInstance.SendMulticastAsync(message).ConfigureAwait(true);
         }
