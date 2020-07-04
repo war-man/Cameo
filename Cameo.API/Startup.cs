@@ -47,8 +47,8 @@ namespace Cameo.API
 #if DEBUG
             string connectionStringName = "DefaultConnection";
 #else
-            string connectionStringName = "ServerConnection";
-            //string connectionStringName = "USAServerConnection";
+            //string connectionStringName = "ServerConnection";
+            string connectionStringName = "USAServerConnection";
 #endif
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -75,8 +75,8 @@ namespace Cameo.API
 #if DEBUG
             string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
 #else
-            string connectionString = "Data Source=192.168.44.96;Initial Catalog=Helloo;User Id=sa;Password=cloudstack;";
-            //string connectionString = "Data Source=209.159.151.3;Initial Catalog=Helloo;User Id=sa;Password=MCGR4ZD4Thnr93V4;";
+            //string connectionString = "Data Source=192.168.44.96;Initial Catalog=Helloo;User Id=sa;Password=cloudstack;";
+            string connectionString = "Data Source=209.159.151.3;Initial Catalog=Helloo;User Id=sa;Password=MCGR4ZD4Thnr93V4;";
 #endif
             services.AddHangfire(config =>
                 config.UseSqlServerStorage(
@@ -108,8 +108,9 @@ namespace Cameo.API
 #if DEBUG
             string validIssuer = "https://localhost:44322";
 #else
-            string validIssuer = "https://cameoapi.wiut.uz";
+            //string validIssuer = "https://cameoapi.wiut.uz";
             //string validIssuer = "https://api.helloo.uz";
+            string validIssuer = "https://admin.helloo.uz";
 #endif
             string tokenSecurityKey = "9mxhkbcmmreh2hsnbqh6lisy21t06eg563txkb9w8t4012tiy1fa9xei4d80hucunvhdwgza0917hkf6b0mr36zyadoxxqhqrottbyuhylelvzhd69uz6znmii9lex1a";
             //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

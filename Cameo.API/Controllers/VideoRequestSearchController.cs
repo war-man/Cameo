@@ -24,8 +24,8 @@ namespace Cameo.API.Controllers
             SearchService = searchService;
         }
 
-        [HttpPost]
-        public ActionResult<object> Index(int draw, int? start = null, int? length = null, int? status_id = 0)
+        [HttpGet]
+        public ActionResult<object> Index(int? start = null, int? length = null, int? status_id = 0)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Cameo.API.Controllers
 
                 return new
                 {
-                    draw = draw,
+                    //draw = draw,
                     records_total = recordsTotal,
                     //recordsFiltered = recordsFiltered,
                     data = data,
