@@ -32,9 +32,7 @@ namespace Cameo.API.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
             Customer model = CustomerService.GetActiveSingleDetailsWithRelatedDataByUserID(curUser.ID);
             if (model == null)
-                return NotFound();
-            if (model.AvatarID.HasValue)
-                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+                return CustomBadRequest("Клиент не найден");
 
             CustomerShortInfoVM modelVM = new CustomerShortInfoVM(model);
 

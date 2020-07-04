@@ -31,11 +31,9 @@ namespace Cameo.Controllers
         public IActionResult Index()
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetByUserID(curUser.ID);
+            Customer model = CustomerService.GetActiveSingleDetailsWithRelatedDataByUserID(curUser.ID);
             if (model == null)
-                return NotFound();
-            if (model.AvatarID.HasValue)
-                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+                return CustomBadRequest("Клиент не найден");
 
             CustomerEditVM modelVM = new CustomerEditVM(model);
 

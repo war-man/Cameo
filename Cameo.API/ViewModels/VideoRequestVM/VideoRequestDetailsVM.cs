@@ -103,7 +103,8 @@ namespace Cameo.API.ViewModels
             else
                 deadline = model.RequestAnswerDeadline.ToString(dateTextViewStringFormat);
 
-            payment_screenshot = new AttachmentDetailsVM(model.PaymentScreenshot);
+            //payment_screenshot = new AttachmentDetailsVM(model.PaymentScreenshot);
+            payment_screenshot = AttachmentDetailsVM.ToVM(model.PaymentScreenshot);
 
 
 
@@ -163,7 +164,8 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            video = new AttachmentDetailsVM(model.Video);
+            //video = new AttachmentDetailsVM(model.Video);
+            video = AttachmentDetailsVM.ToVM(model.Video);
         }
     }
 
@@ -186,7 +188,8 @@ namespace Cameo.API.ViewModels
                 return;
 
             request_id = model.ID;
-            video = new AttachmentDetailsVM(model.Video);
+            //video = new AttachmentDetailsVM(model.Video);
+            video = AttachmentDetailsVM.ToVM(model.Video);
             to = model.To;
             from = model.From;
             talent = new TalentShortInfoForVideoPageVM(model.Talent);

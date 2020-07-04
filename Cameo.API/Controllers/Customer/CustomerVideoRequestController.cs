@@ -67,7 +67,8 @@ namespace Cameo.API.Controllers
 
                 requestVM.payment_is_confirmed = VideoRequestService.IsPaymentConfirmed(request);
                 if (requestVM.payment_is_confirmed)
-                    requestVM.video = new AttachmentDetailsVM(request.Video);
+                    //requestVM.video = new AttachmentDetailsVM(request.Video);
+                    requestVM.video = AttachmentDetailsVM.ToVM(request.Video);
 
                 if (requestVM.edit_btn_is_available)
                 {

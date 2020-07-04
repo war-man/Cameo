@@ -51,7 +51,8 @@ namespace Cameo.API.ViewModels
             this.bio = model.Bio;
             //this.SocialAreaID = model.SocialAreaID;
             //this.SocialAreaHandle = model.SocialAreaHandle;
-            this.avatar = new AttachmentDetailsVM(model.Avatar);
+            //this.avatar = new AttachmentDetailsVM(model.Avatar);
+            this.avatar = AttachmentDetailsVM.ToVM(model.Avatar);
         }
     }
 
@@ -86,7 +87,8 @@ namespace Cameo.API.ViewModels
             //this.LastName = model.LastName;
             this.username = model.User?.UserName;
             this.bio = model.Bio;
-            this.avatar = new AttachmentDetailsVM(model.Avatar);
+            //this.avatar = new AttachmentDetailsVM(model.Avatar);
+            this.avatar = AttachmentDetailsVM.ToVM(model.Avatar);
         }
     }
 }

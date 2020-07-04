@@ -80,8 +80,11 @@ namespace Cameo.API.Controllers
             {
                 foreach (var talent in categoryTalentsVM.talents)
                 {
-                    if (talent.avatar.id == 0)
+                    if (talent.avatar == null || talent.avatar.id == 0)
+                    {
+                        talent.avatar = new AttachmentDetailsVM();
                         talent.avatar.url = TalentService.GetRandomPhotoUrl();
+                    }
                 }
             }
 
@@ -216,8 +219,11 @@ namespace Cameo.API.Controllers
             {
                 foreach (var talent in categoryTalentsVM.talents)
                 {
-                    if (talent.avatar.id == 0)
+                    if (talent.avatar == null || talent.avatar.id == 0)
+                    {
+                        talent.avatar = new AttachmentDetailsVM();
                         talent.avatar.url = TalentService.GetRandomPhotoUrl();
+                    }
                 }
             }
 
@@ -233,8 +239,11 @@ namespace Cameo.API.Controllers
 
             foreach (var item in talents)
             {
-                if (item.avatar.id == 0)
+                if (item.avatar == null || item.avatar.id == 0)
+                {
+                    item.avatar = new AttachmentDetailsVM();
                     item.avatar.url = TalentService.GetRandomPhotoUrl();
+                }
             }
 
             return talents;
@@ -244,14 +253,17 @@ namespace Cameo.API.Controllers
         public ActionResult<TalentDetailsVM> Get(int id)
         {
             var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetActiveByID(id);
+            Talent model = TalentService.GetActiveSingleDetailsWithRelatedDataByID(id);
             if (model == null)
                 return CustomBadRequest("Талант не найден");
 
             TalentDetailsVM modelVM = new TalentDetailsVM(model);
 
-            if (modelVM.avatar.id == 0)
+            if (modelVM.avatar == null || modelVM.avatar.id == 0)
+            {
+                modelVM.avatar = new AttachmentDetailsVM();
                 modelVM.avatar.url = TalentService.GetRandomPhotoUrl();
+            }
 
             //VideoRequest videoRequest = VideoRequestService.GetRandomSinglePublishedByTalent(model, curUser.ID);
             //if (videoRequest != null)
@@ -296,7 +308,10 @@ namespace Cameo.API.Controllers
             foreach (var talentItem in relatedTalents)
             {
                 if (talentItem.avatar.id == 0)
+                {
+                    talentItem.avatar = new AttachmentDetailsVM();
                     talentItem.avatar.url = TalentService.GetRandomPhotoUrl();
+                }
             }
 
             return relatedTalents;

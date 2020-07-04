@@ -18,6 +18,8 @@ namespace Cameo.API.ViewModels
         [Display(Name = "Количество подписчиков")]
         public string followers_count { get; set; }
 
+        public AttachmentDetailsVM intro_video { get; set; }
+
         public TalentPersonalDataEditVM() { }
 
         public TalentPersonalDataEditVM(Talent model) : base(model)
@@ -28,6 +30,7 @@ namespace Cameo.API.ViewModels
             this.social_area_id = model.SocialAreaID;
             this.social_area_handle = model.SocialAreaHandle;
             this.followers_count = model.FollowersCount;
+            this.intro_video = AttachmentDetailsVM.ToVM(model.IntroVideo);
         }
     }
 

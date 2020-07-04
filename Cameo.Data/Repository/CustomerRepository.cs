@@ -24,6 +24,7 @@ namespace Cameo.Data.Repository
         {
             return DbSet
                 .Include(m => m.User)
+                .Include(m => m.Avatar)
                 .FirstOrDefault(m => m.UserID == userID && !m.IsDeleted);
         }
     }

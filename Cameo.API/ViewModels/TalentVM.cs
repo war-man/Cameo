@@ -116,8 +116,6 @@ namespace Cameo.API.ViewModels
 
     public class TalentDetailsVM : TalentGridViewItem
     {
-        //public string bio { get; set; }
-
         public int request_price { get; set; }
         public string request_price_str { get; set; }
 
@@ -132,8 +130,8 @@ namespace Cameo.API.ViewModels
                 return;
 
             this.is_available = model.IsAvailable;
-            //this.bio = model.Bio;
-            intro_video = new AttachmentDetailsVM(model.IntroVideo);
+            //intro_video = new AttachmentDetailsVM(model.IntroVideo);
+            intro_video = AttachmentDetailsVM.ToVM(model.IntroVideo);
         }
 
         public void RequestPriceToStr()

@@ -16,15 +16,24 @@ namespace Cameo.API.ViewModels
         {
             if (model == null)
             {
-                this.url = AppData.Configuration.NoPhotoUrl;
+                //this.url = AppData.Configuration.NoPhotoUrl;
                 return;
             }
 
             this.id = model.ID;
             if (this.id > 0)
-                this.url = model.Path + "/" + model.GUID + "." + model.Extension;
+                //this.url = model.Path + "/" + model.GUID + "." + model.Extension;
+                this.url = "https://firebasestorage.googleapis.com/v0/b/cameo-uz.appspot.com/o/" + model.Path + "%2F" + model.Filename + "?" + model.UrlParameters;
             else
                 this.url = AppData.Configuration.NoPhotoUrl;
+        }
+
+        public static AttachmentDetailsVM ToVM(Attachment model)
+        {
+            if (model == null)
+                return null;
+
+            return new AttachmentDetailsVM(model);
         }
     }
 
