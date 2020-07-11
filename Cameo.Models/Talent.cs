@@ -8,6 +8,9 @@ namespace Cameo.Models
 {
     public class Talent : Person
     {
+        [StringLength(256)]
+        public string FullNameTransliterated { get; set; }
+
         public string FollowersCount { get; set; }
 
         public int Price { get; set; } = 0;

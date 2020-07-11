@@ -63,6 +63,8 @@ namespace Cameo.API.Controllers
                     model.SocialAreaHandle = modelVM.social_area_handle;
                     model.FollowersCount = modelVM.followers_count;
 
+                    TalentService.TransliterateFullname(model);
+
                     TalentService.Update(model, curUser.ID);
 
                     return Ok();

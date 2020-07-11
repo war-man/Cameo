@@ -15,6 +15,7 @@ namespace Cameo.Controllers
     public class TalentsController : BaseController
     {
         private readonly ITalentService TalentService;
+        private readonly ITalentSearchService TalentSearchService;
         private readonly ICategoryService CategoryService;
         private readonly IVideoRequestTypeService VideoRequestTypeService;
         private readonly IVideoRequestService VideoRequestService;
@@ -22,12 +23,14 @@ namespace Cameo.Controllers
 
         public TalentsController(
             ITalentService talentService,
+            ITalentSearchService talentSearchService,
             ICategoryService categoryService,
             IVideoRequestTypeService videoRequestTypeService,
             IVideoRequestService videoRequestService,
             IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
         {
             TalentService = talentService;
+            TalentSearchService = talentSearchService;
             CategoryService = categoryService;
             VideoRequestTypeService = videoRequestTypeService;
             VideoRequestService = videoRequestService;
@@ -47,7 +50,7 @@ namespace Cameo.Controllers
             List<TalentsCategorizedVM> talentsCategorizedVM = new List<TalentsCategorizedVM>();
             List<Category> categories = new List<Category>();
 
-            var featuredTalents = TalentService.GetFeatured(null, 6);
+            var featuredTalents = TalentSearchService.GetFeatured(null, 6);
             if (featuredTalents.Count() > 0)
             {
                 var featuredTalentsVM = new TalentsCategorizedVM(
@@ -60,7 +63,7 @@ namespace Cameo.Controllers
                 talentsCategorizedVM.Add(featuredTalentsVM);
             }
 
-            var newTalents = TalentService.GetNew(null, 6);
+            var newTalents = TalentSearchService.GetNew(null, 6);
             if (newTalents.Count() > 0)
             {
                 var newTalentsVM = new TalentsCategorizedVM(
@@ -76,7 +79,7 @@ namespace Cameo.Controllers
             categories.AddRange(CategoryService.GetAllActive());
             foreach (var category in categories)
             {
-                var talentsCategorized = TalentService.Search(category.ID, SortTypeEnum.def, 6);
+                var talentsCategorized = TalentSearchService.Search(category.ID, SortTypeEnum.def, 6);
                 if (talentsCategorized.Count() > 0)
                 {
                     var categoryTalentsVM = new TalentsCategorizedVM(category, talentsCategorized.ToList());
@@ -128,7 +131,7 @@ namespace Cameo.Controllers
 
             if (categoryID == (int)CategoryEnum.neW)
             {
-                var newTalents = TalentService.GetNew(null);
+                var newTalents = TalentSearchService.GetNew(null);
                 if (newTalents.Count() > 0)
                 {
                     var newTalentsVM = new TalentsCategorizedVM(
@@ -143,7 +146,7 @@ namespace Cameo.Controllers
             }
             else if (categoryID == (int)CategoryEnum.featured)
             {
-                var featuredTalents = TalentService.GetFeatured(null, 6);
+                var featuredTalents = TalentSearchService.GetFeatured(null, 6);
                 if (featuredTalents.Count() > 0)
                 {
                     var featuredTalentsVM = new TalentsCategorizedVM(
@@ -156,7 +159,7 @@ namespace Cameo.Controllers
                     talentsCategorizedVM.Add(featuredTalentsVM);
                 }
 
-                var newTalents = TalentService.GetNewInFeatured(6);
+                var newTalents = TalentSearchService.GetNewInFeatured(6);
                 if (newTalents.Count() > 0)
                 {
                     var newTalentsVM = new TalentsCategorizedVM(
@@ -169,7 +172,7 @@ namespace Cameo.Controllers
                     talentsCategorizedVM.Add(newTalentsVM);
                 }
 
-                var allTalents = TalentService.GetFeatured(null);
+                var allTalents = TalentSearchService.GetFeatured(null);
                 if (allTalents.Count() > 0)
                 {
                     var allTalentsVM = new TalentsCategorizedVM(
@@ -188,7 +191,7 @@ namespace Cameo.Controllers
                 if (categoryDB == null)
                     return CustomBadRequest("Категория не найдена");
 
-                var featuredTalents = TalentService.GetFeatured(categoryID, 6);
+                var featuredTalents = TalentSearchService.GetFeatured(categoryID, 6);
                 if (featuredTalents.Count() > 0)
                 {
                     var featuredTalentsVM = new TalentsCategorizedVM(
@@ -201,7 +204,7 @@ namespace Cameo.Controllers
                     talentsCategorizedVM.Add(featuredTalentsVM);
                 }
 
-                var newTalents = TalentService.GetNew(categoryID, 6);
+                var newTalents = TalentSearchService.GetNew(categoryID, 6);
                 if (newTalents.Count() > 0)
                 {
                     var newTalentsVM = new TalentsCategorizedVM(
@@ -214,7 +217,7 @@ namespace Cameo.Controllers
                     talentsCategorizedVM.Add(newTalentsVM);
                 }
 
-                var allTalents = TalentService.Search(categoryID, SortTypeEnum.def);
+                var allTalents = TalentSearchService.Search(categoryID, SortTypeEnum.def);
                 if (allTalents.Count() > 0)
                 {
                     var allTalentsVM = new TalentsCategorizedVM(
@@ -304,7 +307,7 @@ namespace Cameo.Controllers
             if (model == null)
                 return NotFound();
 
-            List<TalentGridViewItem> relatedTalents = TalentService.GetRelated(model, count)
+            List<TalentGridViewItem> relatedTalents = TalentSearchService.GetRelated(model, count)
                 .Select(m => new TalentGridViewItem(m))
                 .ToList();
 
@@ -319,7 +322,7 @@ namespace Cameo.Controllers
 
         public IActionResult Get(int categoryID, SortTypeEnum sort)
         {
-            var talents = TalentService.Search(categoryID, sort)
+            var talents = TalentSearchService.Search(categoryID, sort)
                 .Select(m => new TalentGridViewItem(m))
                 .ToList();
 
@@ -337,7 +340,7 @@ namespace Cameo.Controllers
 
         public IActionResult GetBySearchText(string searchText)
         {
-            var talents = TalentService.SearchBySearchText(searchText)
+            var talents = TalentSearchService.SearchBySearchText(searchText)
                 .Select(m => new TalentShortInfoVM(m))
                 .ToList();
 

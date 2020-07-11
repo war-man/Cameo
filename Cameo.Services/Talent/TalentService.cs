@@ -3,9 +3,12 @@ using Cameo.Data.Repository.Interfaces;
 using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
+using NickBuhro.Translit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Cameo.Services
 {
@@ -47,10 +50,29 @@ namespace Cameo.Services
 
         public override void Add(Talent entity, string userID)
         {
+            TransliterateFullname(entity);
+
             base.Add(entity, userID);
 
             AssignAccountNumber(entity);
             base.Update(entity, userID);
+        }
+
+        public void TransliterateFullname(Talent talent)
+        {
+            string fullNameTransliterated = null;
+
+            if (Regex.IsMatch(talent.FullName, @"\p{IsCyrillic}"))
+            {
+                // there is at least one cyrillic character in the string
+                fullNameTransliterated = Transliteration.CyrillicToLatin(talent.FullName, Language.Russian);
+            }
+            else
+            {
+                fullNameTransliterated = Transliteration.LatinToCyrillic(talent.FullName, Language.Russian);
+            }
+
+            talent.FullNameTransliterated = fullNameTransliterated;
         }
 
         public override void Update(Talent entity, string userID)
@@ -95,110 +117,107 @@ namespace Cameo.Services
                 model.AccountNumber = model.ID.ToString().PadLeft(8, '0');
         }
 
-        public IQueryable<Talent> GetFeatured(int? categoryID, int? count = null)
-        {
-            IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
+        //public IQueryable<Talent> GetFeatured(int? categoryID, int? count = null)
+        //{
+        //    IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
 
-            talents = talents.Where(m => m.IsFeatured);
+        //    talents = talents.Where(m => m.IsFeatured);
 
-            if (categoryID.HasValue && categoryID > 0)
-            {
-                talents = talents.Where(m =>
-                    m.TalentCategories
-                        .Select(c => c.CategoryId)
-                        .Contains(categoryID.Value));
-            }
+        //    if (categoryID.HasValue && categoryID > 0)
+        //    {
+        //        talents = talents.Where(m =>
+        //            m.TalentCategories
+        //                .Select(c => c.CategoryId)
+        //                .Contains(categoryID.Value));
+        //    }
 
-            if (count.HasValue && count > 0)
-                talents = talents.Take(count.Value);
+        //    if (count.HasValue && count > 0)
+        //        talents = talents.Take(count.Value);
 
-            return talents;
-        }
+        //    return talents;
+        //}
 
-        public IQueryable<Talent> GetNew(int? categoryID, int? count = null)
-        {
-            IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
+        //public IQueryable<Talent> GetNew(int? categoryID, int? count = null)
+        //{
+        //    IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
 
-            talents = talents.Where(m => m.DateCreated >= DateTime.Now.AddDays(-360)); //must be set to -7
+        //    talents = talents.Where(m => m.DateCreated >= DateTime.Now.AddDays(-360)); //must be set to -7
 
-            if (categoryID.HasValue && categoryID > 0)
-            {
-                talents = talents.Where(m =>
-                    m.TalentCategories
-                        .Select(c => c.CategoryId)
-                        .Contains(categoryID.Value));
-            }
+        //    if (categoryID.HasValue && categoryID > 0)
+        //    {
+        //        talents = talents.Where(m =>
+        //            m.TalentCategories
+        //                .Select(c => c.CategoryId)
+        //                .Contains(categoryID.Value));
+        //    }
 
-            if (count.HasValue && count > 0)
-                talents = talents.Take(count.Value);
+        //    if (count.HasValue && count > 0)
+        //        talents = talents.Take(count.Value);
 
-            return talents;
-        }
+        //    return talents;
+        //}
 
-        public IQueryable<Talent> GetNewInFeatured(int? count = null)
-        {
-            IQueryable<Talent> talents = GetFeatured(null);
+        //public IQueryable<Talent> GetNewInFeatured(int? count = null)
+        //{
+        //    IQueryable<Talent> talents = GetFeatured(null);
 
-            talents = talents.Where(m => m.DateCreated >= DateTime.Now.AddDays(-360)); //must be set to -7
+        //    talents = talents.Where(m => m.DateCreated >= DateTime.Now.AddDays(-360)); //must be set to -7
             
-            if (count.HasValue && count > 0)
-                talents = talents.Take(count.Value);
+        //    if (count.HasValue && count > 0)
+        //        talents = talents.Take(count.Value);
 
-            return talents;
-        }
+        //    return talents;
+        //}
 
-        public IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null)
-        {
-            IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
+        //public IQueryable<Talent> Search(int categoryID, SortTypeEnum sort, int? count = null)
+        //{
+        //    IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
 
-            if (categoryID > 0)
-            {
-                talents = talents.Where(m =>
-                    m.TalentCategories.Select(c => c.CategoryId).Contains(categoryID));
-            }
+        //    if (categoryID > 0)
+        //    {
+        //        talents = talents.Where(m =>
+        //            m.TalentCategories.Select(c => c.CategoryId).Contains(categoryID));
+        //    }
 
-            switch (sort)
-            {
-                case SortTypeEnum.priceAsc:
-                    talents = talents.OrderBy(m => m.Price);
-                    break;
-                case SortTypeEnum.priceDesc:
-                    talents = talents.OrderByDescending(m => m.Price);
-                    break;
-                case SortTypeEnum.az:
-                    talents = talents.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
-                    break;
-                //this case will be uncommented 
-                //when responseTime field will be filled after giving response to request
-                //case SortTypeEnum.responseTime:
-                //    result = result.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
-                //    break;
-                default: //def
-                    talents = talents.OrderBy(m => m.ID);
-                    break;
-            }
+        //    switch (sort)
+        //    {
+        //        case SortTypeEnum.priceAsc:
+        //            talents = talents.OrderBy(m => m.Price);
+        //            break;
+        //        case SortTypeEnum.priceDesc:
+        //            talents = talents.OrderByDescending(m => m.Price);
+        //            break;
+        //        case SortTypeEnum.az:
+        //            talents = talents.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
+        //            break;
+        //        //this case will be uncommented 
+        //        //when responseTime field will be filled after giving response to request
+        //        //case SortTypeEnum.responseTime:
+        //        //    result = result.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
+        //        //    break;
+        //        default: //def
+        //            talents = talents.OrderBy(m => m.ID);
+        //            break;
+        //    }
 
-            if (count.HasValue && count > 0)
-                talents = talents.Take(count.Value);
+        //    if (count.HasValue && count > 0)
+        //        talents = talents.Take(count.Value);
 
-            return talents;
-        }
+        //    return talents;
+        //}
 
-        public IQueryable<Talent> SearchBySearchText(string searchText)
-        {
-            if (string.IsNullOrWhiteSpace(searchText))
-                return Enumerable.Empty<Talent>().AsQueryable();
+        //public IQueryable<Talent> SearchBySearchText(string searchText)
+        //{
+        //    if (string.IsNullOrWhiteSpace(searchText))
+        //        return Enumerable.Empty<Talent>().AsQueryable();
 
-            searchText = searchText.ToLower();
+        //    searchText = searchText.ToLower();
 
-            IQueryable<Talent> result = GetWithRelatedDataForSearchAsIQueryable();
-            result = result.Where(m => 
-                !string.IsNullOrWhiteSpace(m.FirstName) && m.FirstName.ToLower().Contains(searchText) 
-                || !string.IsNullOrWhiteSpace(m.LastName) && m.LastName.ToLower().Contains(searchText)
-                || !string.IsNullOrWhiteSpace(m.FullName) && m.FullName.ToLower().Contains(searchText));
+        //    IQueryable<Talent> result = GetWithRelatedDataForSearchAsIQueryable();
+        //    result = result.Where(m => !string.IsNullOrWhiteSpace(m.FullName) && m.FullName.ToLower().Contains(searchText));
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public void SetAvailability(Talent model, bool availability, string userID)
         {
@@ -206,34 +225,34 @@ namespace Cameo.Services
             base.Update(model, userID);
         }
 
-        private IQueryable<Talent> GetWithRelatedDataForSearchAsIQueryable()
-        {
-            //DEBUG
-            return GetWithRelatedDataAsIQueryable();
+        //private IQueryable<Talent> GetWithRelatedDataForSearchAsIQueryable()
+        //{
+        //    //DEBUG
+        //    return GetWithRelatedDataAsIQueryable();
 
-            //RELEASE
-            return GetWithRelatedDataAsIQueryable()
-                .Where(m => m.IsAvailable
-                    && m.User.TalentApprovedByAdmin
-                    && m.AvatarID.HasValue && m.AvatarID > 0
-                    && !m.IsDeleted
-                    && m.Price > 0
-                    && !(m.CreditCardNumber == null || m.CreditCardNumber.Trim() == string.Empty)
-                    && m.CreditCardExpire.HasValue
-                    && m.TalentCategories.Count > 0);
-        }
+        //    //RELEASE
+        //    return GetWithRelatedDataAsIQueryable()
+        //        .Where(m => m.IsAvailable
+        //            && m.User.TalentApprovedByAdmin
+        //            && m.AvatarID.HasValue && m.AvatarID > 0
+        //            && !m.IsDeleted
+        //            && m.Price > 0
+        //            && !(m.CreditCardNumber == null || m.CreditCardNumber.Trim() == string.Empty)
+        //            && m.CreditCardExpire.HasValue
+        //            && m.TalentCategories.Count > 0);
+        //}
 
-        public IQueryable<Talent> GetRelated(Talent model, int? count = null)
-        {
-            var category = model.TalentCategories.FirstOrDefault();
-            if (category == null)
-                return Enumerable.Empty<Talent>().AsQueryable();
+        //public IQueryable<Talent> GetRelated(Talent model, int? count = null)
+        //{
+        //    var category = model.TalentCategories.FirstOrDefault();
+        //    if (category == null)
+        //        return Enumerable.Empty<Talent>().AsQueryable();
 
-            var talents = Search(category.CategoryId, SortTypeEnum.def, count);
-            talents = talents.Where(m => m.ID != model.ID);
+        //    var talents = Search(category.CategoryId, SortTypeEnum.def, count);
+        //    talents = talents.Where(m => m.ID != model.ID);
 
-            return talents;
-        }
+        //    return talents;
+        //}
 
         public void SaveDetachedIntroVideo(Talent model, string userID)
         {

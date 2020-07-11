@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NReco;
-using NReco.VideoConverter;
+//using NReco;
+//using NReco.VideoConverter;
 
 namespace Cameo.API.Controllers
 {

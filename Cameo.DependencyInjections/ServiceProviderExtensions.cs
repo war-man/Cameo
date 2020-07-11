@@ -60,6 +60,7 @@ namespace Cameo.DependencyInjections
             services.AddTransient<IVideoRequestPriceCalculationsService, VideoRequestPriceCalculationsService>();
             services.AddTransient<IClickTransactionService, ClickTransactionService>();
             services.AddTransient<ITalentVisibilityService, TalentVisibilityService>();
+            services.AddTransient<ITalentSearchService, TalentSearchService>();
         }
     }
 }
