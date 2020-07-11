@@ -129,7 +129,7 @@
                                             <div class="content mt--35">
                                                 <h3 class="title mb--10">@localizer["EnrollCompleteHeaderText"]</h3>
                                                 @*<p>@localizer["EnrollCompleteBodyText"]</p>*@
-                                                <p>Отправьте нам сообщение с текстом "Helloo" от указанного при регистрации аккаунта на один из наших адресов:</p>
+                                                <p>Отправьте нам сообщение с текстом <b>"Helloo <span id="confirmationCode"></span>"</b> от указанного при регистрации аккаунта на один из наших адресов:</p>
                                                 <p>
                                                     <a class="button-link button-size__12 mt--10" href="#">
                                                         <span class="icon-right"><i class="fa fa-instagram"></i></span>
@@ -398,6 +398,8 @@
             console.log(data);
             console.log("success!");
             //window.location.replace("/");
+
+            $("#thanksBox #confirmationCode").text(data.confirmationCode);
 
             $("#enrollmentForm").hide("fast");
             $("#thanksBox").show("fast");

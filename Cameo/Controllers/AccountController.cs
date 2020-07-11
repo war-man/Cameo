@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cameo.Models;
 using Cameo.Models.Enums;
+using Cameo.Services;
 using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -221,7 +222,8 @@ namespace Cameo.Controllers
                                 UserName = enrollAsTalentVM.UserName,
                                 PhoneNumber = phoneNumber,
                                 FirebaseUid = enrollAsTalentVM.FirebaseUid,
-                                UserType = UserTypesEnum.talent.ToString()
+                                UserType = UserTypesEnum.talent.ToString(),
+                                TalentConfirmationCode = CommonService.GenerateRandomNumerics(8)
                             };
 
                             var result = await _userManager.CreateAsync(user);
@@ -238,7 +240,7 @@ namespace Cameo.Controllers
                                 };
                                 TalentService.Add(talent, user.Id);
 
-                                return Ok();
+                                return Ok(new {confirmationCode = user.TalentConfirmationCode });
                             }
                             else
                                 ModelState.AddModelError("", "Не удалось зарегистрировать пользователя");
