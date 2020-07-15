@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -17,9 +18,12 @@ namespace Cameo.API.Controllers
     {
         private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
 
-        public FirebaseController(IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
+        public FirebaseController(
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService,
+            ILogger<FirebaseController> logger)
         {
             FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
+            _logger = logger;
         }
 
         [HttpPost("SaveToken/{token}")]

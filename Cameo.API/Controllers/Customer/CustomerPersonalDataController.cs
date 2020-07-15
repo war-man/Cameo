@@ -4,6 +4,7 @@ using Cameo.Services.Interfaces;
 using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -19,11 +20,13 @@ namespace Cameo.API.Controllers
         public CustomerPersonalDataController(
             ICustomerService customerService,
             ISocialAreaService socialAreaService,
-            IAttachmentService attachmentService)
+            IAttachmentService attachmentService,
+            ILogger<CustomerPersonalDataController> logger)
         {
             CustomerService = customerService;
             SocialAreaService = socialAreaService;
             AttachmentService = attachmentService;
+            _logger = logger;
         }
 
         [HttpGet]

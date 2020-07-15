@@ -39,10 +39,15 @@ namespace Cameo.AdminPanel
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+#if DEBUG
+            string connectionStringName = "DefaultConnection";
+#else
+            string connectionStringName = "USAServerConnection";
+#endif
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection"),
+                    Configuration.GetConnectionString(connectionStringName),
                     b => b.MigrationsAssembly("Cameo")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()

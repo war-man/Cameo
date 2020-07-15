@@ -7,6 +7,7 @@ using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -26,7 +27,8 @@ namespace Cameo.Controllers
             IVideoRequestService videoRequestService,
             IVideoRequestTypeService videoRequestTypeService,
             IFirebaseRegistrationTokenService firebaseRegistrationTokenService,
-            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
+            ILogger<CustomerVideoRequestController> logger)
         {
             CustomerService = customerService;
             SearchService = searchService;
@@ -34,6 +36,7 @@ namespace Cameo.Controllers
             VideoRequestTypeService = videoRequestTypeService;
             FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
+            _logger = logger;
         }
 
         public IActionResult Index()

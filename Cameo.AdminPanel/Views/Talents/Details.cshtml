@@ -1,0 +1,193 @@
+﻿@model Cameo.AdminPanel.ViewModels.TalentDetailsVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="row">
+    <div class="col-12">
+        <img class="img-responsive img-thumbnail" src="@Model.Avatar.Url" height="100" width="100" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="User.ID">User @Html.DisplayNameFor(m => m.User.ID)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.User.ID)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="User.Username">@Html.DisplayNameFor(m => m.User.Username)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.User.Username)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="User.PhoneNumber">@Html.DisplayNameFor(m => m.User.PhoneNumber)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.User.PhoneNumber)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="User.TalentApprovedByAdmin">@Html.DisplayNameFor(m => m.User.TalentApprovedByAdmin)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.User.TalentApprovedByAdmin)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="User.DateTalentApprovedByAdmin">@Html.DisplayNameFor(m => m.User.DateTalentApprovedByAdmin)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.User.DateTalentApprovedByAdmin)
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="ID">Talent @Html.DisplayNameFor(m => m.ID)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.ID)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="FullName">@Html.DisplayNameFor(m => m.FullName)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.FullName)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="SocialArea.Name">@Html.DisplayNameFor(m => m.SocialArea.Name)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.SocialArea.Name)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="SocialAreaHandle">@Html.DisplayNameFor(m => m.SocialAreaHandle)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.SocialAreaHandle)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="FollowersCount">@Html.DisplayNameFor(m => m.FollowersCount)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.FollowersCount)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="Price">@Html.DisplayNameFor(m => m.Price)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.Price)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="IsAvailable">@Html.DisplayNameFor(m => m.IsAvailable)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.IsAvailable)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="CreditCardNumber">@Html.DisplayNameFor(m => m.CreditCardNumber)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.CreditCardNumber)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="CreditCardExpire">@Html.DisplayNameFor(m => m.CreditCardExpire)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.CreditCardExpire)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="CreditCardHolder">@Html.DisplayNameFor(m => m.CreditCardHolder)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.CreditCardHolder)
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <label asp-for="Categories">@Html.DisplayNameFor(m => m.Categories)</label>
+    </div>
+    <div class="col-sm-3">
+        @Html.DisplayFor(m => m.Categories)
+    </div>
+</div>
+
+
+
+@if (!Model.User.TalentApprovedByAdmin)
+{
+    <div class="row">
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-success" onclick="Approve('@Model.User.ID');">Подтвердить</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function Approve(id)
+        {
+            if (confirm("Ты уверен, что хочешь подтвердить @Model.FullName ?"))
+            {
+                $(".btn").attr("disabled", "disabled");
+                $.ajax({
+                    type: "POST",
+                    url: "/Account/Approve?id=" + id,
+                    //data: {
+                    //    id: requestID
+                    //},
+                    //data: JSON.stringify({
+                    //    id: requestID
+                    //}),
+                    contentType: "application/json; charset=utf-8",
+                    //dataType: "json",
+                    success: function (data)
+                    {
+                        alert("success");
+                        location.reload();
+                        //alert(data);
+                    },
+                    error: function (data)
+                    {
+                        //alert("error");
+                        console.log(data);
+                    },
+                    complete: function (data)
+                    {
+                        //alert("completed");
+                        $(".btn").removeAttr("disabled");
+                    }
+                });
+            }
+        }
+    </script>
+}

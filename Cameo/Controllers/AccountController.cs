@@ -31,7 +31,8 @@ namespace Cameo.Controllers
             UserManager<ApplicationUser> userManager,
             ICustomerService customerService,
             ITalentService talentService,
-            ISocialAreaService socialAreaService)
+            ISocialAreaService socialAreaService,
+            ILogger<AccountController> logger)
         {
             FirebaseService = firebaseService;
             _signInManager = signInManager;
@@ -40,6 +41,7 @@ namespace Cameo.Controllers
             CustomerService = customerService;
             TalentService = talentService;
             SocialAreaService = socialAreaService;
+            _logger = logger;
         }
 
         public IActionResult Login(string ReturnUrl)
@@ -51,13 +53,10 @@ namespace Cameo.Controllers
         [HttpPost]
         public async Task<IActionResult> Authenticate(string firebaseUid, string returnUrl)
         {
-            int statusCode = 200;
-            string errorMessage = null;
-
-            bool registration_is_required = true;
-
             try
             {
+                bool registration_is_required = true;
+
                 string phoneNumber = await FirebaseService.GetPhoneNumberByUID(firebaseUid);
                 var existingUser = GetUserByPhoneNumber(phoneNumber);
                 if (existingUser != null)
@@ -65,8 +64,7 @@ namespace Cameo.Controllers
                     if (existingUser.UserType == UserTypesEnum.talent.ToString()
                         && !existingUser.TalentApprovedByAdmin)
                     {
-                        errorMessage = "Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.";
-                        statusCode = 400;
+                        throw new Exception("Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.");
                     }
                     else
                     {
@@ -75,20 +73,13 @@ namespace Cameo.Controllers
 
                     registration_is_required = false;
                 }
+
+                return Json(new { registration_is_required, returnUrl = CorrectifyReturnUrl(returnUrl) });
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
-                statusCode = 500;
+                return CustomBadRequest(ex);
             }
-
-            if (!string.IsNullOrWhiteSpace(errorMessage)
-                && statusCode != 200)
-            {
-                Response.StatusCode = statusCode;
-            }
-
-            return Json(new { errorMessage, registration_is_required, returnUrl = CorrectifyReturnUrl(returnUrl) });
         }
 
         private string CorrectifyReturnUrl(string returnUrl)
@@ -155,7 +146,6 @@ namespace Cameo.Controllers
                 ModelState.AddModelError("", ex.Message);
             }
             
-
             return BadRequest(ModelState);
         }
 
@@ -174,33 +164,19 @@ namespace Cameo.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyIfUserCanEnroll(string firebaseUid)
         {
-            int statusCode = 200;
-            string errorMessage = null;
-
             try
             {
-
                 string phoneNumber = await FirebaseService.GetPhoneNumberByUID(firebaseUid);
                 var existingUser = GetUserByPhoneNumber(phoneNumber);
                 if (existingUser != null)
-                {
-                    errorMessage = "Пользователь с таким телефоном уже зарегистрирован";
-                    statusCode = 400;
-                }
+                    throw new Exception("Пользователь с таким телефоном уже зарегистрирован");
+
+                return Ok();
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
-                statusCode = 500;
+                return CustomBadRequest(ex);
             }
-
-            if (!string.IsNullOrWhiteSpace(errorMessage)
-                && statusCode != 200)
-            {
-                Response.StatusCode = statusCode;
-            }
-
-            return Json(new { errorMessage });
         }
 
         [HttpPost]
@@ -258,7 +234,6 @@ namespace Cameo.Controllers
             {
                 ModelState.AddModelError("", ex.Message);
             }
-
 
             return BadRequest(ModelState);
         }

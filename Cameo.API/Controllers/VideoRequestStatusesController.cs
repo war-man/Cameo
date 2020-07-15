@@ -7,6 +7,7 @@ using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -18,9 +19,11 @@ namespace Cameo.API.Controllers
         private readonly IVideoRequestStatusService VideoRequestStatusService;
 
         public VideoRequestStatusesController(
-            IVideoRequestStatusService videoRequestStatusService)
+            IVideoRequestStatusService videoRequestStatusService,
+            ILogger<VideoRequestStatusesController> logger)
         {
             VideoRequestStatusService = videoRequestStatusService;
+            _logger = logger;
         }
 
         // GET api/values

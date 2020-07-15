@@ -6,6 +6,7 @@ using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -19,11 +20,13 @@ namespace Cameo.Controllers
         public CustomerController(
             ICustomerService customerService,
             IAttachmentService attachmentService,
-            ICustomerBalanceService customerBalanceService)
+            ICustomerBalanceService customerBalanceService,
+            ILogger<CustomerController> logger)
         {
             CustomerService = customerService;
             AttachmentService = attachmentService;
             CustomerBalanceService = customerBalanceService;
+            _logger = logger;
         }
 
         public IActionResult Index()

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Cameo.API.Utils;
 using Cameo.Common;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -21,11 +22,13 @@ namespace Cameo.API.Controllers
         public CustomerController(
             ICustomerService customerService,
             IAttachmentService attachmentService,
-            ICustomerBalanceService customerBalanceService)
+            ICustomerBalanceService customerBalanceService,
+            ILogger<CustomerController> logger)
         {
             CustomerService = customerService;
             AttachmentService = attachmentService;
             CustomerBalanceService = customerBalanceService;
+            _logger = logger;
         }
 
         [HttpGet("GenerateClickPaymentButtonUrl")]

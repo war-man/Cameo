@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -13,9 +14,12 @@ namespace Cameo.Controllers
     {
         private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
 
-        public FirebaseController(IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
+        public FirebaseController(
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService,
+            ILogger<FirebaseController> logger)
         {
             FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
+            _logger = logger;
         }
 
         [HttpPost]

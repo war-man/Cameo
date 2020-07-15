@@ -8,6 +8,7 @@ using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Cameo.Common;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -27,13 +28,15 @@ namespace Cameo.API.Controllers
             IAttachmentService attachmentService,
             IVideoRequestService videoRequestService,
             IVideoRequestStatisticsService videoRequestStatisticsService,
-            ITalentVisibilityService talentVisibilityService)
+            ITalentVisibilityService talentVisibilityService,
+            ILogger<TalentController> logger)
         {
             TalentService = talentService;
             AttachmentService = attachmentService;
             VideoRequestService = videoRequestService;
             VideoRequestStatisticsService = videoRequestStatisticsService;
             TalentVisibilityService = talentVisibilityService;
+            _logger = logger;
         }
 
         [HttpGet]

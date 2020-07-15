@@ -7,6 +7,7 @@ using Cameo.Services.Interfaces;
 using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -17,9 +18,12 @@ namespace Cameo.API.Controllers
     {
         private readonly ITalentService TalentService;
 
-        public TalentCreditCardController(ITalentService talentService)
+        public TalentCreditCardController(
+            ITalentService talentService,
+            ILogger<TalentCreditCardController> logger)
         {
             TalentService = talentService;
+            _logger = logger;
         }
 
         [HttpGet]

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -12,9 +13,12 @@ namespace Cameo.Controllers
     {
         private readonly IVideoRequestStatusService VideoRequestStatusService;
 
-        public VideoRequestStatusController(IVideoRequestStatusService videoRequestStatusService)
+        public VideoRequestStatusController(
+            IVideoRequestStatusService videoRequestStatusService,
+            ILogger<VideoRequestStatusController> logger)
         {
             VideoRequestStatusService = videoRequestStatusService;
+            _logger = logger;
         }
 
         public List<SelectListItem> GetAsSelectList(int selected = 0)

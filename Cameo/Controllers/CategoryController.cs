@@ -6,6 +6,7 @@ using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -13,9 +14,12 @@ namespace Cameo.Controllers
     {
         private readonly ICategoryService CategoryService;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(
+            ICategoryService categoryService,
+            ILogger<CategoryController> logger)
         {
             CategoryService = categoryService;
+            _logger = logger;
         }
 
         public List<SelectListItem> GetAsSelectList(int selected = 0)

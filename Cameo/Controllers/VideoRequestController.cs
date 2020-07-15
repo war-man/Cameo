@@ -10,6 +10,7 @@ using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -33,7 +34,8 @@ namespace Cameo.Controllers
             IHangfireService hangfireService,
             ITalentBalanceService talentBalanceService,
             ICustomerBalanceService customerBalanceService,
-            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
+            ILogger<VideoRequestController> logger)
         {
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
@@ -43,6 +45,7 @@ namespace Cameo.Controllers
             TalentBalanceService = talentBalanceService;
             CustomerBalanceService = customerBalanceService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -55,7 +58,7 @@ namespace Cameo.Controllers
         {
             var curUser = accountUtil.GetCurrentUser(User);
             if (!AccountUtil.IsUserCustomer(curUser))
-                return NotFound();
+                return CustomBadRequest("Вы не являетесь клиентом");
 
             var customer = CustomerService.GetByUserID(curUser.ID);
             if (customer == null)
@@ -63,7 +66,7 @@ namespace Cameo.Controllers
 
             Talent talent = TalentService.GetActiveByUsername(username);
             if (talent == null)
-                return NotFound();
+                return CustomBadRequest("Талант не найден");
 
             TalentDetailsVM talentVM = new TalentDetailsVM(talent);
             talentVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
@@ -179,10 +182,10 @@ namespace Cameo.Controllers
 
             VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                return NotFound();
+                return CustomBadRequest("Заказ не найден");
 
             if (!VideoRequestService.IsEditable(request))
-                return CustomBadRequest("Данный запрос нельзя редактировать");
+                return CustomBadRequest("Данный заказ нельзя редактировать");
 
             VideoRequestEditVM editVM = new VideoRequestEditVM(request);
 

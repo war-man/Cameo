@@ -7,6 +7,7 @@ using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -19,10 +20,12 @@ namespace Cameo.Controllers
 
         public TalentProjectsAndCategoriesController(
             ITalentService talentService,
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            ILogger<TalentProjectsAndCategoriesController> logger)
         {
             TalentService = talentService;
             CategoryService = categoryService;
+            _logger = logger;
         }
 
         public IActionResult Index()

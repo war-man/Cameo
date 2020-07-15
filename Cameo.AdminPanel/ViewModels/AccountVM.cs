@@ -8,6 +8,47 @@ using Cameo.Common;
 
 namespace Cameo.AdminPanel.ViewModels
 {
+    public class UserShortInfoVM
+    {
+        public string ID { get; set; }
+        public string Username { get; set; }
+        public string PhoneNumber { get; set; }
+        public bool TalentApprovedByAdmin { get; set; }
+        public string DateTalentApprovedByAdmin { get; set; }
+
+        public UserShortInfoVM() { }
+
+        public UserShortInfoVM(ApplicationUser user)
+        {
+            if (user == null)
+                return;
+
+            ID = user.Id;
+            Username = user.UserName;
+            PhoneNumber = user.PhoneNumber;
+            TalentApprovedByAdmin = user.TalentApprovedByAdmin;
+            if (user.DateTalentApprovedByAdmin.HasValue)
+            {
+                var date = user.DateTalentApprovedByAdmin.Value;
+                DateTalentApprovedByAdmin = date.ToLongDateString() + "" + date.ToLongTimeString();
+            }
+        }
+    }
+
+    //public class UserVM : UserShortInfoVM
+    //{
+    //    public UserVM(ApplicationUser user)
+    //        : base(user)
+    //    {
+    //        if (user == null)
+    //            return;
+
+    //        ID = user.Id;
+    //        Username = user.UserName;
+
+    //    }
+    //}
+
     public class TalentAccountListItemVM
     {
         public string ID { get; set; }

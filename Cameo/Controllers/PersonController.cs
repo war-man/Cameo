@@ -13,15 +13,8 @@ namespace Cameo.Controllers
     [Authorize]
     public class PersonController : BaseController
     {
-        private readonly ITalentService TalentService;
-        private readonly IAttachmentService AttachmentService;
-
-        public PersonController(
-            ITalentService talentService,
-            IAttachmentService attachmentService)
+        public PersonController()
         {
-            TalentService = talentService;
-            AttachmentService = attachmentService;
         }
 
         public IActionResult Index()

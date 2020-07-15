@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NReco;
 using NReco.VideoConverter;
 
@@ -32,7 +33,8 @@ namespace Cameo.Controllers
             ITalentService talentService,
             IVideoRequestService videoRequestService,
             IHangfireService hangfireService,
-            IHostingEnvironment env)
+            IHostingEnvironment env,
+            ILogger<AttachmentController> logger)
         {
             AttachmentService = attachmentService;
             CustomerService = customerService;
@@ -40,6 +42,7 @@ namespace Cameo.Controllers
             VideoRequestService = videoRequestService;
             HangfireService = hangfireService;
             _env = env;
+            _logger = logger;
         }
 
         [HttpPost]

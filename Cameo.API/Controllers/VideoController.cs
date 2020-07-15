@@ -7,6 +7,7 @@ using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -20,10 +21,12 @@ namespace Cameo.API.Controllers
 
         public VideoController(
             IVideoRequestService videoRequestService,
-            IFileManagement fileManagement)
+            IFileManagement fileManagement,
+            ILogger<VideoController> logger)
         {
             VideoRequestService = videoRequestService;
             FileManagement = fileManagement;
+            _logger = logger;
         }
 
         // GET api/values/5

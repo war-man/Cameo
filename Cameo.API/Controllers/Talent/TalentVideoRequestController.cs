@@ -7,6 +7,7 @@ using Cameo.Services.Interfaces;
 using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -26,13 +27,15 @@ namespace Cameo.API.Controllers
             IVideoRequestSearchService searchService,
             IVideoRequestService videoRequestService,
             ITalentBalanceService talentBalanceService,
-            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
+            ILogger<TalentVideoRequestController> logger)
         {
             TalentService = talentService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
             TalentBalanceService = talentBalanceService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
+            _logger = logger;
         }
 
         //public IActionResult Index(int? status = 0)

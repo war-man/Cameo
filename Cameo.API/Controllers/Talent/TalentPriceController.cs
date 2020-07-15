@@ -8,6 +8,7 @@ using Cameo.Services.Interfaces;
 using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -21,10 +22,12 @@ namespace Cameo.API.Controllers
 
         public TalentPriceController(
             ITalentService talentService,
-            ITalentBalanceService talentBalanceService)
+            ITalentBalanceService talentBalanceService,
+            ILogger<TalentPriceController> logger)
         {
             TalentService = talentService;
             //TalentBalanceService = talentBalanceService;
+            _logger = logger;
         }
 
         [HttpGet]

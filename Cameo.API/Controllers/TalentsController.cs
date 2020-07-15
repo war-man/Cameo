@@ -8,6 +8,7 @@ using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -26,13 +27,15 @@ namespace Cameo.API.Controllers
             ITalentSearchService talentSearchService,
             ICategoryService categoryService,
             IVideoRequestTypeService videoRequestTypeService,
-            IVideoRequestService videoRequestService)
+            IVideoRequestService videoRequestService,
+            ILogger<TalentsController> logger)
         {
             TalentService = talentService;
             TalentSearchService = talentSearchService;
             CategoryService = categoryService;
             VideoRequestTypeService = videoRequestTypeService;
             VideoRequestService = videoRequestService;
+            _logger = logger;
         }
 
         [HttpGet("GetCategorized")]

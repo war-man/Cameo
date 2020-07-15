@@ -6,6 +6,7 @@ using Cameo.Common;
 using Cameo.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Cameo.Controllers
@@ -14,6 +15,8 @@ namespace Cameo.Controllers
     {
         protected string globalLang = "";
         public AccountUtil accountUtil = new AccountUtil();
+
+        internal ILogger _logger;
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -26,8 +29,19 @@ namespace Cameo.Controllers
             //globalLang = lang;
         }
 
-        internal IActionResult CustomBadRequest(string errorMessage)
+        internal IActionResult CustomBadRequest(string errorMessage, bool fromException = false)
         {
+            if (!fromException)
+            {
+                string curUserID = "0";
+                var curUser = accountUtil.GetCurrentUser(User);
+                if (curUser != null && !string.IsNullOrWhiteSpace(curUser.ID))
+                    curUserID = curUser.ID;
+                string errorMessageForLogging = "UserID = " + curUserID + "; " + errorMessage;
+
+                _logger.LogError(errorMessageForLogging);
+            }
+
             return BadRequest(new { errorMessage });
         }
 
@@ -37,7 +51,15 @@ namespace Cameo.Controllers
             if (ex.InnerException != null)
                 errorMessage += ". " + ex.InnerException.Message;
 
-            return CustomBadRequest(errorMessage);
+            string curUserID = "unauthorized";
+            var curUser = accountUtil.GetCurrentUser(User);
+            if (curUser != null && !string.IsNullOrWhiteSpace(curUser.ID))
+                curUserID = curUser.ID;
+            string errorMessageForLogging = "UserID = " + curUserID + "; " + ex.Message;
+
+            _logger.LogError(ex, errorMessageForLogging);
+
+            return CustomBadRequest(errorMessage, true);
         }
     }
 }

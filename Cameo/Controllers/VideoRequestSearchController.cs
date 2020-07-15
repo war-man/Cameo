@@ -8,6 +8,7 @@ using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -17,9 +18,11 @@ namespace Cameo.Controllers
         private readonly IVideoRequestSearchService SearchService;
 
         public VideoRequestSearchController(
-            IVideoRequestSearchService searchService)
+            IVideoRequestSearchService searchService,
+            ILogger<VideoRequestSearchController> logger)
         {
             SearchService = searchService;
+            _logger = logger;
         }
 
         [HttpPost]

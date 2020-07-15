@@ -8,6 +8,7 @@ using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -18,10 +19,12 @@ namespace Cameo.Controllers
 
         public VideoController(
             IVideoRequestService videoRequestService,
-            IFileManagement fileManagement)
+            IFileManagement fileManagement,
+            ILogger<VideoController> logger)
         {
             VideoRequestService = videoRequestService;
             FileManagement = fileManagement;
+            _logger = logger;
         }
 
         public IActionResult Details(int id)

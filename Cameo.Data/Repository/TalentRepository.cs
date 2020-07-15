@@ -30,6 +30,8 @@ namespace Cameo.Data.Repository
                 .Include(m => m.Projects)
                 .Include(m => m.Avatar)
                 .Include(m => m.IntroVideo)
+                .Include(m => m.User)
+                .Include(m => m.SocialArea)
                 .FirstOrDefault(m => m.ID == id && !m.IsDeleted);
         }
     }

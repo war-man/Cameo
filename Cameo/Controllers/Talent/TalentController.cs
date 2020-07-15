@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Cameo.Common;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -23,13 +24,15 @@ namespace Cameo.Controllers
             IAttachmentService attachmentService,
             IVideoRequestService videoRequestService,
             IVideoRequestStatisticsService videoRequestStatisticsService,
-            ITalentVisibilityService talentVisibilityService)
+            ITalentVisibilityService talentVisibilityService,
+            ILogger<TalentController> logger)
         {
             TalentService = talentService;
             AttachmentService = attachmentService;
             VideoRequestService = videoRequestService;
             VideoRequestStatisticsService = videoRequestStatisticsService;
             TalentVisibilityService = talentVisibilityService;
+            _logger = logger;
         }
 
         public IActionResult Index()

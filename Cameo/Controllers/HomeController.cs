@@ -15,7 +15,6 @@ namespace Cameo.Controllers
     public class HomeController : BaseController
     {
         readonly private IBackgroundJobClient _backgroundJobs;
-        readonly private ILogger _logger;
 
         public HomeController(IBackgroundJobClient backgroundJobs, ILogger<HomeController> logger)
         {

@@ -6,6 +6,7 @@ using Cameo.API.ViewModels;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -17,9 +18,11 @@ namespace Cameo.API.Controllers
         private readonly ICategoryService CategoryService;
 
         public CategoriesController(
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            ILogger<CategoriesController> logger)
         {
             CategoryService = categoryService;
+            _logger = logger;
         }
 
         // GET api/values

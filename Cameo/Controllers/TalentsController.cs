@@ -9,6 +9,7 @@ using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -27,7 +28,8 @@ namespace Cameo.Controllers
             ICategoryService categoryService,
             IVideoRequestTypeService videoRequestTypeService,
             IVideoRequestService videoRequestService,
-            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
+            ILogger<TalentsController> logger)
         {
             TalentService = talentService;
             TalentSearchService = talentSearchService;
@@ -35,6 +37,7 @@ namespace Cameo.Controllers
             VideoRequestTypeService = videoRequestTypeService;
             VideoRequestService = videoRequestService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
+            _logger = logger;
         }
 
         public IActionResult Index(int? cat)

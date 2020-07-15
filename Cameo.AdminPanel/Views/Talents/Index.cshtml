@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Cameo.AdminPanel.ViewModels.TalentShortInfoVM>
+
+@{
+    ViewData["Title"] = "Список талантов";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Фото</th>
+            <th>Инфо</th>
+            <th>Подтвержд</th>
+            <th>Дата подтвержд</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img class="img-responsive img-thumbnail" src="@item.Avatar.Url" height="100" width="100"/>
+                </td>
+                <td>
+                    <p>@item.FullName</p>
+                    <p>@item.User.Username</p>
+                </td>
+                <td>
+                    @item.User.TalentApprovedByAdmin
+                </td>
+                <td>
+                    @item.User.DateTalentApprovedByAdmin
+                </td>
+                <td>
+                    <a href="/Talents/Details/@item.ID" class="btn btn-primary" target="_blank">Смотреть</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

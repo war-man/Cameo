@@ -5,6 +5,7 @@ using Cameo.Utils;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -20,12 +21,14 @@ namespace Cameo.Controllers
             ICustomerService customerService,
             ISocialAreaService socialAreaService,
             IAttachmentService attachmentService,
-            IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService,
+            ILogger<CustomerPersonalDataController> logger)
         {
             CustomerService = customerService;
             SocialAreaService = socialAreaService;
             AttachmentService = attachmentService;
             FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
+            _logger = logger;
         }
 
         public IActionResult Index()

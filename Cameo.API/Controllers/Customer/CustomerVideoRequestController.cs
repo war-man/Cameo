@@ -7,6 +7,7 @@ using Cameo.Services.Interfaces;
 using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -26,13 +27,15 @@ namespace Cameo.API.Controllers
             IVideoRequestSearchService searchService,
             IVideoRequestService videoRequestService,
             IVideoRequestTypeService videoRequestTypeService,
-            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService)
+            IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
+            ILogger<CustomerVideoRequestController> logger)
         {
             CustomerService = customerService;
             SearchService = searchService;
             VideoRequestService = videoRequestService;
             VideoRequestTypeService = videoRequestTypeService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
+            _logger = logger;
         }
 
         [HttpGet("{id}")]

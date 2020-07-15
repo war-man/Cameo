@@ -6,6 +6,7 @@ using Cameo.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -21,11 +22,13 @@ namespace Cameo.API.Controllers
         public TalentPersonalDataController(
             ITalentService talentService,
             ISocialAreaService socialAreaService,
-            IAttachmentService attachmentService)
+            IAttachmentService attachmentService,
+            ILogger<TalentPersonalDataController> logger)
         {
             TalentService = talentService;
             SocialAreaService = socialAreaService;
             AttachmentService = attachmentService;
+            _logger = logger;
         }
 
         [HttpGet]

@@ -10,6 +10,7 @@ using Cameo.Models;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.API.Controllers
 {
@@ -25,11 +26,13 @@ namespace Cameo.API.Controllers
         public ClickController(
             ICustomerService customerService,
             ICustomerBalanceService customerBalanceService,
-            IClickTransactionService clickTransactionService)
+            IClickTransactionService clickTransactionService,
+            ILogger<ClickController> logger)
         {
             CustomerService = customerService;
             CustomerBalanceService = customerBalanceService;
             ClickTransactionService = clickTransactionService;
+            _logger = logger;
         }
 
         [HttpPost("prepare")]

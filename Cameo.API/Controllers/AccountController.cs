@@ -14,6 +14,7 @@ using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Cameo.API.Controllers
@@ -34,13 +35,15 @@ namespace Cameo.API.Controllers
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ICustomerService customerService,
-            ITalentService talentService)
+            ITalentService talentService,
+            ILogger<AccountController> logger)
         {
             FirebaseService = firebaseService;
             _signInManager = signInManager;
             _userManager = userManager;
             CustomerService = customerService;
             TalentService = talentService;
+            _logger = logger;
         }
 
         [HttpPost("Authenticate")]

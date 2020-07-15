@@ -8,6 +8,7 @@ using Cameo.Services.Interfaces;
 using Cameo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cameo.Controllers
 {
@@ -19,10 +20,12 @@ namespace Cameo.Controllers
 
         public TalentPriceController(
             ITalentService talentService,
-            ITalentBalanceService talentBalanceService)
+            ITalentBalanceService talentBalanceService,
+            ILogger<TalentPriceController> logger)
         {
             TalentService = talentService;
             TalentBalanceService = talentBalanceService;
+            _logger = logger;
         }
 
         public IActionResult Index()
