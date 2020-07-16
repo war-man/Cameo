@@ -9,6 +9,7 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
+            <th></th>
             <th>Фото</th>
             <th>Инфо</th>
             <th>Подтвержд</th>
@@ -17,9 +18,15 @@
         </tr>
     </thead>
     <tbody>
+        @{ 
+            int i = 1;
+        }
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @i
+                </td>
                 <td>
                     <img class="img-responsive img-thumbnail" src="@item.Avatar.Url" height="100" width="100"/>
                 </td>
@@ -37,6 +44,8 @@
                     <a href="/Talents/Details/@item.ID" class="btn btn-primary" target="_blank">Смотреть</a>
                 </td>
             </tr>
+
+            i++;
         }
     </tbody>
 </table>

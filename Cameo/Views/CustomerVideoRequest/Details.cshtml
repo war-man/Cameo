@@ -6,7 +6,7 @@
 @inject IOptions<AppConfiguration> AppSettings
 
 @{
-    ViewData["Title"] = localizer["OrderDetails"];
+    ViewData["Title"] = localizer["OrderDetails"] + " #" + Model.RequestNumber;
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
 }
 

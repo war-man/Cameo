@@ -119,7 +119,7 @@ namespace Cameo.Services
             IQueryable<Talent> result = GetWithRelatedDataForSearchAsIQueryable();
             result = result
                 .Where(m => !string.IsNullOrWhiteSpace(m.FullName) && m.FullName.ToLower().Contains(searchText)
-                    || !string.IsNullOrWhiteSpace(m.FullNameTransliterated) && m.FullName.ToLower().Contains(searchText));
+                    || !string.IsNullOrWhiteSpace(m.FullNameTransliterated) && m.FullNameTransliterated.ToLower().Contains(searchText));
 
             return result;
         }

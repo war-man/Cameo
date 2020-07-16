@@ -8,6 +8,9 @@ namespace Cameo.Models
 {
     public class VideoRequest : BaseModel
     {
+        [StringLength(8)]
+        public string RequestNumber { get; set; } 
+
         [ForeignKey("Type")]
         public int TypeID { get; set; }
         public virtual VideoRequestType Type { get; set; }

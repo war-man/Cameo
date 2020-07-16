@@ -19,7 +19,7 @@ namespace Cameo.Services
             base.Add(entity, userID);
 
             AssignAccountNumber(entity);
-            base.Update(entity, userID);
+            Update(entity, userID);
         }
 
         public Customer GetByUserID(string userID)

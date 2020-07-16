@@ -14,6 +14,8 @@ namespace Cameo.ViewModels
     {
         public int ID { get; set; }
 
+        public string RequestNumber { get; set; }
+
         [Display(Name = "TalentsName", ResourceType = typeof(Resources.ResourceTexts))]
         public TalentWithCreditCardInfoVM Talent { get; set; }
 
@@ -58,11 +60,6 @@ namespace Cameo.ViewModels
         public bool PaymentIsConfirmed { get; set; } = false;
 
 
-
-
-
-
-
         //public string VideoDeadline { get; set; }
         //public bool Payable { get; set; } = false;
         //public bool VideoIsPaid { get; set; } = false;
@@ -79,6 +76,7 @@ namespace Cameo.ViewModels
                 return;
 
             ID = model.ID;
+            RequestNumber = model.RequestNumber;
             Talent = new TalentWithCreditCardInfoVM(model.Talent);
             To = model.To;
             From = model.From;

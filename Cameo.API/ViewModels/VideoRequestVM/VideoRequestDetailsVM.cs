@@ -13,6 +13,7 @@ namespace Cameo.API.ViewModels
     public class VideoRequestDetailsVM
     {
         public int id { get; set; }
+        public string request_number { get; set; }
 
         [Display(Name = "Имя таланта")]
         public TalentWithCreditCardInfoVM talent { get; set; }
@@ -58,11 +59,6 @@ namespace Cameo.API.ViewModels
 
         public bool payment_is_confirmed { get; set; } = false;
         
-        
-
-
-
-
 
 
         //public string VideoDeadline { get; set; }
@@ -81,6 +77,7 @@ namespace Cameo.API.ViewModels
                 return;
 
             id = model.ID;
+            request_number = model.RequestNumber;
             talent = new TalentWithCreditCardInfoVM(model.Talent);
             to = model.To;
             from = model.From;

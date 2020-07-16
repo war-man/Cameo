@@ -39,7 +39,7 @@ namespace Cameo.Services
             return _repository.GetActiveSingleDetailsWithRelatedDataByID(id);
         }
 
-        new public void Add(VideoRequest entity, string creatorID)
+        public override void Add(VideoRequest entity, string creatorID)
         {
             entity.ViewedByCustomer = true;
             entity.ViewedByTalent = false;
@@ -63,6 +63,9 @@ namespace Cameo.Services
 #endif
             base.Add(entity, creatorID);
 
+            AssignRequestNumber(entity);
+            Update(entity, creatorID);
+
             //TO-DO: send firebase notification to Talent
             string title = "Новый заказ";
             string body = entity.Instructions;
@@ -71,6 +74,12 @@ namespace Cameo.Services
                 ["request_id"] = entity.ID.ToString()
             };
             FirebaseRegistrationTokenService.SendNotification(entity.Talent.UserID, title, body, data);
+        }
+
+        private void AssignRequestNumber(VideoRequest model)
+        {
+            if (string.IsNullOrWhiteSpace(model.RequestNumber))
+                model.RequestNumber = model.ID.ToString().PadLeft(8, '0');
         }
 
         public void AnswerDeadlineReaches(VideoRequest model, string userID)
