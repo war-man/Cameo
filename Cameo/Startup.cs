@@ -53,6 +53,7 @@ namespace Cameo
             });
 #if DEBUG
             string connectionStringName = "DefaultConnection";
+            //string connectionStringName = "USAServerConnection";
 #else
             string connectionStringName = "USAServerConnection";
 #endif
@@ -77,6 +78,7 @@ namespace Cameo
             //Hangfire
 #if DEBUG
             string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
+            //string connectionString = "Data Source=209.159.151.3;Initial Catalog=Helloo;User Id=sa;Password=MCGR4ZD4Thnr93V4;";
 #else
             string connectionString = "Data Source=209.159.151.3;Initial Catalog=Helloo;User Id=sa;Password=MCGR4ZD4Thnr93V4;";
 #endif

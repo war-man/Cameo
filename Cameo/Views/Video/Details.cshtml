@@ -12,8 +12,8 @@
             <div class="col-lg-3 col-md-4 col-sm-5 col-12">
                 <div class="product__details__container">
                     <div class="big_img">
-                        <video class="video-js" controls preload="true" autoplay>
-                            <source src="/video/getVideo/@Model.RequestID" type="video/mp4">
+                        <video class="video-js" controls preload="true" autoplay="autoplay">
+                            <source src="@Model.Video.Url" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                                 Поделиться на Facebook
                             </span>
                         </a>*@
-                        <a class="button-link button-size__12 button__transparent--border mt--10" href="/Video/GetVideo/@Model.RequestID">
+                        <a class="button-link button-size__12 button__transparent--border mt--10" href="@Model.Video.Url" download>
                             <span class="icon-right"><i class="fa fa-download"></i></span>
                             <span class="button-text button-text__15">
                                 @localizer["DownloadVideo"]

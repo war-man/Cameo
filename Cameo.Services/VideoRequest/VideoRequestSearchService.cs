@@ -98,7 +98,7 @@ namespace Cameo.Services
 
                 //IQueryable<VideoRequest> data = videoRequests.Skip(start).Take(length.Value);
 
-                return videoRequests;
+                return videoRequests.OrderByDescending(m => m.ID);
             }
             catch (Exception ex)
             {

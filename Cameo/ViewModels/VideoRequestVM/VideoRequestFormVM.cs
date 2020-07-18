@@ -1,4 +1,5 @@
 ﻿using Cameo.Models;
+using Cameo.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -42,7 +43,7 @@ namespace Cameo.ViewModels
             {
                 Customer = customer,
                 //Email = this.Email,
-                From = this.From,
+                //From = this.From,
                 Instructions = this.Instructions,
                 IsNotPublic = this.IsNotPublic,
                 Price = this.Price,
@@ -50,6 +51,11 @@ namespace Cameo.ViewModels
                 TalentID = this.TalentID,
                 TypeID = this.TypeID
             };
+
+            if (TypeID == (int)VideoRequestTypeEnum.someone)
+                model.From = From;
+            else
+                model.From = null;
 
             return model;
         }
@@ -81,7 +87,12 @@ namespace Cameo.ViewModels
         {
             model.TypeID = TypeID;
             model.To = To;
-            model.From = From;
+
+            if (TypeID == (int)VideoRequestTypeEnum.someone)
+                model.From = From;
+            else
+                model.From = null;
+
             model.Instructions = Instructions;
             //model.Email = Email;
             model.IsNotPublic = IsNotPublic;

@@ -51,6 +51,8 @@ namespace Cameo.API.ViewModels
         public List<CategoryShortInfoVM> categories { get; set; }
         public List<TalentProjectShortInfoVM> projects { get; set; }
 
+        public AttachmentDetailsVM intro_video { get; set; }
+
         public TalentGridViewItem() { }
 
         public TalentGridViewItem(Talent model) 
@@ -67,6 +69,8 @@ namespace Cameo.API.ViewModels
             projects = model.Projects
                 .Select(m => new TalentProjectShortInfoVM(m))
                 .ToList();
+
+            intro_video = AttachmentDetailsVM.ToVM(model.IntroVideo);
         }
     }
 
@@ -119,7 +123,7 @@ namespace Cameo.API.ViewModels
         public int request_price { get; set; }
         public string request_price_str { get; set; }
 
-        public AttachmentDetailsVM intro_video { get; set; }
+        //public AttachmentDetailsVM intro_video { get; set; }
 
         public TalentDetailsVM() { }
 
@@ -131,7 +135,7 @@ namespace Cameo.API.ViewModels
 
             this.is_available = model.IsAvailable;
             //intro_video = new AttachmentDetailsVM(model.IntroVideo);
-            intro_video = AttachmentDetailsVM.ToVM(model.IntroVideo);
+            //intro_video = AttachmentDetailsVM.ToVM(model.IntroVideo);
         }
 
         public void RequestPriceToStr()

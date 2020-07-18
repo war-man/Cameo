@@ -109,7 +109,14 @@ namespace Cameo.Controllers
         {
             var category = CategoryService.GetByID(cat);
             if (category == null)
-                return CustomBadRequest("");
+            {
+                if (cat == (int)CategoryEnum.neW)
+                    category = new Category() { Name = "Новые" };
+                else if (cat == (int)CategoryEnum.featured)
+                    category = new Category() { Name = "Популярные" };
+                else
+                    return CustomBadRequest("Категория не найдена");
+            }
 
             ViewBag.categoryID = cat;
             ViewBag.categoryName = category.Name;

@@ -23,7 +23,7 @@ namespace Cameo.API.ViewModels
             this.id = model.ID;
             if (this.id > 0)
                 //this.url = model.Path + "/" + model.GUID + "." + model.Extension;
-                this.url = "https://firebasestorage.googleapis.com/v0/b/cameo-uz.appspot.com/o/" + model.Path + "%2F" + model.Filename + "?" + model.UrlParameters;
+                this.url = "https://firebasestorage.googleapis.com/v0/b/cameo-uz.appspot.com/o/" + model.Path.Replace("/", "%2F") + "%2F" + model.Filename + "?" + model.UrlParameters;
             else
                 this.url = AppData.Configuration.NoPhotoUrl;
         }

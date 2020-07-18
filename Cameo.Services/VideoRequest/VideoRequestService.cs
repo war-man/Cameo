@@ -512,7 +512,7 @@ namespace Cameo.Services
         /// <returns></returns>
         private IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
         {
-            return GetAllActiveAsIQueryable()
+            return GetWithRelatedDataAsIQueryable()
                 .Where(m => m.TalentID == talent.ID
                     && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed);
         }

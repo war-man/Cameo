@@ -1,4 +1,5 @@
 ﻿using Cameo.Models;
+using Cameo.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace Cameo.API.ViewModels
             {
                 Customer = customer,
                 //Email = this.Email,
-                From = this.from,
+                //From = this.from,
                 Instructions = this.instructions,
                 IsNotPublic = this.is_not_public,
                 Price = this.price,
@@ -60,6 +61,11 @@ namespace Cameo.API.ViewModels
                 TalentID = this.talent_id,
                 TypeID = this.type_id
             };
+
+            if (type_id == (int)VideoRequestTypeEnum.someone)
+                model.From = from;
+            else
+                model.From = null;
 
             return model;
         }
@@ -89,7 +95,11 @@ namespace Cameo.API.ViewModels
         {
             model.TypeID = type_id;
             model.To = to;
-            model.From = from;
+
+            if (type_id == (int)VideoRequestTypeEnum.someone)
+                model.From = from;
+            else
+                model.From = null;
             model.Instructions = instructions;
             //model.Email = Email;
             model.IsNotPublic = is_not_public;
