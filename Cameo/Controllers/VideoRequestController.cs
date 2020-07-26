@@ -332,41 +332,41 @@ namespace Cameo.Controllers
         //however once confirmed, DateVideoConfirmed is set to DateTime.Now
         //and the request is considered as finished by talent when he/she confirms
 
-        [Authorize(Policy = "TalentOnly")]
-        [HttpPost]
-        public IActionResult ConfirmVideo(int id)
-        {
-            try
-            {
-                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-                if (model == null)
-                    return NotFound();
+        //[Authorize(Policy = "TalentOnly")]
+        //[HttpPost]
+        //public IActionResult ConfirmVideo(int id)
+        //{
+        //    try
+        //    {
+        //        var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+        //        if (model == null)
+        //            return NotFound();
 
-                var curUser = accountUtil.GetCurrentUser(User);
-                if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
-                    throw new Exception("Вы не являетесь талантом");
+        //        var curUser = accountUtil.GetCurrentUser(User);
+        //        if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
+        //            throw new Exception("Вы не являетесь талантом");
 
-                int balance = TalentBalanceService.GetBalance(model.Talent);
-                if (balance <= 0)
-                    throw new Exception("У Вас недостаточно средств, чтобы подтвердить запрос");
+        //        int balance = TalentBalanceService.GetBalance(model.Talent);
+        //        if (balance <= 0)
+        //            throw new Exception("У Вас недостаточно средств, чтобы подтвердить запрос");
 
-                //cancel hangfire RequestAnswerJobID
-                //HangfireService.CancelJob(model.RequestAnswerJobID);
-                HangfireService.CancelJob(model.VideoJobID);
+        //        //cancel hangfire RequestAnswerJobID
+        //        //HangfireService.CancelJob(model.RequestAnswerJobID);
+        //        HangfireService.CancelJob(model.VideoJobID);
 
-                //confirm request/video
-                VideoRequestService.ConfirmVideo(model, curUser.ID);
+        //        //confirm request/video
+        //        VideoRequestService.ConfirmVideo(model, curUser.ID);
 
-                //create hangfire PaymentReminderJobID
-                //HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
+        //        //create hangfire PaymentReminderJobID
+        //        //HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex);
+        //    }
+        //}
 
         //[HttpPost]
         //public IActionResult MakePayment(int id)

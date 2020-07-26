@@ -66,6 +66,19 @@ namespace Cameo.API.Controllers
                     }
                     else
                     {
+                        if (existingUser.UserType == UserTypesEnum.customer.ToString())
+                        {
+                            var customer = CustomerService.GetByUserID(existingUser.Id);
+                            if (customer == null)
+                                return CustomBadRequest("Клиент не найден");
+                        }
+                        else if (existingUser.UserType == UserTypesEnum.talent.ToString())
+                        {
+                            var talent = TalentService.GetByUserID(existingUser.Id);
+                            if (talent == null)
+                                return CustomBadRequest("Талант не найден");
+                        }
+
                         authToken = GenerateAuthToken(existingUser);
                         userType = existingUser.UserType;
                     }

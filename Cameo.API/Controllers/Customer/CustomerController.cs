@@ -31,6 +31,24 @@ namespace Cameo.API.Controllers
             _logger = logger;
         }
 
+        [HttpGet("GetBalance")]
+        public IActionResult GetBalance()
+        {
+            var curUser = accountUtil.GetCurrentUser(User);
+            if (!AccountUtil.IsUserCustomer(curUser))
+                return CustomBadRequest("Вы не являетесь клиентом");
+
+            var customer = CustomerService.GetByUserID(curUser.ID);
+            if (customer == null)
+                return CustomBadRequest("Вы не являетесь клиентом");
+
+            int customerBalance = CustomerBalanceService.GetBalance(customer);
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            string customerBalanceFormatted = customerBalance.ToString(numberFormat).Trim() + " сум";
+
+            return Ok(customerBalanceFormatted);
+        }
+
         [HttpGet("GenerateClickPaymentButtonUrl")]
         public IActionResult GenerateClickPaymentButtonUrl(int amount, string returnUrl)
         {

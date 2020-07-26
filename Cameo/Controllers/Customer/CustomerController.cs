@@ -57,7 +57,7 @@ namespace Cameo.Controllers
 
             int customerBalance = CustomerBalanceService.GetBalance(customer);
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            string customerBalanceFormatted = customerBalance.ToString(numberFormat).Trim();
+            string customerBalanceFormatted = customerBalance.ToString(numberFormat).Trim() + " сум";
 
             return Ok(customerBalanceFormatted);
         }
