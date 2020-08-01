@@ -296,7 +296,12 @@
                     $("#phoneNumberForm button").removeAttr("disabled");
                     $("#phoneNumberForm .spinner").hide();
 
-                    $("#phoneNumberForm .form-messege").html("@localizer["ErrorUnableToSendSMS"]")
+                    var errorMessage = "";
+                    if (error.code == "auth/invalid-phone-number")
+                        errorMessage = "@localizer["ErrorInvalidPhoneNumber"]";
+                    else
+                        errorMessage = "@localizer["ErrorUnableToSendSMS"]";
+                    $("#phoneNumberForm .form-messege").html(errorMessage);
                 });
         }
 

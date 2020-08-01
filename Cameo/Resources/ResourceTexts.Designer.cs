@@ -286,6 +286,15 @@ namespace Cameo.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Неверный номер телефона.
+        /// </summary>
+        public static string ErrorInvalidPhoneNumber {
+            get {
+                return ResourceManager.GetString("ErrorInvalidPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ошибка на сайте!.
         /// </summary>
         public static string ErrorOnSite {
@@ -304,7 +313,7 @@ namespace Cameo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Не удалось отправить смс. Проверьте правильность номера.
+        ///   Looks up a localized string similar to Не удалось отправить смс. Попробуйте позже..
         /// </summary>
         public static string ErrorUnableToSendSMS {
             get {

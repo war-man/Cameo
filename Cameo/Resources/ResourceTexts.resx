@@ -199,7 +199,7 @@
     <value>Обязательное поле</value>
   </data>
   <data name="ErrorUnableToSendSMS" xml:space="preserve">
-    <value>Не удалось отправить смс. Проверьте правильность номера</value>
+    <value>Не удалось отправить смс. Попробуйте позже.</value>
   </data>
   <data name="ErrorUsernameValidationMessage" xml:space="preserve">
     <value>Разрешается использоватьтолько строчные буквы и цифры</value>
@@ -449,5 +449,8 @@
   </data>
   <data name="ZeroRecords" xml:space="preserve">
     <value>Заказы отсутствуют</value>
+  </data>
+  <data name="ErrorInvalidPhoneNumber" xml:space="preserve">
+    <value>Неверный номер телефона</value>
   </data>
 </root>
