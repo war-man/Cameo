@@ -29,4 +29,18 @@ namespace Cameo.API.ViewModels
                 return;
         }
     }
+
+    public class BalanceVM
+    {
+        public int amount { get; set; }
+        public string amount_str { get; set; }
+
+        public BalanceVM() { }
+
+        public BalanceVM(int amount, string amountStr)
+        {
+            this.amount = amount;
+            this.amount_str = amountStr;
+        }
+    }
 }

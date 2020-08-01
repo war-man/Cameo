@@ -62,26 +62,20 @@ namespace Cameo.Controllers
             return Ok(customerBalanceFormatted);
         }
 
-        public IActionResult GenerateClickPaymentButtonUrl(int amount, string returnUrl)
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-            if (!AccountUtil.IsUserCustomer(curUser))
-                return CustomBadRequest("Вы не являетесь клиентом");
+        //public IActionResult GenerateClickPaymentButtonUrl(int amount, string returnUrl)
+        //{
+        //    var curUser = accountUtil.GetCurrentUser(User);
+        //    if (!AccountUtil.IsUserCustomer(curUser))
+        //        return CustomBadRequest("Вы не являетесь клиентом");
 
-            var customer = CustomerService.GetByUserID(curUser.ID);
-            if (customer == null)
-                return CustomBadRequest("Вы не являетесь клиентом");
+        //    var customer = CustomerService.GetByUserID(curUser.ID);
+        //    if (customer == null)
+        //        return CustomBadRequest("Вы не являетесь клиентом");
 
-            string url = @"https://my.click.uz/services/pay";
-            url += "?service_id=" + Constants.CLICK.SETTINGS.SERVICE_id;
-            url += "&merchant_id=" + Constants.CLICK.SETTINGS.MERCHANT_ID;
-            url += "&amount=" + amount + ".00";
-            url += "&transaction_param=" + customer.AccountNumber;
+        //    string url = CustomerBalanceService
+        //        .GenerateClickPaymentButtonUrl(customer.AccountNumber, amount, returnUrl);
 
-            if (!string.IsNullOrWhiteSpace(returnUrl))
-                url += "&return_url=" + returnUrl;
-
-            return Ok("");
-        }
+        //    return Ok("");
+        //}
     }
 }

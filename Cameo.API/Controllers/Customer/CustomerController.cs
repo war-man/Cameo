@@ -46,7 +46,7 @@ namespace Cameo.API.Controllers
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
             string customerBalanceFormatted = customerBalance.ToString(numberFormat).Trim() + " сум";
 
-            return Ok(customerBalanceFormatted);
+            return Ok(new BalanceVM(customerBalance, customerBalanceFormatted));
         }
 
         [HttpGet("GenerateClickPaymentButtonUrl")]
@@ -63,7 +63,7 @@ namespace Cameo.API.Controllers
             string url = CustomerBalanceService
                 .GenerateClickPaymentButtonUrl(customer.AccountNumber, amount, returnUrl);
 
-            return Ok(url);
+            return Ok(new { url = url });
         }
     }
 }
