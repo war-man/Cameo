@@ -1,4 +1,5 @@
 ﻿@model List<Cameo.ViewModels.TalentsCategorizedVM>
+@using Cameo.Models.Enums
 
 <div class="row">
     @if (ViewBag.categoryName != null)
@@ -9,23 +10,31 @@
     @foreach (var item in Model)
     {
         <h2 class="plr--80 plr_lg--50 plr_md--50 plr_sm--30" style="width: 100%">
-            @if (ViewBag.isHomePage != null)
+            <span>@item.Category.Name</span>
+            @if (item.Category.ID == (int)CategoryEnum.all)
             {
-                <a href="/talents/bycategory?cat=@item.Category.ID">@item.Category.Name</a>
-                <small class="pull-right"><a href="/talents/bycategory?cat=@item.Category.ID" class="btn btn-link">@localizer["All"]</a></small>
-            }
-            else
-            {
-                @item.Category.Name
+                <small class="pull-right">@Html.DropDownList("sorting", ViewData["sortingItems"] as List<SelectListItem>, new { onchange = "LoadAllSortedTalentsByCategory(this.value);" })</small>
             }
         </h2>
         <div class="tema-area pb--50 pt_md--0 pb_md--60 pb_sm--40 bg-color" style="width: 100%">
-            <div class="talentsCategorizedContainer row plr--80 plr_lg--50 plr_md--50 plr_sm--30">
-                @foreach (var talent in item.Talents)
+            @{ 
+                string containerClass = "";
+                if (item.Category.ID == (int)CategoryEnum.all)
+                {
+                    containerClass = "all";
+                }
+            }
+            <div class="talentsCategorizedContainer @containerClass row plr--80 plr_lg--50 plr_md--50 plr_sm--30">
+                @if (item.Category.ID == (int)CategoryEnum.all)
+                {
+                    <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw mt--30 mb--30" style="margin-left: 49%; display: none;"></i>
+                }
+                <partial name="_Get" model="item.Talents" />
+                @*@foreach (var talent in item.Talents)
                 {
                     <!-- Start Single Team -->
                     <partial name="_SingleGridViewItem" model="talent" />
-                }
+                }*@
             </div>
         </div>
     }

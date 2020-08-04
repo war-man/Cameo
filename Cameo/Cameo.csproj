@@ -374,6 +374,12 @@
     <Content Update="Views\Talents\ByCategory.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Talents\_Get.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Talents\_GetCategorizedHomePage.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Talents\_GetCategorized.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

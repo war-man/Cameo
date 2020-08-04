@@ -1,0 +1,11 @@
+﻿@model List<Cameo.ViewModels.TalentGridViewItem>
+@using Cameo.Models.Enums
+
+@if (Model != null && Model.Count > 0)
+{
+    foreach (var talent in Model)
+    {
+        <!-- Start Single Team -->
+        <partial name="_SingleGridViewItem" model="talent" />
+    }
+}

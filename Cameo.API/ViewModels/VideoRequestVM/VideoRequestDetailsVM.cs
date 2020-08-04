@@ -47,27 +47,10 @@ namespace Cameo.API.ViewModels
 
         public string deadline { get; set; }
 
-        public bool edit_btn_is_available { get; set; } = false;
         public bool cancel_btn_is_available { get; set; } = false;
-        public VideoRequestEditVM video_request_edit_vm { get; set; }
-
-        public bool video_is_confirmed { get; set; }
 
         //public bool is_credit_card_info_visible { get; set; } = false;
         public AttachmentDetailsVM payment_screenshot { get; set; }
-        public bool payment_screenshot_is_uploaded { get; set; } = false;
-
-        public bool payment_is_confirmed { get; set; } = false;
-        
-
-
-        //public string VideoDeadline { get; set; }
-        //public bool Payable { get; set; } = false;
-        //public bool VideoIsPaid { get; set; } = false;
-        //public bool UploadVideoBtnIsAvailable { get; set; } = false;
-
-        
-        //public bool BalanceAllowsToConfirm { get; set; }
 
         public VideoRequestDetailsVM() { }
 
@@ -102,26 +85,6 @@ namespace Cameo.API.ViewModels
 
             //payment_screenshot = new AttachmentDetailsVM(model.PaymentScreenshot);
             payment_screenshot = AttachmentDetailsVM.ToVM(model.PaymentScreenshot);
-
-
-
-
-
-            //if (model.VideoDeadline.HasValue)
-            //    VideoDeadline = model.VideoDeadline.Value.ToString(AppData.Configuration.DateTextViewStringFormat);
-
-            //if (model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo)
-            //{
-            //    cancel_btn_is_available = UploadVideoBtnIsAvailable = edit_btn_is_available = true;
-            //}
-
-            //Payable = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
-
-            //VideoIsPaid = model.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded
-            //    && model.VideoID.HasValue;
-
-
-            //VideoIsConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
         }
 
         public void RequestPriceToStr()
@@ -139,6 +102,13 @@ namespace Cameo.API.ViewModels
 
     public class VideoRequestDetailsForCustomerVM : VideoRequestDetailsVM
     {
+        public bool edit_btn_is_available { get; set; } = false;
+        public bool payment_screenshot_is_uploaded { get; set; } = false;
+        public bool video_is_confirmed { get; set; }
+        public bool payment_is_confirmed { get; set; } = false;
+
+        public VideoRequestEditVM video_request_edit_vm { get; set; }
+
         public VideoRequestDetailsForCustomerVM() { }
 
         public VideoRequestDetailsForCustomerVM(VideoRequest model)
@@ -153,6 +123,8 @@ namespace Cameo.API.ViewModels
 
     public class VideoRequestDetailsForTalentVM : VideoRequestDetailsVM
     {
+        public bool accept_btn_is_available { get; set; } = false;
+
         public VideoRequestDetailsForTalentVM() { }
 
         public VideoRequestDetailsForTalentVM(VideoRequest model)

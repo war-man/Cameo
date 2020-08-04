@@ -67,6 +67,8 @@ namespace Cameo.API.Controllers
                 }
 
                 VideoRequestDetailsForTalentVM requestVM = new VideoRequestDetailsForTalentVM(request);
+
+                requestVM.accept_btn_is_available = VideoRequestService.IsAcceptable(request);
                 requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
 
                 requestVM.request_price = VideoRequestPriceCalculationsService.CalculateRequestPrice(request);

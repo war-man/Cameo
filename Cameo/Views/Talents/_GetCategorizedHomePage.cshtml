@@ -1,0 +1,26 @@
+﻿@model List<Cameo.ViewModels.TalentsCategorizedVM>
+
+<div class="row">
+    @if (ViewBag.categoryName != null)
+    {
+
+        <h1 class="text-center" style="width: 100%">@ViewBag.categoryName</h1>
+    }
+    @foreach (var item in Model)
+    {
+        <h2 class="plr--80 plr_lg--50 plr_md--50 plr_sm--30" style="width: 100%">
+            <a href="/talents/bycategory?cat=@item.Category.ID">@item.Category.Name</a>
+            <small class="pull-right"><a href="/talents/bycategory?cat=@item.Category.ID" class="btn btn-link">@localizer["All"]</a></small>
+        </h2>
+        <div class="tema-area pb--50 pt_md--0 pb_md--60 pb_sm--40 bg-color" style="width: 100%">
+            <div class="talentsCategorizedContainer row plr--80 plr_lg--50 plr_md--50 plr_sm--30">
+                <partial name="_Get" model="item.Talents" />
+                @*@foreach (var talent in item.Talents)
+                {
+                    <!-- Start Single Team -->
+                    <partial name="_SingleGridViewItem" model="talent" />
+                }*@
+            </div>
+        </div>
+    }
+</div>

@@ -9,7 +9,8 @@ namespace Cameo.Models.Enums
         def,
         priceAsc,
         priceDesc,
-        az,
-        responseTime
+        alphabetAz,
+        alphabetZa,
+        //responseTime
     }
 }

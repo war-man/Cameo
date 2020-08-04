@@ -12,7 +12,6 @@
 
 <div id="talentsContainer">
     <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw mt--30 mb--30" style="margin-left: 49%;"></i>
-    @*<img class="spinner plr--80 plr_lg--50 plr_md--50 plr_sm--30" src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />*@
     <div class="innerContainer"></div>
 </div>
 
@@ -56,6 +55,39 @@
                 complete: function (data)
                 {
                     $("#talentsContainer .spinner").hide();
+                }
+            });
+        }
+
+        function LoadAllSortedTalentsByCategory(sort)
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Talents/LoadAllSortedTalentsByCategory",
+                data: {
+                    categoryID: @ViewBag.categoryID,
+                    sort: sort
+                },
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                beforeSend: function ()
+                {
+                    $(".talentsCategorizedContainer.all > div").remove();
+                    $(".talentsCategorizedContainer.all .spinner").show();
+                },
+                success: function (data)
+                {
+                    $(".talentsCategorizedContainer.all").append(data);
+                    lozadObserver.observe();
+                },
+                error: function (data)
+                {
+                    console.log(data);
+                    alert("Ajax error (status code = " + data.status + "): " + data.statusText);
+                },
+                complete: function (data)
+                {
+                    $(".talentsCategorizedContainer.all .spinner").hide();
                 }
             });
         }

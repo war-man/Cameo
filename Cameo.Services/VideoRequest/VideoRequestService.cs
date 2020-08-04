@@ -186,7 +186,7 @@ namespace Cameo.Services
             if (!BelongsToTalent(model, userID))
                 throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
 
-            if (!IsAcceptable(model, userID))
+            if (!IsAcceptable(model))
                 throw new Exception("Текущий статус заказа не позволяет принять его");
 
             model.ViewedByCustomer = false;
@@ -212,7 +212,7 @@ namespace Cameo.Services
             FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
         }
 
-        private bool IsAcceptable(VideoRequest model, string userID)
+        public bool IsAcceptable(VideoRequest model)
         {
             return IsWaitingForResponse(model);
 

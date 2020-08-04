@@ -3,6 +3,7 @@ using Cameo.Data.Repository.Interfaces;
 using Cameo.Models;
 using Cameo.Models.Enums;
 using Cameo.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NickBuhro.Translit;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Cameo.Services
         {
         }
 
-        public IQueryable<Talent> GetFeatured(int? categoryID, int? count = null)
+        public IQueryable<Talent> GetFeatured(int? categoryID, int? count = null, SortTypeEnum sort = SortTypeEnum.def)
         {
             IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
 
@@ -34,13 +35,15 @@ namespace Cameo.Services
                         .Contains(categoryID.Value));
             }
 
+            talents = ApplySorting(talents, sort);
+
             if (count.HasValue && count > 0)
                 talents = talents.Take(count.Value);
 
             return talents;
         }
 
-        public IQueryable<Talent> GetNew(int? categoryID, int? count = null)
+        public IQueryable<Talent> GetNew(int? categoryID, int? count = null, SortTypeEnum sort = SortTypeEnum.def)
         {
             IQueryable<Talent> talents = GetWithRelatedDataForSearchAsIQueryable();
 
@@ -53,6 +56,8 @@ namespace Cameo.Services
                         .Select(c => c.CategoryId)
                         .Contains(categoryID.Value));
             }
+
+            talents = ApplySorting(talents, sort);
 
             if (count.HasValue && count > 0)
                 talents = talents.Take(count.Value);
@@ -82,6 +87,40 @@ namespace Cameo.Services
                     m.TalentCategories.Select(c => c.CategoryId).Contains(categoryID));
             }
 
+            talents = ApplySorting(talents, sort);
+            //switch (sort)
+            //{
+            //    case SortTypeEnum.priceAsc:
+            //        talents = talents.OrderBy(m => m.Price);
+            //        break;
+            //    case SortTypeEnum.priceDesc:
+            //        talents = talents.OrderByDescending(m => m.Price);
+            //        break;
+            //    case SortTypeEnum.alphabetAz:
+            //        talents = talents.OrderBy(m => m.FullName);
+            //        break;
+            //    case SortTypeEnum.alphabetZa:
+            //        talents = talents.OrderByDescending(m => m.FullName);
+            //        break;
+
+            //    //this case will be uncommented 
+            //    //when responseTime field will be filled after giving response to request
+            //    //case SortTypeEnum.responseTime:
+            //    //    result = result.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
+            //    //    break;
+            //    default: //def
+            //        talents = talents.OrderBy(m => m.ID);
+            //        break;
+            //}
+
+            if (count.HasValue && count > 0)
+                talents = talents.Take(count.Value);
+
+            return talents;
+        }
+
+        private IQueryable<Talent> ApplySorting(IQueryable<Talent> talents, SortTypeEnum sort)
+        {
             switch (sort)
             {
                 case SortTypeEnum.priceAsc:
@@ -90,9 +129,13 @@ namespace Cameo.Services
                 case SortTypeEnum.priceDesc:
                     talents = talents.OrderByDescending(m => m.Price);
                     break;
-                case SortTypeEnum.az:
-                    talents = talents.OrderBy(m => m.FirstName).ThenBy(m => m.LastName);
+                case SortTypeEnum.alphabetAz:
+                    talents = talents.OrderBy(m => m.FullName);
                     break;
+                case SortTypeEnum.alphabetZa:
+                    talents = talents.OrderByDescending(m => m.FullName);
+                    break;
+
                 //this case will be uncommented 
                 //when responseTime field will be filled after giving response to request
                 //case SortTypeEnum.responseTime:
@@ -102,9 +145,6 @@ namespace Cameo.Services
                     talents = talents.OrderBy(m => m.ID);
                     break;
             }
-
-            if (count.HasValue && count > 0)
-                talents = talents.Take(count.Value);
 
             return talents;
         }
@@ -119,7 +159,8 @@ namespace Cameo.Services
             IQueryable<Talent> result = GetWithRelatedDataForSearchAsIQueryable();
             result = result
                 .Where(m => !string.IsNullOrWhiteSpace(m.FullName) && m.FullName.ToLower().Contains(searchText)
-                    || !string.IsNullOrWhiteSpace(m.FullNameTransliterated) && m.FullNameTransliterated.ToLower().Contains(searchText));
+                    || !string.IsNullOrWhiteSpace(m.FullNameTransliterated) && m.FullNameTransliterated.ToLower().Contains(searchText))
+                .OrderBy(m => m.FullName);
 
             return result;
         }
@@ -151,6 +192,48 @@ namespace Cameo.Services
             talents = talents.Where(m => m.ID != model.ID);
 
             return talents;
+        }
+
+        public List<SelectListItem> GetSortOptions(string selected = null)
+        {
+            return new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Value = SortTypeEnum.def.ToString(),
+                    Text = "Обычная сортировка",
+                    Selected = SortTypeEnum.def.ToString().Equals(selected)
+                },
+                new SelectListItem()
+                {
+                    Value = SortTypeEnum.priceAsc.ToString(),
+                    Text = "Цена (по возрастанию)",
+                    Selected = SortTypeEnum.priceAsc.ToString().Equals(selected)
+                },
+                new SelectListItem()
+                {
+                    Value = SortTypeEnum.priceDesc.ToString(),
+                    Text = "Цена (по убыванию)",
+                    Selected = SortTypeEnum.priceDesc.ToString().Equals(selected)
+                },
+                new SelectListItem()
+                {
+                    Value = SortTypeEnum.alphabetAz.ToString(),
+                    Text = "А-Я",
+                    Selected = SortTypeEnum.alphabetAz.ToString().Equals(selected)
+                },
+                new SelectListItem()
+                {
+                    Value = SortTypeEnum.alphabetZa.ToString(),
+                    Text = "Я-А",
+                    Selected = SortTypeEnum.alphabetZa.ToString().Equals(selected)
+                },
+                //new SelectListItem()
+                //{
+                //    Value = SortTypeEnum.responseTime.ToString(),
+                //    Text = "Время отклика (от быстрого к долгому)"
+                //},
+            };
         }
     }
 }
