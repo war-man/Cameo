@@ -61,23 +61,23 @@
                         {
                             //if ((bool)ViewData["isUserCustomer"] == true)
                             //{
-                                <div class="product-action">
-                                    <div class="product-action-btn">
-                                        <a class="button-link button-size__xl button__black" href="/VideoRequest/Create?username=@Model.Username">
-                                            <span class="button-text button-text__14">
-                                                @localizer["OrderVideo"] (@Model.RequestPriceStr @localizer["UZS"])
-                                            </span>
-                                        </a>
-                                        @*<button type="button" class="button-link button__black" data-toggle="modal" data-target="#bookModal">
+                            <div class="product-action">
+                                <div class="product-action-btn">
+                                    <a class="button-link button-size__xl button__black" href="/videoRequest/create?username=@Model.Username">
+                                        <span class="button-text button-text__14">
+                                            @localizer["OrderVideo"] (@Model.RequestPriceStr @localizer["UZS"])
+                                        </span>
+                                    </a>
+                                    @*<button type="button" class="button-link button__black" data-toggle="modal" data-target="#bookModal">
                                             Запросить видео (@Model.PriceStr сум)
                                         </button>*@
-                                    </div>
                                 </div>
+                            </div>
                             @*}
-                            else
-                            {
-                                <div class="alert alert-danger">Таланты не могут заказывать видео. Зайдите как клиент.</div>
-                            }*@
+                                else
+                                {
+                                    <div class="alert alert-danger">Таланты не могут заказывать видео. Зайдите как клиент.</div>
+                                }*@
                         }
                         else
                         {
@@ -85,6 +85,15 @@
                             @*<div class="alert alert-danger"><a href="/Account/Login"><u>Войдите</u></a>, чтобы отправить запрос</div>*@
                         }
                     }
+
+                    <div class="categoriesBox mt--40 mb--20">
+                        <span class="button-link button-size__radious50 button__color--3">
+                            <span class="icon-left">
+                                <i class="fa fa-info-circle"></i>
+                            </span>
+                            <a class="button-text" href="javascript: void();" data-toggle="modal" data-target="#myModal">How does it work?</a>
+                        </span>
+                    </div>
 
                     <div class="categoriesBox mt--40 mb--20">
                         @{
@@ -98,27 +107,27 @@
                     </div>
 
                     @*<div class="product-html-custom">
-                        <a href="#"><i class="dlicon location_pin"></i>Store availability</a>
-                        <a href="#"><i class="dlicon location_pin"></i>Delivery and return</a>
-                        <a href="#"><i class="dlicon design_measure-17"></i>Size Guide</a>
-                    </div>
+                            <a href="#"><i class="dlicon location_pin"></i>Store availability</a>
+                            <a href="#"><i class="dlicon location_pin"></i>Delivery and return</a>
+                            <a href="#"><i class="dlicon design_measure-17"></i>Size Guide</a>
+                        </div>
 
-                    <div class="product-meta mb--40">
-                        <div class="sku-wrapper">
-                            SKU: <span>REF. LA-2491</span>
-                        </div>
-                        <div class="sku-wrapper">
-                            Categories: <span>Brands</span>
-                        </div>
-                    </div>*@
+                        <div class="product-meta mb--40">
+                            <div class="sku-wrapper">
+                                SKU: <span>REF. LA-2491</span>
+                            </div>
+                            <div class="sku-wrapper">
+                                Categories: <span>Brands</span>
+                            </div>
+                        </div>*@
 
                     @*<div class="social-icons bg-owncolor text-left">
-                        <a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
-                        <a class="twitter" href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
-                        <a class="pinterest" href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
-                        <a class="youtube" href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
-                        <a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a>
-                    </div>*@
+                            <a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a class="twitter" href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a class="pinterest" href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest"></i></a>
+                            <a class="youtube" href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube"></i></a>
+                            <a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a>
+                        </div>*@
 
                 </div>
             </div>
@@ -148,9 +157,33 @@
     </div>
 </div>
 
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                @*<h4 class="modal-title">Modal Heading</h4>*@
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <partial name="_OrderStepsClarification" />
+            </div>
+
+            <!-- Modal footer -->
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>*@
+
+        </div>
+    </div>
+</div>
+
 <style>
-    .single-product-inner
-    {
+    .single-product-inner {
         padding: 0;
     }
 
