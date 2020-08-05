@@ -29,7 +29,7 @@ namespace Cameo.Controllers
             //globalLang = lang;
         }
 
-        internal IActionResult CustomBadRequest(string errorMessage, bool fromException = false)
+        internal IActionResult CustomBadRequest(string errorMessage, bool fromException = false, bool isAjaxAction = false)
         {
             if (!fromException)
             {
@@ -42,10 +42,13 @@ namespace Cameo.Controllers
                 _logger.LogError(errorMessageForLogging);
             }
 
-            return BadRequest(new { errorMessage });
+            if (isAjaxAction)
+                return BadRequest(new { errorMessage });
+            else
+                throw new Exception(errorMessage);
         }
 
-        internal IActionResult CustomBadRequest(Exception ex)
+        internal IActionResult CustomBadRequest(Exception ex, bool isAjaxAction = false)
         {
             string errorMessage = ex.Message;
             if (ex.InnerException != null)
@@ -59,7 +62,7 @@ namespace Cameo.Controllers
 
             _logger.LogError(ex, errorMessageForLogging);
 
-            return CustomBadRequest(errorMessage, true);
+            return CustomBadRequest(errorMessage, true, isAjaxAction);
         }
     }
 }

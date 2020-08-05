@@ -24,9 +24,14 @@
                     <div class="big_img">
                         @if (Model.IntroVideo != null && Model.IntroVideo.ID > 0)
                         {
-                            <video class="video-js" id="imgContainer" controls autoplay preload="auto">
-                                <source src="@Model.IntroVideo.Url" type="video/mp4">
-                            </video>
+                            <div class="videoBox">
+                                <video class="video-js" id="introVideo" autoplay="" loop="" playsinline="" preload="auto">
+                                    <source src="@Model.IntroVideo.Url" type="video/mp4">
+                                </video>
+                                <div class="muteBtn" onclick="ToggleMute('introVideo');">
+                                    <i class="fa fa-volume-up" aria-hidden="true"></i>
+                                </div>
+                            </div>
                         }
                         else
                         {
@@ -273,5 +278,15 @@
                 }
             });
         });
+
+        function ToggleMute(videoTagID)
+        {
+            var vid = document.getElementById(videoTagID);
+            var curMuteState = vid.muted;
+            vid.muted = !curMuteState;
+            //$("#" + videoTagID).parent().children(".muteBtn i")
+            $(".videoBox .muteBtn i").toggleClass("fa-volume-off");
+            $(".videoBox .muteBtn i").toggleClass("fa-volume-up");
+        }
     </script>
 }
