@@ -8,10 +8,15 @@
     {
         <div class="col-xl-4 col-lg-4 col-md-6 col-12  pb--40">
             <span><a href="/Video/Details/@item.RequestID">@localizer["From"] @item.From @localizer["To"] @item.To</a></span>
-            <video class="video-js requestVideo" id="request_@item.RequestID" controls preload="true">
-                <source src="@item.Video.Url" type="video/mp4">
-                @*<source src="/Video/GetVideo/@item.RequestID" type="video/mp4">*@
-            </video>
+            <div class="videoBox">
+                <video class="video-js requestVideo" id="request_@item.RequestID" preload="auto">
+                    <source src="@item.Video.Url" type="video/mp4">
+                </video>
+                <div class="contolActionBtn" onclick="TogglePlayPause('request_' + '@item.RequestID');" style="padding: 0px 17px;">
+                    <i class="fa fa-play" aria-hidden="true"></i>
+                </div>
+            </div>
+            
             @*<div class="card">
                 <div class="card-header">
                     <span>От @item.From для @item.To</span>
