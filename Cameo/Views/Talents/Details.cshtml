@@ -146,9 +146,10 @@
     <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw mt--30 mb--30" style="margin-left: 49%;"></i>
     @*<img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />*@
     <div class="row">
-        <div class="col-lg-2 col-md-1 col-sm-1"></div>
-        <div class="innerContainer col-lg-8 col-md-10 col-sm-10 col-12"></div>
-        <div class="col-lg-2 col-md-1 col-sm-1"></div>
+        @*<div class="col-lg-2 col-md-1 col-sm-1"></div>*@
+        @*<div class="innerContainer col-lg-8 col-md-10 col-sm-10 col-12"></div>*@
+        <div class="innerContainer"></div>
+        @*<div class="col-lg-2 col-md-1 col-sm-1"></div>*@
     </div>
 </div>
 
@@ -156,9 +157,10 @@
     <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw mt--30 mb--30" style="margin-left: 49%;"></i>
     @*<img class="spinner" src="@AppSettings.Value.SpinnerUrl" style="height:40px;" />*@
     <div class="row">
-        <div class="col-lg-2 col-md-1 col-sm-1"></div>
-        <div class="innerContainer col-lg-8 col-md-10 col-sm-10 col-12"></div>
-        <div class="col-lg-2 col-md-1 col-sm-1"></div>
+        @*<div class="col-lg-2 col-md-1 col-sm-1"></div>*@
+        @*<div class="innerContainer col-lg-8 col-md-10 col-sm-10 col-12"></div>*@
+        <div class="innerContainer"></div>
+        @*<div class="col-lg-2 col-md-1 col-sm-1"></div>*@
     </div>
 </div>
 
@@ -296,18 +298,31 @@
             var isPaused = vid.paused;
             if (isPaused)
             {
+                PauseAllVideosOnPage();
                 vid.play();
-                $("#" + videoTagID).parent().children(".contolActionBtn").css("padding", "0px 13px");
+                $("#" + videoTagID).parent().children(".contolActionBtn").css("padding", "0px 11px");
             }
             else
             {
                 vid.pause();
-                $("#" + videoTagID).parent().children(".contolActionBtn").css("padding", "0px 17px");
+                $("#" + videoTagID).parent().children(".contolActionBtn").css("padding", "0px 13px");
             }
                 
 
             $("#" + videoTagID).parent().children(".contolActionBtn").children("i").toggleClass("fa-play");
             $("#" + videoTagID).parent().children(".contolActionBtn").children("i").toggleClass("fa-pause");
+        }
+
+        function PauseAllVideosOnPage()
+        {
+            var vids = document.getElementsByClassName("requestVideo");
+            for (i = 0; i < vids.length; i++)
+            {
+                vids[i].pause();
+                var videoTagID = vids[i].id;
+                $("#" + videoTagID).parent().children(".contolActionBtn").children("i").removeClass("fa-pause");
+                $("#" + videoTagID).parent().children(".contolActionBtn").children("i").addClass("fa-play");
+            }
         }
     </script>
 }

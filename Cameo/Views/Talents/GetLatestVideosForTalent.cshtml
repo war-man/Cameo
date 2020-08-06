@@ -6,13 +6,13 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-xl-4 col-lg-4 col-md-6 col-12  pb--40">
+        <div class="col-xl-2 col-lg-3 col-md-4 col-6 pb--40">
             <span><a href="/Video/Details/@item.RequestID">@localizer["From"] @item.From @localizer["To"] @item.To</a></span>
             <div class="videoBox">
                 <video class="video-js requestVideo" id="request_@item.RequestID" preload="auto">
                     <source src="@item.Video.Url" type="video/mp4">
                 </video>
-                <div class="contolActionBtn" onclick="TogglePlayPause('request_' + '@item.RequestID');" style="padding: 0px 17px;">
+                <div class="contolActionBtn" onclick="TogglePlayPause('request_' + '@item.RequestID');" style="padding: 0px 13px;">
                     <i class="fa fa-play" aria-hidden="true"></i>
                 </div>
             </div>
