@@ -19,17 +19,17 @@
     <div class="wrapper plr--80 plr_lg--50 plr_md--30 plr_sm--30">
         <div class="row">
             <div class="col-xl-3 col-lg-2 col-md-1 col-sm-1"></div>
-            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5 col-12">
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-5 col-12">
                 <div class="product__details__container">
                     <div class="big_img">
                         @if (Model.IntroVideo != null && Model.IntroVideo.ID > 0)
                         {
                             <div class="videoBox">
-                                <video class="video-js" id="introVideo" autoplay="" loop="" playsinline="" preload="auto">
+                                <video class="video-js intro" id="introVideo" autoplay="" loop="" playsinline="" preload="auto" muted="">
                                     <source src="@Model.IntroVideo.Url" type="video/mp4">
                                 </video>
                                 <div class="contolActionBtn" onclick="ToggleMute('introVideo');">
-                                    <i class="fa fa-volume-up" aria-hidden="true"></i>
+                                    <i class="fa fa-volume-off" aria-hidden="true"></i>
                                 </div>
                             </div>
                         }
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-5 col-12 mt_md--40 mt_sm--40">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-5 col-12 mt_md--40 mt_sm--40">
                 <div class="single-product-inner">
                     <h2 class="title">@Model.FullName <br /></h2>
                     <span class="prize">@Model.PriceStr @localizer["UZS"]</span>

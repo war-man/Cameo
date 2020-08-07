@@ -357,6 +357,9 @@ namespace Cameo.Controllers
             //    TypeID = (int)VideoRequestTypeEnum.someone
             //};
 
+            if (modelVM.IntroVideo.ID > 0)
+                modelVM.IntroVideo.Url = "/videos/hz2.mp4";
+
             return View(modelVM);
         }
 
@@ -372,7 +375,9 @@ namespace Cameo.Controllers
             List<VideoDetailsVM> videosVM = new List<VideoDetailsVM>();
             foreach (var item in videos)
             {
-                videosVM.Add(new VideoDetailsVM(item));
+                VideoDetailsVM videoVM = new VideoDetailsVM(item);
+                videoVM.Video.Url = "/videos/hz2.mp4";
+                videosVM.Add(videoVM);
             }
 
             return PartialView(videosVM);
