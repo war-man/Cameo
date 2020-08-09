@@ -11,10 +11,13 @@
             <div class="col-lg-2 col-md-1 col-sm-1"></div>
             <div class="col-lg-3 col-md-4 col-sm-5 col-12">
                 <div class="product__details__container">
-                    <div class="big_img">
-                        <video class="video-js" controls preload="true" autoplay="autoplay">
+                    <div class="big_img videoBox">
+                        <video class="video-js requestVideo" id="request_@Model.RequestID" preload="auto">
                             <source src="@Model.Video.Url" type="video/mp4">
                         </video>
+                        <div class="contolActionBtn" onclick="TogglePlayPause('request_' + '@Model.RequestID');" style="padding: 0px 13px;">
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,14 +125,51 @@
 
     .video-js {
         width: 100%;
-        height: 100%;
+        /*height: 100%;*/
         border-radius: 5px;
     }
 </style>
 
-<link href="https://vjs.zencdn.net/7.7.6/video-js.css" rel="stylesheet" />
+@*<link href="https://vjs.zencdn.net/7.7.6/video-js.css" rel="stylesheet" />*@
 
 @section Scripts
 {
-    <script src="https://vjs.zencdn.net/7.7.6/video.js"></script>
+    @*<script src="https://vjs.zencdn.net/7.7.6/video.js"></script>*@
+
+    <script>
+        $(document).ready(function ()
+        {
+            AdjustHeightOfVideoPlayer();
+        });
+
+        function AdjustHeightOfVideoPlayer()
+        {
+            var vidHeight = $("video.requestVideo").first().height();
+            alert("vidHeight: " + vidHeight);
+            var newHeight = vidHeight * 0.9;
+            alert("newHeight: " + newHeight);
+            $("video.requestVideo").height(newHeight);
+        }
+
+        function TogglePlayPause(videoTagID)
+        {
+            var vid = document.getElementById(videoTagID);
+            var isPaused = vid.paused;
+            if (isPaused)
+            {
+                //PauseAllVideosOnPage();
+                vid.play();
+                $("#" + videoTagID).parent().children(".contolActionBtn").css("padding", "0px 11px");
+            }
+            else
+            {
+                vid.pause();
+                $("#" + videoTagID).parent().children(".contolActionBtn").css("padding", "0px 13px");
+            }
+
+
+            $("#" + videoTagID).parent().children(".contolActionBtn").children("i").toggleClass("fa-play");
+            $("#" + videoTagID).parent().children(".contolActionBtn").children("i").toggleClass("fa-pause");
+        }
+    </script>
 }

@@ -34,9 +34,10 @@ namespace Cameo.Controllers
             if (model == null)
                 return CustomBadRequest("Видео не найдено");
 
-            VideoDetailsVM modelVM = new VideoDetailsVM(model);
+            VideoDetailsVM videoVM = new VideoDetailsVM(model);
+            videoVM.Video.Url = "/videos/hz2.mp4";
 
-            return View(modelVM);
+            return View(videoVM);
         }
 
         public IActionResult GetVideo(int id)

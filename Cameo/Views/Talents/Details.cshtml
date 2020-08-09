@@ -226,6 +226,8 @@
     <script>
         $(document).ready(function ()
         {
+            AdjustHeightOfIntroVideoPlayer();
+
             $.ajax({
                 type: "GET",
                 url: "/Talents/GetLatestVideosForTalent",
@@ -240,6 +242,7 @@
                 success: function (data)
                 {
                     $("#latestVideosContainer .innerContainer").html(data);
+                    AdjustHeightOfLatestVideosPlayer();
                 },
                 error: function (data)
                 {
@@ -260,7 +263,7 @@
                 //}),
                 data: {
                     id: Number("@Model.ID"),
-                    count: 7
+                    count: 6
                 },
                 contentType: "application/json; charset=utf-8",
                 //dataType: "json",
@@ -280,6 +283,24 @@
                 }
             });
         });
+
+        function AdjustHeightOfIntroVideoPlayer()
+        {
+            var vidHeight = $("video.intro").first().height();
+            //alert("vidHeight: " + vidHeight);
+            var newHeight = vidHeight * 0.9;
+            //alert("newHeight: " + newHeight);
+            $("video.intro").height(newHeight);
+        }
+
+        function AdjustHeightOfLatestVideosPlayer()
+        {
+            var vidHeight = $("video.requestVideo").first().height();
+            //alert("vidHeight: " + vidHeight);
+            var newHeight = vidHeight * 3.45;
+            //alert("newHeight: " + newHeight);
+            $("video.requestVideo").height(newHeight);
+        }
 
         function ToggleMute(videoTagID)
         {
