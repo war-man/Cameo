@@ -170,16 +170,16 @@ namespace Cameo.Services
             //DEBUG
             return GetWithRelatedDataAsIQueryable();
 
-            //RELEASE
-            return GetWithRelatedDataAsIQueryable()
-                .Where(m => m.IsAvailable
-                    && m.User.TalentApprovedByAdmin
-                    && m.AvatarID.HasValue && m.AvatarID > 0
-                    && !m.IsDeleted
-                    && m.Price > 0
-                    && !(m.CreditCardNumber == null || m.CreditCardNumber.Trim() == string.Empty)
-                    && m.CreditCardExpire.HasValue
-                    && m.TalentCategories.Count > 0);
+            ////RELEASE
+            //return GetWithRelatedDataAsIQueryable()
+            //    .Where(m => m.IsAvailable
+            //        && m.User.TalentApprovedByAdmin
+            //        && m.AvatarID.HasValue && m.AvatarID > 0
+            //        && !m.IsDeleted
+            //        && m.Price > 0
+            //        && !(m.CreditCardNumber == null || m.CreditCardNumber.Trim() == string.Empty)
+            //        && m.CreditCardExpire.HasValue
+            //        && m.TalentCategories.Count > 0);
         }
 
         public IQueryable<Talent> GetRelated(Talent model, int? count = null)

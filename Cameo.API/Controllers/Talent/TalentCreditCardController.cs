@@ -29,27 +29,34 @@ namespace Cameo.API.Controllers
         [HttpGet]
         public ActionResult<TalentCreditCardEditVM> Index()
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
-            if (model == null)
-                return CustomBadRequest("Талант не найден");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByUserID(curUser.ID);
+                if (model == null)
+                    throw new Exception("Талант не найден");
 
-            TalentCreditCardEditVM modelVM = new TalentCreditCardEditVM(model);
+                TalentCreditCardEditVM modelVM = new TalentCreditCardEditVM(model);
 
-            return Ok(modelVM);
+                return Ok(modelVM);
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         [HttpPost]
         public ActionResult Index([FromBody] TalentCreditCardEditVM modelVM)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByID(modelVM.id);
-            if (model == null || !model.UserID.Equals(curUser.ID))
-                return CustomBadRequest("Талант не найден");
-
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByID(modelVM.id);
+                if (model == null || !model.UserID.Equals(curUser.ID))
+                    throw new Exception("Талант не найден");
+
+                if (ModelState.IsValid)
                 {
                     model.CreditCardNumber = modelVM.credit_card_number.Replace(" ", "");
                     model.CreditCardHolder = modelVM.credit_card_holder;
@@ -75,20 +82,20 @@ namespace Cameo.API.Controllers
                             return Ok();
                         }
                         else
-                            return CustomBadRequest("Срок годности карты истекает менее чем через 3 месяца");
+                            throw new Exception("Срок годности карты истекает менее чем через 3 месяца");
                         //ModelState.AddModelError("", "Срок годности карты истекает менее чем через 3 месяца");
                     }
                     else
-                        return CustomBadRequest("Некорректный срок годности");
+                        throw new Exception("Некорректный срок годности");
                     //ModelState.AddModelError("", "Некорректный срок годности");
                 }
-                catch (Exception ex)
-                {
-                    return CustomBadRequest(ex);
-                }
+                else
+                    throw new Exception("Указаны некорректные данные");
             }
-            else
-                return CustomBadRequest("Указаны некорректные данные");
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         private bool ExpiresIn3Months(DateTime creditCardExpire)

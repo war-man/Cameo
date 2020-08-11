@@ -32,10 +32,13 @@ namespace Cameo.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
             VideoRequest model = VideoRequestService.GetSinglePublished(id, curUser.ID);
             if (model == null)
-                return CustomBadRequest("Видео не найдено");
+                throw new Exception("Видео не найдено");
 
             VideoDetailsVM videoVM = new VideoDetailsVM(model);
+
+#if DEBUG
             videoVM.Video.Url = "/videos/hz2.mp4";
+#endif
 
             return View(videoVM);
         }
@@ -46,7 +49,7 @@ namespace Cameo.Controllers
             VideoRequest request = VideoRequestService.GetSinglePublished(id, curUser.ID);
 
             if (request == null)
-                return CustomBadRequest("Видео не найдено");
+                throw new Exception("Видео не найдено");
 
             AttachmentDetailsVM video = new AttachmentDetailsVM(request.Video);
 

@@ -49,51 +49,43 @@ namespace Cameo.Controllers
 
         public IActionResult Details(int id)
         {
-            try
+            var curUser = accountUtil.GetCurrentUser(User);
+            VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+
+            if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
+                throw new Exception("Ваш заказ не найден");
+
+            if (request.ViewedByCustomer == false)
             {
-                var curUser = accountUtil.GetCurrentUser(User);
-                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-
-                if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                    throw new Exception("Ваш заказ не найден");
-
-                if (request.ViewedByCustomer == false)
-                {
-                    request.ViewedByCustomer = true;
-                    VideoRequestService.Update(request, curUser.ID);
-                }
-
-                var requestVM = new VideoRequestDetailsForCustomerVM(request);
-                requestVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
-                requestVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
-
-                requestVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(request);
-                requestVM.RequestPriceToStr();
-
-                requestVM.RemainingPrice = VideoRequestPriceCalculationsService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
-                requestVM.RemainingPriceToStr();
-
-                requestVM.VideoIsConfirmed = VideoRequestService.IsVideoConfirmed(request);
-                requestVM.PaymentScreenshotIsUploaded = VideoRequestService.IsPaymentScreenshotUploaded(request);
-
-                requestVM.PaymentIsConfirmed = VideoRequestService.IsPaymentConfirmed(request);
-                if (requestVM.PaymentIsConfirmed)
-                    requestVM.Video = new AttachmentDetailsVM(request.Video);
-
-                //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
-                //ViewBag.editModelVM = editModelVM;
-                //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
-
-                ViewBag.firebaseUid = curUser.FirebaseUid;
-                ViewBag.firebaseToken = FirebaseRegistrationTokenService.GetForWebByUserID(curUser.ID);
-
-                return View(requestVM);
+                request.ViewedByCustomer = true;
+                VideoRequestService.Update(request, curUser.ID);
             }
-            catch (Exception ex)
-            {
-                return CustomBadRequest(ex);
-            }
-            
+
+            var requestVM = new VideoRequestDetailsForCustomerVM(request);
+            requestVM.EditBtnIsAvailable = VideoRequestService.IsEditable(request);
+            requestVM.CancelBtnIsAvailable = VideoRequestService.IsCancelable(request);
+
+            requestVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(request);
+            requestVM.RequestPriceToStr();
+
+            requestVM.RemainingPrice = VideoRequestPriceCalculationsService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+            requestVM.RemainingPriceToStr();
+
+            requestVM.VideoIsConfirmed = VideoRequestService.IsVideoConfirmed(request);
+            requestVM.PaymentScreenshotIsUploaded = VideoRequestService.IsPaymentScreenshotUploaded(request);
+
+            requestVM.PaymentIsConfirmed = VideoRequestService.IsPaymentConfirmed(request);
+            if (requestVM.PaymentIsConfirmed)
+                requestVM.Video = new AttachmentDetailsVM(request.Video);
+
+            //VideoRequestEditVM editModelVM = new VideoRequestEditVM(request);
+            //ViewBag.editModelVM = editModelVM;
+            //ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
+
+            ViewBag.firebaseUid = curUser.FirebaseUid;
+            ViewBag.firebaseToken = FirebaseRegistrationTokenService.GetForWebByUserID(curUser.ID);
+
+            return View(requestVM);
         }
     }
 }

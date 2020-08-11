@@ -40,7 +40,8 @@ namespace Cameo.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
             Talent model = TalentService.GetByUserID(curUser.ID);
             if (model == null)
-                return NotFound();
+                //return NotFound();
+                throw new Exception("Талант не найден");
 
             if (model.AvatarID.HasValue)
                 model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
@@ -50,6 +51,7 @@ namespace Cameo.Controllers
             return View(modelVM);
         }
 
+        //ajax
         public IActionResult GetDashboardInfo()
         {
             try
@@ -82,20 +84,29 @@ namespace Cameo.Controllers
             }
         }
 
+        //ajax
         public IActionResult GetVisibilityWarningInfo()
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent talent = TalentService.GetByUserID(curUser.ID);
-            if (talent == null)
-                throw new Exception("Талант не найден");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent talent = TalentService.GetByUserID(curUser.ID);
+                if (talent == null)
+                    throw new Exception("Талант не найден");
 
-            Talent talentDetailed = TalentService.GetActiveSingleDetailsWithRelatedDataByID(talent.ID);
+                Talent talentDetailed = TalentService.GetActiveSingleDetailsWithRelatedDataByID(talent.ID);
 
-            List<string> warningTexts = TalentVisibilityService.BuildWarningTexts(talentDetailed);
+                List<string> warningTexts = TalentVisibilityService.BuildWarningTexts(talentDetailed);
 
-            return PartialView("_VisibilityInfo", warningTexts);
+                return PartialView("_VisibilityInfo", warningTexts);
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
+        //ajax
         public string GetPrice()
         {
             var curUser = accountUtil.GetCurrentUser(User);
@@ -106,6 +117,7 @@ namespace Cameo.Controllers
                 return model.Price.ToString(AppData.Configuration.NumberViewStringFormat).Trim();
         }
 
+        //ajax
         [HttpPost]
         public IActionResult SetAvailability(bool availability)
         {

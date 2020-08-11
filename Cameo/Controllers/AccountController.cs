@@ -50,6 +50,7 @@ namespace Cameo.Controllers
             return View();
         }
 
+        //ajax
         [HttpPost]
         public async Task<IActionResult> Authenticate(string firebaseUid, string returnUrl)
         {
@@ -64,7 +65,23 @@ namespace Cameo.Controllers
                     if (existingUser.UserType == UserTypesEnum.talent.ToString()
                         && !existingUser.TalentApprovedByAdmin)
                     {
-                        throw new Exception("Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.");
+                        var talent = TalentService.GetByUserID(existingUser.Id);
+                        if (talent == null)
+                            throw new Exception("Талант не найден");
+
+                        if (!talent.SocialAreaID.HasValue)
+                            throw new Exception("Социальная сеть не указана");
+
+                        SocialArea socialArea = SocialAreaService.GetByID(talent.SocialAreaID.Value);
+                        if (socialArea == null)
+                            throw new Exception("Социальная сеть не найдена");
+
+                        string errorText = @"Ваша заявка как Таланта еще не одобрена. 
+                            Отправьте нам сообщение на " + socialArea.Name + " " + socialArea.CompanySocialAreaHandle + @"
+                            от Вашего " + socialArea.Name + @" аккаунта " + talent.SocialAreaHandle + @" 
+                            с текстом ""Helloo " + existingUser.TalentConfirmationCode + @"""";
+
+                        throw new Exception(errorText);
                     }
                     else
                     {
@@ -72,13 +89,13 @@ namespace Cameo.Controllers
                         {
                             var customer = CustomerService.GetByUserID(existingUser.Id);
                             if (customer == null)
-                                return CustomBadRequest("Клиент не найден");
+                                throw new Exception("Клиент не найден");
                         }
                         else if (existingUser.UserType == UserTypesEnum.talent.ToString())
                         {
                             var talent = TalentService.GetByUserID(existingUser.Id);
                             if (talent == null)
-                                return CustomBadRequest("Талант не найден");
+                                throw new Exception("Талант не найден");
                         }
 
                         await _signInManager.SignInAsync(existingUser, true);
@@ -162,10 +179,10 @@ namespace Cameo.Controllers
             return BadRequest(ModelState);
         }
 
-        public IActionResult AccessDenied()
-        {
-            throw new UnauthorizedAccessException("У Вас недостаточно прав для перехода по данной ссылке");
-        }
+        //public IActionResult AccessDenied()
+        //{
+        //    throw new UnauthorizedAccessException("У Вас недостаточно прав для перехода по данной ссылке");
+        //}
 
         //Enrollment actions
         public IActionResult EnrollAsTalent()

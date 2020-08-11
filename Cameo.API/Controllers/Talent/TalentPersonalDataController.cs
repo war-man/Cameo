@@ -34,29 +34,36 @@ namespace Cameo.API.Controllers
         [HttpGet]
         public ActionResult<TalentPersonalDataEditVM> Index()
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
-            if (model == null)
-                return CustomBadRequest("Талант не найден");
-            if (model.AvatarID.HasValue)
-                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByUserID(curUser.ID);
+                if (model == null)
+                    throw new Exception("Талант не найден");
+                if (model.AvatarID.HasValue)
+                    model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
-            TalentPersonalDataEditVM modelVM = new TalentPersonalDataEditVM(model);
+                TalentPersonalDataEditVM modelVM = new TalentPersonalDataEditVM(model);
 
-            return Ok(modelVM);
+                return Ok(modelVM);
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         [HttpPost]
         public ActionResult Index([FromBody] TalentPersonalDataEditVM modelVM)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByID(modelVM.id);
-            if (model == null || !model.UserID.Equals(curUser.ID))
-                return CustomBadRequest("Талант не найден");
-
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByID(modelVM.id);
+                if (model == null || !model.UserID.Equals(curUser.ID))
+                    throw new Exception("Талант не найден");
+
+                if (ModelState.IsValid)
                 {
                     model.FullName = modelVM.full_name;
                     //model.FirstName = modelVM.FirstName;
@@ -72,13 +79,13 @@ namespace Cameo.API.Controllers
 
                     return Ok();
                 }
-                catch (Exception ex)
-                {
-                    return CustomBadRequest(ex);
-                }
+                else
+                    throw new Exception("Указаны некорректные данные");
             }
-            else
-                return CustomBadRequest("Указаны некорректные данные");
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
     }
 }

@@ -33,27 +33,34 @@ namespace Cameo.API.Controllers
         [HttpGet]
         public ActionResult<TalentPriceEditVM> Index()
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
-            if (model == null)
-                return CustomBadRequest("Талант не найден");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByUserID(curUser.ID);
+                if (model == null)
+                    throw new Exception("Талант не найден");
 
-            TalentPriceEditVM modelVM = new TalentPriceEditVM(model);
+                TalentPriceEditVM modelVM = new TalentPriceEditVM(model);
 
-            return Ok(modelVM);
+                return Ok(modelVM);
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         [HttpPost]
         public ActionResult Index([FromBody] TalentPriceEditVM modelVM)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByID(modelVM.id);
-            if (model == null || !model.UserID.Equals(curUser.ID))
-                return CustomBadRequest("Талант не найден");
-
-            if (ModelState.IsValid && IsCorrectPriceProvided(modelVM.price))
+            try
             {
-                try
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByID(modelVM.id);
+                if (model == null || !model.UserID.Equals(curUser.ID))
+                    throw new Exception("Талант не найден");
+
+                if (ModelState.IsValid && IsCorrectPriceProvided(modelVM.price))
                 {
                     model.Price = modelVM.price;
 
@@ -61,13 +68,13 @@ namespace Cameo.API.Controllers
 
                     return Ok();
                 }
-                catch (Exception ex)
-                {
-                    return CustomBadRequest(ex);
-                }
+                else
+                    throw new Exception("Указаны некорректные данные");
             }
-            else
-                return CustomBadRequest("Указаны некорректные данные");
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         private bool IsCorrectPriceProvided(int price)

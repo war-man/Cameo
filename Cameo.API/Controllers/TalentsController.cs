@@ -185,7 +185,7 @@ namespace Cameo.API.Controllers
                 {
                     var categoryDB = CategoryService.GetActiveByID(category_id);
                     if (categoryDB == null)
-                        return NotFound("Category not found");
+                        throw new Exception("Category not found");
 
                     //DO NOT DELETE THIS CODE!!!
                     //must be uncommented later when number of telants will be large
@@ -284,7 +284,7 @@ namespace Cameo.API.Controllers
                 var curUser = accountUtil.GetCurrentUser(User);
                 Talent model = TalentService.GetActiveSingleDetailsWithRelatedDataByID(id);
                 if (model == null)
-                    return CustomBadRequest("Талант не найден");
+                    throw new Exception("Талант не найден");
 
                 TalentDetailsVM modelVM = new TalentDetailsVM(model);
 
@@ -316,7 +316,7 @@ namespace Cameo.API.Controllers
             {
                 Talent talent = TalentService.GetActiveByID(id);
                 if (talent == null)
-                    return CustomBadRequest("Талант не найден");
+                    throw new Exception("Талант не найден");
 
                 List<VideoRequest> videos = VideoRequestService.GetPublicByTalent(talent, 0)
                     .ToList();
@@ -342,7 +342,7 @@ namespace Cameo.API.Controllers
             {
                 Talent talent = TalentService.GetActiveByID(id);
                 if (talent == null)
-                    return CustomBadRequest("Талант не найден");
+                    throw new Exception("Талант не найден");
 
                 List<TalentGridViewItem> relatedTalents = TalentSearchService.GetRelated(talent, count)
                     .Select(m => new TalentGridViewItem(m))

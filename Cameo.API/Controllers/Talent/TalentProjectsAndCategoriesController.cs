@@ -33,28 +33,35 @@ namespace Cameo.API.Controllers
         [HttpGet]
         public ActionResult<TalentProjectsAndCategoriesEditVM> Index()
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
-            if (model == null)
-                return CustomBadRequest("Талант не найден");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByUserID(curUser.ID);
+                if (model == null)
+                    throw new Exception("Талант не найден");
 
-            TalentProjectsAndCategoriesEditVM modelVM = 
-                new TalentProjectsAndCategoriesEditVM(model);
+                TalentProjectsAndCategoriesEditVM modelVM =
+                    new TalentProjectsAndCategoriesEditVM(model);
 
-            return Ok(modelVM);
+                return Ok(modelVM);
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         [HttpPost]
         public ActionResult Index([FromBody] TalentProjectsAndCategoriesEditVM modelVM)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByID(modelVM.talent_id);
-            if (model == null || !model.UserID.Equals(curUser.ID))
-                return CustomBadRequest("Талант не найден");
-
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByID(modelVM.talent_id);
+                if (model == null || !model.UserID.Equals(curUser.ID))
+                    throw new Exception("Талант не найден");
+
+                if (ModelState.IsValid)
                 {
                     UpdateTalentCategories(model, modelVM.categories);
                     UpdateTalentProjects(model, modelVM.projects);
@@ -63,13 +70,13 @@ namespace Cameo.API.Controllers
 
                     return Ok();
                 }
-                catch (Exception ex)
-                {
-                    return CustomBadRequest(ex);
-                }
+                else
+                    throw new Exception("Указаны некорректные данные");
             }
-            else
-                return CustomBadRequest("Указаны некорректные данные");
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         private void UpdateTalentCategories(Talent model, List<int> selectedCategories)

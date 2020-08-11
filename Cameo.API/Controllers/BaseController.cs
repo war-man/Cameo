@@ -16,21 +16,21 @@ namespace Cameo.API.Controllers
 
         internal ILogger _logger;
 
-        internal ActionResult CustomBadRequest(string errorMessage, bool fromException = false)
-        {
-            if (!fromException)
-            {
-                string curUserID = "0";
-                var curUser = accountUtil.GetCurrentUser(User);
-                if (curUser != null && !string.IsNullOrWhiteSpace(curUser.ID))
-                    curUserID = curUser.ID;
-                string errorMessageForLogging = "UserID = " + curUserID + "; " + errorMessage;
+        //internal ActionResult CustomBadRequest(string errorMessage, bool fromException = false)
+        //{
+        //    if (!fromException)
+        //    {
+        //        string curUserID = "0";
+        //        var curUser = accountUtil.GetCurrentUser(User);
+        //        if (curUser != null && !string.IsNullOrWhiteSpace(curUser.ID))
+        //            curUserID = curUser.ID;
+        //        string errorMessageForLogging = "UserID = " + curUserID + "; " + errorMessage;
 
-                _logger.LogError(errorMessageForLogging);
-            }
+        //        _logger.LogError(errorMessageForLogging);
+        //    }
 
-            return BadRequest(new { error_message = errorMessage });
-        }
+        //    return BadRequest(new { error_message = errorMessage });
+        //}
 
         internal ActionResult CustomBadRequest(Exception ex)
         {
@@ -38,15 +38,25 @@ namespace Cameo.API.Controllers
             if (ex.InnerException != null)
                 errorMessage += ". " + ex.InnerException.Message;
 
-            string curUserID = "unauthorized";
+            _logger.LogError(ex, BuildErrorMessageForLogging(null, Request.Path.ToString()));
+
+            return BadRequest(new { errorMessage = errorMessage });
+        }
+
+        internal string BuildErrorMessageForLogging(int? code, string originalPath)
+        {
+            string result = "Front-end: mobile; ";
+
+            if (code.HasValue)
+                result += "StatusCode = " + code.Value + "; ";
+
+            if (!string.IsNullOrWhiteSpace(originalPath))
+                result += "OriginalPath = " + originalPath + "; ";
+
             var curUser = accountUtil.GetCurrentUser(User);
-            if (curUser != null && !string.IsNullOrWhiteSpace(curUser.ID))
-                curUserID = curUser.ID;
-            string errorMessageForLogging = "UserID = " + curUserID + "; " + ex.Message;
+            result += "UserID = " + curUser?.ID ?? "unauthorized";
 
-            _logger.LogError(ex, errorMessageForLogging);
-
-            return CustomBadRequest(errorMessage, true);
+            return result;
         }
     }
 }

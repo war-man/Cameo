@@ -36,7 +36,8 @@ namespace Cameo.Controllers
             var curUser = accountUtil.GetCurrentUser(User);
             Customer model = CustomerService.GetActiveSingleDetailsWithRelatedDataByUserID(curUser.ID);
             if (model == null)
-                return CustomBadRequest("Клиент не найден");
+                //return NotFound("Клиент не найден");
+                throw new Exception("Клиент по curUser.ID не найден");
 
             CustomerEditVM modelVM = new CustomerEditVM(model);
 
@@ -71,7 +72,7 @@ namespace Cameo.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Что-то пошло не так");
+                    ModelState.AddModelError("", "Что-то пошло не так: " + ex.Message);
                 }
             }
             else

@@ -33,29 +33,36 @@ namespace Cameo.API.Controllers
         [HttpGet("{request_id}")]
         public ActionResult<VideoDetailsVM> Get(int request_id)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            VideoRequest model = VideoRequestService.GetSinglePublished(request_id, curUser.ID);
-            if (model == null)
-                return CustomBadRequest("Видео не найдено");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                VideoRequest model = VideoRequestService.GetSinglePublished(request_id, curUser.ID);
+                if (model == null)
+                    throw new Exception("Видео не найдено");
 
-            VideoDetailsVM modelVM = new VideoDetailsVM(model);
-            return modelVM;
+                VideoDetailsVM modelVM = new VideoDetailsVM(model);
+                return modelVM;
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
-        [HttpGet("GetVideo/{request_id}")]
-        public IActionResult GetVideo(int request_id)
-        {
-            var curUser = accountUtil.GetCurrentUser(User);
-            VideoRequest model = VideoRequestService.GetSinglePublished(request_id, curUser.ID);
+        //[HttpGet("GetVideo/{request_id}")]
+        //public IActionResult GetVideo(int request_id)
+        //{
+        //    var curUser = accountUtil.GetCurrentUser(User);
+        //    VideoRequest model = VideoRequestService.GetSinglePublished(request_id, curUser.ID);
 
-            if (model == null)
-                return NotFound();
+        //    if (model == null)
+        //        return NotFound();
 
-            string fileAbsolutePath = FileManagement.GetFileAbsolutePath(
-                model.Video.Path,
-                model.Video.GUID + "." + model.Video.Extension);
+        //    string fileAbsolutePath = FileManagement.GetFileAbsolutePath(
+        //        model.Video.Path,
+        //        model.Video.GUID + "." + model.Video.Extension);
 
-            return PhysicalFile(fileAbsolutePath, "video/mp4");
-        }
+        //    return PhysicalFile(fileAbsolutePath, "video/mp4");
+        //}
     }
 }

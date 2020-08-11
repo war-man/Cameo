@@ -32,29 +32,33 @@ namespace Cameo.API.Controllers
         [HttpGet]
         public ActionResult<CustomerShortInfoVM> Details()
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetActiveSingleDetailsWithRelatedDataByUserID(curUser.ID);
-            if (model == null)
-                return CustomBadRequest("Клиент не найден");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Customer model = CustomerService.GetActiveSingleDetailsWithRelatedDataByUserID(curUser.ID);
+                if (model == null)
+                    throw new Exception("Клиент не найден");
 
-            CustomerShortInfoVM modelVM = new CustomerShortInfoVM(model);
+                CustomerShortInfoVM modelVM = new CustomerShortInfoVM(model);
 
-            return modelVM;
+                return modelVM;
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         [HttpPost]
         public ActionResult Save(CustomerEditVM modelVM)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Customer model = CustomerService.GetByUserID(curUser.ID);
-            if (model == null)
-            {
-                //return NotFound(new { errorMessage });
-                return CustomBadRequest("Данные клиента не найдены");
-            }
-
             try
             {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Customer model = CustomerService.GetByUserID(curUser.ID);
+                if (model == null)
+                    throw new Exception("Данные клиента не найдены");
+            
                 if (ModelState.IsValid)
                 {
                     model.FullName = modelVM.full_name;
@@ -69,7 +73,7 @@ namespace Cameo.API.Controllers
                     return Ok();
                 }
                 else
-                    return CustomBadRequest("Неверные данные");
+                    throw new Exception("Неверные данные");
             }
             catch (Exception ex)
             {

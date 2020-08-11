@@ -207,7 +207,7 @@ namespace Cameo.API.Controllers
                     error = "Некоторые входящие данные неверные";
 
                 if (!string.IsNullOrWhiteSpace(error))
-                    return CustomBadRequest(error);
+                    throw new Exception(error);
 
                 return Ok();
             }

@@ -45,6 +45,7 @@ namespace Cameo.Controllers
             _logger = logger;
         }
 
+        //ajax
         [HttpPost]
         public IActionResult Save([FromBody] UploadFileVM uploadFileVM)
         {
@@ -150,7 +151,7 @@ namespace Cameo.Controllers
         //            path += videosRelativePath;
         //            attachment.Path += videosRelativePath;
         //        }
-                    
+
         //        path += "/" + attachment.GUID + "." + file.FileName.Split('.')[1];
         //        path = path.Replace('/', '\\');
 
@@ -172,31 +173,39 @@ namespace Cameo.Controllers
         //    return BadRequest();
         //}
 
+        //ajax
         [HttpPost]
         public IActionResult Delete(int fileID, int? objID, string fileType)
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-
-            var model = AttachmentService.GetActiveByID(fileID);
-            if (model == null)
-                return NotFound();
-
-            string error = "";
-
-            if (objID.HasValue && objID > 0
-                && !string.IsNullOrWhiteSpace(fileType))
+            try
             {
-                error = DetachFromObj(model, objID.Value, fileType, curUser.ID);
-                if (string.IsNullOrWhiteSpace(error))
-                    AttachmentService.Delete(model, curUser.ID);
+                var curUser = accountUtil.GetCurrentUser(User);
+
+                var model = AttachmentService.GetActiveByID(fileID);
+                if (model == null)
+                    return NotFound();
+
+                string error = "";
+
+                if (objID.HasValue && objID > 0
+                    && !string.IsNullOrWhiteSpace(fileType))
+                {
+                    error = DetachFromObj(model, objID.Value, fileType, curUser.ID);
+                    if (string.IsNullOrWhiteSpace(error))
+                        AttachmentService.Delete(model, curUser.ID);
+                }
+                else
+                    error = "Некоторые входящие данные неверные";
+
+                if (!string.IsNullOrWhiteSpace(error))
+                    throw new Exception(error);
+
+                return Ok();
             }
-            else
-                error = "Некоторые входящие данные неверные";
-
-            if (!string.IsNullOrWhiteSpace(error))
-                return BadRequest(error);
-
-            return Ok();
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         private string DetachFromObj(Attachment attachment, int objID, string fileType, string curUserID)

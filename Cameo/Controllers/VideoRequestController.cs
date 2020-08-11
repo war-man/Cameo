@@ -58,15 +58,15 @@ namespace Cameo.Controllers
         {
             var curUser = accountUtil.GetCurrentUser(User);
             if (!AccountUtil.IsUserCustomer(curUser))
-                return CustomBadRequest("Вы не являетесь клиентом");
+                throw new Exception("Вы не являетесь клиентом");
 
             var customer = CustomerService.GetByUserID(curUser.ID);
             if (customer == null)
-                return CustomBadRequest("Вы не являетесь клиентом");
+                throw new Exception("Вы не являетесь клиентом");
 
             Talent talent = TalentService.GetActiveByUsername(username);
             if (talent == null)
-                return CustomBadRequest("Талант не найден");
+                throw new Exception("Талант не найден");
 
             TalentDetailsVM talentVM = new TalentDetailsVM(talent);
             talentVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
@@ -182,10 +182,10 @@ namespace Cameo.Controllers
 
             VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                return CustomBadRequest("Заказ не найден");
+                throw new Exception("Заказ не найден");
 
             if (!VideoRequestService.IsEditable(request))
-                return CustomBadRequest("Данный заказ нельзя редактировать");
+                throw new Exception("Данный заказ нельзя редактировать");
 
             VideoRequestEditVM editVM = new VideoRequestEditVM(request);
 
@@ -211,10 +211,10 @@ namespace Cameo.Controllers
 
             VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(modelVM.ID);
             if (request == null || !VideoRequestService.BelongsToCustomer(request, curUser.ID))
-                return CustomBadRequest("Заказ не найден");
+                throw new Exception("Заказ не найден");
 
             if (!VideoRequestService.IsEditable(request))
-                return CustomBadRequest("Данный запрос нельзя редактировать");
+                throw new Exception("Данный запрос нельзя редактировать");
 
             if (ModelState.IsValid)
             {
@@ -270,6 +270,7 @@ namespace Cameo.Controllers
         }
         #endregion
 
+        //ajax
         [HttpPost]
         public IActionResult Cancel(int id)
         {
@@ -277,7 +278,7 @@ namespace Cameo.Controllers
             {
                 var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
                 if (model == null)
-                    return CustomBadRequest("Заказ не найден");
+                    throw new Exception("Заказ не найден");
 
                 var curUser = accountUtil.GetCurrentUser(User);
 

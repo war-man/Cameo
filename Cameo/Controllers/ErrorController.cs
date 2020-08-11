@@ -12,7 +12,7 @@ namespace Cameo.Controllers
 {
     public class ErrorController : BaseController
     {
-        readonly private ILogger _logger;
+        //readonly private ILogger _logger;
 
         public ErrorController(ILogger<ErrorController> logger)
         {
@@ -24,9 +24,8 @@ namespace Cameo.Controllers
         {
             var pathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             Exception exception = pathFeature?.Error; // Here will be the exception details
-
-            var curUser = accountUtil.GetCurrentUser(User);
-            _logger.LogError(exception, "UserID = " + curUser?.ID ?? "unauthorized");
+            
+            _logger.LogError(exception, BuildErrorMessageForLogging(null, pathFeature.Path, false));
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
@@ -34,20 +33,11 @@ namespace Cameo.Controllers
         [Route("Error/Status/{code:int}")]
         public IActionResult Status(int? code)
         {
-            var pathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            Exception exception = pathFeature?.Error; // Here will be the exception details
-
             var statusCodeData = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
 
-            var curUser = accountUtil.GetCurrentUser(User);
-
-            _logger.LogError("StatusCode = " + code + "; OriginalPath = " + statusCodeData.OriginalPath + "; UserID = " + curUser?.ID ?? "unauthorized");
-
-            // handle different codes or just return the default error view
+            _logger.LogError(BuildErrorMessageForLogging(code, statusCodeData.OriginalPath, false));
 
             ViewBag.code = code;
-
-            //return View("Error");
             return View();
         }
     }

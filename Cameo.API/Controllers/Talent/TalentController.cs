@@ -42,17 +42,24 @@ namespace Cameo.API.Controllers
         [HttpGet]
         public ActionResult<TalentShortInfoVM> Index()
         {
-            var curUser = accountUtil.GetCurrentUser(User);
-            Talent model = TalentService.GetByUserID(curUser.ID);
-            if (model == null)
-                return CustomBadRequest("Талант не найден");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+                Talent model = TalentService.GetByUserID(curUser.ID);
+                if (model == null)
+                    throw new Exception("Талант не найден");
 
-            if (model.AvatarID.HasValue)
-                model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
+                if (model.AvatarID.HasValue)
+                    model.Avatar = AttachmentService.GetByID(model.AvatarID.Value);
 
-            TalentShortInfoVM modelVM = new TalentShortInfoVM(model);
+                TalentShortInfoVM modelVM = new TalentShortInfoVM(model);
 
-            return Ok(modelVM);
+                return Ok(modelVM);
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         [HttpGet("DashboardInfo")]

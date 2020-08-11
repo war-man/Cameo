@@ -6,5 +6,6 @@ namespace Cameo.Models
 {
     public class SocialArea : BaseModelDropdownable
     {
+        public string CompanySocialAreaHandle { get; set; }
     }
 }

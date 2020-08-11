@@ -34,13 +34,13 @@ namespace Cameo.Services
 
         public void AnswerDeadlineReaches(int videoRequestID, string userID)
         {
-            try
-            {
+            //try
+            //{
                 VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
                 VideoRequestService.AnswerDeadlineReaches(request, userID);
-            }
-            catch (Exception ex)
-            { }
+            //}
+            //catch (Exception ex)
+            //{ }
         }
 
 //        public void CreateJobForPaymentReminder(VideoRequest request, string userID)
@@ -81,13 +81,13 @@ namespace Cameo.Services
 
         public void VideoDeadlineReaches(int videoRequestID, string userID)
         {
-            try
-            {
+            //try
+            //{
                 VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
                 VideoRequestService.VideoDeadlineReaches(request, userID);
-            }
-            catch (Exception ex)
-            { }
+            //}
+            //catch (Exception ex)
+            //{ }
         }
 
         public string CreateJobForVideoRequestPaymentConfirmationDeadline(VideoRequest request, string userID)
@@ -101,13 +101,13 @@ namespace Cameo.Services
 
         public void PaymentConfirmationDeadlineReaches(int videoRequestID, string userID)
         {
-            try
-            {
+            //try
+            //{
                 VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
                 VideoRequestService.PaymentConfirmationDeadlineReaches(request, userID);
-            }
-            catch (Exception ex)
-            { }
+            //}
+            //catch (Exception ex)
+            //{ }
         }
 
         //public string CreateJobForVideoRequestPaymentDeadline(VideoRequest request, string userID)
@@ -134,12 +134,12 @@ namespace Cameo.Services
         {
             if (!string.IsNullOrWhiteSpace(jobID))
             {
-                try
-                {
+                //try
+                //{
                     BackgroundJob.Delete(jobID);
-                }
-                catch
-                { }
+                //}
+                //catch
+                //{ }
             }
         }
 

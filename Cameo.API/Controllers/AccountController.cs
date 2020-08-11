@@ -62,7 +62,7 @@ namespace Cameo.API.Controllers
                     if (existingUser.UserType == UserTypesEnum.talent.ToString()
                         && !existingUser.TalentApprovedByAdmin)
                     {
-                        return CustomBadRequest("Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.");
+                        throw new Exception("Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.");
                     }
                     else
                     {
@@ -70,13 +70,13 @@ namespace Cameo.API.Controllers
                         {
                             var customer = CustomerService.GetByUserID(existingUser.Id);
                             if (customer == null)
-                                return CustomBadRequest("Клиент не найден");
+                                throw new Exception("Клиент не найден");
                         }
                         else if (existingUser.UserType == UserTypesEnum.talent.ToString())
                         {
                             var talent = TalentService.GetByUserID(existingUser.Id);
                             if (talent == null)
-                                return CustomBadRequest("Талант не найден");
+                                throw new Exception("Талант не найден");
                         }
 
                         authToken = GenerateAuthToken(existingUser);
@@ -166,19 +166,19 @@ namespace Cameo.API.Controllers
                                 return Ok(new RegisterResponseVM(customer, authToken));
                             }
                             else
-                                return CustomBadRequest("Не удалось зарегистрировать пользователя");
+                                throw new Exception("Не удалось зарегистрировать пользователя");
                         }
                         else
                             //errorMessage = "Пользователь с таким именем уже зарегистрирован";
-                            return CustomBadRequest("Пользователь с таким именем уже зарегистрирован");
+                            throw new Exception("Пользователь с таким именем уже зарегистрирован");
                     }
                     else
                         //errorMessage = "Пользователь с таким телефоном уже зарегистрирован";
-                        return CustomBadRequest("Пользователь с таким телефоном уже зарегистрирован");
+                        throw new Exception("Пользователь с таким телефоном уже зарегистрирован");
                 }
                 else
                     //errorMessage = "Введены неверные данные";
-                    return CustomBadRequest("Введены неверные данные");
+                    throw new Exception("Введены неверные данные");
             }
             catch (Exception ex)
             {
@@ -216,12 +216,12 @@ namespace Cameo.API.Controllers
                             return Ok();
                         else
                             //errorMessage = "Не удалсоь удалить пользователя";
-                            return CustomBadRequest("Не удалось удалить пользователя");
+                            throw new Exception("Не удалось удалить пользователя");
                     }
                 }
                 else
                     //errorMessage = "Введены неверные данные";
-                    return CustomBadRequest("Введены неверные данные");
+                    throw new Exception("Введены неверные данные");
             }
             catch (Exception ex)
             {

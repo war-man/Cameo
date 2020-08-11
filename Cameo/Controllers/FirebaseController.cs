@@ -22,6 +22,7 @@ namespace Cameo.Controllers
             _logger = logger;
         }
 
+        //ajax
         [HttpPost]
         public IActionResult SaveToken(string token)
         {
