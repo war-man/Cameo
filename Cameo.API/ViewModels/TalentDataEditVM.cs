@@ -1,4 +1,5 @@
-﻿using Cameo.Models;
+﻿using Cameo.Common;
+using Cameo.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,6 +21,10 @@ namespace Cameo.API.ViewModels
 
         public AttachmentDetailsVM intro_video { get; set; }
 
+        public bool is_available { get; set; }
+        public int price { get; set; }
+        public string price_str { get; set; }
+
         public TalentPersonalDataEditVM() { }
 
         public TalentPersonalDataEditVM(Talent model) : base(model)
@@ -31,6 +36,12 @@ namespace Cameo.API.ViewModels
             this.social_area_handle = model.SocialAreaHandle;
             this.followers_count = model.FollowersCount;
             this.intro_video = AttachmentDetailsVM.ToVM(model.IntroVideo);
+
+            this.is_available = model.IsAvailable;
+            this.price = model.Price;
+
+            string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            this.price_str = model.Price.ToString(numberFormat).Trim();
         }
     }
 

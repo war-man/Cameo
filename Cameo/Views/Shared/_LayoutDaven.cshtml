@@ -8,7 +8,7 @@
         string title = "Helloo";
         if (ViewData["Title"] != null)
         {
-            title += " - " + ViewData["Title"];
+            title = ViewData["Title"] + " - " + title;
         }
     }
     <title>@title</title>
@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
     @*<link rel="shortcut icon" href="~/lib/DavenTheme/img/favicon.ico" type="image/x-icon">*@
-    <link rel="shortcut icon" href="~/images/favicon.PNG">
+    <link rel="shortcut icon" href="~/images/favicon_black.png">
 
     <link href="~/lib/DavenTheme/css/plugins.css" rel="stylesheet" />
     <link href="~/lib/DavenTheme/css/style.css" rel="stylesheet" />
@@ -261,5 +261,10 @@
     .innerContainer
     {
         width: 100%;
+    }
+
+    .draven-haeder .header-wrap .header-col .logo img
+    {
+        width: 115px;
     }
 </style>

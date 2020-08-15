@@ -29,6 +29,7 @@ namespace Cameo.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICustomerService CustomerService;
         private readonly ITalentService TalentService;
+        private readonly ISocialAreaService SocialAreaService;
 
         public AccountController(
             IFirebaseService firebaseService,
@@ -36,6 +37,7 @@ namespace Cameo.API.Controllers
             UserManager<ApplicationUser> userManager,
             ICustomerService customerService,
             ITalentService talentService,
+             ISocialAreaService socialAreaService,
             ILogger<AccountController> logger)
         {
             FirebaseService = firebaseService;
@@ -43,6 +45,7 @@ namespace Cameo.API.Controllers
             _userManager = userManager;
             CustomerService = customerService;
             TalentService = talentService;
+            SocialAreaService = socialAreaService;
             _logger = logger;
         }
 
@@ -62,7 +65,23 @@ namespace Cameo.API.Controllers
                     if (existingUser.UserType == UserTypesEnum.talent.ToString()
                         && !existingUser.TalentApprovedByAdmin)
                     {
-                        throw new Exception("Ваша заявка как Таланта еще не одобрена. Мы с Вами свяжемся.");
+                        var talent = TalentService.GetByUserID(existingUser.Id);
+                        if (talent == null)
+                            throw new Exception("Талант не найден");
+
+                        if (!talent.SocialAreaID.HasValue)
+                            throw new Exception("Социальная сеть не указана");
+
+                        SocialArea socialArea = SocialAreaService.GetByID(talent.SocialAreaID.Value);
+                        if (socialArea == null)
+                            throw new Exception("Социальная сеть не найдена");
+
+                        string errorText = @"Ваша заявка как Таланта еще не одобрена. 
+                            Отправьте нам сообщение на " + socialArea.Name + " " + socialArea.CompanySocialAreaHandle + @"
+                            от Вашего " + socialArea.Name + @" аккаунта " + talent.SocialAreaHandle + @" 
+                            с текстом ""Helloo " + existingUser.TalentConfirmationCode + @"""";
+
+                        throw new Exception(errorText);
                     }
                     else
                     {
