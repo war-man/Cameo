@@ -36,7 +36,7 @@ namespace Cameo.Controllers
             ////_logger.LogInformation("Home Index page opened");
             //int k = 6;
             //int l = k / 0;
-
+            throw new Exception("Талант не найден");
             try
             {
                 throw new Exception("Талант не найден");
