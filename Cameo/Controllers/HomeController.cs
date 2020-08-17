@@ -29,6 +29,11 @@ namespace Cameo.Controllers
             _logger = logger;
         }
 
+        public IActionResult DownloadApp()
+        {
+            return View();
+        }
+
         public IActionResult Index(int? id)
         {
             ////_backgroundJobs.Enqueue(() => Console.WriteLine("AAAAAA!"));
