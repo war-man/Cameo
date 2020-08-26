@@ -30,6 +30,7 @@ namespace Cameo.API.Controllers
         private readonly ICustomerService CustomerService;
         private readonly ITalentService TalentService;
         private readonly ISocialAreaService SocialAreaService;
+        private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
 
         public AccountController(
             IFirebaseService firebaseService,
@@ -37,7 +38,8 @@ namespace Cameo.API.Controllers
             UserManager<ApplicationUser> userManager,
             ICustomerService customerService,
             ITalentService talentService,
-             ISocialAreaService socialAreaService,
+            ISocialAreaService socialAreaService,
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService,
             ILogger<AccountController> logger)
         {
             FirebaseService = firebaseService;
@@ -46,6 +48,7 @@ namespace Cameo.API.Controllers
             CustomerService = customerService;
             TalentService = talentService;
             SocialAreaService = socialAreaService;
+            FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
             _logger = logger;
         }
 
@@ -100,6 +103,8 @@ namespace Cameo.API.Controllers
 
                         authToken = GenerateAuthToken(existingUser);
                         userType = existingUser.UserType;
+
+                        FirebaseRegistrationTokenService.SaveToken(login.firebase_token, existingUser.Id, "mob");
                     }
 
                     registrationIsRequired = false;

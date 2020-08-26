@@ -26,22 +26,22 @@ namespace Cameo.API.Controllers
             _logger = logger;
         }
 
-        [HttpPost("SaveToken/{token}")]
-        public IActionResult SaveToken(string token)
-        {
-            try
-            {
-                var curUser = accountUtil.GetCurrentUser(User);
+        //[HttpPost("SaveToken/{token}")]
+        //public IActionResult SaveToken(string token)
+        //{
+        //    try
+        //    {
+        //        var curUser = accountUtil.GetCurrentUser(User);
 
-                FirebaseRegistrationTokenService.SaveToken(token, curUser.ID, "mob");
+        //        FirebaseRegistrationTokenService.SaveToken(token, curUser.ID, "mob");
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return CustomBadRequest(ex);
-            }
-        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return CustomBadRequest(ex);
+        //    }
+        //}
 
         [HttpPost("RefreshToken/{oldToken}/{newToken}")]
         public IActionResult RefreshToken(string oldToken, string newToken)

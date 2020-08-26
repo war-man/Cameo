@@ -46,7 +46,7 @@ namespace Cameo.API.Controllers
                 List<TalentsCategorizedVM> talentsCategorizedVM = new List<TalentsCategorizedVM>();
                 List<Category> categories = new List<Category>();
 
-                var featuredTalents = TalentSearchService.GetFeatured(null, 6);
+                var featuredTalents = TalentSearchService.GetFeatured(null, 10);
                 if (featuredTalents.Count() > 0)
                 {
                     var featuredTalentsVM = new TalentsCategorizedVM(
@@ -59,7 +59,7 @@ namespace Cameo.API.Controllers
                     talentsCategorizedVM.Add(featuredTalentsVM);
                 }
 
-                var newTalents = TalentSearchService.GetNew(null, 6);
+                var newTalents = TalentSearchService.GetNew(null, 10);
                 if (newTalents.Count() > 0)
                 {
                     var newTalentsVM = new TalentsCategorizedVM(
@@ -75,7 +75,7 @@ namespace Cameo.API.Controllers
                 categories.AddRange(CategoryService.GetAllActive());
                 foreach (var category in categories)
                 {
-                    var talentsCategorized = TalentSearchService.Search(category.ID, SortTypeEnum.def, 6);
+                    var talentsCategorized = TalentSearchService.Search(category.ID, SortTypeEnum.def, 10);
                     if (talentsCategorized.Count() > 0)
                     {
                         var categoryTalentsVM = new TalentsCategorizedVM(category, talentsCategorized.ToList());

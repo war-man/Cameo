@@ -11,6 +11,7 @@ namespace Cameo.API.ViewModels
     public class LoginVM
     {
         public string firebase_uid { get; set; }
+        public string firebase_token { get; set; }
     }
 
     public class AuthenticateResponseVM

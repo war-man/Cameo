@@ -16,4 +16,9 @@ namespace Cameo.API.ViewModels
         public string payment_confirmed { get; set; }
         public string earned { get; set; }
     }
+
+    public class TalentVisibilityWarningVM
+    {
+        public List<string> names { get; set; }
+    }
 }

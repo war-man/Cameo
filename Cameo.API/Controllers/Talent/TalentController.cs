@@ -95,7 +95,7 @@ namespace Cameo.API.Controllers
         }
 
         [HttpGet("GetVisibilityWarningInfo")]
-        public ActionResult<List<string>> GetVisibilityWarningInfo()
+        public ActionResult<TalentVisibilityWarningVM> GetVisibilityWarningInfo()
         {
             try
             {
@@ -106,9 +106,14 @@ namespace Cameo.API.Controllers
 
                 Talent talentDetailed = TalentService.GetActiveSingleDetailsWithRelatedDataByID(talent.ID);
 
-                List<string> warningTexts = TalentVisibilityService.BuildWarningTexts(talentDetailed);
+                TalentVisibilityWarningVM warningVM = new TalentVisibilityWarningVM()
+                {
+                    names = TalentVisibilityService.BuildWarningTexts(talentDetailed)
+                };
+                //List<string> warningTexts = TalentVisibilityService.BuildWarningTexts(talentDetailed);
 
-                return Ok(warningTexts);
+                //return Ok(warningTexts);
+                return Ok(warningVM);
             }
             catch (Exception ex)
             {
