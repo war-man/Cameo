@@ -256,8 +256,8 @@ namespace Cameo.API.Controllers
             try
             {
                 var talents = TalentSearchService.SearchBySearchText(search_text)
-                .Select(m => new TalentShortInfoVM(m))
-                .ToList();
+                    .Select(m => new TalentShortInfoVM(m))
+                    .ToList();
 
                 foreach (var item in talents)
                 {

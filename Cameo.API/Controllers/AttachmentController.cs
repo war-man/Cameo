@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Cameo.Models.Enums;
 //using NReco;
 //using NReco.VideoConverter;
 
@@ -99,17 +100,26 @@ namespace Cameo.API.Controllers
             }
             else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
             {
-                var model = VideoRequestService.GetByID(id);
-                if (model != null)
-                {
-                    if (VideoRequestService.IsVideoUploadable(model))
-                    {
-                        model.Video = attachment;
-                        VideoRequestService.SaveUploadedVideo(model, curUserID);
+                var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+                if (model == null)
+                    throw new Exception("Заказ не найден");
+                if (!VideoRequestService.IsVideoUploadable(model))
+                    throw new Exception("Невозможно загрузить видео"); ;
 
-                        //HangfireService.CreateTaskForConvertingVideo(attachment.ID, curUserID);
-                    }
-                }
+                model.Video = attachment;
+                VideoRequestService.SaveUploadedVideo(model, curUserID);
+
+                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+
+                var curUser = accountUtil.GetCurrentUser(User);
+                if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
+                    throw new Exception("Вы не являетесь талантом");
+
+                VideoRequestService.ConfirmVideo(request, curUser.ID);
+
+                //cancel hangfire jobs
+                HangfireService.CancelJob(request.RequestAnswerJobID);
+                HangfireService.CancelJob(request.VideoJobID);
             }
             else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
             {

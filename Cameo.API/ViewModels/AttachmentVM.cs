@@ -8,6 +8,7 @@ namespace Cameo.API.ViewModels
     {
         public int id { get; set; }
         public string url { get; set; }
+        public string name { get; set; }
 
         public AttachmentDetailsVM()
         { }
@@ -26,6 +27,8 @@ namespace Cameo.API.ViewModels
                 this.url = "https://firebasestorage.googleapis.com/v0/b/cameo-uz.appspot.com/o/" + model.Path.Replace("/", "%2F") + "%2F" + model.Filename + "?" + model.UrlParameters;
             else
                 this.url = AppData.Configuration.NoPhotoUrl;
+
+            name = model.Filename;
         }
 
         public static AttachmentDetailsVM ToVM(Attachment model)
