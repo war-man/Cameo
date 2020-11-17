@@ -26,6 +26,8 @@ namespace Cameo.API.Controllers
         private readonly ITalentBalanceService TalentBalanceService;
         private readonly ICustomerBalanceService CustomerBalanceService;
         private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
+        private readonly IInvoiceService InvoiceService;
+        private readonly IPaymoService PaymoService;
 
         public VideoRequestController(
             IVideoRequestService videoRequestService,
@@ -36,6 +38,8 @@ namespace Cameo.API.Controllers
             ITalentBalanceService talentBalanceService,
             ICustomerBalanceService customerBalanceService,
             IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
+            IInvoiceService invoiceService,
+            IPaymoService paymoService,
             ILogger<VideoRequestController> logger)
         {
             VideoRequestService = videoRequestService;
@@ -46,6 +50,8 @@ namespace Cameo.API.Controllers
             TalentBalanceService = talentBalanceService;
             CustomerBalanceService = customerBalanceService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
+            InvoiceService = invoiceService;
+            PaymoService = paymoService;
             _logger = logger;
         }
 
@@ -69,6 +75,32 @@ namespace Cameo.API.Controllers
                 TalentRequestInfoVM talentRequestInfoVM = new TalentRequestInfoVM(talent);
 
                 return talentRequestInfoVM;
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
+        }
+
+        [Authorize(Policy = "CustomerOnly")]
+        [HttpPost("GenerateInvoice")]
+        public IActionResult GenerateInvoice([FromBody] InvoiceGenerateVM invoiceGenerateVM)
+        {
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
+
+                Talent talent = TalentService.GetActiveByID(invoiceGenerateVM.talent_id);
+                if (talent == null)
+                    throw new Exception("Талант не найден");
+
+                Invoice invoice = invoiceGenerateVM.ToModel(talent.Price);
+                InvoiceService.Add(invoice, curUser.ID);
+
+                string hold_id = PaymoService.ApplyForHold(invoice);
+                InvoiceService.AssignHoldID(invoice, hold_id, curUser.ID);
+
+                return Ok(new { hold_id = hold_id });
             }
             catch (Exception ex)
             {

@@ -53,6 +53,16 @@ namespace Cameo.Controllers
             return View();
         }
 
+        //ajax
+        public IActionResult GenerateInvoice(InvoiceGenerateVM invoiceGenerateVM)
+        {
+            Talent talent = TalentService.GetActiveByID(invoiceGenerateVM.TalentID);
+            if (talent == null)
+                throw new Exception("Талант не найден");
+
+            return null;
+        }
+
         [Authorize(Policy = "CustomerOnly")]
         public IActionResult Create(string username)
         {

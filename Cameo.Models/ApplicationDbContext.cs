@@ -48,5 +48,6 @@ namespace Cameo.Data
         public DbSet<LogTalentPrice> LogTalentPrice { get; set; }
         public DbSet<FirebaseRegistrationToken> FirebaseRegistrationTokens { get; set; }
         public DbSet<ClickTransaction> ClickTransactions { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
     }
 }
