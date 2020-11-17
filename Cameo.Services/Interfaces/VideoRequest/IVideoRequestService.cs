@@ -8,7 +8,7 @@ namespace Cameo.Services.Interfaces
         void Edit(VideoRequest model, string userID);
         VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id);
 
-        void AnswerDeadlineReaches(VideoRequest model, string userID);
+        //void AnswerDeadlineReaches(VideoRequest model, string userID);
 
         /// <summary>
         /// this method is used for cancelling both the REQUEST and VIDEO 
@@ -52,7 +52,7 @@ namespace Cameo.Services.Interfaces
         //int CalculateRemainingPrice(int price, double websiteCommission);
         bool IsVideoConfirmed(VideoRequest model);
         void SaveUploadedPaymentScreenshot(VideoRequest model, string userID);
-        void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID);
+        //void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID);
         bool IsPaymentScreenshotUploaded(VideoRequest model);
         void ConfirmPayment(VideoRequest model, string userID);
     }

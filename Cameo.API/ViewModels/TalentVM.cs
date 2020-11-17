@@ -130,8 +130,8 @@ namespace Cameo.API.ViewModels
 
     public class TalentDetailsVM : TalentGridViewItem
     {
-        public int request_price { get; set; }
-        public string request_price_str { get; set; }
+        //public int request_price { get; set; }
+        //public string request_price_str { get; set; }
 
         //public AttachmentDetailsVM intro_video { get; set; }
 
@@ -148,11 +148,11 @@ namespace Cameo.API.ViewModels
             //intro_video = AttachmentDetailsVM.ToVM(model.IntroVideo);
         }
 
-        public void RequestPriceToStr()
-        {
-            string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            request_price_str = request_price.ToString(numberFormat).Trim();
-        }
+        //public void RequestPriceToStr()
+        //{
+        //    string numberFormat = AppData.Configuration.NumberViewStringFormat;
+        //    request_price_str = request_price.ToString(numberFormat).Trim();
+        //}
     }
 
     public class TalentRequestInfoVM
@@ -161,13 +161,13 @@ namespace Cameo.API.ViewModels
         public int price { get; set; }
         public string price_str { get; set; }
 
-        public int request_price { get; set; }
-        public string request_price_str { get; set; }
+        //public int request_price { get; set; }
+        //public string request_price_str { get; set; }
 
-        public int customer_balance { get; set; }
-        public string customer_balance_str { get; set; }
+        //public int customer_balance { get; set; }
+        //public string customer_balance_str { get; set; }
 
-        public TalentRequestInfoVM(Talent model, int customerBalance)
+        public TalentRequestInfoVM(Talent model/*, int customerBalance*/)
         {
             if (model == null)
                 return;
@@ -178,14 +178,14 @@ namespace Cameo.API.ViewModels
             string numberFormat = AppData.Configuration.NumberViewStringFormat;
             price_str = model.Price.ToString(numberFormat).Trim();
 
-            customer_balance = customerBalance;
-            customer_balance_str = customerBalance.ToString(numberFormat).Trim();
+            //customer_balance = customerBalance;
+            //customer_balance_str = customerBalance.ToString(numberFormat).Trim();
         }
 
-        public void RequestPriceToStr()
-        {
-            string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            request_price_str = request_price.ToString(numberFormat).Trim();
-        }
+        //public void RequestPriceToStr()
+        //{
+        //    string numberFormat = AppData.Configuration.NumberViewStringFormat;
+        //    request_price_str = request_price.ToString(numberFormat).Trim();
+        //}
     }
 }

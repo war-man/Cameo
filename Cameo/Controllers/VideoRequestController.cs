@@ -69,8 +69,6 @@ namespace Cameo.Controllers
                 throw new Exception("Талант не найден");
 
             TalentDetailsVM talentVM = new TalentDetailsVM(talent);
-            talentVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
-            talentVM.RequestPriceToStr();
             ViewData["talent"] = talentVM;
 
             var createVM = new VideoRequestCreateVM()
@@ -80,22 +78,22 @@ namespace Cameo.Controllers
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
-            int customerBalance = CustomerBalanceService.GetBalance(customer);
-            ViewData["customerBalance"] = customerBalance;
-            string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            ViewData["customerBalanceStr"] = customerBalance
-                .ToString(numberFormat)
-                .Trim();
+            //int customerBalance = CustomerBalanceService.GetBalance(customer);
+            //ViewData["customerBalance"] = customerBalance;
+            //string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            //ViewData["customerBalanceStr"] = customerBalance
+            //    .ToString(numberFormat)
+            //    .Trim();
 
-            if (customerBalance < talentVM.RequestPrice)
-            {
-                int paymentAmount = talentVM.RequestPrice - customerBalance;
-                string returnUrl = "https://helloo.uz/VideoRequest/Create?username=" + username;
+            //if (customerBalance < talentVM.Price)
+            //{
+            //    int paymentAmount = talentVM.RequestPrice - customerBalance;
+            //    string returnUrl = "https://helloo.uz/VideoRequest/Create?username=" + username;
 
-                ViewData["PaymentAmount"] = paymentAmount;
-                ViewData["ClickPaymentButtonUrl"] = CustomerBalanceService
-                    .GenerateClickPaymentButtonUrl(customer.AccountNumber, paymentAmount, returnUrl);
-            }
+            //    ViewData["PaymentAmount"] = paymentAmount;
+            //    ViewData["ClickPaymentButtonUrl"] = CustomerBalanceService
+            //        .GenerateClickPaymentButtonUrl(customer.AccountNumber, paymentAmount, returnUrl);
+            //}
 
             return View(createVM);
         }
@@ -117,38 +115,38 @@ namespace Cameo.Controllers
                         {
                             if (talent.Price == modelVM.Price)
                             {
-                                var curCustomer = CustomerService.GetByUserID(curUser.ID);
-                                int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
-                                int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
+                                //var curCustomer = CustomerService.GetByUserID(curUser.ID);
+                                //int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
+                                //int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
 
-                                if (customerBalance >= requestPrice)
-                                {
-                                    try
-                                    {
-                                        CustomerBalanceService.TakeOffBalance(curCustomer, requestPrice);
+                                //if (customerBalance >= requestPrice)
+                                //{
+                                //    try
+                                //    {
+                                //        CustomerBalanceService.TakeOffBalance(curCustomer, requestPrice);
 
-                                        VideoRequest model = modelVM.ToModel(curCustomer);
+                                //        VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                        //1. create model and send notification
-                                        VideoRequestService.Add(model, curUser.ID);
+                                //        //1. create model and send notification
+                                //        VideoRequestService.Add(model, curUser.ID);
 
-                                        //2. create hangfire RequestAnswerJobID and save it
-                                        model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
-                                        ////create hangfire VideoJobID
-                                        //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
+                                //        //2. create hangfire RequestAnswerJobID and save it
+                                //        model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
+                                //        ////create hangfire VideoJobID
+                                //        //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
-                                        VideoRequestService.Update(model, curUser.ID);
+                                //        VideoRequestService.Update(model, curUser.ID);
 
-                                        ViewBag.success = true;
-                                        ViewBag.requestID = model.ID;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        ModelState.AddModelError("", ex.Message);
-                                    }
-                                }
-                                else
-                                    ModelState.AddModelError("", "У Вас недостаточно средств на балансе");
+                                //        ViewBag.success = true;
+                                //        ViewBag.requestID = model.ID;
+                                //    }
+                                //    catch (Exception ex)
+                                //    {
+                                //        ModelState.AddModelError("", ex.Message);
+                                //    }
+                                //}
+                                //else
+                                //    ModelState.AddModelError("", "У Вас недостаточно средств на балансе");
                             }
                             else
                                 ModelState.AddModelError("", "Пока вы заполняли форму, Талант успел изменить цену");
@@ -168,8 +166,6 @@ namespace Cameo.Controllers
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
             TalentDetailsVM talentVM = new TalentDetailsVM(talent);
-            talentVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
-            talentVM.RequestPriceToStr();
             ViewData["talent"] = talentVM;
 
             return PartialView("_Create", modelVM);

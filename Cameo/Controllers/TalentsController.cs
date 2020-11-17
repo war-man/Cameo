@@ -368,9 +368,7 @@ namespace Cameo.Controllers
                 //return NotFound();
 
             TalentDetailsVM modelVM = new TalentDetailsVM(talent);
-            modelVM.RequestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
-            modelVM.RequestPriceToStr();
-
+            
             if (modelVM.Avatar.ID == 0)
                 modelVM.Avatar.Url = TalentService.GetRandomPhotoUrl();
 

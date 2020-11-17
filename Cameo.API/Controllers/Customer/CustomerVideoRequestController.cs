@@ -59,11 +59,11 @@ namespace Cameo.API.Controllers
                 requestVM.edit_btn_is_available = VideoRequestService.IsEditable(request);
                 requestVM.cancel_btn_is_available = VideoRequestService.IsCancelable(request);
 
-                requestVM.request_price = VideoRequestPriceCalculationsService.CalculateRequestPrice(request);
-                requestVM.RequestPriceToStr();
+                //requestVM.request_price = VideoRequestPriceCalculationsService.CalculateRequestPrice(request);
+                //requestVM.RequestPriceToStr();
 
-                requestVM.remaining_price = VideoRequestPriceCalculationsService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
-                requestVM.RemainingPriceToStr();
+                //requestVM.remaining_price = VideoRequestPriceCalculationsService.CalculateRemainingPrice(request.Price, request.WebsiteCommission);
+                //requestVM.RemainingPriceToStr();
 
                 requestVM.video_is_confirmed = VideoRequestService.IsVideoConfirmed(request);
                 requestVM.payment_screenshot_is_uploaded = VideoRequestService.IsPaymentScreenshotUploaded(request);

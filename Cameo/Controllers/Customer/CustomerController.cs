@@ -35,28 +35,28 @@ namespace Cameo.Controllers
         }
 
         //ajax
-        public IActionResult GetBalance()
-        {
-            try
-            {
-                var curUser = accountUtil.GetCurrentUser(User);
-                if (!AccountUtil.IsUserCustomer(curUser))
-                    throw new Exception("Вы не являетесь клиентом");
+        //public IActionResult GetBalance()
+        //{
+        //    try
+        //    {
+        //        var curUser = accountUtil.GetCurrentUser(User);
+        //        if (!AccountUtil.IsUserCustomer(curUser))
+        //            throw new Exception("Вы не являетесь клиентом");
 
-                var customer = CustomerService.GetByUserID(curUser.ID);
-                if (customer == null)
-                    throw new Exception("Вы не являетесь клиентом");
+        //        var customer = CustomerService.GetByUserID(curUser.ID);
+        //        if (customer == null)
+        //            throw new Exception("Вы не являетесь клиентом");
 
-                int customerBalance = CustomerBalanceService.GetBalance(customer);
-                string numberFormat = AppData.Configuration.NumberViewStringFormat;
-                string customerBalanceFormatted = customerBalance.ToString(numberFormat).Trim() + " сум";
+        //        int customerBalance = CustomerBalanceService.GetBalance(customer);
+        //        string numberFormat = AppData.Configuration.NumberViewStringFormat;
+        //        string customerBalanceFormatted = customerBalance.ToString(numberFormat).Trim() + " сум";
 
-                return Ok(customerBalanceFormatted);
-            }
-            catch (Exception ex)
-            {
-                return CustomBadRequest(ex);
-            }
-        }
+        //        return Ok(customerBalanceFormatted);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return CustomBadRequest(ex);
+        //    }
+        //}
     }
 }

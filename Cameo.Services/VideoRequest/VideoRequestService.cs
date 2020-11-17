@@ -82,32 +82,32 @@ namespace Cameo.Services
                 model.RequestNumber = model.ID.ToString().PadLeft(8, '0');
         }
 
-        public void AnswerDeadlineReaches(VideoRequest model, string userID)
-        {
-            //1. set status = expired
-            if (!IsWaitingForResponse(model))
-                return;
+        //public void AnswerDeadlineReaches(VideoRequest model, string userID)
+        //{
+        //    //1. set status = expired
+        //    if (!IsWaitingForResponse(model))
+        //        return;
 
-            //if (model.RequestStatusID != (int)VideoRequestStatusEnum.waitingForResponse)
-            //    return;
+        //    //if (model.RequestStatusID != (int)VideoRequestStatusEnum.waitingForResponse)
+        //    //    return;
 
-            model.RequestStatusID = (int)VideoRequestStatusEnum.requestExpired;
-            model.DateRequestExpired = DateTime.Now;
+        //    model.RequestStatusID = (int)VideoRequestStatusEnum.requestExpired;
+        //    model.DateRequestExpired = DateTime.Now;
 
-            int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
-            CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
+        //    int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
+        //    CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
 
-            Update(model, userID);
+        //    Update(model, userID);
 
-            //TO-DO: send firebase notification to Customer
-            string title = model.Talent.FullName;
-            string body = "Срок ожидания ответа истёк";
-            Dictionary<string, string> data = new Dictionary<string, string>()
-            {
-                ["request_id"] = model.ID.ToString()
-            };
-            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
-        }
+        //    //TO-DO: send firebase notification to Customer
+        //    string title = model.Talent.FullName;
+        //    string body = "Срок ожидания ответа истёк";
+        //    Dictionary<string, string> data = new Dictionary<string, string>()
+        //    {
+        //        ["request_id"] = model.ID.ToString()
+        //    };
+        //    FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
+        //}
 
         public void Edit(VideoRequest model, string userID)
         {
@@ -234,8 +234,8 @@ namespace Cameo.Services
             model.DateVideoExpired = DateTime.Now;
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoExpired;
 
-            int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
-            CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
+            //int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
+            //CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
 
             Update(model, userID);
 
@@ -255,34 +255,34 @@ namespace Cameo.Services
             FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
         }
 
-        public void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID)
-        {
-            if (!IsPaymentScreenshotUploaded(model))
-                return;
+        //public void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID)
+        //{
+        //    if (!IsPaymentScreenshotUploaded(model))
+        //        return;
 
-            model.DatePaymentConfirmationExpired = DateTime.Now;
-            model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmationExpired;
+        //    model.DatePaymentConfirmationExpired = DateTime.Now;
+        //    model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmationExpired;
 
-            int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
-            CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
+        //    int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
+        //    CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
 
-            Update(model, userID);
+        //    Update(model, userID);
 
-            //TO-DO: send firebase notification to Customer
-            string title = model.Talent.FullName;
-            string body = "Срок ожидания подтверждения оплаты истёк";
-            Dictionary<string, string> data = new Dictionary<string, string>()
-            {
-                ["request_id"] = model.ID.ToString()
-            };
-            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
+        //    //TO-DO: send firebase notification to Customer
+        //    string title = model.Talent.FullName;
+        //    string body = "Срок ожидания подтверждения оплаты истёк";
+        //    Dictionary<string, string> data = new Dictionary<string, string>()
+        //    {
+        //        ["request_id"] = model.ID.ToString()
+        //    };
+        //    FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
 
-            //TO-DO: send firebase notification to Talent
-            title = model.Customer.FullName;
-            body = "Срок ожидания подтверждения оплаты истёк";
-            //body += "Убедительно просим больше так не поступать";
-            FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
-        }
+        //    //TO-DO: send firebase notification to Talent
+        //    title = model.Customer.FullName;
+        //    body = "Срок ожидания подтверждения оплаты истёк";
+        //    //body += "Убедительно просим больше так не поступать";
+        //    FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
+        //}
 
         private bool BelongsToUser(VideoRequest model, string userID)
         {

@@ -36,9 +36,9 @@
         <li class="nav-item">
             <a class="nav-link" href="~/Home/TermsOfService"><i class="fa fa-file-text"></i> @localizer["TermsOfUsage"]</a>
         </li>
-        <li class="nav-item">
+        @*<li class="nav-item">
             <a class="nav-link" href="~/Home/SecurityAndPrivacy"><i class="fa fa-credit-card-alt"></i> @localizer["ReplenishBalance"] <span class="badge" id="customerBalance">(...)</span></a>
-        </li>
+        </li>*@
         <li class="nav-item">
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Talents", new { area = "" })" method="post" id="logoutForm" style="display: none;">
                 <i class="fa fa-user-circle"></i>
@@ -93,7 +93,7 @@
     }
 </script>
 
-<script>
+@*<script>
     //get price
     getFoo("/Customer/GetBalance", "customerBalance");
 
@@ -110,4 +110,4 @@
             document.getElementById(elementID).innerText = "(" + Http.responseText + ")";
         }
     }
-</script>
+</script>*@

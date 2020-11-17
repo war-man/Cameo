@@ -34,11 +34,11 @@ namespace Cameo.API.ViewModels
         public int price { get; set; }
         public string price_str { get; set; }
 
-        public int request_price { get; set; }
-        public string request_price_str { get; set; }
+        //public int request_price { get; set; }
+        //public string request_price_str { get; set; }
 
-        public int remaining_price { get; set; }
-        public string remaining_price_str { get; set; }
+        //public int remaining_price { get; set; }
+        //public string remaining_price_str { get; set; }
 
         public AttachmentDetailsVM video { get; set; }
 
@@ -87,17 +87,17 @@ namespace Cameo.API.ViewModels
             payment_screenshot = AttachmentDetailsVM.ToVM(model.PaymentScreenshot);
         }
 
-        public void RequestPriceToStr()
-        {
-            string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            request_price_str = request_price.ToString(numberFormat).Trim();
-        }
+        //public void RequestPriceToStr()
+        //{
+        //    string numberFormat = AppData.Configuration.NumberViewStringFormat;
+        //    request_price_str = request_price.ToString(numberFormat).Trim();
+        //}
 
-        public void RemainingPriceToStr()
-        {
-            string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            remaining_price_str = remaining_price.ToString(numberFormat).Trim();
-        }
+        //public void RemainingPriceToStr()
+        //{
+        //    string numberFormat = AppData.Configuration.NumberViewStringFormat;
+        //    remaining_price_str = remaining_price.ToString(numberFormat).Trim();
+        //}
     }
 
     public class VideoRequestDetailsForCustomerVM : VideoRequestDetailsVM
@@ -123,7 +123,7 @@ namespace Cameo.API.ViewModels
 
     public class VideoRequestDetailsForTalentVM : VideoRequestDetailsVM
     {
-        public bool accept_btn_is_available { get; set; } = false;
+        //public bool accept_btn_is_available { get; set; } = false;
 
         public VideoRequestDetailsForTalentVM() { }
 

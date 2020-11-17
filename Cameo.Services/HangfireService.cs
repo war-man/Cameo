@@ -23,25 +23,25 @@ namespace Cameo.Services
             AttachmentService = attachmentService;
         }
 
-        public string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID)
-        {
-            string jobID = BackgroundJob.Schedule(() =>
-                AnswerDeadlineReaches(request.ID, userID),
-                new DateTimeOffset(request.RequestAnswerDeadline));
+        //public string CreateJobForVideoRequestAnswerDeadline(VideoRequest request, string userID)
+        //{
+        //    string jobID = BackgroundJob.Schedule(() =>
+        //        AnswerDeadlineReaches(request.ID, userID),
+        //        new DateTimeOffset(request.RequestAnswerDeadline));
 
-            return jobID;
-        }
+        //    return jobID;
+        //}
 
-        public void AnswerDeadlineReaches(int videoRequestID, string userID)
-        {
-            //try
-            //{
-                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
-                VideoRequestService.AnswerDeadlineReaches(request, userID);
-            //}
-            //catch (Exception ex)
-            //{ }
-        }
+        //public void AnswerDeadlineReaches(int videoRequestID, string userID)
+        //{
+        //    //try
+        //    //{
+        //        VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
+        //        VideoRequestService.AnswerDeadlineReaches(request, userID);
+        //    //}
+        //    //catch (Exception ex)
+        //    //{ }
+        //}
 
 //        public void CreateJobForPaymentReminder(VideoRequest request, string userID)
 //        {
@@ -90,25 +90,25 @@ namespace Cameo.Services
             //{ }
         }
 
-        public string CreateJobForVideoRequestPaymentConfirmationDeadline(VideoRequest request, string userID)
-        {
-            string jobID = BackgroundJob.Schedule(() =>
-                PaymentConfirmationDeadlineReaches(request.ID, userID),
-                new DateTimeOffset(request.PaymentConfirmationDeadline.Value));
+        //public string CreateJobForVideoRequestPaymentConfirmationDeadline(VideoRequest request, string userID)
+        //{
+        //    string jobID = BackgroundJob.Schedule(() =>
+        //        PaymentConfirmationDeadlineReaches(request.ID, userID),
+        //        new DateTimeOffset(request.PaymentConfirmationDeadline.Value));
 
-            return jobID;
-        }
+        //    return jobID;
+        //}
 
-        public void PaymentConfirmationDeadlineReaches(int videoRequestID, string userID)
-        {
-            //try
-            //{
-                VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
-                VideoRequestService.PaymentConfirmationDeadlineReaches(request, userID);
-            //}
-            //catch (Exception ex)
-            //{ }
-        }
+        //public void PaymentConfirmationDeadlineReaches(int videoRequestID, string userID)
+        //{
+        //    //try
+        //    //{
+        //        VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
+        //        VideoRequestService.PaymentConfirmationDeadlineReaches(request, userID);
+        //    //}
+        //    //catch (Exception ex)
+        //    //{ }
+        //}
 
         //public string CreateJobForVideoRequestPaymentDeadline(VideoRequest request, string userID)
         //{

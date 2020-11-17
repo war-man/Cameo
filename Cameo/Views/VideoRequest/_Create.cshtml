@@ -61,12 +61,12 @@ else
 
                                     <div class="col-lg-6 mt--20">
                                         <label asp-for="To"></label>
-                                        <input type="text" asp-for="To" placeholder="Санжара">
+                                        <input type="text" asp-for="To" placeholder="Наргизы">
                                         <span asp-validation-for="To" class="text-danger"></span>
                                     </div>
                                     <div class="col-lg-6 mt--20" id="fromBox">
                                         <label asp-for="From"></label>
-                                        <input type="text" asp-for="From" placeholder="Наргизе">
+                                        <input type="text" asp-for="From" placeholder="Санжара">
                                         <span asp-validation-for="From" class="text-danger"></span>
                                     </div>
                                     <div class="col-lg-12 mt--20">
@@ -88,9 +88,8 @@ else
                                     <div class="col-lg-12 mt--20">
                                         @*<input type="submit" value="@localizer["OrderVideo"] (@talent.RequestPriceStr @localizer["UZS"])">*@
                                         <button type="submit" class="button-link button-size__xl button__black" style="width: 100%">
-                                            <span class="button-text">@localizer["OrderVideo"] (@talent.RequestPriceStr @localizer["UZS"]*)</span>
+                                            <span class="button-text">@localizer["OrderVideo"]</span>
                                         </button>
-                                        <p class="form-messege">* Авансовый платеж</p>
                                     </div>
                                 </div>
                             @*</form>*@

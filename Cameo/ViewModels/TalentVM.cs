@@ -115,9 +115,8 @@ namespace Cameo.ViewModels
 
     public class TalentDetailsVM : TalentGridViewItem
     {
-
-        public int RequestPrice { get; set; }
-        public string RequestPriceStr { get; set; }
+        //public int RequestPrice { get; set; }
+        //public string RequestPriceStr { get; set; }
 
         public AttachmentDetailsVM IntroVideo { get; set; }
 
@@ -128,14 +127,18 @@ namespace Cameo.ViewModels
             if (model == null)
                 return;
 
-            this.IsAvailable = model.IsAvailable;
-            this.IntroVideo = new AttachmentDetailsVM(model.IntroVideo);
+            IsAvailable = model.IsAvailable;
+            IntroVideo = new AttachmentDetailsVM(model.IntroVideo);
+            //RequestPrice = model.Price;
+
+            //string numberFormat = AppData.Configuration.NumberViewStringFormat;
+            //RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
         }
 
-        public void RequestPriceToStr()
-        {
-            string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
-        }
+        //public void RequestPriceToStr()
+        //{
+        //    string numberFormat = AppData.Configuration.NumberViewStringFormat;
+        //    RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
+        //}
     }
 }

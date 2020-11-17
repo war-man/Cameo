@@ -91,8 +91,8 @@
                             </dt>
                             <dd>
                                 @Model.PriceStr сум<br />
-                                <small><i>@localizer["OrderPrize"]: @Model.RequestPriceStr @localizer["UZS"]</i></small><br />
-                                <small><i>@localizer["OrderRemainingPrize"]: @Model.RemainingPriceStr @localizer["UZS"]</i></small>
+                                @*<small><i>@localizer["OrderPrize"]: @Model.RequestPriceStr @localizer["UZS"]</i></small><br />
+                                <small><i>@localizer["OrderRemainingPrize"]: @Model.RemainingPriceStr @localizer["UZS"]</i></small>*@
                             </dd>
 
                             @*<dt>
@@ -106,48 +106,6 @@
                             </dt>
                             <dd>
                                 @Html.DisplayFor(model => model.Status.Name)
-                                @if (Model.VideoIsConfirmed || Model.PaymentScreenshotIsUploaded)
-                                {
-                                    <div class="alert alert-info">
-                                        <p>@localizer["PaymentScreenshotUploadText1"] (@Model.RemainingPriceStr @localizer["UZS"])</p>
-                                        <p><b>@Model.Talent.CreditCardNumber<br />@Model.Talent.CreditCardHolder</b></p>
-                                        <p>
-                                            @localizer["PaymentScreenshotUploadText2"]
-                                            <br />
-
-                                            <!-- Start Single Team -->
-                                            <div class="col-lg-4 col-md-6 col-sm-6 p-0">
-                                                <div class="team team__style--1 text-center">
-                                                    <div class="thumbnail">
-                                                        @{
-                                                            string imgContainerDisplay = "none;";
-                                                            if (Model.PaymentScreenshot != null && Model.PaymentScreenshot.ID > 0)
-                                                            {
-                                                                imgContainerDisplay = "block;";
-                                                            }
-                                                        }
-                                                        <img id="imgContainer" src="@Model.PaymentScreenshot.Url" alt="Avatar" style="display:@imgContainerDisplay">
-                                                        <i id="spinner" class="spinner fa fa-circle-o-notch fa-spin fa-2x fa-fw" style="display: none;"></i>
-                                                        @*<img id="spinner" src="@AppSettings.Value.SpinnerUrl" style="display: none; height:100px;" />*@
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-6 col-sm-6 mt--10 p-0 text-center">
-                                                @*<a class="button-link button-size__8 button__transparent--border--dashed" href="javascript: void(0);"><span class="icon-left"><i class="dlicon ui-1_zoom-split"></i></span><span class="button-text">Редактировать фото</span></a>*@
-                                                @{
-                                                    string uploadText = localizer["UploadScreenshot"];
-                                                    if (Model.PaymentScreenshot != null && Model.PaymentScreenshot.ID > 0)
-                                                    {
-                                                        uploadText = localizer["UploadAnotherScreenshot"];
-                                                    }
-                                                }
-                                                <label for="imgInp" class="button-link button-size__8 button__transparent--border--dashed" style="cursor:pointer;"><span class="icon-left"><i class="fa fa-upload"></i></span> <span class="button-text"><u>@uploadText</u></span></label>
-                                                <input type='file' id="imgInp" style="display: none;" />
-                                            </div>
-                                            <!-- End Single Team -->
-                                        </p>
-                                    </div>
-                                }
                             </dd>
 
                             @if (!string.IsNullOrWhiteSpace(Model.Deadline))

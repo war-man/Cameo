@@ -101,25 +101,25 @@ namespace Cameo.Controllers
                     }
                 }
             }
-            else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
-            {
-                var request = VideoRequestService.GetByID(id);
-                if (request != null)
-                {
-                    if (!request.PaymentScreenshotID.HasValue)
-                    {
-                        request.PaymentScreenshot = attachment;
-                        VideoRequestService.SaveUploadedPaymentScreenshot(request, curUserID);
+            //else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
+            //{
+            //    var request = VideoRequestService.GetByID(id);
+            //    if (request != null)
+            //    {
+            //        if (!request.PaymentScreenshotID.HasValue)
+            //        {
+            //            request.PaymentScreenshot = attachment;
+            //            VideoRequestService.SaveUploadedPaymentScreenshot(request, curUserID);
 
-                        request.PaymentConfirmationJobID = HangfireService
-                            .CreateJobForVideoRequestPaymentConfirmationDeadline(request, curUserID);
-                    }
-                    else
-                        request.PaymentScreenshot = attachment;
+            //            request.PaymentConfirmationJobID = HangfireService
+            //                .CreateJobForVideoRequestPaymentConfirmationDeadline(request, curUserID);
+            //        }
+            //        else
+            //            request.PaymentScreenshot = attachment;
 
-                    VideoRequestService.Update(request, curUserID);
-                }
-            }
+            //        VideoRequestService.Update(request, curUserID);
+            //    }
+            //}
             //else if () ...
         }
 

@@ -6,9 +6,9 @@ namespace Cameo.Services.Interfaces
 {
     public interface ICustomerBalanceService// : IBaseCRUDService<Talent>
     {
-        int GetBalance(Customer customer);
-        void ReplenishBalance(Customer customer, int amount);
-        void TakeOffBalance(Customer customer, int amount);
-        string GenerateClickPaymentButtonUrl(string accountNumber, int amount, string returnUrl);
+        //int GetBalance(Customer customer);
+        //void ReplenishBalance(Customer customer, int amount);
+        //void TakeOffBalance(Customer customer, int amount);
+        //string GenerateClickPaymentButtonUrl(string accountNumber, int amount, string returnUrl);
     }
 }

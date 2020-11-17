@@ -70,7 +70,7 @@
                                 <div class="product-action-btn">
                                     <a class="button-link button-size__xl button__black" href="/videoRequest/create?username=@Model.Username">
                                         <span class="button-text button-text__14">
-                                            @localizer["OrderVideo"] (@Model.RequestPriceStr @localizer["UZS"])
+                                            @localizer["OrderVideo"]
                                         </span>
                                     </a>
                                     @*<button type="button" class="button-link button__black" data-toggle="modal" data-target="#bookModal">
@@ -105,7 +105,7 @@
                             foreach (var item in Model.Categories)
                             {
                                 <span>
-                                    <a class="button-link button-size__radious50 button__color--3" href="/talents/bycategory?cat=@item.ID">@item.Name</a>
+                                    <a class="button-link button-size__radious50 button__color--3 mt--5" href="/talents/bycategory?cat=@item.ID">@item.Name</a>
                                 </span>
                             }
                         }

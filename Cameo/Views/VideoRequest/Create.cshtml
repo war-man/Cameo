@@ -6,65 +6,31 @@
     ViewData["Title"] = localizer["OrderVideo"];
     Layout = "~/Views/Shared/_LayoutDaven.cshtml";
     var talent = ViewData["talent"] as Cameo.ViewModels.TalentDetailsVM;
-    int customerBalance = (int)ViewData["customerBalance"];
 }
 
 <div class="mt--30 mb--30">
     <div class="plr--80 plr_lg--50 plr_md--50 plr_sm--40" style="width: 100%;">
-        @if (customerBalance < talent.RequestPrice)
-        {
-            <div class="container">
-                <div class="alert alert-danger">
-                    @localizer["InsufficientFunds"]
-                </div>
-                <div>
-                    <a class="button-link button-size button__color--4 grow-animation" href="@ViewData["ClickPaymentButtonUrl"]">
-                        <i></i>
-                        <span class="button-text">@localizer["ReplenishBalanceOn"] <b>@ViewData["PaymentAmount"] @localizer["UZS"] (CLICK)</b></span>
-                    </a>
-                </div>
-
-                @*<div>
-                    <p>@localizer["ReplenishBalanceOn"] <b>@talent.RequestPriceStr @localizer["UZS"]</p>
-                </div>
-                <div>
-                    <a class="click_logo" href="@ViewData["ClickPaymentButtonUrl"]">
-                        <i></i>
-                    </a>
-                </div>*@
-
-                <br />
-                <div class="alert alert-info">
-                    @localizer["YourBalance"]: <b>@ViewData["customerBalanceStr"] @localizer["UZS"]</b><br />
-                    @localizer["OrderPrice"]: <b>@talent.RequestPriceStr @localizer["UZS"]</b>
-                </div>
-            </div>
-
-        }
-        else
-        {
-            <div class="row">
-                <div class="col-sm-6 col-12">
-                    <div class="blog blog_style--1">
-                        <div class="inner">
-                            <form asp-action="Create" asp-controller="VideoRequest"
-                                    data-ajax="true"
-                                    data-ajax-method="POST"
-                                    data-ajax-mode="replace"
-                                    data-ajax-update="#ajaxresult">
-                                <div id="ajaxresult">
-                                    @await Html.PartialAsync(
-                                        "/Views/VideoRequest/_Create.cshtml")
-                                </div>
-                            </form>
-                        </div>
+        <div class="row">
+            <div class="col-sm-6 col-12">
+                <div class="blog blog_style--1">
+                    <div class="inner">
+                        <form asp-action="Create" asp-controller="VideoRequest"
+                                data-ajax="true"
+                                data-ajax-method="POST"
+                                data-ajax-mode="replace"
+                                data-ajax-update="#ajaxresult">
+                            <div id="ajaxresult">
+                                @await Html.PartialAsync(
+                                    "/Views/VideoRequest/_Create.cshtml")
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="col-sm-6 col-12">
-                    <partial name="_OrderStepsClarification" />
-                </div>
             </div>
-        }
+            <div class="col-sm-6 col-12">
+                <partial name="_OrderStepsClarification" />
+            </div>
+        </div>
     </div>
 </div>
 

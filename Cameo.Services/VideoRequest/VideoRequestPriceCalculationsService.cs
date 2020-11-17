@@ -24,38 +24,38 @@ namespace Cameo.Services
             CustomerBalanceService = customerBalanceService;
         }
 
-        public int CalculateRequestPrice(Talent talent)
-        {
-            int price = talent.Price;
+        //public int CalculateRequestPrice(Talent talent)
+        //{
+        //    int price = talent.Price;
 
-            double websiteCommission = 0;
-            double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out websiteCommission);
-            if (websiteCommission <= 0)
-                websiteCommission = 25;
+        //    double websiteCommission = 0;
+        //    double.TryParse(AppData.Configuration.WebsiteCommission.ToString(), out websiteCommission);
+        //    if (websiteCommission <= 0)
+        //        websiteCommission = 25;
 
-            return CalculateRequestPrice(talent.Price, websiteCommission);
-        }
+        //    return CalculateRequestPrice(talent.Price, websiteCommission);
+        //}
 
-        public int CalculateRequestPrice(VideoRequest request)
-        {
-            return CalculateRequestPrice(request.Price, request.WebsiteCommission);
-        }
+        //public int CalculateRequestPrice(VideoRequest request)
+        //{
+        //    return CalculateRequestPrice(request.Price, request.WebsiteCommission);
+        //}
 
-        private int CalculateRequestPrice(int price, double websiteCommission)
-        {
-            double requestPriceDouble = ((101 * websiteCommission - 100) / 10000) * price;
-            double requestPriceDouble2 = (0.25 - (0.75 * 0.01)) * price;
+        //private int CalculateRequestPrice(int price, double websiteCommission)
+        //{
+        //    double requestPriceDouble = ((101 * websiteCommission - 100) / 10000) * price;
+        //    double requestPriceDouble2 = (0.25 - (0.75 * 0.01)) * price;
 
-            int requestPriceInt = ((int)(requestPriceDouble / 1000)) * 1000;
+        //    int requestPriceInt = ((int)(requestPriceDouble / 1000)) * 1000;
 
-            return requestPriceInt;
-        }
+        //    return requestPriceInt;
+        //}
 
-        public int CalculateRemainingPrice(int price, double websiteCommission)
-        {
-            int remainingPrice = (int)(((100.0 - websiteCommission) / 100) * price);
+        //public int CalculateRemainingPrice(int price, double websiteCommission)
+        //{
+        //    int remainingPrice = (int)(((100.0 - websiteCommission) / 100) * price);
 
-            return remainingPrice;
-        }
+        //    return remainingPrice;
+        //}
     }
 }

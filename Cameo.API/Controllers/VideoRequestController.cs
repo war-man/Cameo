@@ -66,10 +66,7 @@ namespace Cameo.API.Controllers
                 if (talent == null)
                     throw new Exception("Талант не найден");
 
-                int customerBalance = CustomerBalanceService.GetBalance(customer);
-                TalentRequestInfoVM talentRequestInfoVM = new TalentRequestInfoVM(talent, customerBalance);
-                talentRequestInfoVM.request_price = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
-                talentRequestInfoVM.RequestPriceToStr();
+                TalentRequestInfoVM talentRequestInfoVM = new TalentRequestInfoVM(talent);
 
                 return talentRequestInfoVM;
             }
@@ -98,30 +95,32 @@ namespace Cameo.API.Controllers
                             {
                                 if (talent.Price == modelVM.price)
                                 {
-                                    var curCustomer = CustomerService.GetByUserID(curUser.ID);
-                                    int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
-                                    int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
+                                    //var curCustomer = CustomerService.GetByUserID(curUser.ID);
+                                    //int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
+                                    //int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
 
-                                    if (customerBalance >= requestPrice)
-                                    {
-                                        CustomerBalanceService.TakeOffBalance(curCustomer, requestPrice);
+                                    //if (customerBalance >= requestPrice)
+                                    //{
+                                    //    CustomerBalanceService.TakeOffBalance(curCustomer, requestPrice);
 
-                                        VideoRequest newRequest = modelVM.ToModel(curCustomer);
+                                    //    VideoRequest newRequest = modelVM.ToModel(curCustomer);
 
-                                        //1. create model and send notification
-                                        VideoRequestService.Add(newRequest, curUser.ID);
+                                    //    //1. create model and send notification
+                                    //    VideoRequestService.Add(newRequest, curUser.ID);
 
-                                        ////2. create hangfire RequestAnswerJobID and save it
-                                        newRequest.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(newRequest, curUser.ID);
-                                        //create hangfire VideoJobID
-                                        //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
+                                    //    ////2. create hangfire RequestAnswerJobID and save it
+                                    //    newRequest.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(newRequest, curUser.ID);
+                                    //    //create hangfire VideoJobID
+                                    //    //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
-                                        VideoRequestService.Update(newRequest, curUser.ID);
+                                    //    VideoRequestService.Update(newRequest, curUser.ID);
 
-                                        return Ok(new { id = newRequest.ID });
-                                    }
-                                    else
-                                        throw new Exception("У Вас недостаточно средств на балансе");
+                                    //    return Ok(new { id = newRequest.ID });
+                                    //}
+                                    //else
+                                    //    throw new Exception("У Вас недостаточно средств на балансе");
+
+                                    return Ok(1);
                                 }
                                 else
                                     throw new Exception("Пока вы заполняли форму, Талант успел изменить цену");

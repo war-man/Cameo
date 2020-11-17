@@ -35,11 +35,11 @@ namespace Cameo.ViewModels
         public int Price { get; set; }
         public string PriceStr { get; set; }
 
-        public int RequestPrice { get; set; }
-        public string RequestPriceStr { get; set; }
+        //public int RequestPrice { get; set; }
+        //public string RequestPriceStr { get; set; }
 
-        public int RemainingPrice { get; set; }
-        public string RemainingPriceStr { get; set; }
+        //public int RemainingPrice { get; set; }
+        //public string RemainingPriceStr { get; set; }
 
         public AttachmentDetailsVM Video { get; set; }
 
@@ -121,17 +121,17 @@ namespace Cameo.ViewModels
             //VideoIsConfirmed = model.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted;
         }
 
-        public void RequestPriceToStr()
-        {
-            string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
-        }
+        //public void RequestPriceToStr()
+        //{
+        //    string numberFormat = AppData.Configuration.NumberViewStringFormat;
+        //    RequestPriceStr = RequestPrice.ToString(numberFormat).Trim();
+        //}
 
-        public void RemainingPriceToStr()
-        {
-            string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            RemainingPriceStr = RemainingPrice.ToString(numberFormat).Trim();
-        }
+        //public void RemainingPriceToStr()
+        //{
+        //    string numberFormat = AppData.Configuration.NumberViewStringFormat;
+        //    RemainingPriceStr = RemainingPrice.ToString(numberFormat).Trim();
+        //}
     }
 
     public class VideoRequestDetailsForCustomerVM : VideoRequestDetailsVM

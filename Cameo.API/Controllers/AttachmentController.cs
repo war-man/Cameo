@@ -121,25 +121,25 @@ namespace Cameo.API.Controllers
                 HangfireService.CancelJob(request.RequestAnswerJobID);
                 HangfireService.CancelJob(request.VideoJobID);
             }
-            else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
-            {
-                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-                if (request != null)
-                {
-                    if (request.PaymentScreenshot == null)
-                    {
-                        request.PaymentScreenshot = attachment;
-                        VideoRequestService.SaveUploadedPaymentScreenshot(request, curUserID);
+            //else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
+            //{
+            //    var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+            //    if (request != null)
+            //    {
+            //        if (request.PaymentScreenshot == null)
+            //        {
+            //            request.PaymentScreenshot = attachment;
+            //            VideoRequestService.SaveUploadedPaymentScreenshot(request, curUserID);
 
-                        request.PaymentConfirmationJobID = HangfireService
-                            .CreateJobForVideoRequestPaymentConfirmationDeadline(request, curUserID);
-                    }
-                    else
-                        request.PaymentScreenshot = attachment;
+            //            request.PaymentConfirmationJobID = HangfireService
+            //                .CreateJobForVideoRequestPaymentConfirmationDeadline(request, curUserID);
+            //        }
+            //        else
+            //            request.PaymentScreenshot = attachment;
 
-                    VideoRequestService.Update(request, curUserID);
-                }
-            }
+            //        VideoRequestService.Update(request, curUserID);
+            //    }
+            //}
             //else if () ...
         }
 
