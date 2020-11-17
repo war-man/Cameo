@@ -9,11 +9,11 @@ namespace Cameo.ViewModels
     {
         public string Total { get; set; }
         public string NotCompleted { get; set; }
-        public string WaitingForAnswer { get; set; }
+        //public string WaitingForAnswer { get; set; }
         public string WaitingForVideo { get; set; }
-        public string WaitingForPayment { get; set; }
-        public string WaitingForPaymentConfirmation { get; set; }
-        public string PaymentConfirmed { get; set; }
+        public string Completed { get; set; }
+        //public string WaitingForPaymentConfirmation { get; set; }
+        //public string PaymentConfirmed { get; set; }
         public string Earned { get; set; }
     }
 }

@@ -6,9 +6,9 @@ namespace Cameo.Models.Enums
 {
     public enum VideoRequestStatusEnum
     {
-        waitingForResponse = 1,
+        //waitingForResponse = 1,
         //requestCanceledByCustomer = 2,
-        requestExpired = 3,
+        //requestExpired = 3,
         //requestCanceledByTalent = 4,
         requestAcceptedAndWaitingForVideo = 5,
         //videoCanceledByCustomer = 6,
@@ -19,10 +19,10 @@ namespace Cameo.Models.Enums
         canceledByTalent = 13,
 
         videoCompleted = 9, //video uploaded and confirmed by talent
-        paymentScreenshotUploaded = 10,
+        //paymentScreenshotUploaded = 10,
         //videoPaymentExpired = 11,
-        paymentConfirmed = 14,
-        paymentConfirmationExpired = 15,
+        //paymentConfirmed = 14,
+        //paymentConfirmationExpired = 15,
 
         //statuses that will be used as filter in list of requests:
         //non db statuses:

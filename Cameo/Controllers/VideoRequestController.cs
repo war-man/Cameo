@@ -115,38 +115,28 @@ namespace Cameo.Controllers
                         {
                             if (talent.Price == modelVM.Price)
                             {
-                                //var curCustomer = CustomerService.GetByUserID(curUser.ID);
-                                //int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
-                                //int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
+                                var curCustomer = CustomerService.GetByUserID(curUser.ID);
+                                try
+                                {
+                                    VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                //if (customerBalance >= requestPrice)
-                                //{
-                                //    try
-                                //    {
-                                //        CustomerBalanceService.TakeOffBalance(curCustomer, requestPrice);
+                                    //1. create model and send notification
+                                    VideoRequestService.Add(model, curUser.ID);
 
-                                //        VideoRequest model = modelVM.ToModel(curCustomer);
+                                    //2. create hangfire RequestAnswerJobID and save it
+                                    //model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
+                                    ////create hangfire VideoJobID
+                                    model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
-                                //        //1. create model and send notification
-                                //        VideoRequestService.Add(model, curUser.ID);
+                                    VideoRequestService.Update(model, curUser.ID);
 
-                                //        //2. create hangfire RequestAnswerJobID and save it
-                                //        model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);
-                                //        ////create hangfire VideoJobID
-                                //        //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
-
-                                //        VideoRequestService.Update(model, curUser.ID);
-
-                                //        ViewBag.success = true;
-                                //        ViewBag.requestID = model.ID;
-                                //    }
-                                //    catch (Exception ex)
-                                //    {
-                                //        ModelState.AddModelError("", ex.Message);
-                                //    }
-                                //}
-                                //else
-                                //    ModelState.AddModelError("", "У Вас недостаточно средств на балансе");
+                                    ViewBag.success = true;
+                                    ViewBag.requestID = model.ID;
+                                }
+                                catch (Exception ex)
+                                {
+                                    ModelState.AddModelError("", ex.Message);
+                                }
                             }
                             else
                                 ModelState.AddModelError("", "Пока вы заполняли форму, Талант успел изменить цену");
@@ -282,7 +272,7 @@ namespace Cameo.Controllers
                 VideoRequestService.Cancel(model, curUser.ID, curUser.Type);
 
                 //cancel hangfire jobs
-                HangfireService.CancelJob(model.RequestAnswerJobID);
+                //HangfireService.CancelJob(model.RequestAnswerJobID);
                 HangfireService.CancelJob(model.VideoJobID);
 
                 return Ok();

@@ -95,32 +95,21 @@ namespace Cameo.API.Controllers
                             {
                                 if (talent.Price == modelVM.price)
                                 {
-                                    //var curCustomer = CustomerService.GetByUserID(curUser.ID);
-                                    //int customerBalance = CustomerBalanceService.GetBalance(curCustomer);
-                                    //int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(talent);
+                                    var curCustomer = CustomerService.GetByUserID(curUser.ID);
 
-                                    //if (customerBalance >= requestPrice)
-                                    //{
-                                    //    CustomerBalanceService.TakeOffBalance(curCustomer, requestPrice);
+                                    VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                    //    VideoRequest newRequest = modelVM.ToModel(curCustomer);
+                                    //1. create model and send notification
+                                    VideoRequestService.Add(model, curUser.ID);
 
-                                    //    //1. create model and send notification
-                                    //    VideoRequestService.Add(newRequest, curUser.ID);
+                                    ////2. create hangfire RequestAnswerJobID and save it
+                                    //newRequest.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(newRequest, curUser.ID);
+                                    //create hangfire VideoJobID
+                                    model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
 
-                                    //    ////2. create hangfire RequestAnswerJobID and save it
-                                    //    newRequest.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(newRequest, curUser.ID);
-                                    //    //create hangfire VideoJobID
-                                    //    //model.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(model, curUser.ID);
+                                    VideoRequestService.Update(model, curUser.ID);
 
-                                    //    VideoRequestService.Update(newRequest, curUser.ID);
-
-                                    //    return Ok(new { id = newRequest.ID });
-                                    //}
-                                    //else
-                                    //    throw new Exception("У Вас недостаточно средств на балансе");
-
-                                    return Ok(1);
+                                    return Ok(new { id = model.ID });
                                 }
                                 else
                                     throw new Exception("Пока вы заполняли форму, Талант успел изменить цену");
@@ -223,7 +212,7 @@ namespace Cameo.API.Controllers
                 VideoRequestService.Cancel(request, curUser.ID, curUser.Type);
 
                 //cancel hangfire jobs
-                HangfireService.CancelJob(request.RequestAnswerJobID);
+                //HangfireService.CancelJob(request.RequestAnswerJobID);
                 HangfireService.CancelJob(request.VideoJobID);
 
                 return Ok();
@@ -234,37 +223,37 @@ namespace Cameo.API.Controllers
             }
         }
 
-        [Authorize(Policy = "TalentOnly")]
-        [HttpPost("Accept/{id}")]
-        public IActionResult Accept(int id)
-        {
-            try
-            {
-                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
-                if (request == null)
-                    throw new Exception("Заказ не найден");
+        //[Authorize(Policy = "TalentOnly")]
+        //[HttpPost("Accept/{id}")]
+        //public IActionResult Accept(int id)
+        //{
+        //    try
+        //    {
+        //        var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
+        //        if (request == null)
+        //            throw new Exception("Заказ не найден");
 
-                var curUser = accountUtil.GetCurrentUser(User);
-                if (!AccountUtil.IsUserTalent(curUser))
-                    throw new Exception("Вы не являетесь талантом");
+        //        var curUser = accountUtil.GetCurrentUser(User);
+        //        if (!AccountUtil.IsUserTalent(curUser))
+        //            throw new Exception("Вы не являетесь талантом");
 
-                //accept request/video
-                VideoRequestService.Accept(request, curUser.ID);
+        //        //accept request/video
+        //        VideoRequestService.Accept(request, curUser.ID);
 
-                //cancel hangfire RequestAnswerJobID
-                HangfireService.CancelJob(request.RequestAnswerJobID);
+        //        //cancel hangfire RequestAnswerJobID
+        //        HangfireService.CancelJob(request.RequestAnswerJobID);
 
-                //create hangfire VideoJobID
-                request.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(request, curUser.ID);
-                VideoRequestService.Update(request, curUser.ID);
+        //        //create hangfire VideoJobID
+        //        request.VideoJobID = HangfireService.CreateJobForVideoRequestVideoDeadline(request, curUser.ID);
+        //        VideoRequestService.Update(request, curUser.ID);
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return CustomBadRequest(ex);
-            }
-        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return CustomBadRequest(ex);
+        //    }
+        //}
 
         #region Video actions
         //talent can upload and delete video any times before confirming (actions are in AttachmentController)
@@ -293,7 +282,7 @@ namespace Cameo.API.Controllers
                 VideoRequestService.ConfirmVideo(request, curUser.ID);
                 
                 //cancel hangfire jobs
-                HangfireService.CancelJob(request.RequestAnswerJobID);
+                //HangfireService.CancelJob(request.RequestAnswerJobID);
                 HangfireService.CancelJob(request.VideoJobID);
 
                 ////create hangfire PaymentReminderJobID
@@ -307,42 +296,42 @@ namespace Cameo.API.Controllers
             }
         }
 
-        [Authorize(Policy = "TalentOnly")]
-        [HttpPost("ConfirmPayment/{request_id}")]
-        public IActionResult ConfirmPayment(int request_id)
-        {
-            try
-            {
-                var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(request_id);
-                if (request == null)
-                    throw new Exception("Заказ не найден");
+        //[Authorize(Policy = "TalentOnly")]
+        //[HttpPost("ConfirmPayment/{request_id}")]
+        //public IActionResult ConfirmPayment(int request_id)
+        //{
+        //    try
+        //    {
+        //        var request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(request_id);
+        //        if (request == null)
+        //            throw new Exception("Заказ не найден");
 
-                var curUser = accountUtil.GetCurrentUser(User);
-                if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
-                    throw new Exception("Вы не являетесь талантом");
+        //        var curUser = accountUtil.GetCurrentUser(User);
+        //        if (!curUser.Type.Equals(UserTypesEnum.talent.ToString()))
+        //            throw new Exception("Вы не являетесь талантом");
 
-                //int balance = TalentBalanceService.GetBalance(request.Talent);
-                //if (balance <= 0)
-                //    throw new Exception("У Вас недостаточно средств, чтобы подтвердить запрос");
+        //        //int balance = TalentBalanceService.GetBalance(request.Talent);
+        //        //if (balance <= 0)
+        //        //    throw new Exception("У Вас недостаточно средств, чтобы подтвердить запрос");
 
-                //confirm request/video
-                VideoRequestService.ConfirmPayment(request, curUser.ID);
+        //        //confirm request/video
+        //        VideoRequestService.ConfirmPayment(request, curUser.ID);
 
-                //cancel hangfire jobs
-                HangfireService.CancelJob(request.RequestAnswerJobID);
-                HangfireService.CancelJob(request.VideoJobID);
-                HangfireService.CancelJob(request.PaymentConfirmationJobID);
+        //        //cancel hangfire jobs
+        //        HangfireService.CancelJob(request.RequestAnswerJobID);
+        //        HangfireService.CancelJob(request.VideoJobID);
+        //        HangfireService.CancelJob(request.PaymentConfirmationJobID);
 
-                ////create hangfire PaymentReminderJobID
-                //HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
+        //        ////create hangfire PaymentReminderJobID
+        //        //HangfireService.CreateJobForPaymentReminder(model, curUser.ID);
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return CustomBadRequest(ex);
-            }
-        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return CustomBadRequest(ex);
+        //    }
+        //}
 
         //[HttpPost]
         //public IActionResult MakePayment(int id)

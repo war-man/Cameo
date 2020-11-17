@@ -51,15 +51,15 @@ namespace Cameo.Services
 
             entity.WebsiteCommission = commission;
 
-            entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
-            //entity.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
+            //entity.RequestStatusID = (int)VideoRequestStatusEnum.waitingForResponse;
+            entity.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
 #if DEBUG
             tmpPeriodMinutes = 2880;
-            entity.RequestAnswerDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
-            //entity.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
+            //entity.RequestAnswerDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
+            entity.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
 #else
-            entity.RequestAnswerDeadline = RoundToUp(DateTime.Now.AddMinutes(2880)); //2 days
-            //entity.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
+            //entity.RequestAnswerDeadline = RoundToUp(DateTime.Now.AddMinutes(2880)); //2 days
+            entity.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
 #endif
             base.Add(entity, creatorID);
 
@@ -181,47 +181,47 @@ namespace Cameo.Services
             FirebaseRegistrationTokenService.SendNotification(adresatUserID, title, body, data);
         }
 
-        public void Accept(VideoRequest model, string userID)
-        {
-            if (!BelongsToTalent(model, userID))
-                throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
+//        public void Accept(VideoRequest model, string userID)
+//        {
+//            if (!BelongsToTalent(model, userID))
+//                throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
 
-            if (!IsAcceptable(model))
-                throw new Exception("Текущий статус заказа не позволяет принять его");
+//            if (!IsAcceptable(model))
+//                throw new Exception("Текущий статус заказа не позволяет принять его");
 
-            model.ViewedByCustomer = false;
-            model.ViewedByTalent = true;
+//            model.ViewedByCustomer = false;
+//            model.ViewedByTalent = true;
 
-            model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
-            model.DateRequestAccepted = DateTime.Now;
-#if DEBUG
-            tmpPeriodMinutes = 2880;
-            model.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
-#else
-            model.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
-#endif
-            Update(model, userID);
+//            model.RequestStatusID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
+//            model.DateRequestAccepted = DateTime.Now;
+//#if DEBUG
+//            tmpPeriodMinutes = 2880;
+//            model.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
+//#else
+//            model.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
+//#endif
+//            Update(model, userID);
 
-            //TO-DO: send firebase notification to Customer
-            string title = model.Talent.FullName;
-            string body = "Талант принял Ваш заказ";
-            Dictionary<string, string> data = new Dictionary<string, string>()
-            {
-                ["request_id"] = model.ID.ToString()
-            };
-            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
-        }
+//            //TO-DO: send firebase notification to Customer
+//            string title = model.Talent.FullName;
+//            string body = "Талант принял Ваш заказ";
+//            Dictionary<string, string> data = new Dictionary<string, string>()
+//            {
+//                ["request_id"] = model.ID.ToString()
+//            };
+//            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
+//        }
 
-        public bool IsAcceptable(VideoRequest model)
-        {
-            return IsWaitingForResponse(model);
+        //public bool IsAcceptable(VideoRequest model)
+        //{
+        //    return IsWaitingForResponse(model);
 
-            //if (!TalentsCardPeriodIsValid(model.Talent))
-            //    throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
+        //    //if (!TalentsCardPeriodIsValid(model.Talent))
+        //    //    throw new Exception("Срок годности Вашей карты скоро истекает. Просим проверить и обновить");
 
-            //if (!TalentBalanceService.BalanceAllowsToAcceptRequest(model.Talent.Balance, model.Price))
-            //    throw new Exception("Текущий баланс не позволяет принять запрос");
-        }
+        //    //if (!TalentBalanceService.BalanceAllowsToAcceptRequest(model.Talent.Balance, model.Price))
+        //    //    throw new Exception("Текущий баланс не позволяет принять запрос");
+        //}
 
         public void VideoDeadlineReaches(VideoRequest model, string userID)
         {
@@ -289,20 +289,20 @@ namespace Cameo.Services
             return model.Customer.UserID == userID || model.Talent.UserID == userID;
         }
 
-        private bool IsWaitingForResponse(VideoRequest model)
-        {
-            return model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse;
-        }
+        //private bool IsWaitingForResponse(VideoRequest model)
+        //{
+        //    return model.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse;
+        //}
 
         private bool IsRequestAcceptedAndWaitingForVideo(VideoRequest model)
         {
             return model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo;
         }
         
-        public bool IsPaymentScreenshotUploaded(VideoRequest model)
-        {
-            return model.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
-        }
+        //public bool IsPaymentScreenshotUploaded(VideoRequest model)
+        //{
+        //    return model.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
+        //}
 
         private bool IsNotPublic(VideoRequest model)
         {
@@ -321,31 +321,31 @@ namespace Cameo.Services
             Update(model, userID);
         }
 
-        public void SaveUploadedPaymentScreenshot(VideoRequest model, string userID)
-        {
-            model.ViewedByCustomer = true;
-            model.ViewedByTalent = false;
+//        public void SaveUploadedPaymentScreenshot(VideoRequest model, string userID)
+//        {
+//            model.ViewedByCustomer = true;
+//            model.ViewedByTalent = false;
 
-            model.RequestStatusID = (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
-            model.DatePaymentScreenshotUploaded = DateTime.Now;
-#if DEBUG
-            tmpPeriodMinutes = 2880;
-            model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
-#else
-            model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(2880)); //2 days
-            //model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
-#endif
-            Update(model, userID);
+//            model.RequestStatusID = (int)VideoRequestStatusEnum.paymentScreenshotUploaded;
+//            model.DatePaymentScreenshotUploaded = DateTime.Now;
+//#if DEBUG
+//            tmpPeriodMinutes = 2880;
+//            model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(tmpPeriodMinutes));
+//#else
+//            model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(2880)); //2 days
+//            //model.PaymentConfirmationDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
+//#endif
+//            Update(model, userID);
 
-            //TO-DO: send firebase notification to Talent
-            string title = model.Customer.FullName;
-            string body = "Клиент загрузил скрин, подтверждающий оплату. Пожалуйста, подтвердите.";
-            Dictionary<string, string> data = new Dictionary<string, string>()
-            {
-                ["request_id"] = model.ID.ToString()
-            };
-            FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
-        }
+//            //TO-DO: send firebase notification to Talent
+//            string title = model.Customer.FullName;
+//            string body = "Клиент загрузил скрин, подтверждающий оплату. Пожалуйста, подтвердите.";
+//            Dictionary<string, string> data = new Dictionary<string, string>()
+//            {
+//                ["request_id"] = model.ID.ToString()
+//            };
+//            FirebaseRegistrationTokenService.SendNotification(model.Talent.UserID, title, body, data);
+//        }
 
         public bool VideoIsAllowedToBeDeleted(VideoRequest model)
         {
@@ -390,7 +390,8 @@ namespace Cameo.Services
 
             //TO-DO: send firebase notification to Customer
             string title = model.Talent.FullName;
-            string body = "Талант загрузил видео! Пожалуйсте, переведите оставшуюся сумму на карту " + model.Talent.CreditCardNumber + " " + model.Talent.CreditCardHolder +" и загрузите скрин оплаты.";
+            string body = "Видео ГОТОВО!";
+            //string body = "Талант загрузил видео! Пожалуйсте, переведите оставшуюся сумму на карту " + model.Talent.CreditCardNumber + " " + model.Talent.CreditCardHolder +" и загрузите скрин оплаты.";
             Dictionary<string, string> data = new Dictionary<string, string>()
             {
                 ["request_id"] = model.ID.ToString()
@@ -404,36 +405,36 @@ namespace Cameo.Services
                 && model.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo);
         }
 
-        public void ConfirmPayment(VideoRequest model, string userID)
-        {
-            if (!BelongsToTalent(model, userID))
-                throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
+        //public void ConfirmPayment(VideoRequest model, string userID)
+        //{
+        //    if (!BelongsToTalent(model, userID))
+        //        throw new Exception("Вы обрабатываете не принадлежащий Вам заказ");
 
-            if (!IsPaymentConfirmable(model))
-                throw new Exception("Текущий статус заказа не позволяет подтвердить видео");
+        //    if (!IsPaymentConfirmable(model))
+        //        throw new Exception("Текущий статус заказа не позволяет подтвердить видео");
 
-            model.ViewedByCustomer = false;
-            model.ViewedByTalent = true;
+        //    model.ViewedByCustomer = false;
+        //    model.ViewedByTalent = true;
 
-            model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmed;
-            model.DatePaymentConfirmed = DateTime.Now;
+        //    model.RequestStatusID = (int)VideoRequestStatusEnum.paymentConfirmed;
+        //    model.DatePaymentConfirmed = DateTime.Now;
 
-            Update(model, userID);
+        //    Update(model, userID);
 
-            //TO-DO: send firebase notification to Customer
-            string title = model.Talent.FullName;
-            string body = "Видео ГОТОВО!";
-            Dictionary<string, string> data = new Dictionary<string, string>()
-            {
-                ["request_id"] = model.ID.ToString()
-            };
-            FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
-        }
+        //    //TO-DO: send firebase notification to Customer
+        //    string title = model.Talent.FullName;
+        //    string body = "Видео ГОТОВО!";
+        //    Dictionary<string, string> data = new Dictionary<string, string>()
+        //    {
+        //        ["request_id"] = model.ID.ToString()
+        //    };
+        //    FirebaseRegistrationTokenService.SendNotification(model.Customer.UserID, title, body, data);
+        //}
 
-        private bool IsPaymentConfirmable(VideoRequest model)
-        {
-            return model.VideoID.HasValue;
-        }
+        //private bool IsPaymentConfirmable(VideoRequest model)
+        //{
+        //    return model.VideoID.HasValue;
+        //}
 
         //public void SendEmailOnceVideoConfirmed(VideoRequest model)
         //{
@@ -445,10 +446,10 @@ namespace Cameo.Services
         //    EmailService.Send(toCustomer, subjectCustomer, bodyCustomer);
         //}
 
-        public bool IsPaymentConfirmed(VideoRequest model)
-        {
-            return model.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed;
-        }
+        //public bool IsPaymentConfirmed(VideoRequest model)
+        //{
+        //    return model.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed;
+        //}
 
         public VideoRequest GetSinglePublished(int id, string userID)
         {
@@ -456,7 +457,7 @@ namespace Cameo.Services
             if (model == null)
                 return null;
 
-            if (IsPaymentConfirmed(model))
+            if (IsVideoConfirmed(model))
             {
                 if (BelongsToTalent(model, userID))
                     return model;
@@ -495,14 +496,14 @@ namespace Cameo.Services
 
         public bool IsCancelable(VideoRequest model)
         {
-            //return RequestIsAcceptedAndWaitingForVideo(model);
-            return IsWaitingForResponse(model);
+            return IsRequestAcceptedAndWaitingForVideo(model);
+            //return IsWaitingForResponse(model);
         }
 
         public bool IsEditable(VideoRequest model)
         {
-            //return RequestIsAcceptedAndWaitingForVideo(model);
-            return IsWaitingForResponse(model);
+            return IsRequestAcceptedAndWaitingForVideo(model);
+            //return IsWaitingForResponse(model);
         }
 
         /// <summary>
@@ -510,16 +511,24 @@ namespace Cameo.Services
         /// </summary>
         /// <param name="talent"></param>
         /// <returns></returns>
-        private IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
+        //private IQueryable<VideoRequest> GetAllPaidByTalent(Talent talent)
+        //{
+        //    return GetWithRelatedDataAsIQueryable()
+        //        .Where(m => m.TalentID == talent.ID
+        //            && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed);
+        //}
+
+        private IQueryable<VideoRequest> GetAllCompletedByTalent(Talent talent)
         {
             return GetWithRelatedDataAsIQueryable()
                 .Where(m => m.TalentID == talent.ID
-                    && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed);
+                    && m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted);
         }
 
         public IQueryable<VideoRequest> GetPublicByTalent(Talent talent, int requestIDToBeExcluded = 0)
         {
-            return GetAllPaidByTalent(talent)
+            //return GetAllPaidByTalent(talent)
+            return GetAllCompletedByTalent(talent)
                 .Where(m => !m.IsNotPublic && m.ID != requestIDToBeExcluded)
                 .OrderByDescending(m => m.ID);
         }

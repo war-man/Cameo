@@ -67,11 +67,11 @@ namespace Cameo.Controllers
                 {
                     Total = VideoRequestStatisticsService.GetAllCountByTalent(talent).ToString(numberFormat).Trim(),
                     NotCompleted = VideoRequestStatisticsService.GetNotCompletedCountByTalent(talent).ToString(numberFormat).Trim(),
-                    WaitingForAnswer = VideoRequestStatisticsService.GetWaitingForAnswerCountByTalent(talent).ToString(numberFormat).Trim(),
+                    //WaitingForAnswer = VideoRequestStatisticsService.GetWaitingForAnswerCountByTalent(talent).ToString(numberFormat).Trim(),
                     WaitingForVideo = VideoRequestStatisticsService.GetWaitingForVideoCountByTalent(talent).ToString(numberFormat).Trim(),
-                    WaitingForPayment = VideoRequestStatisticsService.GetWaitingForPaymentCountByTalent(talent).ToString(numberFormat).Trim(),
-                    WaitingForPaymentConfirmation = VideoRequestStatisticsService.GetWaitingForPaymentConfirmationCountByTalent(talent).ToString(numberFormat).Trim(),
-                    PaymentConfirmed = VideoRequestStatisticsService.GetPaymentConfirmedCountByTalent(talent).ToString(numberFormat).Trim(),
+                    Completed = VideoRequestStatisticsService.GetCompletedCountByTalent(talent).ToString(numberFormat).Trim(),
+                    //WaitingForPaymentConfirmation = VideoRequestStatisticsService.GetWaitingForPaymentConfirmationCountByTalent(talent).ToString(numberFormat).Trim(),
+                    //PaymentConfirmed = VideoRequestStatisticsService.GetPaymentConfirmedCountByTalent(talent).ToString(numberFormat).Trim(),
                     Earned = VideoRequestStatisticsService.GetEarnedByTalent(talent).ToString(numberFormat).Trim()
                 };
 

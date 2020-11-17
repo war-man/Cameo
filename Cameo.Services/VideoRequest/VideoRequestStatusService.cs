@@ -25,11 +25,11 @@ namespace Cameo.Services
                     ID = (int)VideoRequestStatusEnum.all,
                     Name = "Все"
                 },
-                new BaseModelDropdownable()
-                {
-                    ID = (int)VideoRequestStatusEnum.waitingForResponse,
-                    Name = "Ожидающие ответа таланта"
-                },
+                //new BaseModelDropdownable()
+                //{
+                //    ID = (int)VideoRequestStatusEnum.waitingForResponse,
+                //    Name = "Ожидающие ответа таланта"
+                //},
                 new BaseModelDropdownable()
                 {
                     ID = (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo,
@@ -38,18 +38,19 @@ namespace Cameo.Services
                 new BaseModelDropdownable()
                 {
                     ID = (int)VideoRequestStatusEnum.videoCompleted,
-                    Name = "Видео загружено, следует оплатить"
-                },
-                new BaseModelDropdownable()
-                {
-                    ID = (int)VideoRequestStatusEnum.paymentScreenshotUploaded,
-                    Name = "Ожидающие подтверждения оплаты"
-                },
-                new BaseModelDropdownable()
-                {
-                    ID = (int)VideoRequestStatusEnum.paymentConfirmed,
+                    //Name = "Видео загружено, следует оплатить"
                     Name = "Видео готово!"
                 },
+                //new BaseModelDropdownable()
+                //{
+                //    ID = (int)VideoRequestStatusEnum.paymentScreenshotUploaded,
+                //    Name = "Ожидающие подтверждения оплаты"
+                //},
+                //new BaseModelDropdownable()
+                //{
+                //    ID = (int)VideoRequestStatusEnum.paymentConfirmed,
+                //    Name = "Видео готово!"
+                //},
                 new BaseModelDropdownable()
                 {
                     ID = (int)VideoRequestStatusEnum.notCompleted,

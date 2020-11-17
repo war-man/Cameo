@@ -35,19 +35,17 @@ namespace Cameo.Services
         {
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
-                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestExpired
-                        || m.RequestStatusID == (int)VideoRequestStatusEnum.videoExpired
+                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoExpired
                         || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByCustomer
-                        || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByTalent
-                        || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmationExpired));
+                        || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByTalent));
         }
 
-        public int GetWaitingForAnswerCountByTalent(Talent talent)
-        {
-            return GetAllActiveAsIQueryable()
-                .Count(m => m.TalentID == talent.ID
-                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse));
-        }
+        //public int GetWaitingForAnswerCountByTalent(Talent talent)
+        //{
+        //    return GetAllActiveAsIQueryable()
+        //        .Count(m => m.TalentID == talent.ID
+        //            && (m.RequestStatusID == (int)VideoRequestStatusEnum.waitingForResponse));
+        //}
 
         public int GetWaitingForVideoCountByTalent(Talent talent)
         {
@@ -56,38 +54,38 @@ namespace Cameo.Services
                     && (m.RequestStatusID == (int)VideoRequestStatusEnum.requestAcceptedAndWaitingForVideo));
         }
 
-        public int GetWaitingForPaymentCountByTalent(Talent talent)
+        public int GetCompletedCountByTalent(Talent talent)
         {
             return GetAllActiveAsIQueryable()
                 .Count(m => m.TalentID == talent.ID
                     && (m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted));
         }
 
-        public int GetWaitingForPaymentConfirmationCountByTalent(Talent talent)
-        {
-            return GetAllActiveAsIQueryable()
-                .Count(m => m.TalentID == talent.ID
-                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded));
-        }
+        //public int GetWaitingForPaymentConfirmationCountByTalent(Talent talent)
+        //{
+        //    return GetAllActiveAsIQueryable()
+        //        .Count(m => m.TalentID == talent.ID
+        //            && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentScreenshotUploaded));
+        //}
 
-        public int GetPaymentConfirmedCountByTalent(Talent talent)
-        {
-            return GetAllActiveAsIQueryable()
-                .Count(m => m.TalentID == talent.ID
-                    && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed));
-        }
+        //public int GetPaymentConfirmedCountByTalent(Talent talent)
+        //{
+        //    return GetAllActiveAsIQueryable()
+        //        .Count(m => m.TalentID == talent.ID
+        //            && (m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed));
+        //}
 
-        public IQueryable<VideoRequest> GetAllPaymentConfirmedByTalent(Talent talent)
+        public IQueryable<VideoRequest> GetAllCompletedByTalent(Talent talent)
         {
             return GetAllActiveAsIQueryable()
                 .Where(m => m.TalentID == talent.ID
-                    && m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmed);
+                    && m.RequestStatusID == (int)VideoRequestStatusEnum.videoCompleted);
         }
 
         //later siteStavka and amount, that talent earns will be saved for each request
         public int GetEarnedByTalent(Talent talent)
         {
-            int totalPaid = (int)GetAllPaymentConfirmedByTalent(talent)
+            int totalPaid = (int)GetAllCompletedByTalent(talent)
                 .Sum(m => (m.Price * (100 - m.WebsiteCommission)) / 100);
 
             return totalPaid;

@@ -9,17 +9,17 @@ namespace Cameo.Services.Interfaces
 
         int GetNotCompletedCountByTalent(Talent talent);
 
-        int GetWaitingForAnswerCountByTalent(Talent talent);
+        //int GetWaitingForAnswerCountByTalent(Talent talent);
 
         int GetWaitingForVideoCountByTalent(Talent talent);
 
-        int GetWaitingForPaymentCountByTalent(Talent talent);
+        int GetCompletedCountByTalent(Talent talent);
 
-        int GetWaitingForPaymentConfirmationCountByTalent(Talent talent);
+        //int GetWaitingForPaymentConfirmationCountByTalent(Talent talent);
 
-        int GetPaymentConfirmedCountByTalent(Talent talent);
+        //int GetPaymentConfirmedCountByTalent(Talent talent);
 
-        IQueryable<VideoRequest> GetAllPaymentConfirmedByTalent(Talent talent);
+        IQueryable<VideoRequest> GetAllCompletedByTalent(Talent talent);
 
         int GetEarnedByTalent(Talent talent);
     }

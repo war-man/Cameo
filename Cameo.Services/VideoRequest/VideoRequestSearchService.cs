@@ -68,11 +68,9 @@ namespace Cameo.Services
                         if (statusID.Value == (int)VideoRequestStatusEnum.notCompleted)
                         {
                             videoRequests = videoRequests
-                                .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.requestExpired
-                                    || m.RequestStatusID == (int)VideoRequestStatusEnum.videoExpired
+                                .Where(m => m.RequestStatusID == (int)VideoRequestStatusEnum.videoExpired
                                     || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByCustomer
-                                    || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByTalent
-                                    || m.RequestStatusID == (int)VideoRequestStatusEnum.paymentConfirmationExpired);
+                                    || m.RequestStatusID == (int)VideoRequestStatusEnum.canceledByTalent);
                         }
                         else
                             videoRequests = videoRequests.Where(m => m.RequestStatusID == statusID);

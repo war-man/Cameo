@@ -54,10 +54,10 @@ namespace Cameo.ViewModels
         public bool VideoIsConfirmed { get; set; }
         
         //public bool IsCreditCardInfoVisible { get; set; } = false;
-        public AttachmentDetailsVM PaymentScreenshot { get; set; }
-        public bool PaymentScreenshotIsUploaded { get; set; } = false;
+        //public AttachmentDetailsVM PaymentScreenshot { get; set; }
+        //public bool PaymentScreenshotIsUploaded { get; set; } = false;
 
-        public bool PaymentIsConfirmed { get; set; } = false;
+        //public bool PaymentIsConfirmed { get; set; } = false;
 
 
         //public string VideoDeadline { get; set; }
@@ -98,7 +98,7 @@ namespace Cameo.ViewModels
             else
                 Deadline = model.RequestAnswerDeadline.ToString(dateTextViewStringFormat);
 
-            PaymentScreenshot = new AttachmentDetailsVM(model.PaymentScreenshot);
+            //PaymentScreenshot = new AttachmentDetailsVM(model.PaymentScreenshot);
 
 
 

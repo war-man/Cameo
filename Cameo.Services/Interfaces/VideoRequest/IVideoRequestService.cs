@@ -16,8 +16,8 @@ namespace Cameo.Services.Interfaces
         /// </summary>
         void Cancel(VideoRequest model, string userID, string userType);
 
-        bool IsAcceptable(VideoRequest model);
-        void Accept(VideoRequest model, string userID);
+        //bool IsAcceptable(VideoRequest model);
+        //void Accept(VideoRequest model, string userID);
 
         void VideoDeadlineReaches(VideoRequest model, string userID);
 
@@ -44,16 +44,16 @@ namespace Cameo.Services.Interfaces
 
         bool IsEditable(VideoRequest model);
         bool IsCancelable(VideoRequest model);
-        bool IsPaymentConfirmed(VideoRequest model);
+        //bool IsPaymentConfirmed(VideoRequest model);
         IQueryable<VideoRequest> GetPublicByTalent(Talent talent, int requestIDToBeExcluded);
 
         //int CalculateRequestPrice(Talent talent);
         //int CalculateRequestPrice(VideoRequest request);
         //int CalculateRemainingPrice(int price, double websiteCommission);
         bool IsVideoConfirmed(VideoRequest model);
-        void SaveUploadedPaymentScreenshot(VideoRequest model, string userID);
+        //void SaveUploadedPaymentScreenshot(VideoRequest model, string userID);
         //void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID);
-        bool IsPaymentScreenshotUploaded(VideoRequest model);
-        void ConfirmPayment(VideoRequest model, string userID);
+        //bool IsPaymentScreenshotUploaded(VideoRequest model);
+        //void ConfirmPayment(VideoRequest model, string userID);
     }
 }

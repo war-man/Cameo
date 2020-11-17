@@ -453,4 +453,7 @@
   <data name="ErrorInvalidPhoneNumber" xml:space="preserve">
     <value>Неверный номер телефона</value>
   </data>
+  <data name="OrdersCompleted" xml:space="preserve">
+    <value>Зазаз завершен</value>
+  </data>
 </root>
