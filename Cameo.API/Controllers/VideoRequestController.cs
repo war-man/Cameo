@@ -100,7 +100,7 @@ namespace Cameo.API.Controllers
                 string hold_id = PaymoService.ApplyForHold(invoice);
                 InvoiceService.AssignHoldID(invoice, hold_id, curUser.ID);
 
-                return Ok(new { hold_id = hold_id });
+                return Ok(new { invoice_id = invoice.ID });
             }
             catch (Exception ex)
             {
@@ -127,12 +127,29 @@ namespace Cameo.API.Controllers
                             {
                                 if (talent.Price == modelVM.price)
                                 {
+                                    Invoice invoice = InvoiceService.GetByID(modelVM.invoice_id);
+                                    if (invoice == null)
+                                        throw new Exception("Инвойс не найден");
+
+                                    PaymoService.ConfirmHold(invoice, modelVM.sms);
+                                    InvoiceService.Update(invoice, curUser.ID);
+
                                     var curCustomer = CustomerService.GetByUserID(curUser.ID);
 
                                     VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                    //1. create model and send notification
-                                    VideoRequestService.Add(model, curUser.ID);
+                                    try
+                                    {
+                                        //1. create model and send notification
+                                        VideoRequestService.Add(model, invoice, curUser.ID);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        PaymoService.CancelHold(invoice);
+                                        InvoiceService.Update(invoice, curUser.ID);
+
+                                        throw ex;
+                                    }
 
                                     ////2. create hangfire RequestAnswerJobID and save it
                                     //newRequest.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(newRequest, curUser.ID);

@@ -65,6 +65,9 @@ namespace Cameo.Models
         public bool ViewedByTalent { get; set; }
         public bool ViewedByCustomer { get; set; }
 
+        public virtual int? InvoiceID { get; set; }
+        public virtual Invoice Invoice { get; set; }
+
         #region RequestStatus change dates
         public DateTime? DateRequestAccepted { get; set; }
         public DateTime? DateRequestExpired { get; set; }

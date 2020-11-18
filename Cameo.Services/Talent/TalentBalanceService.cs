@@ -23,6 +23,11 @@ namespace Cameo.Services
             return talent?.Balance ?? 0;
         }
 
+        public void ReplenishBalance(Talent talent, int amount)
+        {
+            talent.Balance += amount;
+        }
+
         //public int GetBalanceIncludingReservations(Talent talent)
         //{
         //    int clearBalance = GetBalance(talent);
@@ -62,24 +67,24 @@ namespace Cameo.Services
 
         //сумма, которая снимается с биллингового счета продавца после оплаты клиентом
         //и попадает на счет сайта
-        public int CalculateMoneyThatTalentPaysToSystemForCameo(int price, double websiteCommission)
-        {
-            int d = 0;
+        //public int CalculateMoneyThatTalentPaysToSystemForCameo(int price, double websiteCommission)
+        //{
+        //    int d = 0;
 
-            double paymentSystemCommission = AppData.Configuration.PaymentSystemCommission;
-            double mDouble = (price * 100) / (100 + paymentSystemCommission);
-            int m = 0;
-            if (mDouble > 0)
-            {
-                m = (int)mDouble;
-                m /= 1000;
-                m *= 1000;
-            }
+        //    double paymentSystemCommission = AppData.Configuration.PaymentSystemCommission;
+        //    double mDouble = (price * 100) / (100 + paymentSystemCommission);
+        //    int m = 0;
+        //    if (mDouble > 0)
+        //    {
+        //        m = (int)mDouble;
+        //        m /= 1000;
+        //        m *= 1000;
+        //    }
 
-            d = m - (int)(((100.0 - websiteCommission) / 100) * price);
+        //    d = m - (int)(((100.0 - websiteCommission) / 100) * price);
 
-            return d;
-        }
+        //    return d;
+        //}
 
         ////количество запросов, которые можно обработать исходя из баланса и цены, указанной за Cameo
         //public int CalculateMaxNumberOfPossibleRequests(int balance, int price, double commission)
@@ -109,10 +114,10 @@ namespace Cameo.Services
         //    return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
         //}
 
-        public void TakeOffBalance(Talent talent, int amount, string userID)
-        {
-            talent.Balance -= amount;
-            //TalentService.Update(talent, userID);
-        }
+        //public void TakeOffBalance(Talent talent, int amount, string userID)
+        //{
+        //    talent.Balance -= amount;
+        //    //TalentService.Update(talent, userID);
+        //}
     }
 }

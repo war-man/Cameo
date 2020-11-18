@@ -4,14 +4,16 @@ using Cameo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cameo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201118153252_Invoic_removedVideoRequestID")]
+    partial class Invoic_removedVideoRequestID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,8 +320,6 @@ namespace Cameo.Data.Migrations
 
                     b.Property<int>("StatusID");
 
-                    b.Property<int?>("VideoRequestID");
-
                     b.Property<DateTime>("card_expiry");
 
                     b.Property<string>("card_number")
@@ -334,10 +334,6 @@ namespace Cameo.Data.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("ModifiedBy");
-
-                    b.HasIndex("VideoRequestID")
-                        .IsUnique()
-                        .HasFilter("[VideoRequestID] IS NOT NULL");
 
                     b.ToTable("Invoices");
                 });
@@ -610,8 +606,6 @@ namespace Cameo.Data.Migrations
 
                     b.Property<string>("Instructions")
                         .IsRequired();
-
-                    b.Property<int?>("InvoiceID");
 
                     b.Property<bool>("IsDeleted");
 
@@ -929,10 +923,6 @@ namespace Cameo.Data.Migrations
                     b.HasOne("Cameo.Models.ApplicationUser", "Modifier")
                         .WithMany()
                         .HasForeignKey("ModifiedBy");
-
-                    b.HasOne("Cameo.Models.VideoRequest", "VideoRequest")
-                        .WithOne("Invoice")
-                        .HasForeignKey("Cameo.Models.Invoice", "VideoRequestID");
                 });
 
             modelBuilder.Entity("Cameo.Models.LogTalentPrice", b =>

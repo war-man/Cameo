@@ -47,6 +47,11 @@ namespace Cameo.API.ViewModels
         //[JsonPropertyName("talentid")]
         public int talent_id { get; set; }
 
+        public int invoice_id { get; set; }
+
+        [Required]
+        public string sms { get; set; }
+
         public VideoRequest ToModel(Customer customer)
         {
             VideoRequest model = new VideoRequest()

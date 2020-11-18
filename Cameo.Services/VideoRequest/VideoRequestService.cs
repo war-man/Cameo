@@ -17,6 +17,7 @@ namespace Cameo.Services
         private readonly ICustomerBalanceService CustomerBalanceService;
         private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
         private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
+        private readonly IPaymoService PaymoService;
 
         private int tmpPeriodMinutes = 2;
 
@@ -25,13 +26,15 @@ namespace Cameo.Services
             ITalentBalanceService talentBalanceService,
             ICustomerBalanceService customerBalanceService,
             IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
-            IFirebaseRegistrationTokenService firebaseRegistrationTokenService)
+            IFirebaseRegistrationTokenService firebaseRegistrationTokenService,
+            IPaymoService paymoService)
             : base(repository, unitOfWork)
         {
             TalentBalanceService = talentBalanceService;
             CustomerBalanceService = customerBalanceService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
             FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
+            PaymoService = paymoService;
         }
 
         public VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id)
@@ -39,8 +42,10 @@ namespace Cameo.Services
             return _repository.GetActiveSingleDetailsWithRelatedDataByID(id);
         }
 
-        public override void Add(VideoRequest entity, string creatorID)
+        public void Add(VideoRequest entity, Invoice invoice, string creatorID)
         {
+            entity.Invoice = invoice;
+
             entity.ViewedByCustomer = true;
             entity.ViewedByTalent = false;
 
@@ -61,7 +66,7 @@ namespace Cameo.Services
             //entity.RequestAnswerDeadline = RoundToUp(DateTime.Now.AddMinutes(2880)); //2 days
             entity.VideoDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
 #endif
-            base.Add(entity, creatorID);
+            Add(entity, creatorID);
 
             AssignRequestNumber(entity);
             Update(entity, creatorID);
@@ -156,6 +161,8 @@ namespace Cameo.Services
 
             Update(model, userID);
 
+            PaymoService.CancelHold(model.Invoice);
+
             string title = "";
             string body = "";
             string adresatUserID = "";
@@ -230,6 +237,8 @@ namespace Cameo.Services
 
             if (!IsRequestAcceptedAndWaitingForVideo(model))
                 return;
+
+            PaymoService.CancelHold(model.Invoice);
 
             model.DateVideoExpired = DateTime.Now;
             model.RequestStatusID = (int)VideoRequestStatusEnum.videoExpired;
@@ -386,7 +395,10 @@ namespace Cameo.Services
             //            model.PaymentDeadline = RoundToUp(DateTime.Now.AddMinutes(10080)); //7 days
             //#endif
 
+            TalentBalanceService.ReplenishBalance(model.Talent, model.Price);
             Update(model, userID);
+
+            PaymoService.PerformHold(model.Invoice);
 
             //TO-DO: send firebase notification to Customer
             string title = model.Talent.FullName;
