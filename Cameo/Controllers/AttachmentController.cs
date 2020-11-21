@@ -87,20 +87,20 @@ namespace Cameo.Controllers
                     TalentService.Update(model, curUserID);
                 }
             }
-            else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
-            {
-                var model = VideoRequestService.GetByID(id);
-                if (model != null)
-                {
-                    if (VideoRequestService.IsVideoUploadable(model))
-                    {
-                        model.Video = attachment;
-                        VideoRequestService.SaveUploadedVideo(model, curUserID);
+            //else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
+            //{
+            //    var model = VideoRequestService.GetByID(id);
+            //    if (model != null)
+            //    {
+            //        if (VideoRequestService.IsVideoUploadable(model))
+            //        {
+            //            model.Video = attachment;
+            //            VideoRequestService.SaveUploadedVideo(model, curUserID);
 
-                        //HangfireService.CreateTaskForConvertingVideo(attachment.ID, curUserID);
-                    }
-                }
-            }
+            //            //HangfireService.CreateTaskForConvertingVideo(attachment.ID, curUserID);
+            //        }
+            //    }
+            //}
             //else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
             //{
             //    var request = VideoRequestService.GetByID(id);

@@ -37,61 +37,91 @@ else
                         <!-- Start Contact Wrapper -->
                         <div class="contact__form--1">
                             @*<form asp-controller="Account" asp-action="Register" method="post" id="registrationForm" data-ajax="true" data-ajax-method="post">*@
-                                <div class="row">
-                                    <div asp-validation-summary="All" class="text-danger"></div>
-                                    <div class="col-lg-12">
-                                        <input asp-for="TalentID" type="hidden" value="@talent.ID" />
-                                        <input asp-for="Price" type="hidden" value="@talent.Price" />
+                            <div class="row">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="col-lg-12">
+                                    <input asp-for="TalentID" type="hidden" value="@talent.ID" />
+                                    <input asp-for="Price" type="hidden" value="@talent.Price" />
 
-                                        <label asp-for="TypeID"></label>
-                                        @{
-                                            int i = 0;
-                                        }
-                                        @foreach (var item in videoRequestTypes)
-                                        {
-                                            <div class="custom-control custom-radio">
-                                                @Html.RadioButtonFor(model => model.TypeID, item.Value, new { @class = "custom-control-input", id = "customRadio_" + i, onclick = "OnTypeChanges(this.value)" })
-                                                <label class="custom-control-label" for="customRadio_@i">@item.Text</label>
-                                            </div>
-
-                                            i++;
-                                        }
-                                        <span asp-validation-for="TypeID" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="col-lg-6 mt--20">
-                                        <label asp-for="To"></label>
-                                        <input type="text" asp-for="To" placeholder="Наргизы">
-                                        <span asp-validation-for="To" class="text-danger"></span>
-                                    </div>
-                                    <div class="col-lg-6 mt--20" id="fromBox">
-                                        <label asp-for="From"></label>
-                                        <input type="text" asp-for="From" placeholder="Санжара">
-                                        <span asp-validation-for="From" class="text-danger"></span>
-                                    </div>
-                                    <div class="col-lg-12 mt--20">
-                                        <label asp-for="Instructions"></label>
-                                        <textarea asp-for="Instructions"></textarea>
-                                        <span asp-validation-for="Instructions" class="text-danger"></span>
-                                    </div>
-                                    <div class="col-lg-12 mt--20">
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" asp-for="IsNotPublic" class="custom-control-input" id="switch1">
-                                            <label class="custom-control-label" for="switch1">@localizer["DoNotMakeVideoPublic"]</label>
+                                    <label asp-for="TypeID"></label>
+                                    @{
+                                        int i = 0;
+                                    }
+                                    @foreach (var item in videoRequestTypes)
+                                    {
+                                        <div class="custom-control custom-radio">
+                                            @Html.RadioButtonFor(model => model.TypeID, item.Value, new { @class = "custom-control-input", id = "customRadio_" + i, onclick = "OnTypeChanges(this.value)" })
+                                            <label class="custom-control-label" for="customRadio_@i">@item.Text</label>
                                         </div>
-                                        <span asp-validation-for="IsNotPublic" class="text-danger"></span>
-                                    </div>
 
-                                    <div class="col-lg-12 mt--20">
-                                        <p class="form-messege text-danger"></p>
-                                    </div>
-                                    <div class="col-lg-12 mt--20">
-                                        @*<input type="submit" value="@localizer["OrderVideo"] (@talent.RequestPriceStr @localizer["UZS"])">*@
-                                        <button type="submit" class="button-link button-size__xl button__black" style="width: 100%">
-                                            <span class="button-text">@localizer["OrderVideo"]</span>
-                                        </button>
-                                    </div>
+                                        i++;
+                                    }
+                                    <span asp-validation-for="TypeID" class="text-danger"></span>
                                 </div>
+
+                                <div class="col-lg-6 mt--20">
+                                    <label asp-for="To"></label>
+                                    <input type="text" asp-for="To" placeholder="Наргизы">
+                                    <span asp-validation-for="To" class="text-danger"></span>
+                                </div>
+                                <div class="col-lg-6 mt--20" id="fromBox">
+                                    <label asp-for="From"></label>
+                                    <input type="text" asp-for="From" placeholder="Санжара">
+                                    <span asp-validation-for="From" class="text-danger"></span>
+                                </div>
+                                <div class="col-lg-12 mt--20">
+                                    <label asp-for="Instructions"></label>
+                                    <textarea asp-for="Instructions"></textarea>
+                                    <span asp-validation-for="Instructions" class="text-danger"></span>
+                                </div>
+                                <div class="col-lg-12 mt--20">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" asp-for="IsNotPublic" class="custom-control-input" id="switch1">
+                                        <label class="custom-control-label" for="switch1">@localizer["DoNotMakeVideoPublic"]</label>
+                                    </div>
+                                    <span asp-validation-for="IsNotPublic" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-lg-12 mt--20" id="smsBox" style="display: none;">
+                                    <label asp-for="Sms"></label>
+                                    <input type="text" asp-for="Sms" placeholder="@localizer["CodeFromSMS"]">
+                                    <span asp-validation-for="Sms" class="text-danger"></span>
+                                    <input asp-for="InvoiceID" type="hidden" />
+                                </div>
+
+                                <div class="col-lg-12 mt--20">
+                                    <p class="form-messege text-danger"></p>
+                                </div>
+                                <div class="col-lg-6 mt--20 formSubmitBtnBox" style="display: none;">
+                                    <button type="button" class="button-link button-size__xl button__black backBtn" onclick="BackToUzcardForm()">@localizer["Back"]</button>
+                                </div>
+                                <div class="col-lg-6 mt--20 formSubmitBtnBox" style="display: none;">
+                                    <button type="submit" class="button-link button-size__xl button__black" onclick="SubmitCreateRequestForm()" style="width: 100%; padding-left: 0px; padding-right: 0px;">
+                                        <span class="button-text">@localizer["OrderVideo"]</span>
+                                        <span class="icon-right"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row" id="uzcardBox">
+                                <div class="col-lg-12 mt--20">
+                                    <label>Введите номер карты (UZCARD):</label>
+                                    <input type="text" id="card_number" placeholder="8600 0000 0000 0000">
+                                </div>
+                                <div class="col-lg-12 mt--20">
+                                    <label>Срок истечения</label>
+                                    <input type="text" id="card_expiry" placeholder="05/23">
+                                </div>
+                                <div class="col-lg-12 mt--20">
+                                    <p class="form-messege text-danger"></p>
+                                </div>
+                                <div class="col-lg-12 mt--20">
+                                    <button type="button" class="button-link button-size__xl button__black" onclick="SubmitUzcardDetails();" style="width: 100%">
+                                        <span class="button-text">@localizer["OrderVideo"]</span>
+                                        <span class="icon-right spinner" style="display: none;"><i class="spinner fa fa-circle-o-notch fa-spin fa-fw" style="color: white; display: none;"></i></span>
+                                    </button>
+                                </div>
+                            </div>
                             @*</form>*@
                         </div>
                     </div>
@@ -101,77 +131,101 @@ else
     </div>
     <!-- End Contact Form -->
 
-
-    @*<div asp-validation-summary="All" class="text-danger"></div>*@
-    
-
-    @*<div class="row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label asp-for="TypeID"></label>
-                @foreach (var item in videoRequestTypes)
-                {
-                    <div class="radio">
-                        <label>@Html.RadioButtonFor(model => model.TypeID, item.Value, new { onclick = "OnTypeChanges(this.value)" }) @item.Text</label>
-                    </div>
-                }
-                <span asp-validation-for="TypeID" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label asp-for="To"></label>
-                <input type="text" class="form-control" asp-for="To" placeholder="Carissa">
-                <span asp-validation-for="To" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-sm-6" id="fromBox">
-            <div class="form-group">
-                <label asp-for="From"></label>
-                <input type="text" class="form-control" asp-for="From" placeholder="Shia">
-                <span asp-validation-for="From" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label asp-for="Instructions"></label>
-                <textarea asp-for="Instructions" class="form-control"></textarea>
-                <span asp-validation-for="Instructions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input type="text" class="form-control" asp-for="Email" placeholder="Email">
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsNotPublic"><input type="checkbox" asp-for="IsNotPublic"> Не делать это видео публичным на Cameo </label>
-                <span asp-validation-for="IsNotPublic" class="text-danger"></span>
-            </div>
-
-            <button type="submit"
-                    class="btn btn-lg btn-block btn-primary"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Оплату Вы произведете, как только видео будет готово">
-                Заказать прямо сейчас за @talent.Price.ToString(AppData.Configuration.NumberViewStringFormat) сум
-            </button>
-        </div>
-    </div>*@
-
     <script>
         var myselfID = Number("@((int)VideoRequestTypeEnum.myself)");
+        var invoice_id = undefined;
 
         function OnTypeChanges(typeID) {
             if (typeID == myselfID)
                 $("#fromBox").hide();
             else
                 $("#fromBox").show();
+        }
+
+        function SubmitUzcardDetails()
+        {
+            $("#uzcardBox .form-messege").html("");
+
+            if (!UzcardFormIsValid())
+            {
+                $("#uzcardBox .form-messege").html("Укажите данные uzcard");
+                return;
+            }
+
+            $("#uzcardBox input, #uzcardBox button").attr("disabled", "disabled");
+            $("#uzcardBox .spinner").show();
+
+            $.ajax({
+                type: "POST",
+                url: "/VideoRequest/GenerateInvoice",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    card_number: $("#uzcardBox input#card_number").val(),
+                    card_expiry: $("#uzcardBox input#card_expiry").val(),
+                    TalentID: @talent.ID
+                }),
+                //dataType: "json",
+                beforeSend: function ()
+                {
+                },
+                success: function (data)
+                {
+                    invoice_id = data.invoice_id;
+                    $("div#uzcardBox").hide("fast");
+                    ShowSmsBox();
+                },
+                error: function (data)
+                {
+                    //console.log(data);
+                    $("#uzcardBox .form-messege").html(data.responseJSON.errorMessage);
+                    //alert("Ajax error (status code = " + data.status + "): " + data.responseJSON.errorMessage);
+                },
+                complete: function (data)
+                {
+                    $("#uzcardBox input, #uzcardBox button").removeAttr("disabled");
+                    $("#uzcardBox .spinner").hide();
+                }
+            });
+        }
+
+        function UzcardFormIsValid()
+        {
+            return ($("#uzcardBox input#card_number").val() != ""
+                && $("#uzcardBox input#card_number").val() != "");
+        }
+
+        function ShowSmsBox()
+        {
+            $("div#smsBox").show("fast");
+            $("div#smsBox input#Sms").focus();
+            $("div.formSubmitBtnBox").show("fast");
+        }
+
+        function BackToUzcardForm()
+        {
+            $("div#uzcardBox").show("fast");
+            HideSmsBox();
+        }
+
+        function HideSmsBox()
+        {
+            $("div#smsBox").hide("fast");
+            $("div.formSubmitBtnBox").hide("fast");
+        }
+
+        function SubmitCreateRequestForm()
+        {
+            $("form#createRequest input#InvoiceID").val(invoice_id);
+        }
+
+        function RequestCreationBegin(data)
+        {
+            //console.log(data);
+            //console.log("begin");
+            $("#createRequest input, #createRequest textarea, #createRequest button").attr("disabled", "disabled");
+            $("#createRequest .spinner").show();
+
+            $("#createRequest .form-messege").last().html("");
         }
     </script>
 }

@@ -454,6 +454,9 @@
     <value>Неверный номер телефона</value>
   </data>
   <data name="OrdersCompleted" xml:space="preserve">
-    <value>Зазаз завершен</value>
+    <value>Заказов завершено</value>
+  </data>
+  <data name="Sms" xml:space="preserve">
+    <value>Смс</value>
   </data>
 </root>

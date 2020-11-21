@@ -37,6 +37,12 @@ namespace Cameo.ViewModels
         [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
         public int TalentID { get; set; }
 
+        public int InvoiceID { get; set; }
+
+        [Display(Name = "Sms", ResourceType = typeof(Resources.ResourceTexts))]
+        [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
+        public string Sms { get; set; }
+
         public VideoRequest ToModel(Customer customer)
         {
             VideoRequest model = new VideoRequest()

@@ -14,11 +14,12 @@
             <div class="col-sm-6 col-12">
                 <div class="blog blog_style--1">
                     <div class="inner">
-                        <form asp-action="Create" asp-controller="VideoRequest"
+                        <form asp-action="Create" asp-controller="VideoRequest" id="createRequest"
                                 data-ajax="true"
                                 data-ajax-method="POST"
                                 data-ajax-mode="replace"
-                                data-ajax-update="#ajaxresult">
+                                data-ajax-update="#ajaxresult"
+                                data-ajax-begin="RequestCreationBegin">
                             <div id="ajaxresult">
                                 @await Html.PartialAsync(
                                     "/Views/VideoRequest/_Create.cshtml")
@@ -46,6 +47,17 @@
 
     ::-ms-input-placeholder { /* Microsoft Edge */
         color: #d3d3d3;
+    }
+
+    .backBtn, .submitBtn {
+        width: 100%;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 14px !important;
+    }
+
+    .icon__style--1 .inner .content .button-link {
+        font-size: 20px;
     }
 </style>
 

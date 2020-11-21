@@ -628,7 +628,7 @@ namespace Cameo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Зазаз завершен.
+        ///   Looks up a localized string similar to Заказов завершено.
         /// </summary>
         public static string OrdersCompleted {
             get {
@@ -831,6 +831,15 @@ namespace Cameo.Resources {
         public static string Showing {
             get {
                 return ResourceManager.GetString("Showing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Смс.
+        /// </summary>
+        public static string Sms {
+            get {
+                return ResourceManager.GetString("Sms", resourceCulture);
             }
         }
         

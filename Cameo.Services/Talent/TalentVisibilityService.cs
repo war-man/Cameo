@@ -62,9 +62,9 @@ namespace Cameo.Services
             if (!IsPriceSet(talent))
                 warningTexts.Add("Не установлена цена за Ваше видео");
             if (!IsCreditCardProvided(talent))
-                warningTexts.Add("Не предоставлены данные UZCARD для приема оплаты");
-            if (!IsCategorySelected(talent))
-                warningTexts.Add("К какой категории вы принадлежите?");
+                warningTexts.Add("Не предоставлены данные UZCARD для вывода денег");
+            //if (!IsCategorySelected(talent))
+            //    warningTexts.Add("К какой категории вы принадлежите?");
 
             return warningTexts;
         }

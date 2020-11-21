@@ -25,6 +25,8 @@ namespace Cameo.Controllers
         private readonly ITalentBalanceService TalentBalanceService;
         private readonly ICustomerBalanceService CustomerBalanceService;
         private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
+        private readonly IInvoiceService InvoiceService;
+        private readonly IPaymoService PaymoService;
 
         public VideoRequestController(
             IVideoRequestService videoRequestService,
@@ -35,6 +37,8 @@ namespace Cameo.Controllers
             ITalentBalanceService talentBalanceService,
             ICustomerBalanceService customerBalanceService,
             IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
+            IInvoiceService invoiceService,
+            IPaymoService paymoService,
             ILogger<VideoRequestController> logger)
         {
             VideoRequestService = videoRequestService;
@@ -45,6 +49,8 @@ namespace Cameo.Controllers
             TalentBalanceService = talentBalanceService;
             CustomerBalanceService = customerBalanceService;
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
+            InvoiceService = invoiceService;
+            PaymoService = paymoService;
             _logger = logger;
         }
 
@@ -54,13 +60,28 @@ namespace Cameo.Controllers
         }
 
         //ajax
-        public IActionResult GenerateInvoice(InvoiceGenerateVM invoiceGenerateVM)
+        public IActionResult GenerateInvoice([FromBody] InvoiceGenerateVM invoiceGenerateVM)
         {
-            Talent talent = TalentService.GetActiveByID(invoiceGenerateVM.TalentID);
-            if (talent == null)
-                throw new Exception("Талант не найден");
+            try
+            {
+                var curUser = accountUtil.GetCurrentUser(User);
 
-            return null;
+                Talent talent = TalentService.GetActiveByID(invoiceGenerateVM.TalentID);
+                if (talent == null)
+                    throw new Exception("Талант не найден");
+
+                Invoice invoice = invoiceGenerateVM.ToModel(talent.Price);
+                InvoiceService.Add(invoice, curUser.ID);
+
+                string hold_id = PaymoService.ApplyForHold(invoice);
+                InvoiceService.AssignHoldID(invoice, hold_id, curUser.ID);
+
+                return Ok(new { invoice_id = invoice.ID });
+            }
+            catch (Exception ex)
+            {
+                return CustomBadRequest(ex);
+            }
         }
 
         [Authorize(Policy = "CustomerOnly")]
@@ -88,23 +109,6 @@ namespace Cameo.Controllers
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
-            //int customerBalance = CustomerBalanceService.GetBalance(customer);
-            //ViewData["customerBalance"] = customerBalance;
-            //string numberFormat = AppData.Configuration.NumberViewStringFormat;
-            //ViewData["customerBalanceStr"] = customerBalance
-            //    .ToString(numberFormat)
-            //    .Trim();
-
-            //if (customerBalance < talentVM.Price)
-            //{
-            //    int paymentAmount = talentVM.RequestPrice - customerBalance;
-            //    string returnUrl = "https://helloo.uz/VideoRequest/Create?username=" + username;
-
-            //    ViewData["PaymentAmount"] = paymentAmount;
-            //    ViewData["ClickPaymentButtonUrl"] = CustomerBalanceService
-            //        .GenerateClickPaymentButtonUrl(customer.AccountNumber, paymentAmount, returnUrl);
-            //}
-
             return View(createVM);
         }
 
@@ -125,13 +129,31 @@ namespace Cameo.Controllers
                         {
                             if (talent.Price == modelVM.Price)
                             {
-                                var curCustomer = CustomerService.GetByUserID(curUser.ID);
                                 try
                                 {
+                                    Invoice invoice = InvoiceService.GetByID(modelVM.InvoiceID);
+                                    if (invoice == null)
+                                        throw new Exception("Инвойс не найден");
+
+                                    PaymoService.ConfirmHold(invoice, modelVM.Sms);
+                                    InvoiceService.Update(invoice, curUser.ID);
+
+                                    var curCustomer = CustomerService.GetByUserID(curUser.ID);
+
                                     VideoRequest model = modelVM.ToModel(curCustomer);
 
-                                    //1. create model and send notification
-                                    VideoRequestService.Add(model, curUser.ID);
+                                    try
+                                    {
+                                        //1. create model and send notification
+                                        VideoRequestService.Add(model, invoice, curUser.ID);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        PaymoService.CancelHold(invoice);
+                                        InvoiceService.Update(invoice, curUser.ID);
+
+                                        throw ex;
+                                    }
 
                                     //2. create hangfire RequestAnswerJobID and save it
                                     //model.RequestAnswerJobID = HangfireService.CreateJobForVideoRequestAnswerDeadline(model, curUser.ID);

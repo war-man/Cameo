@@ -176,10 +176,7 @@ namespace Cameo.Services
             //        && m.User.TalentApprovedByAdmin
             //        && m.AvatarID.HasValue && m.AvatarID > 0
             //        && !m.IsDeleted
-            //        && m.Price > 0
-            //        && !(m.CreditCardNumber == null || m.CreditCardNumber.Trim() == string.Empty)
-            //        && m.CreditCardExpire.HasValue
-            //        && m.TalentCategories.Count > 0);
+            //        && m.Price > 0);
         }
 
         public IQueryable<Talent> GetRelated(Talent model, int? count = null)

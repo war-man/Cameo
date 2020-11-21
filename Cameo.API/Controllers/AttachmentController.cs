@@ -118,7 +118,7 @@ namespace Cameo.API.Controllers
                 VideoRequestService.ConfirmVideo(request, curUser.ID);
 
                 //cancel hangfire jobs
-                HangfireService.CancelJob(request.RequestAnswerJobID);
+                //HangfireService.CancelJob(request.RequestAnswerJobID);
                 HangfireService.CancelJob(request.VideoJobID);
             }
             //else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_PAYMENT_SCREENSHOT))
