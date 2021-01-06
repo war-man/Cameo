@@ -34,6 +34,8 @@ namespace Cameo.DependencyInjections
             services.AddTransient<IFirebaseRegistrationTokenRepository, FirebaseRegistrationTokenRepository>();
             services.AddTransient<IClickTransactionRepository, ClickTransactionRepository>();
             services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+            services.AddTransient<IWithdrawRequestRepository, WithdrawRequestRepository>();
+            services.AddTransient<IWithdrawRequestStatusRepository, WithdrawRequestStatusRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -64,6 +66,8 @@ namespace Cameo.DependencyInjections
             services.AddTransient<ITalentSearchService, TalentSearchService>();
             services.AddTransient<IInvoiceService, InvoiceService>();
             services.AddTransient<IPaymoService, PaymoService>();
+            services.AddTransient<IWithdrawRequestService, WithdrawRequestService>();
+            services.AddTransient<IWithdrawRequestStatusService, WithdrawRequestStatusService>();
         }
     }
 }

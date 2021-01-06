@@ -4,10 +4,9 @@ using System.Text;
 
 namespace Cameo.Models.Enums
 {
-    public enum UserTypesEnum
+    public enum WithdrawRequestStatusesEnum
     {
-        customer,
-        talent,
-        Admin
+        Pending = 1,
+        Completed = 2,
     }
 }

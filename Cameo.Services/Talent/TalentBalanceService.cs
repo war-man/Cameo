@@ -28,6 +28,11 @@ namespace Cameo.Services
             talent.Balance += amount;
         }
 
+        public bool BalanceIsLessThan(Talent talent, int amount)
+        {
+            return talent.Balance < amount;
+        }
+
         //public int GetBalanceIncludingReservations(Talent talent)
         //{
         //    int clearBalance = GetBalance(talent);
@@ -114,10 +119,9 @@ namespace Cameo.Services
         //    return CalculateMaxNumberOfPossibleRequests(balance, price) > 0;
         //}
 
-        //public void TakeOffBalance(Talent talent, int amount, string userID)
-        //{
-        //    talent.Balance -= amount;
-        //    //TalentService.Update(talent, userID);
-        //}
+        public void TakeOffBalance(Talent talent, int amount)
+        {
+            talent.Balance -= amount;
+        }
     }
 }

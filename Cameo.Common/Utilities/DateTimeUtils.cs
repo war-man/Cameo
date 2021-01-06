@@ -27,12 +27,15 @@ namespace Cameo.Common.Utilities
             return result;
         }
 
-        public static string ConvertToString(DateTime inputDateTime, string format = null)
+        public static string ConvertToString(DateTime? inputDateTime, string format = null)
         {
+            if (!inputDateTime.HasValue)
+                return null;
+
             if (string.IsNullOrWhiteSpace(format))
                 format = AppData.Configuration.DateViewStringFormat; //"dd.MM.yyyy"
 
-            string result = inputDateTime.ToString(format, CultureInfo.InvariantCulture);
+            string result = inputDateTime.Value.ToString(format, CultureInfo.InvariantCulture);
 
             return result;
         }
