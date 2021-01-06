@@ -78,9 +78,9 @@ namespace Cameo
             //Hangfire
 #if DEBUG
             string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
-            //string connectionString = "Data Source=209.159.151.3;Initial Catalog=Helloo;User Id=sa;Password=MCGR4ZD4Thnr93V4;";
+            //string connectionString = "Data Source=209.159.151.3\\SQLEXPRESS,1433;Initial Catalog=Helloo;User Id=sa;Password=TD9N9CkDmQFNZ7HZ;";
 #else
-            string connectionString = "Data Source=209.159.151.3;Initial Catalog=Helloo;User Id=sa;Password=MCGR4ZD4Thnr93V4;";
+            string connectionString = "Data Source=209.159.151.3\\SQLEXPRESS,1433;Initial Catalog=Helloo;User Id=sa;Password=TD9N9CkDmQFNZ7HZ;";
 #endif
             services.AddHangfire(config => 
                 config.UseSqlServerStorage(
@@ -111,9 +111,9 @@ namespace Cameo
 
             var webRoot = _env.ContentRootPath;
 
-            services.AddSingleton<IFileProvider>(
-              new PhysicalFileProvider(
-                Path.Combine(webRoot, "Uploads")));
+            //services.AddSingleton<IFileProvider>(
+            //  new PhysicalFileProvider(
+            //    Path.Combine(webRoot, "Uploads")));
 
             ConfigureFirebase();
 

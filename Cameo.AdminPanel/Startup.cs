@@ -86,12 +86,12 @@ namespace Cameo.AdminPanel
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "Content")),
-                RequestPath = "/Content"
-            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), "Content")),
+            //    RequestPath = "/Content"
+            //});
 
             app.UseCookiePolicy();
 

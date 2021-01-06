@@ -74,7 +74,7 @@ namespace Cameo.API
 #if DEBUG
             string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
 #else
-            string connectionString = "Data Source=209.159.151.3;Initial Catalog=Helloo;User Id=sa;Password=MCGR4ZD4Thnr93V4;";
+            string connectionString = "Data Source=209.159.151.3\\SQLEXPRESS,1433;Initial Catalog=Helloo;User Id=sa;Password=TD9N9CkDmQFNZ7HZ;";
 #endif
             services.AddHangfire(config =>
                 config.UseSqlServerStorage(

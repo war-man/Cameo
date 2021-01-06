@@ -17,7 +17,7 @@ namespace Cameo.Services
 
         public override void Add(Invoice entity, string creatorID)
         {
-            entity.StatusID = 1; //pending; must be refactored to enum
+            entity.StatusID = (int)PaymoInvoiceStatusEnum.PENDING;
             entity.hold_till = DateTime.Now.AddDays(5); // value of hold_till must be taken from AppSettings
 
             base.Add(entity, creatorID);
@@ -29,21 +29,23 @@ namespace Cameo.Services
             Update(entity, creatorID);
         }
 
-        //public void MarkTransactionAsCanceled(ClickTransaction transaction)
-        //{
-        //    transaction.StatusID = (int)ClickTransactionStatusEnum.CANCELLED;
-        //    transaction.DateCancelled = DateTime.Now;
+        public void MarkAsSuccess(Invoice entity)
+        {
+            entity.StatusID = (int)PaymoInvoiceStatusEnum.CANCELLED;
+            entity.DateSuccess = DateTime.Now;
 
-        //    Update(transaction, null);
-        //}
+            Update(entity, null);
+        }
 
-        //public void MarkTransactionAsPaid(ClickTransaction transaction)
-        //{
-        //    transaction.StatusID = (int)ClickTransactionStatusEnum.SUCCESS;
-        //    transaction.DateSuccess = DateTime.Now;
+        public void MarkAsCanceled(Invoice entity)
+        {
+            entity.StatusID = (int)PaymoInvoiceStatusEnum.CANCELLED;
+            entity.DateCancelled = DateTime.Now;
 
-        //    Update(transaction, null);
-        //}
+            Update(entity, null);
+        }
+
+        
 
         //public bool IsTransactionPaid(ClickTransaction transaction)
         //{

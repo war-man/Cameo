@@ -23,6 +23,9 @@ namespace Cameo.Models
 
         public int StatusID { get; set; } //1 - pending, 2 - success, 3 - cancelled
 
+        public DateTime? DateSuccess { get; set; }
+        public DateTime? DateCancelled { get; set; }
+
         //public int ClickTransID { get; set; }
         //public int ServiceID { get; set; }
         //public int ClickPaydocID { get; set; }

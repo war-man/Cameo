@@ -9,6 +9,13 @@ namespace Cameo.Services
 {
     public class PaymoService : IPaymoService
     {
+        private readonly IInvoiceService InvoiceService;
+
+        public PaymoService(IInvoiceService invoiceService)
+        {
+            InvoiceService = invoiceService;
+        }
+
         //POST: https://api.paymo.uz/hold/
         public string ApplyForHold(Invoice invoice)
         {
@@ -36,7 +43,7 @@ namespace Cameo.Services
             //make https request
             //make checkings
 
-            invoice.StatusID = 2; //success; must be refactored to enum
+            InvoiceService.MarkAsSuccess(invoice);
         }
 
         //DELETE: https://api.pays.uz/hold/{hold_id}
@@ -48,7 +55,7 @@ namespace Cameo.Services
             //make https request
             //make checkings
 
-            invoice.StatusID = 3; //cancelled; must be refactored to enum
+            InvoiceService.MarkAsCanceled(invoice);
         }
     }
 }
