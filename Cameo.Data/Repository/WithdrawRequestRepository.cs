@@ -17,7 +17,11 @@ namespace Cameo.Data.Repository
         {
             return DbSet
                 .Include(m => m.Creator)
-                .Include(m => m.Status);
+                .Include(m => m.Status)
+                .Include(m => m.Talent)
+                    .ThenInclude(m => m.User)
+                .Include(m => m.Talent)
+                    .ThenInclude(m => m.Avatar);
         }
 
         public WithdrawRequest GeWithRelatedDataByID(int id)

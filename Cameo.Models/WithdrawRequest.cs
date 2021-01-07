@@ -7,6 +7,10 @@ namespace Cameo.Models
 {
     public class WithdrawRequest : BaseModel
     {
+        [ForeignKey("Talent")]
+        public int TalentID { get; set; }
+        public virtual Talent Talent { get; set; }
+
         public int Amount { get; set; }
 
         [ForeignKey("Status")]

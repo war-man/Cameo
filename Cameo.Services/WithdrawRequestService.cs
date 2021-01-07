@@ -31,6 +31,7 @@ namespace Cameo.Services
 
         public void Add(WithdrawRequest entity, Talent talent /*string creatorID*/)
         {
+            entity.Talent = talent;
             entity.StatusID = (int)WithdrawRequestStatusesEnum.Pending;
             _talentBalanceService.TakeOffBalance(talent, entity.Amount);
 
@@ -47,10 +48,10 @@ namespace Cameo.Services
             return GetManyWithRelatedDataAsIQueryable();
         }
 
-        public IQueryable<WithdrawRequest> GetAllByCreator(string userID)
+        public IQueryable<WithdrawRequest> GetAllByTalent(int talentID)
         {
             return GetManyWithRelatedDataAsIQueryable()
-                .Where(m => m.CreatedBy == userID);
+                .Where(m => m.TalentID == talentID);
         }
 
         public IQueryable<WithdrawRequest> Search(
@@ -61,9 +62,8 @@ namespace Cameo.Services
             out int recordsFiltered,
             out string error,
 
-            UserTypesEnum curUserType,
             int? statusID,
-            string authorID)
+            int? talentID)
         {
             recordsTotal = 0;
             recordsFiltered = 0;
@@ -73,10 +73,10 @@ namespace Cameo.Services
             {
                 IQueryable<WithdrawRequest> requests;
 
-                if (curUserType == UserTypesEnum.Admin)
+                if (talentID.HasValue)
+                    requests = GetAllByTalent(talentID.Value);
+                else
                     requests = GetAllForAdmin();
-                else 
-                    requests = GetAllByCreator(authorID);
 
                 recordsTotal = requests.Count();
 

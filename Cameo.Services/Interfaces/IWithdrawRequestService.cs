@@ -15,14 +15,13 @@ namespace Cameo.Services.Interfaces
             out int recordsFiltered,
             out string error,
 
-            UserTypesEnum curUserType,
             int? statusID,
-            string authorID);
+            int? talentID);
         bool UserHasNotEnoughtMoneyForWithdrawal(int balance);
         bool AmountIsLessThanMinimum(int amount);
         int GetMinimalAmountInBalanceForWithdrawal();
         bool IsCompleted(WithdrawRequest model);
         void MarkAsCompleted(WithdrawRequest model, string adminID);
-        IQueryable<WithdrawRequest> GetAllByCreator(string userID);
+        IQueryable<WithdrawRequest> GetAllByTalent(int talentID);
     }
 }

@@ -7,9 +7,9 @@ namespace Cameo.API.ViewModels
 {
     public class WithdrawRequestCreatePrepareVM
     {
-        public bool TalentHasNotEnoughtMoneyForWithdrawal { get; set; }
-        public int MinimalAmountInBalanceForWithdrawal { get; set; }
-        public int TalentBalance { get; set; }
+        public bool talent_has_not_enought_money_for_withdrawal { get; set; }
+        public int minimal_amount_in_balance_for_withdrawal { get; set; }
+        public int talent_balance { get; set; }
 
         public WithdrawRequestCreatePrepareVM() { }
 
@@ -18,9 +18,9 @@ namespace Cameo.API.ViewModels
             int minimalAmountInBalanceForWithdrawal,
             int talentBalance)
         {
-            TalentHasNotEnoughtMoneyForWithdrawal = talentHasNotEnoughtMoneyForWithdrawal;
-            MinimalAmountInBalanceForWithdrawal = minimalAmountInBalanceForWithdrawal;
-            TalentBalance = TalentBalance;
+            talent_has_not_enought_money_for_withdrawal = talentHasNotEnoughtMoneyForWithdrawal;
+            minimal_amount_in_balance_for_withdrawal = minimalAmountInBalanceForWithdrawal;
+            talent_balance = talentBalance;
         }
     }
 
@@ -54,22 +54,22 @@ namespace Cameo.API.ViewModels
 
     public class WithdrawRequestListItemForExpertAndUserVM
     {
-        public int ID { get; set; }
+        public int id { get; set; }
 
         [Display(Name = "Сумма")]
-        public int Amount { get; set; }
+        public int amount { get; set; }
 
         [Display(Name = "Сумма")]
-        public string AmountStr { get; set; }
+        public string amount_str { get; set; }
 
         [Display(Name = "Статус")]
-        public BaseDropdownableDetailsVM Status { get; set; }
+        public BaseDropdownableDetailsVM status { get; set; }
 
         [Display(Name = "Дата создания")]
-        public string DateCreated { get; set; }
+        public string date_created { get; set; }
 
         [Display(Name = "Дата выполнения")]
-        public string DateCompleted { get; set; }
+        public string date_completed { get; set; }
 
         public WithdrawRequestListItemForExpertAndUserVM() { }
 
@@ -78,13 +78,13 @@ namespace Cameo.API.ViewModels
             if (model == null)
                 return;
 
-            ID = model.ID;
-            Amount = model.Amount;
-            AmountStr = model.Amount.ToString(AppData.Configuration.NumberViewStringFormat);
+            id = model.ID;
+            amount = model.Amount;
+            amount_str = model.Amount.ToString(AppData.Configuration.NumberViewStringFormat);
 
-            Status = new BaseDropdownableDetailsVM(model.Status);
-            DateCreated = DateTimeUtils.ConvertToString(model.DateCreated);
-            DateCompleted = DateTimeUtils.ConvertToString(model.DateCompleted);
+            status = new BaseDropdownableDetailsVM(model.Status);
+            date_created = DateTimeUtils.ConvertToString(model.DateCreated);
+            date_completed = DateTimeUtils.ConvertToString(model.DateCompleted);
         }
     }
 

@@ -54,6 +54,9 @@ namespace Cameo.API.Controllers
                 string error = "";
 
                 var curUser = accountUtil.GetCurrentUser(User);
+                var talent = TalentService.GetByUserID(curUser.ID);
+                if (talent == null)
+                    throw new Exception("Талант не найден");
 
                 IQueryable<WithdrawRequest> dataIQueryable = WithdrawRequestService.Search(
                     start,
@@ -63,9 +66,8 @@ namespace Cameo.API.Controllers
                     out recordsFiltered,
                     out error,
 
-                    UserTypesEnum.talent,
                     statusID,
-                    curUser.ID
+                    talent.ID
                 );
 
                 if (!string.IsNullOrWhiteSpace(error))

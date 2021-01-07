@@ -7,7 +7,6 @@ namespace Cameo.Models.Enums
     public enum UserTypesEnum
     {
         customer,
-        talent,
-        Admin
+        talent
     }
 }

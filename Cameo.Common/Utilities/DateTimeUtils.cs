@@ -9,6 +9,8 @@ namespace Cameo.Common.Utilities
 {
     public static class DateTimeUtils
     {
+        public static string DefaultFormat = "dd.MM.yyyy";
+
         /// <summary>
         /// if unable to convert then return DateTime.MinValue
         /// </summary>
@@ -19,7 +21,8 @@ namespace Cameo.Common.Utilities
             CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
 
             if (string.IsNullOrWhiteSpace(format))
-                format = AppData.Configuration.DateViewStringFormat; //"dd.MM.yyyy"
+                //format = AppData.Configuration.DateViewStringFormat; //"dd.MM.yyyy"
+                format = DefaultFormat;
 
             DateTime result = !string.IsNullOrWhiteSpace(inputDatetimeString) 
                 ? DateTime.ParseExact(inputDatetimeString, format, cultureInfo) : DateTime.MinValue;
@@ -33,7 +36,8 @@ namespace Cameo.Common.Utilities
                 return null;
 
             if (string.IsNullOrWhiteSpace(format))
-                format = AppData.Configuration.DateViewStringFormat; //"dd.MM.yyyy"
+                //format = AppData.Configuration.DateViewStringFormat; //"dd.MM.yyyy"
+                format = DefaultFormat;
 
             string result = inputDateTime.Value.ToString(format, CultureInfo.InvariantCulture);
 
