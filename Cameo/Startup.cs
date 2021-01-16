@@ -138,11 +138,11 @@ namespace Cameo
 
             if (env.IsDevelopment())
             {
-                app.UseStatusCodePagesWithReExecute("/Error/Status/{0}");
-                app.UseExceptionHandler("/Error/Index");
+                //app.UseStatusCodePagesWithReExecute("/Error/Status/{0}");
+                //app.UseExceptionHandler("/Error/Index");
 
-                //app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {

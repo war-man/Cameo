@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Text;
 using System.Net;
 using System.IO;
+using Cameo.Common;
 
 namespace Cameo.Controllers
 {
@@ -33,6 +34,37 @@ namespace Cameo.Controllers
         {
             return View();
         }
+
+        //public async Task<IActionResult> Hello()
+        //{
+        //    using (HttpClient client = new HttpClient())
+        //    {
+        //        var httpRequestMessage = new HttpRequestMessage()
+        //        {
+        //            Method = HttpMethod.Post,
+        //            RequestUri = new Uri(Constants.PAYMO.URLS.TOKEN_GENERATOR),
+        //            Headers = {
+        //                { HttpRequestHeader.Authorization.ToString(), "Bearer xxxxxxxxxxxxxxxxxxx" },
+        //                { HttpRequestHeader.Accept.ToString(), "application/json" },
+        //                { "X-Version", "1" }
+        //            },
+        //            //Content = new StringContent(JsonConvert.SerializeObject(svm))
+        //        };
+        //        using (HttpResponseMessage res = await client.SendAsync(httpRequestMessage))
+        //        {
+        //            using (HttpContent content = res.Content)
+        //            {
+        //                string data = await content.ReadAsStringAsync();
+        //                if (data != null)
+        //                {
+        //                    Console.WriteLine(data);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return View();
+        //}
 
         public IActionResult Index(int? id)
         {

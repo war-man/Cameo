@@ -8,6 +8,7 @@ namespace Cameo.Models.Enums
     {
         PENDING = 1,
         SUCCESS = 2,
-        CANCELLED = 3
+        CANCELLED = 3,
+        FailedToWithdrawMoney = 4
     }
 }

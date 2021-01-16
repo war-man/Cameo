@@ -329,9 +329,27 @@ namespace Cameo.Data.Migrations
                     b.Property<string>("card_number")
                         .HasMaxLength(32);
 
+                    b.Property<float>("commission_value");
+
+                    b.Property<string>("confirm_time");
+
+                    b.Property<int>("duration_in_minutes");
+
                     b.Property<string>("hold_id");
 
-                    b.Property<DateTime>("hold_till");
+                    b.Property<DateTime?>("hold_till");
+
+                    b.Property<string>("prepay_time");
+
+                    b.Property<string>("status_code");
+
+                    b.Property<string>("status_message");
+
+                    b.Property<string>("terminal_id");
+
+                    b.Property<string>("transaction_id");
+
+                    b.Property<string>("transaction_time");
 
                     b.HasKey("ID");
 

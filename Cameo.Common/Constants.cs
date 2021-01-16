@@ -16,6 +16,23 @@ namespace Cameo.Common
             public static readonly string VIDEO_REQUEST_PAYMENT_SCREENSHOT = "video_request_payment_screenshot";
         }
 
+        public static class PAYMO
+        {
+            public static class SETTINGS
+            {
+                public static readonly string CONSUMER_KEY = "12345";
+                public static readonly string CONSUMER_SECRET = "54321";
+                public static readonly int STORE_ID = 11111;
+                public static readonly string API_KEY = "54321";
+            }
+
+            public static class URLS
+            {
+                public static readonly string TOKEN_GENERATOR = "https://api.paymo.uz/token";
+                public static readonly string HOLD = "https://api.paymo.uz/hold";
+            }
+        }
+
         public static class CLICK
         {
             public static class SETTINGS

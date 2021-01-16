@@ -56,5 +56,7 @@ namespace Cameo.Services.Interfaces
         //void PaymentConfirmationDeadlineReaches(VideoRequest model, string userID);
         //bool IsPaymentScreenshotUploaded(VideoRequest model);
         //void ConfirmPayment(VideoRequest model, string userID);
+
+        void MarkAsFailedToWithdrawMoney(VideoRequest model);
     }
 }

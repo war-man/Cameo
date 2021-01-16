@@ -56,6 +56,11 @@ namespace Cameo.Services
                     ID = (int)VideoRequestStatusEnum.notCompleted,
                     Name = "Не выполненные"
                 },
+                new BaseModelDropdownable()
+                {
+                    ID = (int)VideoRequestStatusEnum.failedToWithdrawMoney,
+                    Name = "Не удалось снять деньги с карты клиента"
+                },
             };
 
             return statuses;

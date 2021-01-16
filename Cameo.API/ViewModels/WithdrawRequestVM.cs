@@ -1,6 +1,8 @@
 ﻿using Cameo.Common;
 using Cameo.Common.Utilities;
 using Cameo.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Cameo.API.ViewModels
@@ -11,16 +13,20 @@ namespace Cameo.API.ViewModels
         public int minimal_amount_in_balance_for_withdrawal { get; set; }
         public int talent_balance { get; set; }
 
+        public List<SelectListItem> statuses { get; set; }
+
         public WithdrawRequestCreatePrepareVM() { }
 
         public WithdrawRequestCreatePrepareVM(
             bool talentHasNotEnoughtMoneyForWithdrawal,
             int minimalAmountInBalanceForWithdrawal,
-            int talentBalance)
+            int talentBalance,
+            List<SelectListItem> _statuses)
         {
             talent_has_not_enought_money_for_withdrawal = talentHasNotEnoughtMoneyForWithdrawal;
             minimal_amount_in_balance_for_withdrawal = minimalAmountInBalanceForWithdrawal;
             talent_balance = talentBalance;
+            statuses = _statuses;
         }
     }
 

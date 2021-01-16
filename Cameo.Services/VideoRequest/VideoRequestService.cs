@@ -545,6 +545,16 @@ namespace Cameo.Services
                 .OrderByDescending(m => m.ID);
         }
 
+        public void MarkAsFailedToWithdrawMoney(VideoRequest model)
+        {
+            model.RequestStatusID = (int)VideoRequestStatusEnum.failedToWithdrawMoney;
+
+            //int requestPrice = VideoRequestPriceCalculationsService.CalculateRequestPrice(model);
+            //CustomerBalanceService.ReplenishBalance(model.Customer, requestPrice);
+
+            Update(model, null);
+        }
+
         private DateTime RoundToUp(DateTime inputDateTime)
         {
             return inputDateTime.Date.AddDays(1).AddSeconds(-1);

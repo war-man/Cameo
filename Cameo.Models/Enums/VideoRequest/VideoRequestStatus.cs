@@ -30,5 +30,6 @@ namespace Cameo.Models.Enums
         notCompleted = 100, //all canceled and expired statuses
         //db statuses:
         //1, 5, 9, 10, 14
+        failedToWithdrawMoney = 16
     }
 }

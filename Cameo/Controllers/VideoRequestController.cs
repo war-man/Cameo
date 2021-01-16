@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cameo.Common;
 using Cameo.Models;
 using Cameo.Models.Enums;
+using Cameo.Services;
 using Cameo.Services.Interfaces;
 using Cameo.Utils;
 using Cameo.ViewModels;
@@ -27,6 +28,9 @@ namespace Cameo.Controllers
         private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
         private readonly IInvoiceService InvoiceService;
         private readonly IPaymoService PaymoService;
+
+        private TelegramBotService TelegramBotService = new TelegramBotService();
+        private string origin = "VideoRequestController ";
 
         public VideoRequestController(
             IVideoRequestService videoRequestService,
@@ -60,8 +64,11 @@ namespace Cameo.Controllers
         }
 
         //ajax
-        public IActionResult GenerateInvoice([FromBody] InvoiceGenerateVM invoiceGenerateVM)
+        public async Task<IActionResult> GenerateInvoice([FromBody] InvoiceGenerateVM invoiceGenerateVM)
         {
+            origin += "GenerateInvoice";
+            TelegramBotService.SendMessage("Invoice generating", origin);
+
             try
             {
                 var curUser = accountUtil.GetCurrentUser(User);
@@ -73,13 +80,15 @@ namespace Cameo.Controllers
                 Invoice invoice = invoiceGenerateVM.ToModel(talent.Price);
                 InvoiceService.Add(invoice, curUser.ID);
 
-                string hold_id = PaymoService.ApplyForHold(invoice);
+                string hold_id = await PaymoService.ApplyForHold(invoice);
                 InvoiceService.AssignHoldID(invoice, hold_id, curUser.ID);
 
+                TelegramBotService.SendMessage("Invoice generated", origin);
                 return Ok(new { invoice_id = invoice.ID });
             }
             catch (Exception ex)
             {
+                TelegramBotService.SendMessage(ex.Message, origin);
                 return CustomBadRequest(ex);
             }
         }
@@ -116,6 +125,9 @@ namespace Cameo.Controllers
         [HttpPost]
         public IActionResult Create(VideoRequestCreateVM modelVM)
         {
+            origin += "Create";
+            TelegramBotService.SendMessage("Creating video request", origin);
+
             var curUser = accountUtil.GetCurrentUser(User);
             var talent = TalentService.GetAvailableByID(modelVM.TalentID);
 
@@ -164,9 +176,11 @@ namespace Cameo.Controllers
 
                                     ViewBag.success = true;
                                     ViewBag.requestID = model.ID;
+                                    TelegramBotService.SendMessage("Video request successfully created", origin);
                                 }
                                 catch (Exception ex)
                                 {
+                                    TelegramBotService.SendMessage(ex.Message, origin);
                                     ModelState.AddModelError("", ex.Message);
                                 }
                             }
@@ -292,6 +306,8 @@ namespace Cameo.Controllers
         [HttpPost]
         public IActionResult Cancel(int id)
         {
+            origin += "Cancelling";
+            TelegramBotService.SendMessage("Cancelling video request", origin);
             try
             {
                 var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
@@ -307,10 +323,12 @@ namespace Cameo.Controllers
                 //HangfireService.CancelJob(model.RequestAnswerJobID);
                 HangfireService.CancelJob(model.VideoJobID);
 
+                TelegramBotService.SendMessage("Cancelled video request", origin);
                 return Ok();
             }
             catch (Exception ex)
             {
+                TelegramBotService.SendMessage(ex.Message, origin);
                 return CustomBadRequest(ex);
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Cameo.Common;
 using Cameo.Models;
+using Cameo.Services;
 using Cameo.Services.Interfaces;
 using Cameo.API.Utils;
 using Cameo.API.ViewModels;
@@ -29,6 +30,9 @@ namespace Cameo.API.Controllers
         private readonly IHangfireService HangfireService;
 
         private readonly IHostingEnvironment _env;
+
+        private TelegramBotService TelegramBotService = new TelegramBotService();
+        private string origin = "AttachmentController ";
 
         public AttachmentController(
             IAttachmentService attachmentService,
@@ -65,6 +69,7 @@ namespace Cameo.API.Controllers
             }
             catch (Exception ex)
             {
+                TelegramBotService.SendMessage(ex.Message, origin);
                 return CustomBadRequest(ex);
             }
         }
@@ -100,6 +105,9 @@ namespace Cameo.API.Controllers
             }
             else if (fileType.Equals(Constants.FileTypes.VIDEO_REQUEST_VIDEO))
             {
+                origin += "AttachFile";
+                TelegramBotService.SendMessage("Uploading video", origin);
+
                 var model = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(id);
                 if (model == null)
                     throw new Exception("Заказ не найден");

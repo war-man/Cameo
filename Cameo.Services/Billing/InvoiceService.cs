@@ -18,7 +18,8 @@ namespace Cameo.Services
         public override void Add(Invoice entity, string creatorID)
         {
             entity.StatusID = (int)PaymoInvoiceStatusEnum.PENDING;
-            entity.hold_till = DateTime.Now.AddDays(5); // value of hold_till must be taken from AppSettings
+            //entity.hold_till = DateTime.Now.AddDays(10); // value of hold_till must be taken from AppSettings
+            entity.duration_in_minutes = 14400; //10 days
 
             base.Add(entity, creatorID);
         }
@@ -45,7 +46,18 @@ namespace Cameo.Services
             Update(entity, null);
         }
 
-        
+        public void MarkAsFailedToWithdrawMoney(Invoice entity)
+        {
+            entity.StatusID = (int)PaymoInvoiceStatusEnum.FailedToWithdrawMoney;
+            entity.DateCancelled = DateTime.Now;
+
+            Update(entity, null);
+
+            
+
+        }
+
+
 
         //public bool IsTransactionPaid(ClickTransaction transaction)
         //{

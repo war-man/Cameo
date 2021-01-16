@@ -104,7 +104,8 @@ namespace Cameo.API.Controllers
                 WithdrawRequestCreatePrepareVM createPrepareVM = new WithdrawRequestCreatePrepareVM(
                     WithdrawRequestService.UserHasNotEnoughtMoneyForWithdrawal(talentBalance),
                     WithdrawRequestService.GetMinimalAmountInBalanceForWithdrawal(),
-                    talentBalance);
+                    talentBalance,
+                    WithdrawRequestStatusService.GetAsSelectList());
 
                 return createPrepareVM;
             }

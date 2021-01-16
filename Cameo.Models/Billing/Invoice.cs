@@ -13,18 +13,28 @@ namespace Cameo.Models
         public virtual VideoRequest VideoRequest { get; set; }
 
         [StringLength(32)]
-        public string card_number { get; set; }
-        public DateTime card_expiry { get; set; }
+        public string card_number { get; set; } //ok
+        public DateTime card_expiry { get; set; } //ok
 
-        public string hold_id { get; set; }
-        public DateTime hold_till { get; set; }
+        public string hold_id { get; set; } //ok
+        public int duration_in_minutes { get; set; } //ok
+        public DateTime? hold_till { get; set; } //ok
 
-        public int Amount { get; set; }
+        public string transaction_id { get; set; } //ok
+        public string transaction_time { get; set; } //ok
+        public float commission_value { get; set; } //ok
+        public string terminal_id { get; set; } //ok
+        public string prepay_time { get; set; } //Время создания драфта транзакции
+        public string confirm_time { get; set; } //Время завершения транзакции
+        public string status_code { get; set; } //Код состояния транзакции
+        public string status_message { get; set; } //Сообщение состояния транзакции
 
-        public int StatusID { get; set; } //1 - pending, 2 - success, 3 - cancelled
+        public int Amount { get; set; } //ok
 
-        public DateTime? DateSuccess { get; set; }
-        public DateTime? DateCancelled { get; set; }
+        public int StatusID { get; set; } //ok //1 - pending, 2 - success, 3 - cancelled
+
+        public DateTime? DateSuccess { get; set; } //ok
+        public DateTime? DateCancelled { get; set; } //ok
 
         //public int ClickTransID { get; set; }
         //public int ServiceID { get; set; }
