@@ -32,10 +32,10 @@ namespace Cameo.Services
 
         public void MarkAsSuccess(Invoice entity)
         {
-            entity.StatusID = (int)PaymoInvoiceStatusEnum.CANCELLED;
+            entity.StatusID = (int)PaymoInvoiceStatusEnum.SUCCESS;
             entity.DateSuccess = DateTime.Now;
 
-            Update(entity, null);
+            //Update(entity, null);
         }
 
         public void MarkAsCanceled(Invoice entity)
@@ -43,7 +43,7 @@ namespace Cameo.Services
             entity.StatusID = (int)PaymoInvoiceStatusEnum.CANCELLED;
             entity.DateCancelled = DateTime.Now;
 
-            Update(entity, null);
+            //Update(entity, null);
         }
 
         public void MarkAsFailedToWithdrawMoney(Invoice entity)
@@ -51,10 +51,7 @@ namespace Cameo.Services
             entity.StatusID = (int)PaymoInvoiceStatusEnum.FailedToWithdrawMoney;
             entity.DateCancelled = DateTime.Now;
 
-            Update(entity, null);
-
-            
-
+            //Update(entity, null);
         }
 
 

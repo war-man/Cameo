@@ -65,6 +65,7 @@ namespace Cameo.Models
         public bool ViewedByTalent { get; set; }
         public bool ViewedByCustomer { get; set; }
 
+        [ForeignKey("Invoice")]
         public virtual int? InvoiceID { get; set; }
         public virtual Invoice Invoice { get; set; }
 

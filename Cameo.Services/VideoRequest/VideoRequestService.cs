@@ -18,6 +18,7 @@ namespace Cameo.Services
         private readonly IVideoRequestPriceCalculationsService VideoRequestPriceCalculationsService;
         private readonly IFirebaseRegistrationTokenService FirebaseRegistrationTokenService;
         private readonly IPaymoService PaymoService;
+        private readonly IInvoiceService InvoiceService;
 
         private int tmpPeriodMinutes = 2;
 
@@ -27,7 +28,8 @@ namespace Cameo.Services
             ICustomerBalanceService customerBalanceService,
             IVideoRequestPriceCalculationsService videoRequestPriceCalculationsService,
             IFirebaseRegistrationTokenService firebaseRegistrationTokenService,
-            IPaymoService paymoService)
+            IPaymoService paymoService,
+            IInvoiceService invoiceService)
             : base(repository, unitOfWork)
         {
             TalentBalanceService = talentBalanceService;
@@ -35,6 +37,7 @@ namespace Cameo.Services
             VideoRequestPriceCalculationsService = videoRequestPriceCalculationsService;
             FirebaseRegistrationTokenService = firebaseRegistrationTokenService;
             PaymoService = paymoService;
+            InvoiceService = invoiceService;
         }
 
         public VideoRequest GetActiveSingleDetailsWithRelatedDataByID(int id)
@@ -45,6 +48,7 @@ namespace Cameo.Services
         public void Add(VideoRequest entity, Invoice invoice, string creatorID)
         {
             entity.Invoice = invoice;
+            entity.InvoiceID = invoice.ID;
 
             entity.ViewedByCustomer = true;
             entity.ViewedByTalent = false;
@@ -159,9 +163,10 @@ namespace Cameo.Services
                 model.ViewedByTalent = false;
             }
 
-            Update(model, userID);
-
+            //var invoice = InvoiceService.GetByID(model.InvoiceID.Value);
             PaymoService.CancelHold(model.Invoice);
+
+            Update(model, userID);
 
             string title = "";
             string body = "";
@@ -238,6 +243,7 @@ namespace Cameo.Services
             if (!IsRequestAcceptedAndWaitingForVideo(model))
                 return;
 
+            //var invoice = InvoiceService.GetByID(model.InvoiceID.Value);
             PaymoService.CancelHold(model.Invoice);
 
             model.DateVideoExpired = DateTime.Now;
@@ -396,9 +402,22 @@ namespace Cameo.Services
             //#endif
 
             TalentBalanceService.ReplenishBalance(model.Talent, model.Price);
-            Update(model, userID);
 
-            PaymoService.PerformHold(model.Invoice);
+            try
+            {
+                //var invoice = InvoiceService.GetByID(model.InvoiceID.Value);
+                PaymoService.PerformHold(model.Invoice);
+            }
+            catch (Exception ex)
+            {
+                //откатить оплату
+                InvoiceService.MarkAsFailedToWithdrawMoney(model.Invoice);
+                MarkAsFailedToWithdrawMoney(model);
+
+                throw new Exception(ex.Message);
+            }
+            
+            Update(model, userID);
 
             //TO-DO: send firebase notification to Customer
             string title = model.Talent.FullName;

@@ -23,6 +23,8 @@
     <Compile Remove="Data\Migrations\20200305175502_CreditCardExpireDatetime.Designer.cs" />
     <Compile Remove="Data\Migrations\20200305181454_CreditCardNumberLength.cs" />
     <Compile Remove="Data\Migrations\20200305181454_CreditCardNumberLength.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210120174119_VideoRequest_Invoice_oneToOne.cs" />
+    <Compile Remove="Data\Migrations\20210120174119_VideoRequest_Invoice_oneToOne.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

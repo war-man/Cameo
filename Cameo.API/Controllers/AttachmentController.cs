@@ -112,7 +112,7 @@ namespace Cameo.API.Controllers
                 if (model == null)
                     throw new Exception("Заказ не найден");
                 if (!VideoRequestService.IsVideoUploadable(model))
-                    throw new Exception("Невозможно загрузить видео"); ;
+                    throw new Exception("Невозможно загрузить видео");
 
                 model.Video = attachment;
                 VideoRequestService.SaveUploadedVideo(model, curUserID);

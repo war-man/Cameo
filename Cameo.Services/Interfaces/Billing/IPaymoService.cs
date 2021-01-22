@@ -5,10 +5,10 @@ namespace Cameo.Services.Interfaces
 {
     public interface IPaymoService
     {
-        Task<string> ApplyForHold(Invoice invoice);
-        Task ConfirmHold(Invoice invoice, string sms);
-        Task PerformHold(Invoice invoice);
-        Task CancelHold(Invoice invoice);
+        string ApplyForHold(Invoice invoice);
+        void ConfirmHold(Invoice invoice, string sms);
+        void PerformHold(Invoice invoice);
+        void CancelHold(Invoice invoice);
         //void MarkTransactionAsPaid(ClickTransaction transaction);
         //bool IsTransactionPaid(ClickTransaction transaction);
         //bool IsTransactionCancelled(ClickTransaction transaction);

@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Cameo.Services
@@ -21,7 +22,8 @@ namespace Cameo.Services
             InvoiceService = invoiceService;
         }
 
-        public async Task<string> GetAuthToken()
+        //DONE
+        private string GetAuthToken()
         {
             string token = null;
 
@@ -34,25 +36,25 @@ namespace Cameo.Services
                 var httpRequestMessage = new HttpRequestMessage()
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = new Uri(Constants.PAYMO.URLS.TOKEN_GENERATOR),
+                    RequestUri = new Uri(Constants.PAYMO.URLS.TOKEN_GENERATOR + "?grant_type=client_credentials"),
                     Headers = {
-                        //{ HttpRequestHeader.Authorization.ToString(), "Bearer xxxxxxxxxxxxxxxxxxx" },
-                        //{ "grant_type=client_credentials" }
                         { HttpRequestHeader.Authorization.ToString(), "Basic " + encoded },
-                        //{ HttpRequestHeader.Accept.ToString(), "application/json" },
-                        //{ "X-Version", "1" }
-                    },
-                    //Content = new StringContent(JsonConvert.SerializeObject(svm))
+                    }
                 };
-                using (HttpResponseMessage res = await client.SendAsync(httpRequestMessage))
+                using (HttpResponseMessage res = Task.Run(() => client.SendAsync(httpRequestMessage)).Result)
+                //using (HttpResponseMessage res = await client.SendAsync(httpRequestMessage))
                 {
                     using (HttpContent content = res.Content)
                     {
-                        string dataStr = await content.ReadAsStringAsync();
-                        if (dataStr != null)
+                        string dataStr = Task.Run(() => content.ReadAsStringAsync()).Result;
+                        //string dataStr = await content.ReadAsStringAsync();
+
+                        if (res.StatusCode != HttpStatusCode.OK)
+                            throw new Exception("GetAuthToken: " + dataStr);
+                        else if (dataStr != null)
                         {
-                            string response = JsonConvert.DeserializeObject<string>(dataStr);
-                            token = response;
+                            HoldAuthResponse response = JsonConvert.DeserializeObject<HoldAuthResponse>(dataStr);
+                            token = response.access_token;
                         }
                     }
                 }
@@ -64,11 +66,11 @@ namespace Cameo.Services
             return token;
         }
 
+        //DONE
         //POST: https://api.paymo.uz/hold/
-        public async Task<string> ApplyForHold(Invoice invoice)
+        public string ApplyForHold(Invoice invoice)
         {
-            string token = await GetAuthToken();
-
+            string token = GetAuthToken();
             HoldPostRequest holdPostRequestBody = new HoldPostRequest(invoice);
 
             string hold_id = null;
@@ -83,18 +85,23 @@ namespace Cameo.Services
                         { HttpRequestHeader.Authorization.ToString(), "Bearer " + token },
                         { HttpRequestHeader.ContentType.ToString(), "application/json" },
                         { HttpRequestHeader.Accept.ToString(), "application/json" },
-                        //{ "X-Version", "1" }
                     },
-                    Content = new StringContent(JsonConvert.SerializeObject(holdPostRequestBody))
+                    Content = new StringContent(JsonConvert.SerializeObject(holdPostRequestBody), Encoding.UTF8, "application/json")
                 };
-                using (HttpResponseMessage res = await client.SendAsync(httpRequestMessage))
+                using (HttpResponseMessage res = Task.Run(() => client.SendAsync(httpRequestMessage)).Result)
                 {
                     using (HttpContent content = res.Content)
                     {
-                        string dataStr = await content.ReadAsStringAsync();
-                        if (dataStr != null)
+                        string dataStr = Task.Run(() => content.ReadAsStringAsync()).Result;
+
+                        if (res.StatusCode != HttpStatusCode.OK)
+                            throw new Exception("ApplyForHold: " + dataStr);
+                        else if (dataStr != null)
                         {
                             HoldPostResponse response = JsonConvert.DeserializeObject<HoldPostResponse>(dataStr);
+                            if (response.result.code != "OK")
+                                throw new Exception("ApplyForHold: " + dataStr);
+
                             hold_id = response.hold_id;
                         }
                     }
@@ -107,14 +114,14 @@ namespace Cameo.Services
             return hold_id;
         }
 
+        //DONE
         //PUT: https://api.paymo.uz/hold/{hold_id}
-        public async Task ConfirmHold(Invoice invoice, string sms)
+        public void ConfirmHold(Invoice invoice, string sms)
         {
             if (string.IsNullOrWhiteSpace(invoice?.hold_id))
                 throw new Exception("hold_id не присвоен");
 
-            string token = await GetAuthToken();
-
+            string token = GetAuthToken();
             HoldPutRequest holdPutRequestBody = new HoldPutRequest(sms);
 
             using (HttpClient client = new HttpClient())
@@ -127,27 +134,29 @@ namespace Cameo.Services
                         { HttpRequestHeader.Authorization.ToString(), "Bearer " + token },
                         { HttpRequestHeader.ContentType.ToString(), "application/json" },
                         { HttpRequestHeader.Accept.ToString(), "application/json" },
-                        //{ "X-Version", "1" }
                     },
-                    Content = new StringContent(JsonConvert.SerializeObject(holdPutRequestBody))
+                    Content = new StringContent(JsonConvert.SerializeObject(holdPutRequestBody), Encoding.UTF8, "application/json")
                 };
-                using (HttpResponseMessage res = await client.SendAsync(httpRequestMessage))
+                using (HttpResponseMessage res = Task.Run(() => client.SendAsync(httpRequestMessage)).Result)
                 {
                     using (HttpContent content = res.Content)
                     {
-                        string dataStr = await content.ReadAsStringAsync();
-                        if (dataStr != null)
+                        string dataStr = Task.Run(() => content.ReadAsStringAsync()).Result;
+
+                        if (res.StatusCode != HttpStatusCode.OK)
+                            throw new Exception("ConfirmHold: " + dataStr);
+                        else if (dataStr != null)
                         {
                             HoldPutResponse response = JsonConvert.DeserializeObject<HoldPutResponse>(dataStr);
                             try
                             {
-                                if (response.result.code != "хорошо")
-                                    throw new Exception();
-
-                                DateTime tmp;
-                                if (DateTime.TryParse(response.hold_till, out tmp))
+                                if (response.result.code != "OK")
+                                    throw new Exception("ConfirmHold: " + dataStr);
+                                else
                                 {
-                                    invoice.hold_till = tmp;
+                                    DateTime tmp;
+                                    if (DateTime.TryParse(response.hold_till, out tmp))
+                                        invoice.hold_till = tmp;
                                 }
                             }
                             catch (Exception ex)
@@ -161,15 +170,12 @@ namespace Cameo.Services
         }
 
         //POST: https://api.pays.uz/hold/{hold_id}
-        public async Task PerformHold(Invoice invoice)
+        public void PerformHold(Invoice invoice)
         {
             if (string.IsNullOrWhiteSpace(invoice?.hold_id))
                 throw new Exception("hold_id не присвоен");
 
-            //make https request
-            //make checkings
-
-            string token = await GetAuthToken();
+            string token = GetAuthToken();
 
             using (HttpClient client = new HttpClient())
             {
@@ -181,27 +187,22 @@ namespace Cameo.Services
                         { HttpRequestHeader.Authorization.ToString(), "Bearer " + token },
                         { HttpRequestHeader.ContentType.ToString(), "application/json" },
                         { HttpRequestHeader.Accept.ToString(), "application/json" },
-                        //{ "X-Version", "1" }
                     },
-                    //Content = new StringContent(JsonConvert.SerializeObject(holdPutRequestBody))
+                    Content = new StringContent(JsonConvert.SerializeObject(new HoldRequest()), Encoding.UTF8, "application/json")
                 };
-                using (HttpResponseMessage res = await client.SendAsync(httpRequestMessage))
+                using (HttpResponseMessage res = Task.Run(() => client.SendAsync(httpRequestMessage)).Result)
                 {
                     using (HttpContent content = res.Content)
                     {
-                        string dataStr = await content.ReadAsStringAsync();
-                        if (dataStr != null)
+                        string dataStr = Task.Run(() => content.ReadAsStringAsync()).Result;
+
+                        if (res.StatusCode != HttpStatusCode.OK)
+                            throw new Exception("PerformHold: " + dataStr);
+                        else if (dataStr != null)
                         {
                             HoldPostPerformResponse response = JsonConvert.DeserializeObject<HoldPostPerformResponse>(dataStr);
-                            try
-                            {
-                                if (response.result.code != "OK")
-                                    throw new Exception();
-                            }
-                            catch (Exception ex)
-                            {
-                                throw new Exception("Не удалось выполнить списание захолдированной суммы");
-                            }
+                            if (response.result.code != "OK")
+                                throw new Exception("PerformHold: " + dataStr);
 
                             try
                             {
@@ -222,13 +223,14 @@ namespace Cameo.Services
             InvoiceService.MarkAsSuccess(invoice);
         }
 
+        //DONE
         //DELETE: https://api.pays.uz/hold/{hold_id}
-        public async Task CancelHold(Invoice invoice)
+        public void CancelHold(Invoice invoice)
         {
             if (string.IsNullOrWhiteSpace(invoice?.hold_id))
                 throw new Exception("hold_id не присвоен");
 
-            string token = await GetAuthToken();
+            string token = GetAuthToken();
 
             using (HttpClient client = new HttpClient())
             {
@@ -239,23 +241,24 @@ namespace Cameo.Services
                     Headers = {
                         { HttpRequestHeader.Authorization.ToString(), "Bearer " + token },
                         { HttpRequestHeader.ContentType.ToString(), "application/json" },
-                        { HttpRequestHeader.Accept.ToString(), "application/json" },
-                        //{ "X-Version", "1" }
-                    },
-                    //Content = new StringContent(JsonConvert.SerializeObject(holdPutRequestBody))
+                        { HttpRequestHeader.Accept.ToString(), "application/json" }
+                    }
                 };
-                using (HttpResponseMessage res = await client.SendAsync(httpRequestMessage))
+                using (HttpResponseMessage res = Task.Run(() => client.SendAsync(httpRequestMessage)).Result)
                 {
                     using (HttpContent content = res.Content)
                     {
-                        string dataStr = await content.ReadAsStringAsync();
-                        if (dataStr != null)
+                        string dataStr = Task.Run(() => content.ReadAsStringAsync()).Result;
+
+                        if (res.StatusCode != HttpStatusCode.OK)
+                            throw new Exception("CancelHold: " + dataStr);
+                        else if (dataStr != null)
                         {
                             HoldDeleteResponse response = JsonConvert.DeserializeObject<HoldDeleteResponse>(dataStr);
                             try
                             {
                                 if (response.result.code != "OK")
-                                    throw new Exception();
+                                    throw new Exception("CancelHold: " + dataStr);
                             }
                             catch (Exception ex)
                             {
@@ -270,8 +273,15 @@ namespace Cameo.Services
         }
     }
 
-    
+    public class HoldAuthResponse
+    {
+        public string access_token { get; set; }
+        public string scope { get; set; }
+        public string token_type { get; set; }
+        public string expires_in { get; set; }
+    }
 
+    #region Hold base classes
     public class HoldRequest
     {
         public string lang { get; set; } //язык ответного сообщения
@@ -292,14 +302,16 @@ namespace Cameo.Services
         public string code { get; set; }
         public string description { get; set; }
     }
+    #endregion
 
     #region Hold Post (create zayavka for hold)
     public class HoldPostRequest : HoldRequest
     {
         public string card_number { get; set; } //Номер карты
         public string card_expiry { get; set; } //Дата истечения карты
-        public string store_id { get; set; } //ID магазина, предоставленный системой PAYMO
+        public int store_id { get; set; } //ID магазина, предоставленный системой PAYMO
         public string account { get; set; } //Идентификатор инвойса (логин, номер инвойса и т.п.)
+        public string payment_details { get; set; } //Дополнительная информация о платеже
         public string amount { get; set; } //Сумма платежа
         public string duration { get; set; } //Длительность холдирования в минутах
 
@@ -309,9 +321,11 @@ namespace Cameo.Services
             : base()
         {
             card_number = invoice.card_number;
-            card_expiry = invoice.card_expiry.ToString("MM") + "/" + invoice.card_expiry.ToString("yy");
-            store_id = "1234";
+            //card_expiry = invoice.card_expiry.ToString("MM") + "/" + invoice.card_expiry.ToString("yy");
+            card_expiry = invoice.card_expiry.ToString("yy") + invoice.card_expiry.ToString("MM"); //очень интересный подход :)
+            store_id = Constants.PAYMO.SETTINGS.STORE_ID;
             account = invoice.ID.ToString();
+            payment_details = "холдирование видео";
             amount = invoice.Amount.ToString();
             duration = invoice.duration_in_minutes.ToString();
         }

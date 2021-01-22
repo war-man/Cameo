@@ -40,7 +40,7 @@ namespace Cameo.API.Controllers
 
             _logger.LogError(ex, BuildErrorMessageForLogging(null, Request.Path.ToString()));
 
-            return BadRequest(new { errorMessage = new string[1] { errorMessage } });
+            return BadRequest(new { errors = new string[1] { errorMessage } });
         }
 
         internal string BuildErrorMessageForLogging(int? code, string originalPath)

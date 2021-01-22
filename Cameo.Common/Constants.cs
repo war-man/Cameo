@@ -20,10 +20,10 @@ namespace Cameo.Common
         {
             public static class SETTINGS
             {
-                public static readonly string CONSUMER_KEY = "12345";
-                public static readonly string CONSUMER_SECRET = "54321";
-                public static readonly int STORE_ID = 11111;
-                public static readonly string API_KEY = "54321";
+                public static readonly string CONSUMER_KEY = "CyTRhrbG8E4sv2pz6jiiUkj98p4a";
+                public static readonly string CONSUMER_SECRET = "9Vf5Pali74Wyf9I3KnMOb_54Issa";
+                public static readonly int STORE_ID = 1;
+                public static readonly string API_KEY = "8p4SABRREEJ4YVL8OErn3z2qoaT2oSIo";
             }
 
             public static class URLS

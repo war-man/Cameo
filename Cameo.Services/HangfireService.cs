@@ -12,6 +12,7 @@ namespace Cameo.Services
         private readonly IVideoRequestService VideoRequestService;
         private readonly IFileManagement FileManagement;
         private readonly IAttachmentService AttachmentService;
+        private TelegramBotService TelegramBotService = new TelegramBotService();
 
         public HangfireService(
             IVideoRequestService videoRequestService,
@@ -81,13 +82,16 @@ namespace Cameo.Services
 
         public void VideoDeadlineReaches(int videoRequestID, string userID)
         {
-            //try
-            //{
+            try
+            {
                 VideoRequest request = VideoRequestService.GetActiveSingleDetailsWithRelatedDataByID(videoRequestID);
                 VideoRequestService.VideoDeadlineReaches(request, userID);
-            //}
-            //catch (Exception ex)
-            //{ }
+            }
+            catch (Exception ex)
+            {
+                string origin = "Video deadline reached exception";
+                TelegramBotService.SendMessage(ex.Message, origin);
+            }
         }
 
         //public string CreateJobForVideoRequestPaymentConfirmationDeadline(VideoRequest request, string userID)

@@ -28,6 +28,13 @@ namespace Cameo.Data
                 .HasOne(bc => bc.Category)
                 .WithMany(c => c.TalentCategories)
                 .HasForeignKey(bc => bc.CategoryId);
+
+
+            //one to one
+            modelBuilder.Entity<VideoRequest>()
+                .HasOne(a => a.Invoice)
+                .WithOne(b => b.VideoRequest)
+                .HasForeignKey<Invoice>(b => b.VideoRequestID);
         }
 
         public virtual void Commit()

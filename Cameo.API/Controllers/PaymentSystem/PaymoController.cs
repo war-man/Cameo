@@ -11,6 +11,7 @@ using Cameo.Services;
 using Cameo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Cameo.API.Controllers
 {
@@ -50,11 +51,15 @@ namespace Cameo.API.Controllers
         //}
 
         // POST api/values
+
         [HttpPost]
         public ActionResult<PaymoTransactionResponseVM> Post([FromBody] PaymoTransactionRequestVM requestVM)
         {
             origin += "Post";
             TelegramBotService.SendMessage("Starting post", origin);
+
+            string requestVMSerialized = JsonConvert.SerializeObject(requestVM);
+            TelegramBotService.SendMessage("requestVMSerialized: " + requestVMSerialized, origin);
 
             string message = null;
             Invoice existingInvoice = null;

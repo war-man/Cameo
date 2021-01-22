@@ -107,7 +107,7 @@ namespace Cameo.API
             string validIssuer = "https://localhost:44322";
 #else
             //string validIssuer = "https://api.helloo.uz";
-            string validIssuer = "https://admin.helloo.uz";
+            string validIssuer = "https://api.helloo.uz";
 #endif
             string tokenSecurityKey = "9mxhkbcmmreh2hsnbqh6lisy21t06eg563txkb9w8t4012tiy1fa9xei4d80hucunvhdwgza0917hkf6b0mr36zyadoxxqhqrottbyuhylelvzhd69uz6znmii9lex1a";
             //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

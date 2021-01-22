@@ -88,7 +88,7 @@ namespace Cameo.API.Controllers
 
         [Authorize(Policy = "CustomerOnly")]
         [HttpPost("GenerateInvoice")]
-        public async Task<IActionResult> GenerateInvoice([FromBody] InvoiceGenerateVM invoiceGenerateVM)
+        public IActionResult GenerateInvoice([FromBody] InvoiceGenerateVM invoiceGenerateVM)
         {
             origin += "GenerateInvoice";
             TelegramBotService.SendMessage("Invoice generating", origin);
@@ -104,7 +104,7 @@ namespace Cameo.API.Controllers
                 Invoice invoice = invoiceGenerateVM.ToModel(talent.Price);
                 InvoiceService.Add(invoice, curUser.ID);
 
-                string hold_id = await PaymoService.ApplyForHold(invoice);
+                string hold_id = PaymoService.ApplyForHold(invoice);
                 InvoiceService.AssignHoldID(invoice, hold_id, curUser.ID);
 
                 TelegramBotService.SendMessage("Invoice generated", origin);
