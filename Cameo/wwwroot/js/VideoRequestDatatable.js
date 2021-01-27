@@ -187,12 +187,12 @@ function VideoAjaxUpload(input, modelID, fileType, spinnerTagID, videoPreviewCon
             contentType: false,
             type: "POST",
             beforeSend: function () {
-                alert("beforeSend");
+                //alert("beforeSend");
                 $("#" + spinnerTagID).show();
                 $(input).attr("disabled", "disabled");
             },
             success: function (data) {
-                alert("success");
+                //alert("success");
                 if (videoPreviewContainerTagID != undefined
                     || videoPreviewContainerTagID != null
                     || videoPreviewContainerTagID != "")
@@ -205,10 +205,10 @@ function VideoAjaxUpload(input, modelID, fileType, spinnerTagID, videoPreviewCon
                 }
             },
             error: function (data) {
-                alert("error");
+                //alert("error");
             },
             complete: function () {
-                alert("complete");
+                //alert("complete");
                 $("#" + spinnerTagID).hide();
                 $(input).removeAttr("disabled");
             }

@@ -36,9 +36,9 @@ namespace Cameo.Controllers
 
             VideoDetailsVM videoVM = new VideoDetailsVM(model);
 
-#if DEBUG
-            videoVM.Video.Url = "/videos/hz2.mp4";
-#endif
+//#if DEBUG
+//            videoVM.Video.Url = "/videos/hz2.mp4";
+//#endif
 
             return View(videoVM);
         }

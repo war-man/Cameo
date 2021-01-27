@@ -320,7 +320,7 @@ namespace Cameo.Services
         public HoldPostRequest(Invoice invoice)
             : base()
         {
-            card_number = invoice.card_number;
+            card_number = invoice.card_number.Replace(" ", "");
             //card_expiry = invoice.card_expiry.ToString("MM") + "/" + invoice.card_expiry.ToString("yy");
             card_expiry = invoice.card_expiry.ToString("yy") + invoice.card_expiry.ToString("MM"); //очень интересный подход :)
             store_id = Constants.PAYMO.SETTINGS.STORE_ID;

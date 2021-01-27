@@ -15,11 +15,11 @@
                 <div class="blog blog_style--1">
                     <div class="inner">
                         <form asp-action="Create" asp-controller="VideoRequest" id="createRequest"
-                                data-ajax="true"
-                                data-ajax-method="POST"
-                                data-ajax-mode="replace"
-                                data-ajax-update="#ajaxresult"
-                                data-ajax-begin="RequestCreationBegin">
+                              data-ajax="true"
+                              data-ajax-method="POST"
+                              data-ajax-mode="replace"
+                              data-ajax-update="#ajaxresult"
+                              data-ajax-begin="RequestCreationBegin">
                             <div id="ajaxresult">
                                 @await Html.PartialAsync(
                                     "/Views/VideoRequest/_Create.cshtml")
@@ -63,4 +63,14 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-mask/jquery.mask.js"></script>
+
+    <script>
+        $(document).ready(function ()
+        {
+            $("#uzcardBox input#card_number").mask("0000 0000 0000 0000");  //static mask
+            $("#uzcardBox input#card_expiry").mask("00/00");  //static mask
+        });
+    </script>
 }

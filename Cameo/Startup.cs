@@ -27,6 +27,7 @@ using Microsoft.Extensions.Logging;
 using Cameo.DependencyInjections;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using System.Globalization;
 
 namespace Cameo
 {
@@ -71,7 +72,19 @@ namespace Cameo
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddViewLocalization();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var cultures = new List<CultureInfo> {
+                    new CultureInfo("ru"),
+                    new CultureInfo("fr")
+                };
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("ru");
+                options.SupportedCultures = cultures;
+                options.SupportedUICultures = cultures;
+            });
 
             services.Configure<AppConfiguration>(Configuration.GetSection("MySettings"));
 
@@ -193,6 +206,8 @@ namespace Cameo
                 Authorization = new[] { new HangfireAuthorizationFilter() },
                 IsReadOnlyFunc = (DashboardContext context) => true
             });
+
+            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging")); //"Logging" from appsettings.json
             loggerFactory.AddDebug();

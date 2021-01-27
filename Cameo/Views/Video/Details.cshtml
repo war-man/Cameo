@@ -125,7 +125,7 @@
 
     .video-js {
         width: 100%;
-        /*height: 100%;*/
+        height: 100%;
         border-radius: 5px;
     }
 </style>
@@ -145,10 +145,10 @@
         function AdjustHeightOfVideoPlayer()
         {
             var vidHeight = $("video.requestVideo").first().height();
-            alert("vidHeight: " + vidHeight);
+            //alert("vidHeight: " + vidHeight);
             var newHeight = vidHeight * 0.9;
-            alert("newHeight: " + newHeight);
-            $("video.requestVideo").height(newHeight);
+            //alert("newHeight: " + newHeight);
+            //$("video.requestVideo").height(newHeight);
         }
 
         function TogglePlayPause(videoTagID)

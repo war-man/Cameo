@@ -40,8 +40,8 @@ namespace Cameo.AdminPanel
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 #if DEBUG
-            string connectionStringName = "DefaultConnection";
-            //string connectionStringName = "USAServerConnection";
+            //string connectionStringName = "DefaultConnection";
+            string connectionStringName = "USAServerConnection";
 #else
             string connectionStringName = "USAServerConnection";
 #endif
