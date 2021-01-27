@@ -52,8 +52,8 @@ namespace Cameo
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 #if DEBUG
-            string connectionStringName = "DefaultConnection";
-            //string connectionStringName = "USAServerConnection";
+            //string connectionStringName = "DefaultConnection";
+            string connectionStringName = "USAServerConnection";
 #else
             string connectionStringName = "USAServerConnection";
 #endif
@@ -77,8 +77,8 @@ namespace Cameo
 
             //Hangfire
 #if DEBUG
-            string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
-            //string connectionString = "Data Source=209.159.151.3\\SQLEXPRESS,1433;Initial Catalog=Helloo;User Id=sa;Password=TD9N9CkDmQFNZ7HZ;";
+            //string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
+            string connectionString = "Data Source=209.159.151.3\\SQLEXPRESS,1433;Initial Catalog=Helloo;User Id=sa;Password=TD9N9CkDmQFNZ7HZ;";
 #else
             string connectionString = "Data Source=209.159.151.3\\SQLEXPRESS,1433;Initial Catalog=Helloo;User Id=sa;Password=TD9N9CkDmQFNZ7HZ;";
 #endif

@@ -15,11 +15,12 @@
             <div class="col-sm-6 col-12">
                 <div class="blog blog_style--1">
                     <div class="inner">
-                        <form asp-action="Edit" asp-controller="VideoRequest"
+                        <form asp-action="Edit" asp-controller="VideoRequest" id="editRequest"
                                 data-ajax="true"
                                 data-ajax-method="POST"
                                 data-ajax-mode="replace"
-                                data-ajax-update="#ajaxresult">
+                                data-ajax-update="#ajaxresult"
+                                data-ajax-begin="RequestEditingBegin">
                             <div id="ajaxresult">
                                 @await Html.PartialAsync(
                                     "/Views/VideoRequest/_Edit.cshtml")

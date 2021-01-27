@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cameo.ViewModels
 {
-    public class VideoRequestCreateVM
+    public class VideoRequestFormVM
     {
         [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
         [Display(Name = "VideoType", ResourceType = typeof(Resources.ResourceTexts))]
@@ -38,7 +38,10 @@ namespace Cameo.ViewModels
         public int TalentID { get; set; }
 
         public int InvoiceID { get; set; }
+    }
 
+    public class VideoRequestCreateVM : VideoRequestFormVM
+    {
         [Display(Name = "Sms", ResourceType = typeof(Resources.ResourceTexts))]
         [Required(ErrorMessageResourceType = typeof(Resources.ResourceTexts), ErrorMessageResourceName = "ErrorRequiredField")]
         public string Sms { get; set; }
@@ -67,7 +70,7 @@ namespace Cameo.ViewModels
         }
     }
 
-    public class VideoRequestEditVM : VideoRequestCreateVM
+    public class VideoRequestEditVM : VideoRequestFormVM
     {
         public int ID { get; set; }
 

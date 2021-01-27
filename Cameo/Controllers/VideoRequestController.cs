@@ -274,6 +274,10 @@ namespace Cameo.Controllers
 
             ViewData["videoRequestTypes"] = VideoRequestTypeService.GetAsSelectList();
 
+            Talent talent = TalentService.GetActiveByID(request.TalentID);
+            TalentDetailsVM talentVM = new TalentDetailsVM(talent);
+            ViewData["talent"] = talentVM;
+
             return PartialView("_Edit", modelVM);
 
 

@@ -85,8 +85,10 @@ namespace Cameo.Services
         //later siteStavka and amount, that talent earns will be saved for each request
         public int GetEarnedByTalent(Talent talent)
         {
-            int totalPaid = (int)GetAllCompletedByTalent(talent)
-                .Sum(m => (m.Price * (100 - m.WebsiteCommission)) / 100);
+            //int totalPaid = (int)GetAllCompletedByTalent(talent)
+            //    .Sum(m => (m.Price * (100 - m.WebsiteCommission)) / 100);
+
+            int totalPaid = (int)GetAllCompletedByTalent(talent).Sum(m => m.Price);
 
             return totalPaid;
             //int siteStavka = 25; //25%

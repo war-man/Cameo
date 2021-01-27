@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace Cameo.API.ViewModels
 {
-    public class VideoRequestCreateVM
+    public class VideoRequestFormVM
     {
         [Required]
         [Display(Name = "Это видео:")]
@@ -48,7 +48,10 @@ namespace Cameo.API.ViewModels
         public int talent_id { get; set; }
 
         public int invoice_id { get; set; }
+    }
 
+    public class VideoRequestCreateVM : VideoRequestFormVM
+    {
         [Required]
         public string sms { get; set; }
 
@@ -76,7 +79,7 @@ namespace Cameo.API.ViewModels
         }
     }
 
-    public class VideoRequestEditVM : VideoRequestCreateVM
+    public class VideoRequestEditVM : VideoRequestFormVM
     {
         public List<SelectListItem> video_request_types { get; set; }
         public VideoRequestEditVM() { }

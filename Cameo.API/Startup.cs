@@ -45,7 +45,8 @@ namespace Cameo.API
         public void ConfigureServices(IServiceCollection services)
         {
 #if DEBUG
-            string connectionStringName = "DefaultConnection";
+            //string connectionStringName = "DefaultConnection";
+            string connectionStringName = "USAServerConnection";
 #else
             string connectionStringName = "USAServerConnection";
 #endif
@@ -72,7 +73,8 @@ namespace Cameo.API
 
             //Hangfire
 #if DEBUG
-            string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
+            //string connectionString = "Data Source=.;Initial Catalog=Helloo;User Id=sa;Password=490969;";
+            string connectionString = "Data Source=209.159.151.3\\SQLEXPRESS,1433;Initial Catalog=Helloo;User Id=sa;Password=TD9N9CkDmQFNZ7HZ;";
 #else
             string connectionString = "Data Source=209.159.151.3\\SQLEXPRESS,1433;Initial Catalog=Helloo;User Id=sa;Password=TD9N9CkDmQFNZ7HZ;";
 #endif
@@ -106,7 +108,6 @@ namespace Cameo.API
 #if DEBUG
             string validIssuer = "https://localhost:44322";
 #else
-            //string validIssuer = "https://api.helloo.uz";
             string validIssuer = "https://api.helloo.uz";
 #endif
             string tokenSecurityKey = "9mxhkbcmmreh2hsnbqh6lisy21t06eg563txkb9w8t4012tiy1fa9xei4d80hucunvhdwgza0917hkf6b0mr36zyadoxxqhqrottbyuhylelvzhd69uz6znmii9lex1a";
